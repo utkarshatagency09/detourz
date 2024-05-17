@@ -1,0 +1,793 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- Form -->
+  <form action="{{ action }}" class="form-horizontal" enctype="multipart/form-data" id="form-skin" method="post">
+    <div class="tab-content">
+      
+      <!--Skin-->
+      <div id="menu-skin" class="tab-pane fade in active">
+        <!--Multi store skin-->
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_select_skin }}</div>
+          <div class="panel-body">
+            {% for store in stores %} 
+              <div class="form-group">
+                <label class="col-xs-3 control-label" for="input-store-skin-{{ store['store_id'] }}">{{ store['name'] }}</label>
+                <div class="col-xs-9">
+                  <select id="input-store-skin-{{ store['store_id'] }}" name="theme[{{ store['store_id'] }}][skin_id]" class="form-control">
+                    {% for skin in skins %} 
+                      {% if (skin['skin_id'] == store['skin_id']) %} 
+                      <option value="{{ skin['skin_id'] }}" selected="">{{ skin['name'] }}</option>
+                      {% else %} 
+                      <option value="{{ skin['skin_id'] }}">{{ skin['name'] }}</option>
+                      {% endif %} 
+                    {% endfor %} 
+                  </select>
+                </div>
+              </div>
+            {% endfor %} 
+          </div>
+        </div>
+        
+        <div id="skin-container">
+          <div class="row">
+            {% for skin in skins %} 
+              <div class="col-xs-4">
+                <div id="skin-{{ skin['skin_id'] }}" class="skin-wrap">
+                  {% if (skin['parent_skin']) %} 
+                  <div class="child-skin-label"><h4 class="pull-left">{{ text_child_of ~ skin['parent_skin']['name'] }}</h4> <a href="#model-edit-skin" id="button-edit-skin-toggle-{{ skin['skin_id'] }}" data-skin_id="{{ skin['skin_id'] }}" data-skin_name="{{ skin['name'] }}" data-toggle="modal"  class="pull-right button-edit-skin-toggle"><i class="fa fa-pencil" aria-hidden="true"></i></a></div>
+                  <div class="button-skin-action"><button type="button" data-skin_id="{{ skin['skin_id'] }}" class="btn btn-default button-skin-duplicate"><i class="fa fa-clone" aria-hidden="true"></i> {{ button_duplicate }}</button>
+                    <button type="button" data-skin_id="{{ skin['skin_id'] }}" class="btn btn-danger button-skin-delete"><i class="fa fa-trash" aria-hidden="true"></i> {{ button_delete }}</button></div>
+                  {% endif %} 
+                  <div class="image"><img src="{{ skin['image'] }}" /></div>
+                  <div class="caption clearfix">
+                    <h4 class="pull-left">{{ skin['name'] }}</h4>
+                    <a href="{{ skin['preview'] }}" target="_blank" class="btn btn-info pull-right">{{ text_preview }}</a>
+                  </div>
+                </div>
+              </div>
+            {% endfor %} 
+              <div class="col-xs-4">
+                <div class="add-skin">
+                  <a href="#model-add-skin" data-toggle="modal"><div class="add-skin-pluse"><i class="fa fa-plus-circle fa-5x" aria-hidden="true"></i><br>{{ text_add_skin }}</div></a>
+                </div>
+              </div>
+          </div>
+        </div>
+        
+      </div>
+      
+      <!--Header-->
+      <div id="menu-header" class="tab-pane fade">
+        {% for header in headers %} 
+        <div id="header-panel-{{ header['header_id'] }}" class="mz-image-panel">
+          <!--Header thumbnail-->
+          {% if (header['parent_header']) %} 
+          <div class="mz-image-panel-heading"><h4>{{ text_child_of ~ header['parent_header']['name'] }}</h4></div>
+          {% endif %} 
+          <label for="input-skin-header-{{ header['header_id'] }}" class="mz-image-panel-content">
+            <img src="{{ header['image'] }}" />
+            {% if (header['header_id'] == skin_header_id) %} 
+            <input type="radio" id="input-skin-header-{{ header['header_id'] }}" class="input-mz-image-select" name="skin_header_id" value="{{ header['header_id'] }}" checked="" />
+            {% else %} 
+            <input type="radio" id="input-skin-header-{{ header['header_id'] }}" class="input-mz-image-select" name="skin_header_id" value="{{ header['header_id'] }}" />
+            {% endif %} 
+            <div class="input-mz-image-select-overlay"><i class="fa fa-4x fa-check"></i></div>
+          </label>
+          <div class="mz-image-panel-footer clearfix">
+            <h4 class="pull-left header-name">{{ header['name'] }}</h4>
+            <a href="{{ header['edit'] }}" target="_blank" class="btn btn-info pull-right toggle-accordion button-header-customise"><i class="fa fa-edit"></i> {{ button_customise }}</a>
+            {% if (header['parent_header']) %} 
+            <button type="button" data-header_id="{{ header['header_id'] }}" class="btn btn-warning button-header-duplicate pull-right"><i class="fa fa-clone" aria-hidden="true"></i> {{ button_duplicate }}</button>
+            <button type="button" data-header_id="{{ header['header_id'] }}" class="btn btn-danger button-header-delete pull-right"><i class="fa fa-trash" aria-hidden="true"></i> {{ button_delete }}</button>
+            <button type="button" id="button-header-edit-toggle-{{ header['header_id'] }}" data-header_id="{{ header['header_id'] }}" data-header_name="{{ header['name'] }}" class="btn btn-default button-header-edit-toggle pull-right"><i class="fa fa-pencil" aria-hidden="true"></i> {{ button_edit }}</button>
+            {% endif %} 
+          </div>
+        </div>
+        {% endfor %} 
+        <div class="add-header">
+          <a href="#model-add-header" data-toggle="modal"><div class="add-header-pluse"><i class="fa fa-plus-circle fa-5x" aria-hidden="true"></i><br>{{ text_add_header }}</div></a>
+        </div>
+      </div>
+      
+      <!--Footer-->
+      <div id="menu-footer" class="tab-pane fade">
+        {% for footer in footers %} 
+        <div id="footer-panel-{{ footer['footer_id'] }}" class="mz-image-panel">
+          <!--Footer thumbnail-->
+          {% if (footer['parent_footer']) %} 
+            <div class="mz-image-panel-heading"><h4>{{ text_child_of ~ footer['parent_footer']['name'] }}</h4></div>
+          {% endif %} 
+          <label for="input-skin-footer-{{ footer['footer_id'] }}" class="mz-image-panel-content">
+            <img src="{{ footer['image'] }}" />
+            {% if (footer['footer_id'] == skin_footer_id) %} 
+            <input type="radio" id="input-skin-footer-{{ footer['footer_id'] }}" class="input-mz-image-select" name="skin_footer_id" value="{{ footer['footer_id'] }}" checked="" />
+            {% else %} 
+            <input type="radio" id="input-skin-footer-{{ footer['footer_id'] }}" class="input-mz-image-select" name="skin_footer_id" value="{{ footer['footer_id'] }}" />
+            {% endif %} 
+            <div class="input-mz-image-select-overlay"><i class="fa fa-4x fa-check"></i></div>
+          </label>
+          <div class="mz-image-panel-footer clearfix">
+            <h4 class="pull-left footer-name">{{ footer['name'] }}</h4>
+            <a href="{{ footer['edit'] }}" target="_blank" class="btn btn-info pull-right toggle-accordion button-footer-customise"><i class="fa fa-edit"></i> {{ button_customise }}</a>
+            {% if (footer['parent_footer']) %} 
+            <button type="button" data-footer_id="{{ footer['footer_id'] }}" class="btn btn-warning button-footer-duplicate pull-right"><i class="fa fa-clone" aria-hidden="true"></i> {{ button_duplicate }}</button>
+            <button type="button" data-footer_id="{{ footer['footer_id'] }}" class="btn btn-danger button-footer-delete pull-right"><i class="fa fa-trash" aria-hidden="true"></i> {{ button_delete }}</button>
+            <button type="button" id="button-footer-edit-toggle-{{ footer['footer_id'] }}" data-footer_id="{{ footer['footer_id'] }}" data-footer_name="{{ footer['name'] }}" class="btn btn-default button-footer-edit-toggle pull-right"><i class="fa fa-pencil" aria-hidden="true"></i> {{ button_edit }}</button>
+            {% endif %} 
+          </div>
+        </div>
+        {% endfor %} 
+        <div class="add-footer">
+          <a href="#model-add-footer" data-toggle="modal"><div class="add-footer-pluse"><i class="fa fa-plus-circle fa-5x" aria-hidden="true"></i><br>{{ text_add_footer }}</div></a>
+        </div>
+      </div>
+        
+    </div>
+  </form>
+  
+  <!-- Modal to Add skin -->
+  <div id="model-add-skin" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content mz-model-default">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">{{ text_add_skin }}</h4>
+        </div>
+        <div class="modal-body">
+          <form action="{{ add_skin }}" class="form-horizontal" enctype="multipart/form-data" id="form-add-skin" method="post">
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-add-skin-name">{{ entry_skin_name }}</label>
+              <div class="col-xs-9">
+                <input name="skin_name" placeholder="{{ entry_skin_name }}" class="form-control large" id="input-add-skin-name"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-add-skin-parent">{{ entry_parent_skin }}</label>
+              <div class="col-xs-9">
+                <select name="skin_parent_id" class="form-control large" placeholder="{{ entry_parent_skin }}" id="input-add-skin-parent">
+                  <option value=""></option>
+                  {% for skin in skins %} 
+                    {% if (skin['parent_skin'] is empty) %} 
+                    <option value="{{ skin['skin_id'] }}">{{ skin['name'] }}</option>
+                    {% endif %} 
+                  {% endfor %} 
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="button-add-skin" class="btn btn-default" >{{ button_add }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal to edit skin -->
+  <div id="model-edit-skin" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content mz-model-default">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">{{ text_edit_skin }}</h4>
+        </div>
+        <div class="modal-body">
+          <form action="" class="form-horizontal" enctype="multipart/form-data" id="form-edit-skin" method="post">
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-edit-skin-name">{{ entry_skin_name }}</label>
+              <div class="col-xs-9">
+                <input name="skin_name" value="" placeholder="{{ entry_skin_name }}" class="form-control large" id="input-edit-skin-name"/>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="button-edit-skin" class="btn btn-default" >{{ button_edit }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal to Add header -->
+  <div id="model-add-header" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content mz-model-default">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">{{ text_add_header }}</h4>
+        </div>
+        <div class="modal-body">
+          <form action="{{ add_header }}" class="form-horizontal" enctype="multipart/form-data" id="form-add-header" method="post">
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-add-header-name">{{ entry_header_name }}</label>
+              <div class="col-xs-9">
+                <input name="header_name" placeholder="{{ entry_header_name }}" class="form-control large" id="input-add-header-name"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-add-header-parent">{{ entry_parent_header }}</label>
+              <div class="col-xs-9">
+                <select name="header_parent_id" class="form-control large" placeholder="{{ entry_parent_header }}" id="input-add-header-parent">
+                  <option value=""></option>
+                  {% for header in headers %} 
+                    {% if (header['parent_header'] is empty) %} 
+                    <option value="{{ header['header_id'] }}">{{ header['name'] }}</option>
+                    {% endif %} 
+                  {% endfor %} 
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="button-add-header" class="btn btn-default" >{{ button_add }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal to edit header -->
+  <div id="model-edit-header" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content mz-model-default">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">{{ text_edit_header }}</h4>
+        </div>
+        <div class="modal-body">
+          <form action="" class="form-horizontal" enctype="multipart/form-data" id="form-edit-header" method="post">
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-edit-header-name">{{ entry_header_name }}</label>
+              <div class="col-xs-9">
+                <input name="header_name" value="" placeholder="{{ entry_header_name }}" class="form-control large" id="input-edit-header-name"/>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="button-edit-header" class="btn btn-default" >{{ button_edit }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal to Add footer -->
+  <div id="model-add-footer" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content mz-model-default">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">{{ text_add_footer }}</h4>
+        </div>
+        <div class="modal-body">
+          <form action="{{ add_footer }}" class="form-horizontal" enctype="multipart/form-data" id="form-add-footer" method="post">
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-add-footer-name">{{ entry_footer_name }}</label>
+              <div class="col-xs-9">
+                <input name="footer_name" placeholder="{{ entry_footer_name }}" class="form-control large" id="input-add-footer-name"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-add-footer-parent">{{ entry_parent_footer }}</label>
+              <div class="col-xs-9">
+                <select name="footer_parent_id" class="form-control large" placeholder="{{ entry_parent_footer }}" id="input-add-footer-parent">
+                  <option value=""></option>
+                  {% for footer in footers %} 
+                    {% if (footer['parent_footer'] is empty) %} 
+                    <option value="{{ footer['footer_id'] }}">{{ footer['name'] }}</option>
+                    {% endif %} 
+                  {% endfor %} 
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="button-add-footer" class="btn btn-default" >{{ button_add }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal to edit footer -->
+  <div id="model-edit-footer" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content mz-model-default">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">{{ text_edit_footer }}</h4>
+        </div>
+        <div class="modal-body">
+          <form action="" class="form-horizontal" enctype="multipart/form-data" id="form-edit-footer" method="post">
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-edit-footer-name">{{ entry_footer_name }}</label>
+              <div class="col-xs-9">
+                <input name="footer_name" value="" placeholder="{{ entry_footer_name }}" class="form-control large" id="input-edit-footer-name"/>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="button-edit-footer" class="btn btn-default" >{{ button_edit }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // scroll skin image
+    $('.skin-wrap').each(function(){
+        var image_wrap = $(this).find('.image');
+        var image = image_wrap.children();
+        
+        image_wrap.on('mouseover', function(){
+            image.css('margin-top', -(image.height() - 250));
+        });
+        image_wrap.on('mouseout', function(){
+            image.css('margin-top', 0);
+        });
+    });
+    
+    // Add skin
+    $('#button-add-skin').on('click', function(){
+        $(this).button('loading');
+        
+        var form = $('#form-add-skin');
+        
+        form.find('.alert').remove();
+        
+        $.ajax({
+            url: form.attr('action'),
+            type: 'post',
+            dataType: 'json',
+            data: form.serialize(),
+            success: function(json) {
+                if(json['error']){
+                    form.prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                }
+                
+                if(json['success']){
+//                    $('#model-add-skin').modal('hide');
+                    form.prepend('<div class="alert alert-success alert-dismissible"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+//                    window.scrollTo(0, 0);
+                    setTimeout(function(){location.reload();}, 2000);
+                }
+                
+                $('#button-add-skin').button('reset');
+            }
+        });
+    });
+    
+    // Edit skin
+    $(document).on('click', '.button-edit-skin-toggle', function(){
+        $('#form-edit-skin').attr('action', 'index.php?route=extension/maza/skin/editSkin&user_token={{ user_token }}&mz_theme_code={{ mz_theme_code }}&skin_id=' + $(this).data('skin_id'));
+        $('#form-edit-skin').data('skin_id', $(this).data('skin_id'));
+        $('#form-edit-skin input[name="skin_name"]').val($(this).data('skin_name'));
+    });
+    $('#button-edit-skin').on('click', function(){
+        $(this).button('loading');
+        
+        var form = $('#form-edit-skin');
+        
+        form.find('.alert').remove();
+        
+        $.ajax({
+            url: form.attr('action'),
+            type: 'post',
+            dataType: 'json',
+            data: form.serialize(),
+            success: function(json) {
+                if(json['error']){
+                    form.prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                }
+                
+                if(json['success']){
+                    form.prepend('<div class="alert alert-success alert-dismissible"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                    
+                    // Edit skin in browser
+                    var skin_name = $('#model-edit-skin #input-edit-skin-name').val();
+                    $('#skin-' + form.data('skin_id') + ' .caption h4').text(skin_name);
+                    $('#button-edit-skin-toggle-' + form.data('skin_id')).data('skin_name', skin_name);
+                    $('#input-skin option[value="' + form.data('skin_id') + '"]').text(skin_name);
+                    
+                    // Hide modal
+                    setTimeout(function(){
+                        $('#model-edit-skin').modal('hide');
+                    }, 2000);
+                }
+                
+                $('#button-edit-skin').button('reset');
+            }
+        });
+    });
+    
+    // Delete skin
+    $('.button-skin-delete').on('click', function(){
+        // Confirm deletion before to proceed
+        if(!confirm("{{ text_confirm_delete }}")){
+            // cancel delete
+            return;
+        }
+        
+        var button_skin_delete = $(this);
+        
+        button_skin_delete.parent().addClass('show');
+        button_skin_delete.button('loading');
+        $('.alert').remove();
+        
+        $.ajax({
+            url: 'index.php?route=extension/maza/skin/deleteSkin&user_token={{ user_token }}&mz_theme_code={{ mz_theme_code }}&mz_skin_id={{ mz_skin_id }}',
+            type: 'post',
+            dataType: 'json',
+            data: {skin_id: button_skin_delete.data('skin_id')},
+            success: function(json) {
+                if(json['error']){
+                    $('#content').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                }
+                
+                if(json['success']){
+                    $('#content').prepend('<div class="alert alert-success alert-dismissible"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                    $('#skin-' + button_skin_delete.data('skin_id')).parent().remove();
+                    $('#input-skin option[value="' + button_skin_delete.data('skin_id') + '"]').remove();
+                }
+                
+                button_skin_delete.button('reset');
+                button_skin_delete.parent().removeClass('show');
+                window.scrollTo(0, 0);
+            }
+        });
+    });
+    
+    // duplicate skin
+    $('.button-skin-duplicate').on('click', function(){
+        // Confirm deletion before to proceed
+        if(!confirm("{{ text_confirm_duplicate }}")){
+            // cancel duplicate
+            return;
+        }
+        
+        var button_skin_duplicate = $(this);
+        
+        button_skin_duplicate.parent().addClass('show');
+        button_skin_duplicate.button('loading');
+        $('.alert').remove();
+        
+        $.ajax({
+            url: 'index.php?route=extension/maza/skin/duplicateSkin&user_token={{ user_token }}&mz_theme_code={{ mz_theme_code }}&mz_skin_id={{ mz_skin_id }}',
+            type: 'post',
+            dataType: 'json',
+            data: {skin_id: button_skin_duplicate.data('skin_id')},
+            success: function(json) {
+                if(json['error']){
+                    $('#content').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                }
+                
+                if(json['success']){
+                    $('#content').prepend('<div class="alert alert-success alert-dismissible"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                    setTimeout(function(){location.reload();}, 2000);
+                }
+                
+                button_skin_duplicate.button('reset');
+                button_skin_duplicate.parent().removeClass('show');
+                window.scrollTo(0, 0);
+            }
+        });
+    });
+  </script>
+  <script>
+    // Add header
+    $('#button-add-header').on('click', function(){
+        $(this).button('loading');
+        
+        var form = $('#form-add-header');
+        
+        form.find('.alert').remove();
+        
+        $.ajax({
+            url: form.attr('action'),
+            type: 'post',
+            dataType: 'json',
+            data: form.serialize(),
+            success: function(json) {
+                if(json['error']){
+                    form.prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                }
+                
+                if(json['success']){
+//                    $('#model-add-header').modal('hide');
+                    form.prepend('<div class="alert alert-success alert-dismissible"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+//                    window.scrollTo(0, 0);
+                    setTimeout(function(){location.reload();}, 2000);
+                }
+                
+                $('#button-add-header').button('reset');
+            }
+        });
+    });
+    
+    // Edit header
+    $(document).on('click', '.button-header-edit-toggle', function(){
+        $('#form-edit-header').attr('action', 'index.php?route=extension/maza/skin/header/edit&user_token={{ user_token }}&mz_theme_code={{ mz_theme_code }}&mz_skin_id={{ mz_skin_id }}&header_id=' + $(this).data('header_id'));
+        $('#form-edit-header').data('header_id', $(this).data('header_id'));
+        $('#form-edit-header input[name="header_name"]').val($(this).data('header_name'));
+        $('#model-edit-header').modal('show');
+    });
+    $('#button-edit-header').on('click', function(){
+        $(this).button('loading');
+        
+        var form = $('#form-edit-header');
+        
+        form.find('.alert').remove();
+        
+        $.ajax({
+            url: form.attr('action'),
+            type: 'post',
+            dataType: 'json',
+            data: form.serialize(),
+            success: function(json) {
+                if(json['error']){
+                    form.prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                }
+                
+                if(json['success']){
+                    form.prepend('<div class="alert alert-success alert-dismissible"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                    
+                    // Edit header in browser
+                    var header_name = $('#model-edit-header #input-edit-header-name').val();
+                    $('#header-panel-' + form.data('header_id') + ' .header-name').text(header_name);
+                    $('#button-header-edit-toggle-' + form.data('header_id')).data('header_name', header_name);
+                    
+                    // Hide modal
+                    setTimeout(function(){
+                        $('#model-edit-header').modal('hide');
+                    }, 2000);
+                }
+                
+                $('#button-edit-header').button('reset');
+            }
+        });
+    });
+    
+    // Delete header
+    $('.button-header-delete').on('click', function(){
+        // Confirm deletion before to proceed
+        if(!confirm("{{ text_confirm_delete }}")){
+            // cancel delete
+            return;
+        }
+        
+        var button_header_delete = $(this);
+        
+        button_header_delete.button('loading');
+        button_header_delete.addClass('show');
+        $('.alert').remove();
+        
+        $.ajax({
+            url: 'index.php?route=extension/maza/skin/header/delete&user_token={{ user_token }}&mz_theme_code={{ mz_theme_code }}&mz_skin_id={{ mz_skin_id }}',
+            type: 'get',
+            dataType: 'json',
+            data: {header_id: button_header_delete.data('header_id')},
+            success: function(json) {
+                if(json['error']){
+                    $('#content').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                }
+                
+                if(json['success']){
+                    $('#content').prepend('<div class="alert alert-success alert-dismissible"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                    $('#header-panel-' + button_header_delete.data('header_id')).remove();
+                }
+                
+                button_header_delete.button('reset');
+                button_header_delete.removeClass('show');
+                window.scrollTo(0, 0);
+            }
+        });
+    });
+    
+    // duplicate header
+    $('.button-header-duplicate').on('click', function(){
+        // Confirm deletion before to proceed
+        if(!confirm("{{ text_confirm_duplicate }}")){
+            // cancel duplicate
+            return;
+        }
+        
+        var button_header_duplicate = $(this);
+        
+        button_header_duplicate.button('loading');
+        button_header_duplicate.addClass('show');
+        $('.alert').remove();
+        
+        $.ajax({
+            url: 'index.php?route=extension/maza/skin/header/duplicate&user_token={{ user_token }}&mz_theme_code={{ mz_theme_code }}&mz_skin_id={{ mz_skin_id }}',
+            type: 'get',
+            dataType: 'json',
+            data: {header_id: button_header_duplicate.data('header_id')},
+            success: function(json) {
+                if(json['error']){
+                    $('#content').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                }
+                
+                if(json['success']){
+                    $('#content').prepend('<div class="alert alert-success alert-dismissible"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                    setTimeout(function(){location.reload();}, 2000);
+                }
+                
+                button_header_duplicate.button('reset');
+                button_header_duplicate.removeClass('show');
+                window.scrollTo(0, 0);
+            }
+        });
+    });
+  </script>
+  <script>
+    // Add footer
+    $('#button-add-footer').on('click', function(){
+        $(this).button('loading');
+        
+        var form = $('#form-add-footer');
+        
+        form.find('.alert').remove();
+        
+        $.ajax({
+            url: form.attr('action'),
+            type: 'post',
+            dataType: 'json',
+            data: form.serialize(),
+            success: function(json) {
+                if(json['error']){
+                    form.prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                }
+                
+                if(json['success']){
+//                    $('#model-add-footer').modal('hide');
+                    form.prepend('<div class="alert alert-success alert-dismissible"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+//                    window.scrollTo(0, 0);
+                    setTimeout(function(){location.reload();}, 2000);
+                }
+                
+                $('#button-add-footer').button('reset');
+            }
+        });
+    });
+    
+    // Edit footer
+    $(document).on('click', '.button-footer-edit-toggle', function(){
+        $('#form-edit-footer').attr('action', 'index.php?route=extension/maza/skin/footer/edit&user_token={{ user_token }}&mz_theme_code={{ mz_theme_code }}&mz_skin_id={{ mz_skin_id }}&footer_id=' + $(this).data('footer_id'));
+        $('#form-edit-footer').data('footer_id', $(this).data('footer_id'));
+        $('#form-edit-footer input[name="footer_name"]').val($(this).data('footer_name'));
+        $('#model-edit-footer').modal('show');
+    });
+    $('#button-edit-footer').on('click', function(){
+        $(this).button('loading');
+        
+        var form = $('#form-edit-footer');
+        
+        form.find('.alert').remove();
+        
+        $.ajax({
+            url: form.attr('action'),
+            type: 'post',
+            dataType: 'json',
+            data: form.serialize(),
+            success: function(json) {
+                if(json['error']){
+                    form.prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                }
+                
+                if(json['success']){
+                    form.prepend('<div class="alert alert-success alert-dismissible"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                    
+                    // Edit footer in browser
+                    var footer_name = $('#model-edit-footer #input-edit-footer-name').val();
+                    $('#footer-panel-' + form.data('footer_id') + ' .footer-name').text(footer_name);
+                    $('#button-footer-edit-toggle-' + form.data('footer_id')).data('footer_name', footer_name);
+                    
+                    // Hide modal
+                    setTimeout(function(){
+                        $('#model-edit-footer').modal('hide');
+                    }, 2000);
+                }
+                
+                $('#button-edit-footer').button('reset');
+            }
+        });
+    });
+    
+    // Delete footer
+    $('.button-footer-delete').on('click', function(){
+        // Confirm deletion before to proceed
+        if(!confirm("{{ text_confirm_delete }}")){
+            // cancel delete
+            return;
+        }
+        
+        var button_footer_delete = $(this);
+        
+        button_footer_delete.button('loading');
+        button_footer_delete.addClass('show');
+        $('.alert').remove();
+        
+        $.ajax({
+            url: 'index.php?route=extension/maza/skin/footer/delete&user_token={{ user_token }}&mz_theme_code={{ mz_theme_code }}&mz_skin_id={{ mz_skin_id }}',
+            type: 'get',
+            dataType: 'json',
+            data: {footer_id: button_footer_delete.data('footer_id')},
+            success: function(json) {
+                if(json['error']){
+                    $('#content').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                }
+                
+                if(json['success']){
+                    $('#content').prepend('<div class="alert alert-success alert-dismissible"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                    $('#footer-panel-' + button_footer_delete.data('footer_id')).remove();
+                }
+                
+                button_footer_delete.button('reset');
+                button_footer_delete.removeClass('show');
+                window.scrollTo(0, 0);
+            }
+        });
+    });
+    
+    // duplicate footer
+    $('.button-footer-duplicate').on('click', function(){
+        // Confirm deletion before to proceed
+        if(!confirm("{{ text_confirm_duplicate }}")){
+            // cancel duplicate
+            return;
+        }
+        
+        var button_footer_duplicate = $(this);
+        
+        button_footer_duplicate.button('loading');
+        button_footer_duplicate.addClass('show');
+        $('.alert').remove();
+        
+        $.ajax({
+            url: 'index.php?route=extension/maza/skin/footer/duplicate&user_token={{ user_token }}&mz_theme_code={{ mz_theme_code }}&mz_skin_id={{ mz_skin_id }}',
+            type: 'get',
+            dataType: 'json',
+            data: {footer_id: button_footer_duplicate.data('footer_id')},
+            success: function(json) {
+                if(json['error']){
+                    $('#content').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                }
+                
+                if(json['success']){
+                    $('#content').prepend('<div class="alert alert-success alert-dismissible"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                    setTimeout(function(){location.reload();}, 2000);
+                }
+                
+                button_footer_duplicate.button('reset');
+                button_footer_duplicate.removeClass('show');
+                window.scrollTo(0, 0);
+            }
+        });
+    });
+  </script>
+</div>
+{{ mz_footer }}

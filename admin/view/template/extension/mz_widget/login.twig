@@ -1,0 +1,66 @@
+<!-- Form -->
+<form id="setting-widget-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <!--widget status-->
+  <div class="form-group">
+    <label class="col-sm-3 control-label" for="input-setting-widget-status">{{ entry_status }}</label>
+    <div class="col-sm-9">
+      <div class="mz-switch-field">
+        {% if (widget_status) %} 
+        <input type="radio" name="widget_status" value="1" id="input-setting-widget-status-enabled" checked>
+        <label for="input-setting-widget-status-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="widget_status" value="0" id="input-setting-widget-status-disabled">
+        <label for="input-setting-widget-status-disabled">{{ text_disabled }}</label>
+        {% else %} 
+        <input type="radio" name="widget_status" value="1" id="input-setting-widget-status-enabled" >
+        <label for="input-setting-widget-status-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="widget_status" value="0" id="input-setting-widget-status-disabled" checked>
+        <label for="input-setting-widget-status-disabled" >{{ text_disabled }}</label>
+        {% endif %} 
+      </div>
+    </div>
+  </div>
+      
+  {#title#}
+  <div class="form-group">
+    <label class="col-xs-3 control-label" for="input-widget-title">{{ entry_title }}</label>
+    <div class="col-xs-9">
+    {% for language in languages %} 
+      <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" widget_title="{{ language['name'] }}" /></span>
+        <input class="form-control" type="text" name="widget_title[{{ language['language_id'] }}]" value="{{ widget_title[language['language_id']] is defined?widget_title[language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+      </div>
+    {% endfor %} 
+    </div>
+  </div>
+      
+  <div class="form-group">
+    <label class="col-xs-3 control-label">{{ entry_size }}</label>
+    <div class="col-xs-9">
+      <div class="mz-switch-field">
+        {% for size in sizes %} 
+          {% if (widget_size == size['code']) %} 
+          <input type="radio" name="widget_size" value="{{ size['code'] }}" id="input-setting-widget-size-{{ size['code'] }}" checked>
+          <label for="input-setting-widget-size-{{ size['code'] }}" >{{ size['text'] }}</label>
+          {% else %} 
+          <input type="radio" name="widget_size" value="{{ size['code'] }}" id="input-setting-widget-size-{{ size['code'] }}">
+          <label for="input-setting-widget-size-{{ size['code'] }}" >{{ size['text'] }}</label>
+          {% endif %} 
+        {% endfor %} 
+      </div>
+    </div>
+  </div>
+      
+  <div class="form-group">
+    <label class="col-xs-3 control-label" for="input-setting-widget-color">{{ entry_color }}</label>
+    <div class="col-xs-9">
+      <select name="widget_color" id="input-setting-widget-color" class="form-control">
+        {% for color in colors %} 
+          {% if (widget_color == color['code']) %}
+          <option value="{{ color['code'] }}" selected="">{{ color['text'] }}</option>
+          {% else %} 
+          <option value="{{ color['code'] }}">{{ color['text'] }}</option>
+          {% endif %} 
+        {% endfor %} 
+      </select>
+    </div>
+  </div>
+</form>

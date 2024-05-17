@@ -1,0 +1,93 @@
+.mz-tab-listing{
+    .module-title{
+        flex-grow: 1;
+    }
+    
+    .mz-tab-listing-header.tabs{
+        margin-bottom: mz-spacer(12);
+        flex-direction: column;
+        align-items: center;
+
+        > .ms-auto{
+            margin: auto;
+        }
+
+        .module-title {
+            padding-left: mz-spacer(30);
+            padding-right: mz-spacer(30);
+        }
+    }
+
+    .nav-tabs{
+        margin-bottom: 0;
+        margin-top: -$nav-link-padding-y;
+        border: none;
+        justify-content: center;
+        flex-wrap: wrap;
+
+        .nav-link{
+            color: $black;
+            padding-top: 0;
+            @include rtl-prop(padding-left, mz-spacer(25));
+            @include rtl-prop(padding-right, mz-spacer(25));
+
+            &:hover, &.active, &.show{
+                color: $secondary;
+            }
+        }
+    }
+    
+    @include media-breakpoint-up(md){
+        .mz-tab-listing-header.flex-wrap{
+            flex-wrap: nowrap !important;
+        }
+    }
+    
+    .mz-tab-listing-banner *{
+        display: block;
+        height: 100%;
+    }
+    
+    @include media-breakpoint-up(sm){
+        .mz-tab-listing-banner{
+            @include rtl-prop(margin-right, $grid-gutter-width);
+        }
+    }
+
+    // Swiper 
+    .swiper-pager{
+        display: none !important;
+    }
+    .swiper:hover .swiper-pager{
+        display: block !important;
+    }
+}
+
+.custom-pager-bg{
+    .swiper-button{
+        &-prev, &-next{
+            display: flex;
+            padding: 0.875em 0.1875em;
+            background-color: $primary !important;
+        }
+        &-prev{
+            @include rtl-prop(left, 0);
+            @include border-start-radius($border-radius);
+        }
+        &-next{
+            @include rtl-prop(right, 0);
+            @include border-end-radius($border-radius);
+        }
+    }
+}
+
+.center-title {
+    .mz-tab-listing-header {
+        flex-direction: column;
+        align-items: center;
+    }
+    .module-title {
+        @include rtl-prop(padding-left, mz-spacer(25));
+        @include rtl-prop(padding-right, mz-spacer(25));
+    }
+}

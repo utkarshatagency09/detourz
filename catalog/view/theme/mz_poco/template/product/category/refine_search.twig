@@ -1,0 +1,36 @@
+{% verbatim %}{% if mz_categories %}{% endverbatim %}
+{% if title %}
+<h4 class="h{{ title }} content-title">{% verbatim %}{{ text_refine }}{% endverbatim %}</h4>
+{% endif %}
+
+{% if design == 'grid' %}
+<div class="row row-cols-xl-{{ column_xl }} row-cols-lg-{{ column_lg }} row-cols-md-{{ column_md }} row-cols-sm-{{ column_sm }} row-cols-{{ column_xs }}">
+{% verbatim %}{% for category in mz_categories %}{% endverbatim %}
+  <a class="mb-2 col text-decoration-none" href="{% verbatim %}{{ category.href }}{% endverbatim %}">
+    {% if show_content != 'text' %}
+    <figure class="figure m-0 w-100">
+      {% verbatim %}{% if category.image %}{% endverbatim %}
+      <img class="figure-img img-fluid" src="{% verbatim %}{{ category.image }}{% endverbatim %}" alt="{% verbatim %}{{ category.name }}{% endverbatim %}" >
+      {% verbatim %}{% endif %}{% endverbatim %}
+      {% if show_content != 'image' %}
+      <figcaption class="figure-caption mb-2">{% verbatim %}{{ category.name }}{% endverbatim %}</figcaption>
+      {% endif %}
+    </figure>
+    {% else %}
+    {% verbatim %}{{ category.name }}{% endverbatim %}
+    {% endif %}
+  </a>
+{% verbatim %}{% endfor %}{% endverbatim %}
+</div>
+
+{% else %}
+<div class="list-group">
+{% verbatim %}{% for category in mz_categories %}{% endverbatim %}
+  <a class="list-group-item list-group-item-action" href="{% verbatim %}{{ category.href }}{% endverbatim %}">
+    {% verbatim %}{{ category.name }}{% endverbatim %}
+  </a>
+{% verbatim %}{% endfor %}{% endverbatim %}
+</div>
+{% endif %}
+
+{% verbatim %}{% endif %}{% endverbatim %}

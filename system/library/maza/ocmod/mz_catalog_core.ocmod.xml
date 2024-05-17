@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<modification>
+    <name>Maza catalog</name>
+    <code>maza_catalog_core</code>
+    <version>1.0</version>
+    <author>TemplateMaza.com</author>
+    <link>https://pocotheme.com/</link>
+    <file path="catalog/controller/startup/seo_url.php">
+        <operation>
+            <search trim='true'><![CDATA[function rewrite(]]></search>
+            <add position="before" offset="2"><![CDATA[$this->load->controller('extension/maza/startup/startup');]]></add>
+        </operation>
+        <operation>
+            <search error="skip" trim='true'><![CDATA[public static $seo_urls;]]></search>
+            <add position="before" offset="3"><![CDATA[$this->load->controller('extension/maza/startup/startup');]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/controller/common/maintenance.php">
+        <operation>
+            <search trim='true'><![CDATA[$this->load->language('common/maintenance')]]></search>
+            <add position="after"><![CDATA[
+            $data['contact'] = $this->config->get('config_email');
+            $data['store_name'] = $this->config->get('config_name');
+            ]]></add>
+        </operation>
+        <operation>
+            <search trim='true'><![CDATA[$data['header'] = ]]></search>
+            <add position="replace"><![CDATA[//$data['header'] = ]]></add>
+        </operation>
+        <operation>
+            <search trim='true'><![CDATA[$data['footer'] = ]]></search>
+            <add position="replace"><![CDATA[//$data['footer'] = ]]></add>
+        </operation>
+    </file>
+    
+    <file path="catalog/controller/*/*.php|catalog/controller/extension/*/*.php">
+        <operation error="skip">
+            <search trim='true'><![CDATA[catalog/view/javascript/jquery/datetimepicker/moment/moment.min.js]]></search>
+            <add position="replace" trim='true'><![CDATA[https://cdn.jsdelivr.net/momentjs/latest/moment.min.js]]></add>
+        </operation>
+        <operation error="skip">
+            <search trim='true'><![CDATA[catalog/view/javascript/jquery/datetimepicker/moment/moment-with-locales.min.js]]></search>
+            <add position="replace" trim='true'><![CDATA[https://cdn.jsdelivr.net/momentjs/latest/moment-with-locales.min.js]]></add>
+        </operation>
+        <operation error="skip">
+            <search trim='true'><![CDATA[catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css]]></search>
+            <add position="replace" trim='true'><![CDATA[https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.css]]></add>
+        </operation>
+        <operation error="skip">
+            <search trim='true'><![CDATA[catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js]]></search>
+            <add position="replace" trim='true'><![CDATA[https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js]]></add>
+        </operation>
+        <operation error="skip">
+            <search trim='true'><![CDATA[$this->document->addStyle('catalog/view/javascript/jquery/swiper/css/opencart.css')]]></search>
+            <add position="replace" trim='true'><![CDATA[//$this->document->addStyle('catalog/view/javascript/jquery/swiper/css/opencart.css')]]></add>
+        </operation>
+    </file>
+    <file path="catalog/controller/common/home.php">
+        <operation>
+            <search trim='true'><![CDATA[if (isset($this->request->get['route']))]]></search>
+            <add position="replace"><![CDATA[if (isset($this->request->get['route']) || true)]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/model/tool/image.php">
+        <operation>
+            <search trim='true'><![CDATA[resize($filename, $width, $height)]]></search>
+            <add position="replace"><![CDATA[resize($filename, $width, $height, $mz_scale = null, $mz_quality = null)]]></add>
+        </operation>
+        <operation>
+            <search trim='true'><![CDATA[resize($width, $height)]]></search>
+            <add position="replace"><![CDATA[resize($width, $height, $mz_scale)]]></add>
+        </operation>
+        <operation>
+            <search trim='true'><![CDATA[save(DIR_IMAGE . $image_new)]]></search>
+            <add position="replace"><![CDATA[save(DIR_IMAGE . $image_new, $mz_quality??90)]]></add>
+        </operation>
+        <operation>
+            <search trim='true'><![CDATA[pathinfo($filename, PATHINFO_EXTENSION)]]></search>
+            <add position="after"><![CDATA[
+            if(version_compare(VERSION, '3.0.3.6', '>') && $this->config->get('maza_webp')){
+                $extension = 'webp';
+            }
+            ]]></add>
+        </operation>
+        <operation error="skip">
+            <search trim='true'><![CDATA[($width_orig != $width || $height_orig != $height)]]></search>
+            <add position="replace"><![CDATA[(true)]]></add>
+        </operation>
+    </file>
+</modification>

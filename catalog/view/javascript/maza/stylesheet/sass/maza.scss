@@ -1,0 +1,86 @@
+// ---- Variables ----
+$mz-spacer-base: 16 !default; // Px value without unit
+$mz-fs-base: 16 !default;
+$mz-rem-base: 16 !default;
+
+// ---- Function ----
+@function mz-adjust-color($color, $red: null, $green: null, $blue: null){
+    $r: red($color) + $red;
+    $g: green($color) + $green;
+    $b: blue($color) + $blue;
+    
+    @if $r < 0 {
+        $r: 0;
+    } @else if $r > 255 {
+        $r: 255;
+    }
+    
+    @if $g < 0 {
+        $g: 0;
+    } @else if $g > 255 {
+        $g: 255;
+    }
+    
+    @if $b < 0 {
+        $b: 0;
+    } @else if $b > 255 {
+        $b: 255;
+    }
+    
+    @return rgb($r, $g, $b);
+}
+
+@function strip-unit($number) {
+  @return $number / ($number * 0 + 1);
+}
+
+@function px2rem($size) {
+  $remSize: $size / $mz-rem-base;
+  @return #{$remSize}rem;
+}
+
+@function rem2px($size) {
+  $pxSize: strip-unit($size) * $mz-rem-base;
+  @return #{$pxSize}px;
+}
+
+@function em2rem($size, $base: $font-size-base){
+    $remSize: strip-unit($size) * $base;
+    @return $remSize;
+}
+
+@function mz-spacer($px) { // For spacing
+    $px: strip-unit($px);
+    // @return if($px < 3, #{$px}px, $spacer * ($px / $mz-spacer-base));
+    @return $spacer * ($px / $mz-spacer-base);
+}
+
+@function mz-fs($px, $parent: $mz-fs-base) {
+    @return #{strip-unit($px) / $parent}em;
+}
+
+// RTL Value
+// @param $lv ltr value
+// @param $rv rtl value
+@function rtl-value($lv, $rv){
+    @if $rtl {
+        @return $rv;
+    }
+    @return $lv;
+}
+
+
+// -------- Mixin -------
+// RTL Propery
+// @param $prop Css property
+// @param $value ltr value
+// @param $rtl_value rtl value
+@mixin rtl-prop($prop, $value, $rtl_value: null){
+    @if $rtl and map-has-key($rtl-props, $prop) {
+        $prop: map-get($rtl-props, $prop);
+    }
+    @if $rtl and $rtl_value {
+        $value: $rtl_value;
+    }
+    #{$prop}: #{$value};
+}

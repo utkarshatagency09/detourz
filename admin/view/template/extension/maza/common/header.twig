@@ -1,0 +1,125 @@
+<div class="mz-content-top container-fluid clearfix">
+  {% if (title is not empty) %} 
+  <h1 class="mz-content-title">{{ title }}</h1>
+  {% endif %} 
+  {% if (theme_select or skin_select) %} 
+  <form class="form-inline mz-form-inline mz-form-header pull-left">
+    {% if (theme_select) %} 
+    <div class="form-group">
+      <div class="input-group">
+        <label class="input-group-addon" for="input-theme">{{ text_theme }}</label>
+        <select name="mz_theme_code" class="form-control mz-form-control" id="input-theme">
+          {% for mz_theme in mz_themes %} 
+            {% if (mz_theme['code'] == mz_theme_code) %} 
+            <option value="{{ mz_theme['code'] }}" selected="">{{ mz_theme['name'] }}</option>
+            {% else %} 
+            <option value="{{ mz_theme['code'] }}">{{ mz_theme['name'] }}</option>
+            {% endif %} 
+          {% endfor %} 
+        </select>
+      </div>
+    </div>
+    {% endif %} 
+    {% if (theme_select) %} 
+    <div class="form-group">
+      <div class="input-group">
+        <label class="input-group-addon" for="input-skin">{{ text_skin }}</label>
+        <select name="mz_skin_id" class="form-control mz-form-control" id="input-skin">
+          {% for mz_skin in mz_skins %} 
+            {% if (mz_skin['skin_id'] == mz_skin_id) %} 
+            <option value="{{ mz_skin['skin_id'] }}" selected="">{{ mz_skin['name'] }}</option>
+            {% else %} 
+            <option value="{{ mz_skin['skin_id'] }}">{{ mz_skin['name'] }}</option>
+            {% endif %} 
+          {% endfor %} 
+        </select>
+      </div>
+    </div>
+    {% endif %} 
+  </form>
+  {% endif %} 
+  {% if (buttons is not empty) %} 
+  <div class="pull-right">
+    {% for button in buttons %} 
+      {% if (button['form_target_id']) %} 
+        {% if (button['confirm'] is not empty) %} 
+        <button id="{{ button['id'] }}" type="button" form="{{ button['form_target_id'] }}" {{ (button['formaction'] is not empty)?('formaction="' ~ button['formaction'] ~ '"'):'' }} data-confirm="{{ button['confirm'] }}" data-toggle="tooltip" title="{{ button['tooltip'] }}" class="btn btn-confirm {{ button['class'] }}"><i class="fa {{ button['icon'] }}"></i> {{ button['name'] }}</button>
+        {% else %} 
+        <button id="{{ button['id'] }}" type="submit" form="{{ button['form_target_id'] }}" {{ (button['formaction'] is not empty)?('formaction="' ~ button['formaction'] ~ '"'):'' }} data-toggle="tooltip" title="{{ button['tooltip'] }}" class="btn {{ button['class'] }}"><i class="fa {{ button['icon'] }}"></i> {{ button['name'] }}</button>
+        {% endif %} 
+      {% elseif (button['href']) %} 
+      <a id="{{ button['id'] }}" href="{{ button['href'] }}" target="{{ button['target'] }}" data-toggle="tooltip" title="{{ button['tooltip'] }}" class="btn {{ button['class'] }}"><i class="fa {{ button['icon'] }}"></i> {{ button['name'] }}</a>
+      {% else %} 
+      <button id="{{ button['id'] }}" type="button"  data-toggle="tooltip" title="{{ button['tooltip'] }}" class="btn {{ button['class'] }}"><i class="fa {{ button['icon'] }}"></i> {{ button['name'] }}</button>
+      {% endif %} 
+    {% endfor %} 
+  </div>
+  {% endif %} 
+</div>
+{% if (menu is not empty) %} 
+<ul class="mz-content-nav nav nav-tabs">
+  {% for link in menu %} 
+    {% if (link['href']) %} 
+    <li{{ (link['id'] == menu_active)?' class="active"' }}><a href="{{ link['href'] }}">{{ link['name'] }} <i class="fa fa-link"></i></a></li>
+    {% else %} 
+    <li{{ (link['id'] == menu_active)?' class="active"' }}><a href="#{{ link['id'] }}" data-toggle="tab">{{ link['name'] }}</a></li>
+    {% endif %}
+  {% endfor %}
+</ul>
+{% endif %} 
+ 
+<script>
+$(document).ready(function(){
+    var url = window.location.href;
+
+    $('select[name="mz_theme_code"]').on('change', function(){
+        location = url.replace(/mz_theme_code=\w+/, 'mz_theme_code=' + $('select[name="mz_theme_code"]').val()).replace(/mz_skin_id=\d+/, '');
+    });
+
+    $('select[name="mz_skin_id"]').on('change', function(){
+        location = url.replace(/mz_skin_id=\d+/, 'mz_skin_id=' + $('select[name="mz_skin_id"]').val());
+    });
+    
+    // Confirm submit
+    $('.btn-confirm').on('click', function(e){
+        if(confirm($(this).data('confirm'))){
+            if($(this).attr('formaction')){
+                $('#' + $(this).attr('form')).attr('action', $(this).attr('formaction'));
+            }
+            $('#' + $(this).attr('form')).submit();
+        } else {
+            return false;
+        }
+    });
+    
+    // Alert to save unsave data
+    {% if (form_target_id is not empty) %} 
+
+    var mz_form_submitting = false;
+    var mz_form_changed = false;
+
+    // Form submit
+    $('form[id="{{ form_target_id }}"]').on('submit', function(){
+        mz_form_submitting = true;
+    });
+
+    $('form[id="{{ form_target_id }}"] input, form[id="{{ form_target_id }}"] select').on('change', function(){
+        mz_form_changed = true;
+    });
+
+    // Alert unsaved data before to leave form
+    window.addEventListener('beforeunload', function(e){
+        if (mz_form_submitting || !mz_form_changed) {
+            return undefined;
+        }
+
+        var confirmationMessage = "{{ text_alert_unsaved_form }}";
+
+        (e || window.event).returnValue = confirmationMessage; //Gecko + IE
+        return confirmationMessage; //Gecko + Webkit, Safari, Chrome etc.
+    });
+    
+    {% endif %} 
+});
+
+</script>

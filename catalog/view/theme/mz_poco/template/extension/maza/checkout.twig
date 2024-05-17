@@ -1,0 +1,247 @@
+{{ header }}
+<div id="maza-checkout" class="container content pb-5">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      {% for breadcrumb in breadcrumbs|slice(0,-1) %}
+        <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+      {% endfor %}
+      <li class="breadcrumb-item active" aria-current="page">{{ breadcrumbs|last.text }}</li>
+    </ol>
+  </nav>
+  {% if attention %}
+    <div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ attention }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  {% endif %}
+  {% if success %}
+    <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  {% endif %}
+  {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  {% endif %}
+  <div class="row">{{ column_left }}
+    {% if column_left and column_right %}
+      {% set class = 'col-md-6' %}
+    {% elseif column_left or column_right %}
+      {% set class = 'col-md-9' %}
+    {% else %}
+      {% set class = 'col-md-12' %}
+    {% endif %}
+    <div id="content" class="{{ class }}">{{ content_top }}
+      <form id="form-checkout" method="post" onkeydown="return event.key != 'Enter';">
+        <div class="row">
+          <div class="col-lg-5 mb-5 mb-lg-0">
+            <div class="sticky-top">
+              {{ account }}
+              {% if logged %}{{ address }}{% endif %}
+              {{ payment_method }}
+              {{ shipping_method }}
+            </div>
+          </div>
+          <div class="col-lg-7 mb-5 mb-lg-0">
+            <div class="sticky-top">
+              <div class="cart-card mb-4">
+                {{ cart }} {{ total }} {{ module }}
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="input-comment">{{ text_comments }}</label>
+                <textarea class="form-control" id="input-comment" name="comment" rows="5">{{ comment }}</textarea>
+              </div>
+              <div style="display: none;" class="form-check">
+                <input type="checkbox" name="newsletter" value="1" class="form-check-input" id="input-newsletter" checked="checked">
+                <label class="form-check-label" for="input-newsletter">{{ entry_newsletter }}</label>
+              </div>
+              {% if text_account_agree %}
+                <div style="display: none;" class="form-check">
+                  {% if account_agree %}
+                    <input type="checkbox" name="account_agree" value="1" class="form-check-input" id="input-account-agree" checked="checked">
+                  {% else %}
+                    <input type="checkbox" name="account_agree" value="1" class="form-check-input" id="input-account-agree">
+                  {% endif %}
+                  <label class="form-check-label" for="input-account-agree">{{ text_account_agree }}</label>
+                </div>
+              {% endif %}
+              <script>$(function(){
+                $('input[name="account"]').on('change', function(e){
+                  if (e.target.value === 'register') {
+                    $('input[name="newsletter"]').parent().show();
+                    $('input[name="account_agree"]').parent().show();
+                  } else {
+                    $('input[name="newsletter"]').parent().hide();
+                    $('input[name="account_agree"]').parent().hide();
+                  }
+                });
+                if($('input[name="account"]:checked').val() === 'register'){
+                  $('input[name="newsletter"]').parent().show();
+                  $('input[name="account_agree"]').parent().show();
+                }
+              });</script>
+              {% if text_agree %}
+                <div class="form-check">
+                  {% if agree %}
+                    <input type="checkbox" name="agree" value="1" class="form-check-input" id="input-agree" checked="checked">
+                  {% else %}
+                    <input type="checkbox" name="agree" value="1" class="form-check-input" id="input-agree">
+                  {% endif %}
+                  <label class="form-check-label" for="input-agree">{{ text_agree }}</label>
+                </div>
+              {% endif %}
+              {{ captcha }}
+              <p class="{{ not captcha?'mt-3' }}">{{ text_field_required }}</p>
+              <div class="d-grid">
+                <button type="submit" id="button-save" class="btn btn-lg btn-primary">{{ button_continue }} <i class="fas fa-long-arrow-alt-right rtl-swap"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      {{ content_bottom }}</div>
+    {{ column_right }}</div>
+</div>
+<script type="text/javascript">
+// Address update
+$(document).on('change', 'input[name="postcode"], input[name="shipping[postcode]"], select[name="zone_id"], select[name="shipping[zone_id]"], select[name="address_id"], select[name="shipping[address_id]"], input[name="payment_address"], input[name="shipping_address"]', function(){
+  $.ajax({
+    url: 'index.php?route=extension/maza/checkout/address/update',
+    method: 'post',
+    data: $('#form-checkout').serialize(),
+    dataType: 'json',
+    success: function(json) {
+      if (json['redirect']) {
+        location = json['redirect'];
+      }
+
+      $('#payment-method').replaceWith($(json.payment_method));
+      $('#checkout-total').replaceWith($(json.total));
+
+      if (json['shipping_method']) {
+        $('#shipping-method').replaceWith($(json.shipping_method));
+      }
+    },
+    beforeSend: function() {
+      $('#button-save').prop('disabled', true).prepend('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>');
+    },
+    complete: function() {
+      $('#button-save').prop('disabled', false).children('.spinner-grow').remove();
+    },
+    error: function(xhr, ajaxOptions, thrownError) {
+        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+    }
+  });
+});
+
+// Payment method update
+$(document).on('change', 'input[name="payment_method"]', function(){
+  $.ajax({
+    url: 'index.php?route=extension/maza/checkout/payment_method/update',
+    method: 'post',
+    data: $('#form-checkout').serialize(),
+    dataType: 'json',
+    success: function(json) {
+      if (json['redirect']) {
+        location = json['redirect'];
+      }
+
+      $('#checkout-total').replaceWith($(json.total));
+
+      if (json['shipping_method']) {
+        $('#shipping-method').replaceWith($(json.shipping_method));
+      }
+    },
+    beforeSend: function() {
+      $('#button-save').prop('disabled', true).prepend('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>');
+    },
+    complete: function() {
+      $('#button-save').prop('disabled', false).children('.spinner-grow').remove();
+    },
+    error: function(xhr, ajaxOptions, thrownError) {
+        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+    }
+  });
+});
+
+// Shipping method update
+$(document).on('change', 'input[name="shipping_method"]', function(){
+  $.ajax({
+    url: 'index.php?route=extension/maza/checkout/shipping_method/update',
+    method: 'post',
+    data: $('#form-checkout').serialize(),
+    dataType: 'json',
+    success: function(json) {
+      if (json['redirect']) {
+        location = json['redirect'];
+      }
+
+      $('#checkout-total').replaceWith($(json.total));
+    },
+    beforeSend: function() {
+      $('#button-save').prop('disabled', true).prepend('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>');
+    },
+    complete: function() {
+      $('#button-save').prop('disabled', false).children('.spinner-grow').remove();
+    },
+    error: function(xhr, ajaxOptions, thrownError) {
+        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+    }
+  });
+});
+</script>
+<script>
+$('#button-save').on('click', function(e) {
+    e.preventDefault();
+    
+    $.ajax({
+        url: 'index.php?route=extension/maza/checkout/save',
+        type: 'post',
+        data: $('#form-checkout').serialize(),
+        dataType: 'json',
+        beforeSend: function() {
+            $('#button-save').prop('disabled', true).prepend('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>');
+        },
+        complete: function() {
+            $('#button-save').prop('disabled', false).children('.spinner-grow').remove();
+        },
+        success: function(json) {
+            $('.alert-dismissible, .invalid-feedback').remove();
+            $('input, select').removeClass('is-invalid');
+
+            if (json['redirect']) {
+                location = json['redirect'];
+            }
+            
+            if (json['error']) {
+                if (json['error']['warning']) {
+                    $('#form-checkout').prepend('<div class="alert alert-danger alert-dismissible">' + json['error']['warning'] + '<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+
+                    $('html, body').animate({ scrollTop: 0 }, 'slow');
+                }
+
+                for (i in json['error']) {
+                        var element = $('#input-payment-' + i.replaceAll('_', '-'));
+
+                        if (!element.length) {
+                          element = $('#input-' + i.replaceAll('_', '-'));
+                        }
+
+                        if ($(element).parent().hasClass('input-group')) {
+                                $(element).parent().after('<div class="invalid-feedback d-block">' + json['error'][i] + '</div>');
+                        } else {
+                                $(element).after('<div class="invalid-feedback d-block">' + json['error'][i] + '</div>');
+                        }
+                }
+
+                // Highlight any found errors
+                $('.invalid-feedback').siblings('input, select').addClass('is-invalid');
+            }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+    });
+});
+</script>
+{{ footer }}

@@ -1,0 +1,144 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- form -->
+  <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-mz-product-label" class="form-horizontal">
+    <div class="tab-content">
+      {# layout #}
+      <div class="tab-pane active" id="tab-mz-layout">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-position">{{ entry_position }}</label>
+              <div class="col-xs-9">
+                <select name="position" id="input-position" class="form-control">
+                {% for val in list_position %}
+                  {% if (position == val.id) %} 
+                  <option value="{{ val.id }}" selected="">{{ val.name }}</option>
+                  {% else %} 
+                  <option value="{{ val.id }}">{{ val.name }}</option>
+                  {% endif %}
+                {% endfor %} 
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_shape }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                {% for val in list_shape %} 
+                  {% if (shape == val.id) %}
+                  <input type="radio" name="shape" value="{{ val.id }}" id="input-shape-{{ val.id }}" checked>
+                  <label for="input-shape-{{ val.id }}" >{{ val.name }}</label>
+                  {% else %} 
+                  <input type="radio" name="shape" value="{{ val.id }}" id="input-shape-{{ val.id }}">
+                  <label for="input-shape-{{ val.id }}" >{{ val.name }}</label>
+                  {% endif %} 
+                {% endfor %} 
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_visibility }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                {% for val in list_visibility %} 
+                  {% if (visibility == val.id) %} 
+                  <input type="radio" name="visibility" value="{{ val.id }}" id="input-visibility-{{ val.id }}" checked>
+                  <label for="input-visibility-{{ val.id }}" >{{ val.name }}</label>
+                  {% else %} 
+                  <input type="radio" name="visibility" value="{{ val.id }}" id="input-visibility-{{ val.id }}">
+                  <label for="input-visibility-{{ val.id }}" >{{ val.name }}</label>
+                  {% endif %} 
+                {% endfor %} 
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-custom-class">{{ entry_custom_class }}</label>
+              <div class="col-xs-9">
+                <input type="text" name="custom_class" value="{{ custom_class }}" placeholder="{{ entry_custom_class }}" id="input-custom-class" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_product_page }}</div>
+          <div class="panel-body">
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-product-page-position">{{ entry_position }}</label>
+              <div class="col-xs-9">
+                <select name="product_page_position" id="input-product-page-position" class="form-control">
+                {% for val in list_position %}
+                  {% if (product_page_position == val.id) %} 
+                  <option value="{{ val.id }}" selected="">{{ val.name }}</option>
+                  {% else %} 
+                  <option value="{{ val.id }}">{{ val.name }}</option>
+                  {% endif %}
+                {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_visibility }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                {% for val in list_visibility %} 
+                  {% if (product_page_visibility == val.id) %} 
+                  <input type="radio" name="product_page_visibility" value="{{ val.id }}" id="input-product-page-visibility-{{ val.id }}" checked>
+                  <label for="input-product-page-visibility-{{ val.id }}" >{{ val.name }}</label>
+                  {% else %} 
+                  <input type="radio" name="product_page_visibility" value="{{ val.id }}" id="input-product-page-visibility-{{ val.id }}">
+                  <label for="input-product-page-visibility-{{ val.id }}" >{{ val.name }}</label>
+                  {% endif %} 
+                {% endfor %} 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# color #}
+      <div class="tab-pane" id="tab-mz-color">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-color-bg">{{ entry_color_bg }}</label>
+              <div class="col-xs-9">
+                <div class="mz-colorpicker">
+                  <input type="text" name="color_bg" value="{{ color_bg }}" placeholder="{{ entry_color_bg }}" id="input-color-bg" class="form-control" autocomplete="off" />
+                  <span class="mz-colorpicker-badge"></span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-color-text">{{ entry_color_text }}</label>
+              <div class="col-xs-9">
+                <div class="mz-colorpicker">
+                  <input type="text" name="color_text" value="{{ color_text }}" placeholder="{{ entry_color_text }}" id="input-color-text" class="form-control" autocomplete="off" />
+                  <span class="mz-colorpicker-badge"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</div>
+{{ mz_footer }}

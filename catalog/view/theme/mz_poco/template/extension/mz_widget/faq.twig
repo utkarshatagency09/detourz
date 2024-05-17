@@ -1,0 +1,33 @@
+{% if heading_title %}
+<h3 class="widget-title">{{ heading_title }}</h3>
+{% endif %}
+<div class="row accordion" {% if accordion %}id="mz-widget-faq-{{ mz_suffix }}"{% endif %}>
+  {% for key, panel in faq %}
+  <div class="{{ column }}">
+    <div class="accordion-item mb-3">
+      {% if accordion %}
+        <h5 id="mz-faq-label-{{ mz_suffix }}-{{ key }}" class="accordion-header">
+      {% else %}
+      <h5 class="accordion-header border-bottom-0">
+      {% endif %}
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" aria-expanded="{{ not key?'true':'false' }}" aria-controls="mz-faq-panel-{{ mz_suffix }}-{{ key }}" data-bs-target="#mz-faq-panel-{{ mz_suffix }}-{{ key }}">
+          {% if panel.icon_font %}
+          <i class="icon flex-shrink-0 {{ panel.icon_font }} me-2" {{ icon_width?'style="font-size: ' ~ icon_width ~ 'px"':'' }}></i>
+          {% elseif panel.icon_svg %}
+          <div class="icon flex-shrink-0 svg-icon me-2" style="{{ icon_width?'width:' ~ icon_width ~ 'px;' }}{{ icon_height?'height:' ~ icon_height ~ 'px;' }}">{{ panel.icon_svg }}</div>
+          {% elseif panel.icon_image %}
+          <img class="icon flex-shrink-0 me-2" src="{{ panel.icon_image }}" width="{{ panel.image_width }}" height="{{ panel.image_height }}"  />
+          {% endif %}
+          {{ panel.question }}
+        </button>
+      </h5>
+      {% if accordion %}
+      <div id="mz-faq-panel-{{ mz_suffix }}-{{ key }}" aria-labelledby="mz-faq-label-{{ mz_suffix }}-{{ key }}" class="accordion-collapse collapse" data-bs-parent="#mz-widget-faq-{{ mz_suffix }}">
+        <div class="accordion-body">{{ panel.answer }}</div>
+      </div>
+      {% else %}
+      <div class="accordion-body">{{ panel.answer }}</div>{% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>

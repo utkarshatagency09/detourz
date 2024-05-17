@@ -1,0 +1,28 @@
+{# {% verbatim %}{% if audios %}{% endverbatim %}
+<audio id="article-audio{{ mz_suffix }}" preload="none" controls width="750"
+               data-cast-title="Jazz Example"
+               data-cast-description="This is a description for audio only"
+               data-cast-poster="http://mediaelementjs.com/images/big_buck_bunny.jpg" data-playlist-thumbnail="http://mediaelementjs.com/images/big_buck_bunny.jpg" controls>
+  {% verbatim %}{% for audio in audios %}
+  <source src="{{ audio.url }}" title="{{ audio.title }}" data-playlist-thumbnail="http://mediaelementjs.com/images/big_buck_bunny.jpg">
+  {% endfor %}{% endverbatim %}
+Your browser does not support the audio element.
+</audio>
+<script>
+$(function(){
+  $('#article-audio{{ mz_suffix }}').mediaelementplayer({
+    pluginPath: 'https://cdnjs.com/libraries/mediaelement/',
+    shimScriptAccess: 'always',
+    features: ['prevtrack', 'playpause', 'nexttrack', 'current', 'progress', 'duration', 'volume', 'playlist', 'shuffle', 'loop', 'fullscreen'],
+  });
+});
+</script>
+{% verbatim %}{% endif %}{% endverbatim %} #}
+{% verbatim %}{% if audios %}
+{% for audio in audios %}
+<figure class="d-flex figure w-100 align-items-start p-3 mb-3 border bg-light">
+  <figcaption class="figure-caption mb-1"><i class="far fa-play-circle"></i> {{ audio.title }}</figcaption>
+  <audio src="{{ audio.url }}" title="{{ audio.title }}" class="mejs__player w-100" data-mejsoptions='{"pluginPath": "https://cdnjs.com/libraries/mediaelement/", "alwaysShowControls": "true"}' controls></audio>
+</figure>
+{% endfor %}
+{% endif %}{% endverbatim %}

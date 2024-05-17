@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<modification>
+    <name>Maza OpenCart Enhancement</name>
+    <code>maza_opencart_enhancement</code>
+    <version>1.0</version>
+    <author>TemplateMaza.com</author>
+    <link>https://pocotheme.com/</link>
+    <file path="admin/controller/catalog/{product,category,manufacturer,information}.php">
+      <operation>
+        <search><![CDATA[$this->validateForm()]]></search>
+        <add position="before"><![CDATA[$this->document->addSCript('view/javascript/maza/mz_common.js');]]></add>
+      </operation>
+    </file>
+
+    <file path="admin/controller/catalog/product.php">
+      <operation>
+        <search><![CDATA[$this->load->view('catalog/product_form']]></search>
+        <add position="before"><![CDATA[
+        $data['product_id'] = $this->request->get['product_id']??0;
+        ]]></add>
+      </operation>
+      <operation>
+        <search index="1"><![CDATA[$this->response->redirect($this->url->link('catalog/product']]></search>
+        <add position="replace"><![CDATA[//$this->response->redirect($this->url->link('catalog/product']]></add>
+      </operation>
+    </file>
+
+    <!-- open last used folder on start of file manager -->
+    <file path="admin/controller/common/filemanager.php">
+      <operation>
+        <search index="0"><![CDATA[if (isset($this->request->get['directory'])) {]]></search>
+        <add position="before"><![CDATA[
+      if (!isset($this->request->get['_home']) && !isset($this->request->get['directory']) && isset($this->session->data['image_manager_last_dir'])) {
+        $this->request->get['directory'] = $this->session->data['image_manager_last_dir'];
+      } elseif (isset($this->request->get['directory'])) {
+        $this->session->data['image_manager_last_dir'] = $this->request->get['directory'];
+      } else {
+        unset($this->session->data['image_manager_last_dir']);
+      }
+        ]]></add>
+      </operation>
+      <operation>
+        <search index="0"><![CDATA[$data['parent'] = ]]></search>
+        <add position="after"><![CDATA[
+        $data['parent'] .= '&_home';
+
+        // Home
+        $url = '';
+
+        if (isset($this->request->get['target'])) {
+          $url .= '&target=' . $this->request->get['target'];
+        }
+
+        if (isset($this->request->get['mz_callback_func'])) {
+          $url .= '&mz_callback_func=' . $this->request->get['mz_callback_func'];
+        }
+                
+        if (isset($this->request->get['thumb'])) {
+          $url .= '&thumb=' . $this->request->get['thumb'];
+        }
+
+        $data['mz_home'] = $this->url->link('common/filemanager', 'user_token=' . $this->session->data['user_token'] . $url . '&_home', true);
+        ]]></add>
+      </operation>
+    </file>
+    <file path="admin/view/template/common/filemanager.twig">
+      <operation>
+        <search><![CDATA[<a href="{{ parent }}"]]></search>
+        <add position="replace"><![CDATA[<a href="{{ mz_home }}" id="button-mz-home" class="btn btn-default"><i class="fa fa-home"></i></a> <a href="{{ parent }}"]]></add>
+      </operation>
+      <operation>
+        <search><![CDATA[$('#button-parent').on('click']]></search>
+        <add position="before"><![CDATA[
+$('#button-mz-home').on('click', function(e) {
+	e.preventDefault();
+
+	$('#modal-image').load($(this).attr('href'));
+});
+        ]]></add>
+      </operation>
+    </file>
+
+    <!-- Upload bulk images in products -->
+    <file path="admin/view/template/catalog/product_form.twig">
+      <operation>
+        <search><![CDATA[onclick="addImage();" data-toggle="tooltip"]]></search>
+        <add position="replace"><![CDATA[data-toggle="mz-multi-image" data-callback="addImage"]]></add>
+      </operation>
+      <operation>
+        <search><![CDATA[function addImage()]]></search>
+        <add position="replace"><![CDATA[function addImage(input, thumb)]]></add>
+      </operation>
+      <operation>
+        <search><![CDATA[src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a><input type="hidden" name="product_image[' + image_row + '][image]" value=""]]></search>
+        <add position="replace"><![CDATA[src="' + thumb + '" alt="" title="" data-placeholder="{{ placeholder }}" /></a><input type="hidden" name="product_image[' + image_row + '][image]" value="' + input + '"]]></add>
+      </operation>
+    </file>
+
+    <!-- Autocomplete attribute -->
+    <file path="admin/view/template/catalog/product_form.twig">
+      <operation>
+        <search><![CDATA[<textarea name="product_attribute[{{ attribute_row }}][product_attribute_description][{{ language.language_id }}][text]" rows="5" placeholder="{{ entry_text }}" class="form-control">{{ product_attribute.product_attribute_description[language.language_id] ? product_attribute.product_attribute_description[language.language_id].text }}</textarea>]]></search>
+        <add position="replace"><![CDATA[<input type="text" name="product_attribute[{{ attribute_row }}][product_attribute_description][{{ language.language_id }}][text]" value="{{ product_attribute.product_attribute_description[language.language_id] ? product_attribute.product_attribute_description[language.language_id].text }}" data-attribute_id={{ product_attribute.attribute_id }} data-language_id="{{ language.language_id }}" placeholder="{{ entry_text }}" class="form-control" />]]></add>
+      </operation>
+      <operation>
+        <search><![CDATA[$('input[name=\'manufacturer\']').autocomplete({]]></search>
+        <add position="before"><![CDATA[
+  // Attribute value
+  $('input[name^=product_attribute]').autocomplete({
+	  'source': function(request, response) {
+		  $.ajax({
+			  url: 'index.php?route=extension/maza/catalog/autocomplete/attribute_value&user_token={{ user_token }}&attribute_id=' + $(this).data('attribute_id') + '&filter_language_id=' + $(this).data('language_id') + '&filter_name=' + encodeURIComponent(request),
+			  dataType: 'json',
+			  success: function(json) {
+				  response($.map(json, function(item) {
+					  return {
+						  label: item['name'],
+              value: item['name'],
+					  }
+				  }));
+			  }
+		  });
+	  },
+	  'select': function(item) {
+		  $(this).val(item['label']);
+	  }
+  });
+        ]]></add>
+      </operation>
+    </file>
+
+    <!-- New product status -->
+  <file path="admin/language/en-gb/catalog/product.php">
+    <operation>
+      <search><![CDATA[<?php]]></search>
+      <add position="after"><![CDATA[
+$_['mz_text_unlisted']	         = 'Unlisted';
+      ]]></add>
+    </operation>
+  </file>
+  <file path="admin/view/template/catalog/product_form.twig">
+    <operation>
+      <search index="0"><![CDATA[<option value="1" selected="selected">{{ text_enabled }}</option>]]></search>
+      <add position="after"><![CDATA[<option value="2">{{ mz_text_unlisted }}</option>]]></add>
+    </operation>
+    <operation>
+      <search index="0"><![CDATA[<option value="1">{{ text_enabled }}</option>]]></search>
+      <add position="after"><![CDATA[<option value="2">{{ mz_text_unlisted }}</option>]]></add>
+    </operation>
+    <operation>
+      <search index="0"><![CDATA[{% if status %}]]></search>
+      <add position="replace"><![CDATA[
+      {% if status == '2' %}
+        <option value="1">{{ text_enabled }}</option>
+        <option value="2" selected="selected">{{ mz_text_unlisted }}</option>
+        <option value="0">{{ text_disabled }}</option>
+      {% elseif status %}
+      ]]></add>
+    </operation>
+  </file>
+  <file path="admin/view/template/catalog/product_list.twig">
+    <operation>
+      <search index="0"><![CDATA[{% if filter_status == '0' %}]]></search>
+      <add position="before"><![CDATA[
+      {% if filter_status == '2' %}
+      <option value="2" selected="selected">{{ mz_text_unlisted }}</option>
+      {% else %}
+      <option value="2">{{ mz_text_unlisted }}</option>
+      {% endif %}
+      ]]></add>
+    </operation>
+  </file>
+  <file path="admin/controller/catalog/product.php">
+    <operation>
+      <search><![CDATA[$data['products'][] = array(]]></search>
+      <add position="before"><![CDATA[
+      if ($result['status'] == '2') {
+        $status = $this->language->get('mz_text_unlisted');
+      } elseif ($result['status'] == '1'){
+        $status = $this->language->get('text_enabled');
+      } else {
+        $status = $this->language->get('text_disabled');
+      }
+      ]]></add>
+    </operation>
+    <operation>
+      <search><![CDATA[$result['status'] ? $this->language->get('text_enabled') : $this->language->get('text_disabled')]]></search>
+      <add position="replace"><![CDATA[$status]]></add>
+    </operation>
+  </file>
+  <file path="catalog/model/catalog/product.php|system/library/cart/cart.php">
+    <operation>
+      <search><![CDATA[AND p.status = '1']]></search>
+      <add position="replace"><![CDATA[AND p.status <> '0']]></add>
+    </operation>
+  </file>
+
+  <file path="admin/model/catalog/product.php">
+    <operation>
+      <search><![CDATA[AND pd.name LIKE '" . $this->db->escape($data['filter_name']) . "%]]></search>
+      <add position="replace"><![CDATA[AND pd.name LIKE '%" . $this->db->escape($data['filter_name']) . "%]]></add>
+    </operation>
+  </file>
+
+  <!-- Generate seo url -->
+  <file path="admin/view/template/catalog/product_form.twig">
+    <operation>
+      <search trim='true'><![CDATA[placeholder="{{ entry_keyword }}" class="form-control"/>]]></search>
+      <add position="replace"><![CDATA[placeholder="{{ entry_keyword }}" class="form-control"/> <div class="input-group-btn"><button class="btn btn-default" type="button" onclick="$(this).parent().prev().val(mz_createSeoUrl($('#input-name{{ language.language_id }}').val()))"><i class="fa fa-gavel" aria-hidden="true"></i></button></div>]]></add>
+    </operation>
+  </file>
+  <file path="admin/view/template/catalog/category_form.twig">
+    <operation>
+      <search trim='true'><![CDATA[placeholder="{{ entry_keyword }}" class="form-control" />]]></search>
+      <add position="replace"><![CDATA[placeholder="{{ entry_keyword }}" class="form-control" /> <div class="input-group-btn"><button class="btn btn-default" type="button" onclick="$(this).parent().prev().val(mz_createSeoUrl($('#input-name{{ language.language_id }}').val()))"><i class="fa fa-gavel" aria-hidden="true"></i></button></div>]]></add>
+    </operation>
+  </file>
+  <file path="admin/view/template/catalog/manufacturer_form.twig">
+    <operation>
+      <search trim='true'><![CDATA[placeholder="{{ entry_keyword }}" class="form-control" />]]></search>
+      <add position="replace"><![CDATA[placeholder="{{ entry_keyword }}" class="form-control" /> <div class="input-group-btn"><button class="btn btn-default" type="button" onclick="$(this).parent().prev().val(mz_createSeoUrl($('#input-name').val()))"><i class="fa fa-gavel" aria-hidden="true"></i></button></div>]]></add>
+    </operation>
+  </file>
+  <file path="admin/view/template/catalog/information_form.twig">
+    <operation>
+      <search trim='true'><![CDATA[placeholder="{{ entry_keyword }}" class="form-control" />]]></search>
+      <add position="replace"><![CDATA[placeholder="{{ entry_keyword }}" class="form-control" /> <div class="input-group-btn"><button class="btn btn-default" type="button" onclick="$(this).parent().prev().val(mz_createSeoUrl($('#input-title{{ language.language_id }}').val()))"><i class="fa fa-gavel" aria-hidden="true"></i></button></div>]]></add>
+    </operation>
+  </file>
+
+  <!-- Login as customer as well when admin login to admin panel -->
+  <file path="admin/controller/common/login.php">
+    <operation>
+      <search trim='true'><![CDATA[$this->session->data['user_token'] = token(32);]]></search>
+      <add position="after"><![CDATA[
+      // Mz code
+      $this->load->model('user/user');
+			$this->load->model('customer/customer');
+
+      $user_info = $this->model_user_user->getUser($this->user->getId());
+			$customer_info = $this->model_customer_customer->getCustomerByEmail($user_info['email']);
+
+			if ($customer_info) {
+				$this->session->data['customer_id'] = $customer_info['customer_id'];
+			}
+      // - Mz code
+      ]]></add>
+    </operation>
+  </file>
+</modification>

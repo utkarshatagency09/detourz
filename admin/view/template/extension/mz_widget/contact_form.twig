@@ -1,0 +1,159 @@
+<!-- Form -->
+<form id="setting-widget-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#tab-widget-general" data-toggle="tab">{{ tab_general }}</a></li>
+    <li><a href="#tab-widget-field-text" data-toggle="tab">{{ tab_text }}</a></li>
+    <li><a href="#tab-widget-layout" data-toggle="tab">{{ tab_layout }}</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="tab-widget-general" class="tab-pane active">
+      <!--widget status-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-status">{{ entry_status }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_status) %} 
+            <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" checked>
+            <label for="input-widget-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled">
+            <label for="input-widget-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" >
+            <label for="input-widget-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled" checked>
+            <label for="input-widget-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+
+      {#title#}
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-widget-title">{{ entry_title }}</label>
+        <div class="col-xs-9">
+        {% for language in languages %} 
+          <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+            <input class="form-control" type="text" name="widget_title[{{ language['language_id'] }}]" value="{{ widget_title[language['language_id']] is defined?widget_title[language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+          </div>
+        {% endfor %} 
+        </div>
+      </div>
+        
+      <!--widget status-->
+      {# <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-captcha-status">{{ entry_captcha }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_captcha_status) %} 
+            <input type="radio" name="widget_captcha_status" value="1" id="input-widget-captcha-status-enabled" checked>
+            <label for="input-widget-captcha-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_captcha_status" value="0" id="input-widget-captcha-status-disabled">
+            <label for="input-widget-captcha-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_captcha_status" value="1" id="input-widget-captcha-status-enabled" >
+            <label for="input-widget-captcha-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_captcha_status" value="0" id="input-widget-captcha-status-disabled" checked>
+            <label for="input-widget-captcha-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div> #}
+    </div>
+    <div id="tab-widget-field-text" class="tab-pane">
+      <!-- Your name -->
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_name }}</label>
+        <div class="col-xs-9">
+          {% for language in languages %} 
+            <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+              <input class="form-control" type="text" name="widget_field_name_text[{{ language['language_id'] }}]" value="{{ widget_field_name_text[language['language_id']] is defined?widget_field_name_text[language['language_id']]:'' }}" placeholder="{{ entry_name }}" >
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+          
+      <!-- Your email -->
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_email }}</label>
+        <div class="col-xs-9">
+          {% for language in languages %} 
+            <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+              <input class="form-control" type="text" name="widget_field_email_text[{{ language['language_id'] }}]" value="{{ widget_field_email_text[language['language_id']] is defined?widget_field_email_text[language['language_id']]:'' }}" placeholder="{{ entry_email }}" >
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+          
+      <!-- Subject -->
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_subject }}</label>
+        <div class="col-xs-9">
+          {% for language in languages %} 
+            <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+              <input class="form-control" type="text" name="widget_field_subject_text[{{ language['language_id'] }}]" value="{{ widget_field_subject_text[language['language_id']] is defined?widget_field_subject_text[language['language_id']]:'' }}" placeholder="{{ entry_subject }}" >
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+          
+      <!-- Message -->
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_message }}</label>
+        <div class="col-xs-9">
+          {% for language in languages %} 
+            <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+              <input class="form-control" type="text" name="widget_field_message_text[{{ language['language_id'] }}]" value="{{ widget_field_message_text[language['language_id']] is defined?widget_field_message_text[language['language_id']]:'' }}" placeholder="{{ entry_message }}" >
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+        
+      <!-- Submit -->
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_submit }}</label>
+        <div class="col-xs-9">
+          {% for language in languages %} 
+            <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+              <input class="form-control" type="text" name="widget_field_submit_text[{{ language['language_id'] }}]" value="{{ widget_field_submit_text[language['language_id']] is defined?widget_field_submit_text[language['language_id']]:'' }}" placeholder="{{ entry_submit }}" >
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div id="tab-widget-layout" class="tab-pane">
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_size }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% for size in sizes %} 
+              {% if (widget_size == size['code']) %} 
+              <input type="radio" name="widget_size" value="{{ size['code'] }}" id="input-setting-widget-size-{{ size['code'] }}" checked>
+              <label for="input-setting-widget-size-{{ size['code'] }}" >{{ size['text'] }}</label>
+              {% else %} 
+              <input type="radio" name="widget_size" value="{{ size['code'] }}" id="input-setting-widget-size-{{ size['code'] }}">
+              <label for="input-setting-widget-size-{{ size['code'] }}" >{{ size['text'] }}</label>
+              {% endif %} 
+            {% endfor %} 
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-widget-color">{{ entry_color }}</label>
+        <div class="col-xs-9">
+          <select name="widget_color" id="input-setting-widget-color" class="form-control">
+            {% for color in colors %} 
+              {% if (widget_color == color['code']) %}
+              <option value="{{ color['code'] }}" selected="">{{ color['text'] }}</option>
+              {% else %} 
+              <option value="{{ color['code'] }}">{{ color['text'] }}</option>
+              {% endif %} 
+            {% endfor %} 
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+      
+</form>

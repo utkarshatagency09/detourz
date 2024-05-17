@@ -1,0 +1,96 @@
+%caret{
+    position: absolute;
+    /*top: .8em;*/
+}
+
+.dropdown-toggle{
+    cursor: pointer;
+}
+
+.navbar {
+    .dropdown-toggle{
+        &::after{
+            @extend %caret;
+            @include rtl-prop(right, $dropdown-item-padding-x)
+        }
+        &::before{
+            @extend %caret;
+            @include rtl-prop(left, $dropdown-item-padding-x)
+        }
+    }
+}
+
+
+.dropdown-menu {
+    font-size: 1em; // Redeclare because nesting can cause inheritance issues
+    max-height: 90vh; // Fixed oveflow problem in screen 
+    max-width: 100vw;
+    overflow-y: auto !important;
+
+    &-striped{
+        & > .dropdown-item:nth-child(even) {
+            background: $gray-100;
+        }
+    }
+}
+.navbar {
+    .dropdown-menu {
+        max-height: none;
+        box-shadow: none;
+    }
+}
+
+// Fix to display sub menu in navbar
+.navbar {
+    .dropdown-menu:not(.mega-menu-content) {
+        overflow: visible !important;
+    }
+}
+
+
+// submenu
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-item.showmore:not(.active){
+    color: $text-muted;
+}
+
+// Fix the overlay problem with sticky elements outside the header
+.header .dropdown-menu{
+    z-index: $zindex-fixed;
+}
+
+// Dropdown design entry
+.design-dropdown {
+    .dropdown-toggle{
+        display: block !important; // Override display flex for icon top
+
+        &.icon-top.both .icon{
+            display: block;
+        }
+        &.icon-left.both .icon{
+            @include rtl-prop(margin-right, map-get($spacers, 1));
+        }
+    }
+}
+
+// Dropdown in expanded navbar
+.navbar-expand {
+    @each $breakpoint in map-keys($grid-breakpoints) {
+        $next: breakpoint-next($breakpoint, $grid-breakpoints);
+        $infix: breakpoint-infix($next, $grid-breakpoints);
+    
+        &#{$infix} {
+            @include media-breakpoint-up($next) {
+                .dropdown-menu{
+                    box-shadow: $dropdown-box-shadow;
+                    animation-duration: 0.3s;
+                    animation-fill-mode: both;
+                    animation-name: slideIn;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,73 @@
+.product-label{
+    display: inline-flex;
+    flex-direction: column;
+    position: absolute;
+    z-index: 1;
+    padding: $product-label-gutter;
+
+    // Label
+    & > div{
+        background-color: $product-label-color;
+        color: color-contrast($product-label-color);
+        font-size: $product-label-font-size;
+        font-weight: $headings-font-weight;
+        line-height: 1;
+        margin-bottom: $product-label-margin-bottom;
+        @include border-radius();
+
+        &:last-child{
+            margin-bottom: 0;
+        }
+
+        &.square{
+            padding: $product-label-shape-square-padding;
+        }
+
+        &.circle{
+            padding: $product-label-shape-circle-padding;
+            border-radius: mz-spacer(1000);
+
+            &:after {
+                content: "";
+                display: inline-block;
+                padding-bottom: 100%;
+                vertical-align: middle;
+            }
+        }
+
+        &.hover{
+            display: none;
+        }
+    }
+
+    // position
+    &.top_left, &.top_right {
+        top: 0;
+    }
+    &.bottom_left, &.bottom_right {
+        bottom: 0;
+    }
+    &.top_left, &.bottom_left {
+        @include rtl-prop(left, 0);
+        align-items: rtl-value(flex-start, flex-end);
+    }
+    &.top_right, &.bottom_right {
+        @include rtl-prop(right, 0);
+        align-items: rtl-value(flex-end, flex-start);
+    }
+    &.center {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 0;
+        align-items: center;
+        text-align: center;
+    }
+}
+
+// Show label on hover
+.product-thumb, .content-image{
+    &:hover .product-label .hover{
+        display: block;
+    }
+}

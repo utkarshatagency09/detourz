@@ -1,0 +1,25 @@
+// Content skins
+@if($active_skin_code == 'megastore-1'){
+    @import "skins/content/megastore-1/style";
+}
+@elseif($active_skin_code == 'megastore-2'){
+    @import "skins/content/megastore-2/style";
+}
+@elseif($active_skin_code == 'megastore-3'){
+    @import "skins/content/megastore-3/style";
+}
+@elseif($active_skin_code == 'megastore-4'){
+    @import "skins/content/megastore-4/style";
+}
+@elseif($active_skin_code == 'megastore-5'){
+    @import "skins/content/megastore-5/style";
+}
+@elseif($active_skin_code == 'megastore-6'){
+    @import "skins/content/megastore-6/style";
+}
+@elseif($active_skin_code == 'megastore-7'){
+    @import "skins/content/megastore-7/style";
+}
+@elseif($active_skin_code == 'minimal-1'){
+    @import "skins/content/minimal-1/style";
+}

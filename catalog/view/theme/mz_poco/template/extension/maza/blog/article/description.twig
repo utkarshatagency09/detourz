@@ -1,0 +1,5 @@
+{% if collapsed %}
+<div class="description text-collapsed" data-line="{{ collapsed }}" data-expandOnly="1" data-showtext="<i class='fas fa-angle-down'></i> {% verbatim %}{{ text_showmore }}{% endverbatim %}" data-hidetext="<i class='fas fa-angle-up'></i> {% verbatim %}{{ text_showless }}{% endverbatim %}">{% verbatim %}{{ description }}{% endverbatim %}</div>
+{% else %}
+{% verbatim %}<div class="description">{{ description }}</div>{% endverbatim %}
+{% endif %}

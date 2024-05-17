@@ -1,0 +1,27 @@
+// Header
+$header-font-family: $headings-font-family;
+
+$top-header-font-size: $font-size-sm;
+$top-header-font-color: $gray-600;
+
+$main-navigation-bg-color: $primary;
+$main-navigation-text-color: color-contrast($main-navigation-bg-color);
+
+// Cart
+$widget-cart-title-font-size: 1.125em;
+$widget-cart-title-color: $secondary;
+$widget-cart-icon-size: 1.875em;
+$widget-cart-icon-color: $secondary;
+$widget-cart-total-color: $primary;
+$widget-cart-total-padding: .928em .6em;
+
+// Search
+$widget-search-padding-x: mz-spacer(15);
+$widget-search-padding-y: $widget-search-padding-x;
+$widget-search-category-color: transparent;
+$widget-search-button-color: $primary;
+$widget-search-button-radius: mz-spacer(1000);
+$widget-search-button-font-size: 0.75em;
+$widget-search-input-font-size: $widget-search-button-font-size;
+$widget-search-input-font-color: $gray-600;
+$widget-search-dropdown-caret: '\f107';

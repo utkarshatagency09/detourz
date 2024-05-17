@@ -1,0 +1,27 @@
+.entry-design{
+    a{
+        text-decoration: none;
+    }
+}
+.module-title{
+    margin-bottom: $module-title-margin-bottom;
+    font-size: $module-title-font-size;
+    @include breakpoint-font-size($module-title-font-size);
+    font-weight: $module-title-font-weight;
+}
+.widget, .design{
+    &-title{
+        margin-bottom: $spacer;
+    }
+}
+
+.rating{
+    .fas, .far{
+        color: $product-rating-color;
+        transform: rtl-value(none, scaleX(-1));
+    }
+    .far{
+        color: $gray-500;
+    }
+}
+

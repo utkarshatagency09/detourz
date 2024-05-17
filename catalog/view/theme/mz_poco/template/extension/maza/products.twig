@@ -1,0 +1,13 @@
+{# 
+Here is a file location of all products component
+
+## Find All component of products page
+- template/product/common/*
+
+#}
+{{ header }}
+{% if mz_component %}
+<script>$('body').prepend('{{ mz_component|e("js") }}');</script>
+{% endif %}
+<div id="extension-maza-products" class="content">{{ mz_content }}</div>
+{{ footer }}

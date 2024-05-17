@@ -1,0 +1,5 @@
+<div data-toggle="spinner" class="input-group flex-nowrap input-group-{{ size }}">
+  <button class="btn btn-{{ outline?'outline-' }}{{ color }}" data-spinner="down" data-min="{% verbatim %}{{ minimum }}{% endverbatim %}" type="button" aria-label="Decrease quantity"><i class="fas fa-minus-circle"></i></button>
+  <input type="number" name="quantity" value="{% verbatim %}{{ minimum }}{% endverbatim %}" step="1" min="{% verbatim %}{{ minimum }}{% endverbatim %}" aria-label="{% verbatim %}{{ entry_qty }}{% endverbatim %}" class="form-control text-center border-{{ color }} remove-spin-button" />
+  <button class="btn btn-{{ outline?'outline-' }}{{ color }}" data-spinner="up" data-max="{% verbatim %}{{ quantity }}{% endverbatim %}" type="button" aria-label="Increase quantity"><i class="fas fa-plus-circle"></i></button>
+</div>

@@ -1,0 +1,140 @@
+<!-- Form -->
+<form id="setting-content-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <!--content status-->
+  <div class="form-group">
+    <label class="col-sm-3 control-label" for="input-setting-content-status">{{ entry_status }}</label>
+    <div class="col-sm-9">
+      <div class="mz-switch-field">
+        {% if (content_status) %} 
+        <input type="radio" name="content_status" value="1" id="input-setting-content-status-enabled" checked>
+        <label for="input-setting-content-status-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="content_status" value="0" id="input-setting-content-status-disabled">
+        <label for="input-setting-content-status-disabled">{{ text_disabled }}</label>
+        {% else %} 
+        <input type="radio" name="content_status" value="1" id="input-setting-content-status-enabled" >
+        <label for="input-setting-content-status-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="content_status" value="0" id="input-setting-content-status-disabled" checked>
+        <label for="input-setting-content-status-disabled" >{{ text_disabled }}</label>
+        {% endif %} 
+      </div>
+    </div>
+  </div>
+
+  <!--content_additional_image_status-->
+  <div class="form-group">
+    <label class="col-xs-3 control-label">{{ entry_additional_image }}</label>
+    <div class="col-xs-9">
+      <div class="mz-switch-field">
+        {% if (content_additional_image_status) %} 
+        <input type="radio" name="content_additional_image_status" value="1" id="input-content-additional-image-enabled" checked>
+        <label for="input-content-additional-image-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="content_additional_image_status" value="0" id="input-content-additional-image-disabled">
+        <label for="input-content-additional-image-disabled">{{ text_disabled }}</label>
+        {% else %}
+        <input type="radio" name="content_additional_image_status" value="1" id="input-content-additional-image-enabled" >
+        <label for="input-content-additional-image-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="content_additional_image_status" value="0" id="input-content-additional-image-disabled" checked>
+        <label for="input-content-additional-image-disabled" >{{ text_disabled }}</label>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- additional Image position -->
+  <div class="form-group">
+    <label class="col-xs-3 control-label">{{ entry_additional_image_position }}</label>
+    <div class="col-xs-9">
+      <div class="mz-switch-field">
+        {% for additional_image_position in additional_image_positions %} 
+          {% if (content_additional_image_position == additional_image_position['code']) %} 
+          <input type="radio" name="content_additional_image_position" value="{{ additional_image_position['code'] }}" id="input-additional-image-position-{{ additional_image_position['code'] }}" checked>
+          <label for="input-additional-image-position-{{ additional_image_position['code'] }}" >{{ additional_image_position['text'] }}</label>
+          {% else %} 
+          <input type="radio" name="content_additional_image_position" value="{{ additional_image_position['code'] }}" id="input-additional-image-position-{{ additional_image_position['code'] }}">
+          <label for="input-additional-image-position-{{ additional_image_position['code'] }}" >{{ additional_image_position['text'] }}</label>
+          {% endif %} 
+        {% endfor %} 
+      </div>
+    </div>
+  </div>
+
+  <!--content_video_status-->
+  <div class="form-group">
+    <label class="col-xs-3 control-label">{{ entry_video }}</label>
+    <div class="col-xs-9">
+      <div class="mz-switch-field">
+        {% if (content_video_status) %} 
+        <input type="radio" name="content_video_status" value="1" id="input-content-video-enabled" checked>
+        <label for="input-content-video-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="content_video_status" value="0" id="input-content-video-disabled">
+        <label for="input-content-video-disabled">{{ text_disabled }}</label>
+        {% else %}
+        <input type="radio" name="content_video_status" value="1" id="input-content-video-enabled" >
+        <label for="input-content-video-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="content_video_status" value="0" id="input-content-video-disabled" checked>
+        <label for="input-content-video-disabled" >{{ text_disabled }}</label>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- video position-->
+  <div class="form-group">
+    <label class="col-sm-3 control-label">{{ entry_video_position }}</label>
+    <div class="col-sm-9">
+      <div class="mz-switch-field">
+        {% if (content_video_position == 'start') %} 
+        <input type="radio" name="content_video_position" value="start" id="input-setting-content-video-position-start" checked>
+        <label for="input-setting-content-video-position-start" >{{ text_start }}</label>
+        <input type="radio" name="content_video_position" value="end" id="input-setting-content-video-position-end">
+        <label for="input-setting-content-video-position-end">{{ text_end }}</label>
+        {% else %} 
+        <input type="radio" name="content_video_position" value="start" id="input-setting-content-video-position-start" >
+        <label for="input-setting-content-video-position-start">{{ text_start }}</label>
+        <input type="radio" name="content_video_position" value="end" id="input-setting-content-video-position-end" checked>
+        <label for="input-setting-content-video-position-end" >{{ text_end }}</label>
+        {% endif %} 
+      </div>
+    </div>
+  </div>
+
+  <!--content wishlist status-->
+  <div class="form-group">
+    <label class="col-sm-3 control-label">{{ entry_wishlist }}</label>
+    <div class="col-sm-9">
+      <div class="mz-switch-field">
+        {% if (content_wishlist_status) %} 
+        <input type="radio" name="content_wishlist_status" value="1" id="input-setting-content-wishlist-status-enabled" checked>
+        <label for="input-setting-content-wishlist-status-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="content_wishlist_status" value="0" id="input-setting-content-wishlist-status-disabled">
+        <label for="input-setting-content-wishlist-status-disabled">{{ text_disabled }}</label>
+        {% else %} 
+        <input type="radio" name="content_wishlist_status" value="1" id="input-setting-content-wishlist-status-enabled" >
+        <label for="input-setting-content-wishlist-status-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="content_wishlist_status" value="0" id="input-setting-content-wishlist-status-disabled" checked>
+        <label for="input-setting-content-wishlist-status-disabled" >{{ text_disabled }}</label>
+        {% endif %} 
+      </div>
+    </div>
+  </div>
+
+  <!--content audio status-->
+  <div class="form-group">
+    <label class="col-xs-3 control-label">{{ entry_audio }}</label>
+    <div class="col-xs-9">
+      <div class="mz-switch-field">
+        {% if (content_audio_status) %} 
+        <input type="radio" name="content_audio_status" value="1" id="input-content-audio-enabled" checked>
+        <label for="input-content-audio-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="content_audio_status" value="0" id="input-content-audio-disabled">
+        <label for="input-content-audio-disabled">{{ text_disabled }}</label>
+        {% else %}
+        <input type="radio" name="content_audio_status" value="1" id="input-content-audio-enabled" >
+        <label for="input-content-audio-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="content_audio_status" value="0" id="input-content-audio-disabled" checked>
+        <label for="input-content-audio-disabled" >{{ text_disabled }}</label>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</form>

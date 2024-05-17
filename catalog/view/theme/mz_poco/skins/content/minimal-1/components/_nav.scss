@@ -1,0 +1,79 @@
+.nav-tabs{
+    overflow: visible;
+    margin-bottom: $nav-tab-margin-bottom;
+    border: none;
+    
+    .nav-link{
+        color: $nav-tab-color;
+        border: none;
+        font-weight: 600;
+        text-transform: uppercase;
+        position: relative;
+        font-family: $headings-font-family;
+        font-size: $nav-tab-font-size;
+        
+        &.active, &.show, &:hover{
+            color: $nav-tab-hover-color;
+            text-decoration: underline;
+        }
+    }
+}
+
+.nav-pills{
+    &.custom-pills-left, &.custom-pills-right{
+        flex-direction: column;
+        padding-left: 0;
+        padding-right: 0;
+        
+        
+        .nav-link{
+            padding: mz-spacer(12) 0;
+    
+            &.active{
+                color: $secondary;
+                background-color: transparent;
+                font-weight: $headings-font-weight;
+            }
+        }
+    }
+    &.custom-pills-left{
+        @include rtl-prop(border-right, $border-width solid $border-color);
+
+        .nav-link{
+            @include rtl-prop(padding-right, $spacer);
+
+            &.active{
+                @include rtl-prop(border-right, $border-width solid $secondary);
+                @include rtl-prop(margin-right, -$border-width);
+                @include border-end-radius(0);
+            }
+        }
+    }
+    &.custom-pills-right{
+        @include rtl-prop(border-left, $border-width solid $border-color);
+
+        .nav-link{
+            @include rtl-prop(padding-left, $spacer);
+
+            &.active{
+                @include rtl-prop(border-left, $border-width solid $secondary);
+                @include rtl-prop(margin-left, -$border-width);
+                @include border-start-radius(0);
+            }
+        }
+    }
+}
+
+// Product
+#product-product {
+    .design-tabs {
+        .nav-item {
+            &:first-child .nav-link{
+                @include rtl-prop(padding-left, 0 !important);
+            }
+            &:last-child .nav-link{
+                @include rtl-prop(padding-right, 0 !important);
+            }
+        }
+    }
+}

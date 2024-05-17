@@ -1,0 +1,445 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- Form -->
+  <form action="{{ action }}" class="form-horizontal" enctype="multipart/form-data" id="form-mz-filter" method="post">
+    <div class="tab-content">
+        
+      <!--General-->
+      <div id="tab-mz-general" class="tab-pane fade in active">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <!--Name-->
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-name">{{ entry_name }}</label>
+              <div class="col-xs-9">
+              {% for language in languages %} 
+                <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                  <input class="form-control" type="text" name="filter_description[{{ language['language_id'] }}][name]" value="{{ filter_description[language['language_id']]['name'] is defined?filter_description[language['language_id']]['name']:'' }}" placeholder="{{ entry_name }}" >
+                  {% if (err_name[language['language_id']] is defined) %} 
+                    <div class="text-danger">{{ err_name[language['language_id']] }}</div>
+                  {% endif %} 
+                </div>
+              {% endfor %} 
+              </div>
+            </div>
+            
+            <!--status-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-status">{{ entry_status }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (status) %} 
+                  <input type="radio" name="status" value="1" id="input-status-enabled" checked>
+                  <label for="input-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="status" value="0" id="input-status-disabled">
+                  <label for="input-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="status" value="1" id="input-status-enabled" >
+                  <label for="input-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="status" value="0" id="input-status-disabled" checked>
+                  <label for="input-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+            
+            <!--sort order-->
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-sort-order">{{ entry_sort_order }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-sort-order" placeholder="{{ entry_sort_order }}" type="number" min="0" name="sort_order" value="{{ sort_order }}" >
+              </div>
+            </div>
+            
+            <!--Filter language id-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-mz-filter-language-id"><span data-toggle='tooltip' title='{{ help_filter_language }}'>{{ entry_filter_language }}</span></label>
+              <div class="col-xs-9">
+                <select name="filter_language_id" id="input-mz-filter-language-id" class="form-control">
+                  {% for language in languages %} 
+                    {% if (filter_language_id == language['language_id']) %} 
+                    <option value="{{ language['language_id'] }}" selected="selected">{{ language['name'] }}</option>
+                    {% else %} 
+                    <option value="{{ language['language_id'] }}">{{ language['name'] }}</option>
+                    {% endif %} 
+                  {% endfor %} 
+                </select>
+              </div>
+            </div>
+            
+            <!-- Show in category -->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-category"><span data-toggle="tooltip" title="{{ help_category }}">{{ entry_category }}</span></label>
+              <div class="col-xs-9">
+                <input type="text" name="category" value="" placeholder="{{ entry_category }}" id="input-category" class="form-control" />
+                <div id="filter-category" class="well well-sm" style="height: 150px; overflow: auto;">
+                  {% for filter_category in filter_categories %} 
+                  <div id="filter-category-{{ filter_category['category_id'] }}"><i class="fa fa-minus-circle"></i> {{ filter_category['name'] }} 
+                    <input type="hidden" name="filter_category[]" value="{{ filter_category['category_id'] }}" />
+                  </div>
+                  {% endfor %} 
+                </div>
+              </div>
+            </div>
+            
+            <!--Sync value status-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-sync-value-status"><span data-toggle="tooltip" title="{{ help_sync_value }}">{{ entry_sync_value }}</span></label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (setting['value_sync_status']) %} 
+                  <input type="radio" name="setting[value_sync_status]" value="1" id="input-sync-value-status-enabled" checked>
+                  <label for="input-sync-value-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="setting[value_sync_status]" value="0" id="input-sync-value-status-disabled">
+                  <label for="input-sync-value-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="setting[value_sync_status]" value="1" id="input-sync-value-status-enabled" >
+                  <label for="input-sync-value-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="setting[value_sync_status]" value="0" id="input-sync-value-status-disabled" checked>
+                  <label for="input-sync-value-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!--Layout-->
+      <div id="tab-mz-layout" class="tab-pane fade">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <!--collapse-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_collapse }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (setting['collapse']) %} 
+                  <input type="radio" name="setting[collapse]" value="1" id="input-mz-setting-collapse-enabled" checked>
+                  <label for="input-mz-setting-collapse-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="setting[collapse]" value="0" id="input-mz-setting-collapse-disabled">
+                  <label for="input-mz-setting-collapse-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="setting[collapse]" value="1" id="input-mz-setting-collapse-enabled" >
+                  <label for="input-mz-setting-collapse-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="setting[collapse]" value="0" id="input-mz-setting-collapse-disabled" checked>
+                  <label for="input-mz-setting-collapse-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+            
+            <!--Input types-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-mz-setting-input-type">{{ entry_input_type }}</label>
+              <div class="col-xs-9">
+                <select name="setting[input_type]" id="input-mz-setting-input-type" class="form-control">
+                  {% for input_type in input_types %} 
+                    {% if (input_type['code'] == setting['input_type']) %} 
+                    <option value="{{ input_type['code'] }}" selected="selected">{{ input_type['text'] }}</option>
+                    {% else %} 
+                    <option value="{{ input_type['code'] }}">{{ input_type['text'] }}</option>
+                    {% endif %} 
+                  {% endfor %} 
+                </select>
+              </div>
+            </div>
+
+            <!--Input shape-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_input_shape }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% for input_shape in input_shapes %} 
+                    {% if (input_shape['code'] == setting['input_shape']) %} 
+                    <input type="radio" name="setting[input_shape]" value="{{ input_shape['code'] }}" id="input-mz-setting-input-shape-{{ input_shape['code'] }}" checked>
+                    <label for="input-mz-setting-input-shape-{{ input_shape['code'] }}" >{{ input_shape['text'] }}</label>
+                    {% else %} 
+                    <input type="radio" name="setting[input_shape]" value="{{ input_shape['code'] }}" id="input-mz-setting-input-shape-{{ input_shape['code'] }}">
+                    <label for="input-mz-setting-input-shape-{{ input_shape['code'] }}" >{{ input_shape['text'] }}</label>
+                    {% endif %} 
+                  {% endfor %} 
+                </div>
+              </div>
+            </div>
+            
+            <!--List types-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_list_type }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% for list_type in list_types %} 
+                    {% if (list_type['code'] == setting['list_type']) %} 
+                    <input type="radio" name="setting[list_type]" value="{{ list_type['code'] }}" id="input-mz-setting-list-type-{{ list_type['code'] }}" checked>
+                    <label for="input-mz-setting-list-type-{{ list_type['code'] }}" >{{ list_type['text'] }}</label>
+                    {% else %} 
+                    <input type="radio" name="setting[list_type]" value="{{ list_type['code'] }}" id="input-mz-setting-list-type-{{ list_type['code'] }}">
+                    <label for="input-mz-setting-list-type-{{ list_type['code'] }}" >{{ list_type['text'] }}</label>
+                    {% endif %} 
+                  {% endfor %} 
+                </div>
+              </div>
+            </div>
+            
+            <!--Value image width-->
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-value-image-width">{{ entry_image_width }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-value-image-width" placeholder="{{ entry_image_width }}" type="number" min="0" name="setting[value_image_width]" value="{{ setting['value_image_width'] }}" >
+              </div>
+            </div>
+            
+            <!--Value image height-->
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-value-image-height">{{ entry_image_height }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-value-image-height" placeholder="{{ entry_image_height }}" type="number" min="0" name="setting[value_image_height]" value="{{ setting['value_image_height'] }}" >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!--Keys-->
+      <div id="tab-mz-key" class="tab-pane fade">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <!-- Key attribute-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-key-attribute"><span data-toggle="tooltip" title="{{ help_attribute }}">{{ entry_attribute }}</span></label>
+              <div class="col-xs-9">
+                <input type="text" name="key_attribute" value="" placeholder="{{ entry_attribute }}" id="input-key-attribute" class="form-control" />
+                <div id="key-attribute" class="well well-sm" style="height: 150px; overflow: auto;">
+                  {% for key_attribute in key_attributes %} 
+                  <div id="key-attribute-{{ key_attribute['attribute_id'] }}"><i class="fa fa-minus-circle"></i> {{ key_attribute['name'] }} 
+                    <input type="hidden" name="setting[key_attribute][]" value="{{ key_attribute['attribute_id'] }}" />
+                  </div>
+                  {% endfor %} 
+                </div>
+              </div>
+            </div>
+            
+            <!-- Key option-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-key-option"><span data-toggle="tooltip" title="{{ help_option }}">{{ entry_option }}</span></label>
+              <div class="col-xs-9">
+                <input type="text" name="key_option" value="" placeholder="{{ entry_option }}" id="input-key-option" class="form-control" />
+                <div id="key-option" class="well well-sm" style="height: 150px; overflow: auto;">
+                  {% for key_option in key_options %} 
+                  <div id="key-option-{{ key_option['option_id'] }}"><i class="fa fa-minus-circle"></i> {{ key_option['name'] }} 
+                    <input type="hidden" name="setting[key_option][]" value="{{ key_option['option_id'] }}" />
+                  </div>
+                  {% endfor %} 
+                </div>
+              </div>
+            </div>
+            
+            <!-- Key filter_group-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-key-filter-group"><span data-toggle="tooltip" title="{{ help_filter_group }}">{{ entry_filter_group }}</span></label>
+              <div class="col-xs-9">
+                <input type="text" name="key_filter_group" value="" placeholder="{{ entry_filter_group }}" id="input-key-filter-group" class="form-control" />
+                <div id="key-filter-group" class="well well-sm" style="height: 150px; overflow: auto;">
+                  {% for key_filter_group in key_filter_groups %} 
+                  <div id="key-filter-group-{{ key_filter_group['filter_group_id'] }}"><i class="fa fa-minus-circle"></i> {{ key_filter_group['name'] }} 
+                    <input type="hidden" name="setting[key_filter_group][]" value="{{ key_filter_group['filter_group_id'] }}" />
+                  </div>
+                  {% endfor %} 
+                </div>
+              </div>
+            </div>
+            
+            <!--Product name-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_product_name }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (setting['key_product_name']) %} 
+                  <input type="radio" name="setting[key_product_name]" value="1" id="input-mz-setting-key-product-name-enabled" checked>
+                  <label for="input-mz-setting-key-product-name-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="setting[key_product_name]" value="0" id="input-mz-setting-key-product-name-disabled">
+                  <label for="input-mz-setting-key-product-name-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="setting[key_product_name]" value="1" id="input-mz-setting-key-product-name-enabled" >
+                  <label for="input-mz-setting-key-product-name-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="setting[key_product_name]" value="0" id="input-mz-setting-key-product-name-disabled" checked>
+                  <label for="input-mz-setting-key-product-name-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+            
+            <!--Product description-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_product_description }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (setting['key_product_description']) %} 
+                  <input type="radio" name="setting[key_product_description]" value="1" id="input-mz-setting-key-product-description-enabled" checked>
+                  <label for="input-mz-setting-key-product-description-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="setting[key_product_description]" value="0" id="input-mz-setting-key-product-description-disabled">
+                  <label for="input-mz-setting-key-product-description-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="setting[key_product_description]" value="1" id="input-mz-setting-key-product-description-enabled" >
+                  <label for="input-mz-setting-key-product-description-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="setting[key_product_description]" value="0" id="input-mz-setting-key-product-description-disabled" checked>
+                  <label for="input-mz-setting-key-product-description-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+            
+            <!--Product tags-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_product_tags }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (setting['key_product_tags']) %} 
+                  <input type="radio" name="setting[key_product_tags]" value="1" id="input-mz-setting-key-product-tags-enabled" checked>
+                  <label for="input-mz-setting-key-product-tags-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="setting[key_product_tags]" value="0" id="input-mz-setting-key-product-tags-disabled">
+                  <label for="input-mz-setting-key-product-tags-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="setting[key_product_tags]" value="1" id="input-mz-setting-key-product-tags-enabled" >
+                  <label for="input-mz-setting-key-product-tags-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="setting[key_product_tags]" value="0" id="input-mz-setting-key-product-tags-disabled" checked>
+                  <label for="input-mz-setting-key-product-tags-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <script>
+// Category
+$('input[name=\'category\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/category/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['category_id']
+					};
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'category\']').val('');
+
+		$('#filter-category-' + item['value']).remove();
+
+		$('#filter-category').append('<div id="filter-category-' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="filter_category[]" value="' + item['value'] + '" /></div>');
+	}
+});
+
+$('#filter-category').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+
+// key Attribute
+$('input[name=\'key_attribute\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=extension/maza/catalog/autocomplete/attribute&user_token={{ user_token }}&limit=100&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'] + ' [' + item['attribute_group'] + ']',
+						value: item['attribute_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'key_attribute\']').val('');
+
+		$('#key-attribute-' + item['value']).remove();
+
+		$('#key-attribute').append('<div id="key-attribute-' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="setting[key_attribute][]" value="' + item['value'] + '" /></div>');
+	}
+});
+
+$('#key-attribute').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+
+// key Option
+$('input[name=\'key_option\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=extension/maza/catalog/autocomplete/option&user_token={{ user_token }}&limit=100&filter_category=choose&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+                                        return {
+						label: item['name'],
+						value: item['option_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'key_option\']').val('');
+
+		$('#key-option-' + item['value']).remove();
+
+		$('#key-option').append('<div id="key-option-' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="setting[key_option][]" value="' + item['value'] + '" /></div>');
+	}
+});
+
+$('#key-option').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+
+// key Attribute
+$('input[name=\'key_filter_group\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=extension/maza/catalog/autocomplete/filter_group&user_token={{ user_token }}&limit=100&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['filter_group_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'key_filter_group\']').val('');
+
+		$('#key-filter-group-' + item['value']).remove();
+
+		$('#key-filter-group').append('<div id="key-filter-group-' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="setting[key_filter_group][]" value="' + item['value'] + '" /></div>');
+	}
+});
+
+$('#key-filter-group').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+  </script>
+</div>
+{{ mz_footer }}

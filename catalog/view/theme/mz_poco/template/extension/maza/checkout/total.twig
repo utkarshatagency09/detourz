@@ -1,0 +1,8 @@
+<table id="checkout-total" class="table mb-0">
+    {% for total in totals %}
+    <tr>
+        <td>{{ total.title }}:</td>
+        <td class="text-end"><strong>{{ total.text }}</strong></td>
+    </tr>
+    {% endfor %}
+</table>

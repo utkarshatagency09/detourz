@@ -1,0 +1,122 @@
+{% if condition %}{{ '{% if ' ~ condition ~ ' %}' }}{% endif %}
+  {% if (type == 'section') %} {# Section entry #}
+    {% if collapsible_status %}
+    <div id="{{ unique_id }}" tabindex="-1" class="collapse {{ collapsible_default?'show ' }}">
+    {% endif %}
+    {% if section_type == 'fixed_width' %}
+    <div id="entry{{ suffix }}_{{ entry_id }}" {% if section_sticky %}data-toggle="sticky" data-sticky-up="{{ section_sticky }}"{% endif %} class="entry-section container {{ custom_class }} {{ class }}">{{ child_entry|trim }}</div>
+    {% elseif section_type == 'full_width' %}
+    <div id="entry{{ suffix }}_{{ entry_id }}" {% if section_sticky %}data-toggle="sticky" data-sticky-up="{{ section_sticky }}"{% endif %} class="entry-section container-fluid {{ custom_class }} {{ class }}">{{ child_entry|trim }}</div>
+    {% else %}
+    <div id="entry{{ suffix }}_{{ entry_id }}" {% if section_sticky %}data-toggle="sticky" data-sticky-up="{{ section_sticky }}"{% endif %} class="{{ custom_class }}"><div class="entry-section container {{ class }}">{{ child_entry|trim }}</div></div>
+    {% endif %}
+    {% if collapsible_status %}</div>{% endif %}
+
+  {% elseif (type == 'row') %} {# Row entry #}
+    {% if collapsible_status %}
+    <div id="{{ unique_id }}" tabindex="-1" class="collapse {{ collapsible_default?'show ' }}{{ class }} {{ custom_class }}"><div id="entry{{ suffix }}_{{ entry_id }}" class="entry-row row">{{ child_entry|trim }}</div></div>
+    {% else %}
+    <div id="entry{{ suffix }}_{{ entry_id }}" class="entry-row row {{ class }} {{ custom_class }}">{{ child_entry|trim }}</div>
+    {% endif %}
+    
+  {% elseif (type == 'col') %} {# column entry #}
+  <div id="entry{{ suffix }}_{{ entry_id }}" class="entry-col {{ custom_class }} {{ class }}">{{ child_entry|trim }}</div>
+
+  {% elseif (type == 'module' and child_entry) %} {# module entry #}
+  <div id="entry{{ suffix }}_{{ entry_id }}" class="entry-module module-{{ code }} {{ custom_class }} {{ class }}">{{ child_entry|trim }}</div>
+
+  {% elseif (type == 'widget' and child_entry) %} {# widget entry #}
+  <div id="entry{{ suffix }}_{{ entry_id }}" data-id="{{ entry_id }}" class="entry-widget widget-{{ code }} {{ custom_class }} {{ class }}">{{ child_entry|trim }}</div>
+
+  {% elseif (type == 'content' and child_entry) %} {# content entry #}
+  <div id="entry{{ suffix }}_{{ entry_id }}" data-id="{{ entry_id }}" class="entry-content content-{{ code|split('.')[1]|replace({'_':'-'}) }} {{ custom_class }} {{ class }}">{{ child_entry|trim }}</div>
+
+  {% elseif (type == 'design' and child_entry) %} {# design entry #}
+  <div id="entry{{ suffix }}_{{ entry_id }}" data-id="{{ entry_id }}" class="entry-design design-{{ code }} {{ custom_class }} {{ class }}">{{ child_entry|trim }}</div>
+
+  {% elseif (type == 'component' and child_entry) %} {# component entry #}
+    {% if component_type == 'sticky' %} {# sticky #}
+    <div id='{{ component_unique_id }}' class="fixed-{{ component_sticky_position }} text-bg-{{ component_color }} {{ custom_class }} {{ component_sticky_collapsible?'collapse' }} {{ not component_sticky_collapsed and not component_sticky_show_only_once?'show' }}">
+      <div id="entry{{ suffix }}_{{ entry_id }}" class="entry-component {{ class }} container-fluid">{{ child_entry|trim }}</div>
+    </div>
+    {% if component_sticky_collapsible and component_sticky_show_only_once %}
+    <script>
+    $(function(){
+      if(!$.mz_cookie('{{ component_sticky_cookie_id }}notshow')){
+        $('#{{ component_unique_id }}').collapse('show');
+        $('#{{ component_unique_id }}').on('hide.bs.collapse', function(){
+          $.mz_cookie('{{ component_sticky_cookie_id }}notshow', true, 365);
+        })
+      }
+    });
+    </script>
+    {% endif %}
+
+    {% elseif component_type == 'drawer' %} {# drawer #}
+    <div id='{{ component_unique_id }}' tabindex="-1" class="offcanvas offcanvas-{{ component_drawer_open_from }}" {% if component_drawer_size %}style="--bs-offcanvas-width: {{ component_drawer_size }}px;--bs-offcanvas-height: {{ component_drawer_size }}px;"{% endif %} {% if component_title %}aria-labelledby="{{ component_unique_id }}Label"{% endif %}>
+      {% if component_title %}<div class="offcanvas-header text-bg-{{ component_color }}">
+        <h5 id="{{ component_unique_id }}Label" class="offcanvas-title">{{ component_title }}</h5>
+        <button type="button" class="btn-close btn-close-{{ component_color }}-contrast" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>{% endif %}
+      <div id="entry{{ suffix }}_{{ entry_id }}" class="offcanvas-body entry-component {{ custom_class }} {{ class }}">{{ child_entry|trim }}</div>
+    </div>
+
+    {% elseif component_type == 'popup' %} {# popup #}
+    <div class="modal fade" tabindex="-1" id="{{ component_unique_id }}" role="dialog">
+      <div class="modal-dialog modal-dialog-centered modal-{{ component_popup_size }}" role="document">
+        <div class="modal-content">
+          {% if component_title %}
+          <div class="modal-header border-0 text-bg-{{ component_color }}">
+            <h5 class="modal-title">{{ component_title }}</h5>
+            {% if component_popup_close_button %}
+            <button type="button" class="btn-close btn-close-{{ component_color }}-contrast" aria-label="Close" data-bs-dismiss="modal"></button>
+            {% endif %}
+          </div>
+          {% elseif component_popup_close_button %}<button type="button" class="btn-close mz-modal-close" aria-label="Close" data-bs-dismiss="modal"></button>
+          {% endif %}
+          <div id="entry{{ suffix }}_{{ entry_id }}" class="modal-body entry-component {{ custom_class }} {{ class }}">{{ child_entry|trim }}</div>
+          {% if component_popup_do_not_show_again.status %}
+          <div class="modal-footer py-2 mz-popup-do-not-show-again">
+            <div class="form-check me-auto">
+              <label class="form-check-label">
+                <input id="input-not-show-{{ entry_id }}" type="checkbox" class="form-check-input" value="1">{{ component_popup_do_not_show_again.text }}
+              </label>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <script>
+    $(document).ready(function(){
+      if($.mz_cookie('{{ component_popup_cookie_id }}show_again') !== '0'){
+        {% if component_popup_auto_start_status %}
+        setTimeout(function(){
+          if($('#entry{{ suffix }}_{{ entry_id }}').css('display') !== 'none'){
+              $('#{{ component_unique_id }}').modal("show");
+          }
+        }, {{ component_popup_auto_start_delay * 1000 }});
+        {% endif %}
+        {% if component_popup_auto_close_status %}
+        setTimeout(function(){
+          if($('#entry{{ suffix }}_{{ entry_id }}').css('display') !== 'none'){
+              $('#{{ component_unique_id }}').modal("hide");
+          }
+        }, {{ component_popup_auto_close_delay * 1000 }});
+        {% endif %}
+      }
+      if($.mz_cookie('{{ component_popup_cookie_id }}show_again') === undefined){
+          $.mz_cookie('{{ component_popup_cookie_id }}show_again', {{ component_popup_show_only_once?0:1 }}, 365);
+      }
+      $('#input-not-show-{{ entry_id }}').change(function(){
+          if($(this).is(':checked')){
+              $.mz_cookie('{{ component_popup_cookie_id }}show_again', 0, 365);
+          }else if({{ component_popup_show_only_once?0:1 }}) {
+              $.mz_cookie('{{ component_popup_cookie_id }}show_again', 1, 365);
+          }
+      });
+    });
+    </script>
+    {% endif %}
+  {% endif %}
+{% if condition %}{{ '{% endif %}' }}{% endif %}

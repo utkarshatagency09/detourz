@@ -1,0 +1,1053 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- Form -->
+  <form action="{{ action }}" class="form-horizontal" enctype="multipart/form-data" id="form-mz-slider" method="post">
+    <div class="tab-content">
+        
+      <!--General-->
+      <div id="tab-general" class="tab-pane fade in active">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <!--module name-->
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-name">{{ entry_module_name }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-name" placeholder="{{ entry_module_name }}" type="text" name="name" value="{{ name }}" >
+                {% if (err_name is defined) %} 
+                <div class="text-danger">{{ err_name }}</div>
+                {% endif %} 
+              </div>
+            </div>
+            
+            <!--status-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-status">{{ entry_status }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (status) %} 
+                  <input type="radio" name="status" value="1" id="input-status-enabled" checked>
+                  <label for="input-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="status" value="0" id="input-status-disabled">
+                  <label for="input-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="status" value="1" id="input-status-enabled" >
+                  <label for="input-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="status" value="0" id="input-status-disabled" checked>
+                  <label for="input-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+            
+            <!--title-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-title">{{ entry_title }}</label>
+              <div class="col-xs-9">
+              {% for language in languages %} 
+                <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                  <input class="form-control" type="text" name="title[{{ language['language_id'] }}]" value="{{ title[language['language_id']] is defined?title[language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+                </div>
+              {% endfor %} 
+              </div>
+            </div> 
+          </div>
+        </div>
+          
+      </div> <!-- // General -->
+      
+      {# control #}
+      <div id="tab-control" class="tab-pane fade">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            {# navigation #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-navigation">{{ entry_navigation }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (navigation) %} 
+                  <input type="radio" name="navigation" value="1" id="input-navigation-enabled" checked>
+                  <label for="input-navigation-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="navigation" value="0" id="input-navigation-disabled">
+                  <label for="input-navigation-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="navigation" value="1" id="input-navigation-enabled" >
+                  <label for="input-navigation-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="navigation" value="0" id="input-navigation-disabled" checked>
+                  <label for="input-navigation-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            {# pagination #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-pagination">{{ entry_pagination }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (pagination) %} 
+                  <input type="radio" name="pagination" value="1" id="input-pagination-enabled" checked>
+                  <label for="input-pagination-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="pagination" value="0" id="input-pagination-disabled">
+                  <label for="input-pagination-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="pagination" value="1" id="input-pagination-enabled" >
+                  <label for="input-pagination-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="pagination" value="0" id="input-pagination-disabled" checked>
+                  <label for="input-pagination-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            <!--pagination types-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-pagination-type">{{ entry_pagination_type }}</label>
+              <div class="col-xs-9">
+                <select name="pagination_type" id="input-pagination-type" class="form-control">
+                {% for type in list_pagination_type %}
+                  {% if (pagination_type == type.id) %} 
+                  <option value="{{ type.id }}" selected="selected">{{ type.name }}</option>
+                  {% else %} 
+                  <option value="{{ type.id }}">{{ type.name }}</option>
+                  {% endif %}
+                {% endfor %}
+                </select>
+              </div>
+            </div>
+                
+            {# autoplay status #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-autoplay-status">{{ entry_autoplay }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (autoplay_status) %} 
+                  <input type="radio" name="autoplay_status" value="1" id="input-autoplay-status-enabled" checked>
+                  <label for="input-autoplay-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="autoplay_status" value="0" id="input-autoplay-status-disabled">
+                  <label for="input-autoplay-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="autoplay_status" value="1" id="input-autoplay-status-enabled" >
+                  <label for="input-autoplay-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="autoplay_status" value="0" id="input-autoplay-status-disabled" checked>
+                  <label for="input-autoplay-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            {# autoplay delay #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-autoplay-delay"><span data-toggle="tooltip" title="{{ help_autoplay_delay }}">{{ entry_autoplay_delay }}</span></label>
+              <div class="col-xs-9">
+                <input type="number" min="0" name="autoplay_delay" value="{{ autoplay_delay }}" placeholder="{{ entry_autoplay_delay }}" id="input-autoplay-delay" class="form-control" />
+              </div>
+            </div>
+              
+            {# speed #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-speed"><span data-toggle="tooltip" title="{{ help_speed }}">{{ entry_speed }}</span></label>
+              <div class="col-xs-9">
+                <input type="number" min="0" name="speed" value="{{ speed }}" placeholder="{{ entry_speed }}" id="input-speed" class="form-control" />
+              </div>
+            </div>
+              
+            {# keyboard control #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-keyboard-control"><span data-toggle="tooltip" title="{{ help_keyboard_control }}">{{ entry_keyboard_control }}</span></label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (keyboard_control) %} 
+                  <input type="radio" name="keyboard_control" value="1" id="input-keyboard-control-enabled" checked>
+                  <label for="input-keyboard-control-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="keyboard_control" value="0" id="input-keyboard-control-disabled">
+                  <label for="input-keyboard-control-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="keyboard_control" value="1" id="input-keyboard-control-enabled" >
+                  <label for="input-keyboard-control-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="keyboard_control" value="0" id="input-keyboard-control-disabled" checked>
+                  <label for="input-keyboard-control-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            {# mousewheel control #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-mousewheel-control"><span data-toggle="tooltip" title="{{ help_mousewheel_control }}">{{ entry_mousewheel_control }}</span></label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (mousewheel_control) %} 
+                  <input type="radio" name="mousewheel_control" value="1" id="input-mousewheel-control-enabled" checked>
+                  <label for="input-mousewheel-control-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="mousewheel_control" value="0" id="input-mousewheel-control-disabled">
+                  <label for="input-mousewheel-control-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="mousewheel_control" value="1" id="input-mousewheel-control-enabled" >
+                  <label for="input-mousewheel-control-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="mousewheel_control" value="0" id="input-mousewheel-control-disabled" checked>
+                  <label for="input-mousewheel-control-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            {# Simulate touch #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-simulate-touch"><span data-toggle="tooltip" title="{{ help_simulate_touch }}">{{ entry_simulate_touch }}</span></label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (simulate_touch) %} 
+                  <input type="radio" name="simulate_touch" value="1" id="input-simulate-touch-enabled" checked>
+                  <label for="input-simulate-touch-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="simulate_touch" value="0" id="input-simulate-touch-disabled">
+                  <label for="input-simulate-touch-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="simulate_touch" value="1" id="input-simulate-touch-enabled" >
+                  <label for="input-simulate-touch-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="simulate_touch" value="0" id="input-simulate-touch-disabled" checked>
+                  <label for="input-simulate-touch-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            {# loop #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-loop"><span data-toggle="tooltip" title="{{ help_loop }}">{{ entry_loop }}</span></label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (loop) %} 
+                  <input type="radio" name="loop" value="1" id="input-loop-enabled" checked>
+                  <label for="input-loop-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="loop" value="0" id="input-loop-disabled">
+                  <label for="input-loop-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="loop" value="1" id="input-loop-enabled" >
+                  <label for="input-loop-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="loop" value="0" id="input-loop-disabled" checked>
+                  <label for="input-loop-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            
+          </div>
+        </div>
+      </div>
+      
+      {#Layout#}
+      <div id="tab-layout" class="tab-pane fade"> 
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_general }}</div>
+          <div class="panel-body">
+            {#<!--slide direction-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-slide-direction">{{ entry_slide_direction }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (slide_direction == 'horizontal') %} 
+                  <input type="radio" name="slide_direction" value="horizontal" id="input-slide-direction-horizontal" checked>
+                  <label for="input-slide-direction-horizontal" >{{ text_horizontal }}</label>
+                  <input type="radio" name="slide_direction" value="vertical" id="input-slide-direction-vertical">
+                  <label for="input-slide-direction-vertical">{{ text_vertical }}</label>
+                  {% else %} 
+                  <input type="radio" name="slide_direction" value="horizontal" id="input-slide-direction-horizontal" >
+                  <label for="input-slide-direction-horizontal">{{ text_horizontal }}</label>
+                  <input type="radio" name="slide_direction" value="vertical" id="input-slide-direction-vertical" checked>
+                  <label for="input-slide-direction-vertical" >{{ text_vertical }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>#}
+                
+            <!--slide effects-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-slide-effect">{{ entry_slide_effect }}</label>
+              <div class="col-xs-9">
+                <select name="slide_effect" id="input-slide-effect" class="form-control">
+                {% for effect in slide_effects %}
+                  {% if (slide_effect == effect.id) %} 
+                  <option value="{{ effect.id }}" selected="selected">{{ effect.name }}</option>
+                  {% else %} 
+                  <option value="{{ effect.id }}">{{ effect.name }}</option>
+                  {% endif %}
+                {% endfor %}
+                </select>
+              </div>
+            </div>
+                
+            {# Slide per column #}
+            <div class="form-group support_effect_slide">
+              <label class="col-xs-3 control-label" for="input-slide-per-column"><span data-toggle="tooltip" title="{{ help_slide_per_column }}">{{ entry_slide_per_column }}</span></label>
+              <div class="col-xs-9">
+                <input type="number" min="0" name="slide_per_column" value="{{ slide_per_column }}" placeholder="{{ entry_slide_per_column }}" id="input-slide-per-column" class="form-control" />
+              </div>
+            </div>
+              
+            {# Space between slide #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-space-between-slide"><span data-toggle="tooltip" title="{{ help_space_between_slide }}">{{ entry_space_between_slide }}</span></label>
+              <div class="col-xs-9">
+                <input type="number" min="0" name="space_between_slide" value="{{ space_between_slide }}" placeholder="{{ entry_space_between_slide }}" id="input-space-between-slide" class="form-control" />
+              </div>
+            </div>
+              
+            {# auto height #}
+            <div class="form-group">
+              <label class="col-xs-3 height-label" for="input-auto-height"><span data-toggle="tooltip" title="{{ help_auto_height }}">{{ entry_auto_height }}</span></label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (auto_height) %} 
+                  <input type="radio" name="auto_height" value="1" id="input-auto-height-enabled" checked>
+                  <label for="input-auto-height-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="auto_height" value="0" id="input-auto-height-disabled">
+                  <label for="input-auto-height-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="auto_height" value="1" id="input-auto-height-enabled" >
+                  <label for="input-auto-height-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="auto_height" value="0" id="input-auto-height-disabled" checked>
+                  <label for="input-auto-height-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          
+        <div class="panel mz-panel-default support_effect_slide">
+          <div class="panel-heading">{{ text_slide_per_view }}</div>
+          <div class="panel-body">
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-column-xl"><span data-toggle="tooltip" title="{{ help_column_xl }}">{{ entry_column_xl }}</span></label>
+              <div class="col-xs-5">
+                <div class="input-group">
+                  <input type="range" name="column_xl" min="1" max="6" value="{{ column_xl }}" id="input-column-xl" class="form-control" />
+                  <span class="input-group-addon">{{ column_xl }}</span>
+                </div>
+              </div>
+            </div>
+                
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-column-lg"><span data-toggle="tooltip" title="{{ help_column_lg }}">{{ entry_column_lg }}</span></label>
+              <div class="col-xs-5">
+                <div class="input-group">
+                  <input type="range" name="column_lg" min="1" max="6" value="{{ column_lg }}" id="input-column-lg" class="form-control" />
+                  <span class="input-group-addon">{{ column_lg }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-column-md"><span data-toggle="tooltip" title="{{ help_column_md }}">{{ entry_column_md }}</span></label>
+              <div class="col-xs-5">
+                <div class="input-group">
+                  <input type="range" name="column_md" min="1" max="6" value="{{ column_md }}" id="input-column-md" class="form-control" />
+                  <span class="input-group-addon">{{ column_md }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-column-sm"><span data-toggle="tooltip" title="{{ help_column_sm }}">{{ entry_column_sm }}</span></label>
+              <div class="col-xs-5">
+                <div class="input-group">
+                  <input type="range" name="column_sm" min="1" max="6" value="{{ column_sm }}" id="input-column-sm" class="form-control" />
+                  <span class="input-group-addon">{{ column_sm }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-column-xs"><span data-toggle="tooltip" title="{{ help_column_xs }}">{{ entry_column_xs }}</span></label>
+              <div class="col-xs-5">
+                <div class="input-group">
+                  <input type="range" name="column_xs" min="1" max="6" value="{{ column_xs }}" id="input-column-xs" class="form-control" />
+                  <span class="input-group-addon">{{ column_xs }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+                
+        {#Navigation icon#}
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_navigation_icon }}</div>
+          <div class="panel-body input-image-widget">
+            {#Icon#}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" >{{ entry_icon }}</label>
+              <div class="col-xs-9">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#tab-nav-icon-image" data-meta="image" data-toggle="tab">{{ tab_image }}</a></li>
+                  <li><a href="#tab-nav-icon-svg" data-meta="image" data-toggle="tab">{{ tab_svg }}</a></li>
+                  <li><a href="#tab-nav-icon-font" data-meta="font" data-toggle="tab">{{ tab_font }}</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="tab-nav-icon-image">
+                    <div class="el-group">
+                    {% for language in languages %}
+                      <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                      <div class="el-item">
+                        <a href="" id="thumb-nav-icon-image{{ language.language_id }}" data-toggle="image" class="img-thumbnail"><img src="{{ (thumb_nav_icon_image[language.language_id] is defined)?thumb_nav_icon_image[language.language_id]:placeholder_image }}" alt="" title="" data-placeholder="{{ placeholder_image }}" /></a><input type="hidden" name="nav_icon_image[{{ language.language_id }}]" value="{{ (nav_icon_image[language.language_id] is defined)?nav_icon_image[language.language_id]:'' }}" id="input-nav-icon-image{{ language.language_id }}" />
+                      </div>
+                    {% endfor %}
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tab-nav-icon-svg">
+                    <div class="el-group">
+                    {% for language in languages %}
+                      <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                      <div class="el-item">
+                        <a href="" id="thumb-nav-icon-svg{{ language.language_id }}" data-toggle="svg" class="img-thumbnail"><img width="100" height="100" src="{{ (thumb_nav_icon_svg[language.language_id] is defined)?thumb_nav_icon_svg[language.language_id]:placeholder_svg }}" alt="" title="" data-placeholder="{{ placeholder_svg }}" /></a><input type="hidden" name="nav_icon_svg[{{ language.language_id }}]" value="{{ (nav_icon_svg[language.language_id] is defined)?nav_icon_svg[language.language_id]:'' }}" id="input-nav-icon-svg{{ language.language_id }}" />
+                      </div>
+                    {% endfor %}
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tab-nav-icon-font">
+                    <div class="el-group">
+                    {% for language in languages %}
+                      <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                      <div class="el-item">
+                        <a href="" id="thumb-nav-icon-font{{ language.language_id }}" data-toggle="font" class="img-thumbnail icon-thumb"><i class="{{ (nav_icon_font[language.language_id] is not empty)?nav_icon_font[language.language_id]:placeholder_font }}" data-placeholder="{{ placeholder_font }}"></i></a><input type="hidden" name="nav_icon_font[{{ language.language_id }}]" value="{{ (nav_icon_font[language.language_id] is defined)?nav_icon_font[language.language_id]:'' }}" id="input-nav-icon-font{{ language.language_id }}" />
+                      </div>
+                    {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+                    
+            <div class="image-meta-tab-content tab-content">
+              <div class="tab-image active tab-pane">
+                {# Icon width#}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-nav-icon-width">{{ entry_width }}</label>
+                  <div class="col-xs-9">
+                    <input type="number" name="nav_icon_width" value="{{ nav_icon_width }}" placeholder="{{ entry_width }}" id="input-nav-icon-width" class="form-control" />
+                  </div>
+                </div>
+
+                {# Icon height#}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-nav-icon-height">{{ entry_height }}</label>
+                  <div class="col-xs-9">
+                    <input type="number" name="nav_icon_height" value="{{ nav_icon_height }}" placeholder="{{ entry_height }}" id="input-nav-icon-height" class="form-control" />
+                  </div>
+                </div>
+              </div>
+              <div class="tab-font tab-pane">
+                <!--icon size-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-nav-icon-size">{{ entry_size }}</label>
+                  <div class="col-xs-9">
+                    <input type="number" name="nav_icon_size" value="{{ nav_icon_size }}" placeholder="{{ entry_size }}" class="form-control" id="input-nav-icon-size" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+            
+      {# image #}
+      <div id="tab-image" class="tab-pane fade">
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_general }}</div>
+          <div class="panel-body">
+            {# lazy loading #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-lazy-loading">{{ entry_lazy_loading }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (lazy_loading) %} 
+                  <input type="radio" name="lazy_loading" value="1" id="input-lazy-loading-enabled" checked>
+                  <label for="input-lazy-loading-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="lazy_loading" value="0" id="input-lazy-loading-disabled">
+                  <label for="input-lazy-loading-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="lazy_loading" value="1" id="input-lazy-loading-enabled" >
+                  <label for="input-lazy-loading-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="lazy_loading" value="0" id="input-lazy-loading-disabled" checked>
+                  <label for="input-lazy-loading-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            <!--URL target-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-url-target">{{ entry_url_target }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (url_target == '_self') %} 
+                  <input type="radio" name="url_target" value="_self" id="input-url-target-self" checked>
+                  <label for="input-url-target-self" >{{ text_self }}</label>
+                  <input type="radio" name="url_target" value="_blank" id="input-url-target-blank">
+                  <label for="input-url-target-blank">{{ text_blank }}</label>
+                  {% else %} 
+                  <input type="radio" name="url_target" value="_self" id="input-url-target-self" >
+                  <label for="input-url-target-self">{{ text_self }}</label>
+                  <input type="radio" name="url_target" value="_blank" id="input-url-target-blank" checked>
+                  <label for="input-url-target-blank" >{{ text_blank }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+                
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_size }}</div>
+          <div class="panel-body">
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-slide-image-width">{{ entry_width }}</label>
+              <div class="col-xs-9">
+                <input type="number" min="0" name="slide_image_width" value="{{ slide_image_width }}" placeholder="{{ entry_width }}" id="input-image-width" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-slide-image-height">{{ entry_height }}</label>
+              <div class="col-xs-9">
+                <input type="number" min="0" name="slide_image_height" value="{{ slide_image_height }}" placeholder="{{ entry_height }}" id="input-image-height" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-xs-3 control-label"><span data-toggle="tooltip" title="{{ help_responsive_width }}">{{ entry_responsive_width }}</span></label>
+              <div class="col-xs-9">
+                <div class="input-group">
+                {% for breakpoint, srcset_width in slide_image_srcset %}
+                  <span class="input-group-addon">{{ breakpoint|upper }}</span>
+                  <input type="number" name="slide_image_srcset[{{ breakpoint }}]" value="{{ srcset_width }}" id="input-slide-image-srcset-{{ breakpoint }}" placeholder="0px" class="form-control" />
+                {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+                
+      {# Slides #}
+      <div id="tab-slides" class="tab-pane fade">
+        <div class="panel mz-panel-vertical-nav">
+          <div class="panel-body clearfix">
+            <ul id="tab-slide" class="nav nav-tabs mz-panel-nav-vertical-tabs col-xs-2">
+              {% set slide_active_class = 'class="active"' %} {# add active class to first slide #}
+              {% set slide_key = -1 %} {# Index of slide #}
+              
+              {% for key,slide in slides %} 
+                <li {{ slide_active_class?:'' }}><a href="#tab-slide-{{ key }}" data-toggle="tab">{{ text_slide ~ ' ' ~ (key + 1) }}</a></li>
+                {% set slide_active_class = constant('FALSE') %} {# Reset active class after used asign biggest key #}
+                {% if (slide_key < key) %}
+                {% set slide_key = key %}
+                {% endif %}
+              {% endfor %} 
+            </ul>
+            <div id="tab-slide-content" class="tab-content col-xs-10">
+              {% set slide_active_class = 'active in' %}
+              {% for key,slide in slides %} 
+                <div id="tab-slide-{{ key }}" class="tab-pane fade {{ slide_active_class?:'' }}">
+                  <!-- Slide status-->
+                  <div class="form-group">
+                    <label class="col-xs-3 control-label" for="input-slide-status">{{ entry_status }}</label>
+                    <div class="col-xs-9">
+                      <div class="mz-switch-field">
+                        {% if (slide['status']) %} 
+                        <input type="radio" name="slides[{{ key }}][status]" value="1" id="input-slide-status-enabled-{{ key }}" checked>
+                        <label for="input-slide-status-enabled-{{ key }}" >{{ text_enabled }}</label>
+                        <input type="radio" name="slides[{{ key }}][status]" value="0" id="input-slide-status-disabled-{{ key }}">
+                        <label for="input-slide-status-disabled-{{ key }}">{{ text_disabled }}</label>
+                        {% else %} 
+                        <input type="radio" name="slides[{{ key }}][status]" value="1" id="input-slide-status-enabled-{{ key }}" >
+                        <label for="input-slide-status-enabled-{{ key }}">{{ text_enabled }}</label>
+                        <input type="radio" name="slides[{{ key }}][status]" value="0" id="input-slide-status-disabled-{{ key }}" checked>
+                        <label for="input-slide-status-disabled-{{ key }}" >{{ text_disabled }}</label>
+                        {% endif %} 
+                      </div>
+                    </div>
+                  </div>
+
+                  <!--sort order-->
+                  <div class="form-group required">
+                    <label class="col-xs-3 control-label" for="input-sort-order-{{ key }}">{{ entry_sort_order }}</label>
+                    <div class="col-xs-9">
+                      <input class="form-control" id="input-sort-order-{{ key }}" placeholder="{{ entry_sort_order }}" type="text" name="slides[{{ key }}][sort_order]" value="{{ slide['sort_order'] }}" >
+                    </div>
+                  </div>
+                    
+                  {# types #}
+                  <div class="form-group">
+                    <label class="col-xs-3 control-label">{{ entry_type }}</label>
+                    <div class="col-xs-9">
+                      <div class="mz-switch-field">
+                        {% for type in types %} 
+                          {% if (slide['type'] == type['code']) %} 
+                          <input type="radio" name="slides[{{ key }}][type]" value="{{ type['code'] }}" id="input-slide-type-{{ type['code'] }}-{{ key }}" checked>
+                          <label data-toggle="tab" href="#tab-type-{{ type['code'] }}-{{ key }}" for="input-slide-type-{{ type['code'] }}-{{ key }}" >{{ type['text'] }}</label>
+                          {% else %} 
+                          <input type="radio" name="slides[{{ key }}][type]" value="{{ type['code'] }}" id="input-slide-type-{{ type['code'] }}-{{ key }}">
+                          <label data-toggle="tab" href="#tab-type-{{ type['code'] }}-{{ key }}" for="input-slide-type-{{ type['code'] }}-{{ key }}" >{{ type['text'] }}</label>
+                          {% endif %} 
+                        {% endfor %} 
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-content">
+                    {# Image #}
+                    <div id="tab-type-image-{{ key }}" class="tab-pane {{ slide['type'] == 'image'?'active' }}">
+                      <div class="form-group">
+                        <label class="col-xs-3 control-label" >{{ entry_image }}</label>
+                        <div class="col-xs-9">
+                          <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tab-slide-image-{{ key }}" data-meta="image" data-toggle="tab">{{ tab_image }}</a></li>
+                            <li><a href="#tab-slide-svg-{{ key }}" data-meta="image" data-toggle="tab">{{ tab_svg }}</a></li>
+                          </ul>
+                          <div class="tab-content">
+                            <div class="tab-pane active" id="tab-slide-image-{{ key }}">
+                              <div class="el-group">
+                              {% for language in languages %} 
+                                <span class="el-item-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                                <div class="el-item">
+                                  <a href="" id="thumb-slide-image{{ language['language_id'] }}-{{ key }}" data-toggle="image" class="img-thumbnail"><img src="{{ slide['thumb_slide_image'][language['language_id']] is not empty?slide['thumb_slide_image'][language['language_id']]:placeholder_image }}" alt="" title="" data-placeholder="{{ placeholder_image }}" /></a><input type="hidden" name="slides[{{ key }}][slide_image][{{ language['language_id'] }}]" value="{{ slide['slide_image'][language['language_id']] is defined?slide['slide_image'][language['language_id']]:'' }}" id="input-slide-image{{ language['language_id'] }}-{{ key }}" />
+                                </div>
+                              {% endfor %} 
+                              </div>
+                            </div>
+                            <div class="tab-pane" id="tab-slide-svg-{{ key }}">
+                              <div class="el-group">
+                              {% for language in languages %} 
+                                <span class="el-item-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                                <div class="el-item">
+                                  <a href="" id="thumb-slide-svg{{ language['language_id'] }}-{{ key }}" data-toggle="svg" class="img-thumbnail"><img width="100" height="100" src="{{ slide['thumb_slide_svg'][language['language_id']] is not empty?slide['thumb_slide_svg'][language['language_id']]:placeholder_svg }}" alt="" title="" data-placeholder="{{ placeholder_svg }}" /></a><input type="hidden" name="slides[{{ key }}][slide_svg][{{ language['language_id'] }}]" value="{{ slide['slide_svg'][language['language_id']] is defined?slide['slide_svg'][language['language_id']]:'' }}" id="input-slide-svg{{ language['language_id'] }}-{{ key }}" />
+                                </div>
+                              {% endfor %} 
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!--alt-->
+                      <div class="form-group required">
+                        <label class="col-xs-3 control-label"><span data-toggle="tooltip" title="{{ help_alt }}">{{ entry_alt }}</span></label>
+                        <div class="col-xs-9">
+                        {% for language in languages %} 
+                          <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                            <input class="form-control" type="text" name="slides[{{ key }}][alt][{{ language['language_id'] }}]" data-slide_key="{{ key }}" value="{{ slide['alt'][language['language_id']] is defined?slide['alt'][language['language_id']]:'' }}" placeholder="{{ entry_alt }}" >
+                          </div>
+                        {% endfor %} 
+                        </div>
+                      </div>
+                      <!--URL-->
+                      <div class="form-group">
+                        <label class="col-xs-3 control-label">{{ entry_url }}</label>
+                        <div class="col-xs-9">
+                          <div class="input-group">
+                            <span class="input-group-addon">{{ slide.link_info ? slide.link_info.type : '<i class="fa fa-link"></i>' }}</span>
+                            <input type="text" value="{{ slide.link_info ? slide.link_info.title }}" class="form-control" placeholder="{{ text_link_select }}" readonly />
+                            <input id="input-slide-url-{{ key }}" type="hidden" name="slides[{{ key }}][url_link_code]" value="{{ slide.url_link_code }}"  />
+                            <div class="input-group-btn">
+                              <button type="button" data-toggle="linkmanager" class="btn btn-primary"><i class="fa fa-pencil"></i></button>
+                              <button type="button" data-toggle="linkmanager-delete" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!--caption-->
+                      <div class="form-group">
+                        <label class="col-xs-3 control-label">{{ entry_caption }}</label>
+                        <div class="col-xs-9">
+                          <ul class="nav nav-tabs tab-dynamic">
+                            {% for language in languages %}
+                            <li><a href="#slide-type-image-caption-language-{{ language.language_id }}-{{ key }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+                            {% endfor %}
+                          </ul>
+                          <div class="tab-content">
+                            {% for language in languages %}
+                            <div class="tab-pane" id="slide-type-image-caption-language-{{ language.language_id }}-{{ key }}">
+                              <textarea name="slides[{{ key }}][caption][{{ language.language_id }}]" placeholder="{{ entry_caption }}" id="input-slide-type-image-caption-language-{{ language.language_id }}-{{ key }}" data-dialogsInBody="1" data-ckeditor="{{ code }}" class="form-control">{{ slide['caption'][language.language_id] ? slide['caption'][language.language_id] }}</textarea>
+                            </div>
+                            {% endfor %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {# HTML #}
+                    <div id="tab-type-html-{{ key }}" class="tab-pane {{ slide['type'] == 'html'?'active' }}">
+                      <div class="form-group">
+                        <label class="col-xs-3 control-label">{{ text_html }}</label>
+                        <div class="col-xs-9">
+                          <ul class="nav nav-tabs tab-dynamic">
+                            {% for language in languages %}
+                            <li><a href="#slide-type-html-language-{{ language.language_id }}-{{ key }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+                            {% endfor %}
+                          </ul>
+                          <div class="tab-content">
+                            {% for language in languages %}
+                            <div class="tab-pane" id="slide-type-html-language-{{ language.language_id }}-{{ key }}">
+                              <textarea name="slides[{{ key }}][html][{{ language.language_id }}]" placeholder="{{ entry_html }}" id="input-slide-type-html-language-{{ language.language_id }}-{{ key }}" data-dialogsInBody="1" data-ckeditor="{{ code }}" class="form-control">{{ slide['html'][language.language_id] ? slide['html'][language.language_id] }}</textarea>
+                            </div>
+                            {% endfor %}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {# Module #}
+                    <div id="tab-type-module-{{ key }}" class="tab-pane {{ slide['type'] == 'module'?'active' }}">
+                      <div class="form-group">
+                        <label class="col-xs-3 control-label" for="input-type-module-{{ key }}">{{ text_module }}</label>
+                        <div class="col-xs-9">
+                          <select name="slides[{{ key }}][module]" id="input-type-module-{{ key }}" class="form-control">
+                            <option value=""></option>
+                            {% for extension in extensions %}
+                            <optgroup label="{{ extension.name }}">
+                            {% if not extension.module %}
+                              {% if slide['module'] == extension.code %}
+                              <option value="{{ extension.code }}" selected="">{{ extension.name }}</option>
+                              {% else %}
+                              <option value="{{ extension.code }}">{{ extension.name }}</option>
+                              {% endif %}
+                            {% else %}
+                            {% for module in extension.module %}
+                              {% if slide['module'] == module.code %}
+                              <option value="{{ module.code }}" selected="">{{ module.name }}</option>
+                              {% else %}
+                              <option value="{{ module.code }}">{{ module.name }}</option>
+                              {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                            </optgroup>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    {# Content #}
+                    <div id="tab-type-content-{{ key }}" class="tab-pane {{ slide['type'] == 'content'?'active' }}">
+                      <div class="form-group">
+                        <label class="col-xs-3 control-label" for="input-type-content-name-{{ key }}">{{ text_content }}</label>
+                        <div class="col-xs-9">
+                          <input type="text" name="slides[{{ key }}][content_name]" value="{{ slide['content_name'] }}" data-slide_key="{{ key }}" placeholder="{{ help_content }}" id="input-type-content-name-{{ key }}" class="form-control input-content-builder" />
+                          <input id="input-type-content-id-{{ key }}" type="hidden" name="slides[{{ key }}][content_id]" value="{{ slide['content_id'] }}"  />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% set slide_active_class = constant('FALSE') %} 
+              {% endfor %} 
+            </div>
+          </div>
+          <div class="panel-footer text-right">
+            {% if (err_slides is defined) %} 
+              <div class="text-danger text-left">{{ err_slides }}</div>
+            {% endif %} 
+            <button type="button" id="button-add-slide" class="btn btn-primary"><i class="fa fa-plus"></i> {{ button_add_slide }}</button>
+            <button type="button" id="button-remove-slide" class="btn btn-danger"><i class="fa fa-minus-circle"></i> {{ button_remove_slide }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<script src="view/javascript/maza/ckeditor/ckeditor.js"></script>
+<script>
+$('input[type="range"]').on('input change', function(){
+    $(this).siblings('.input-group-addon').text($(this).val());
+});
+
+/**
+ * Supported input for slide effect
+ */
+$('#input-slide-effect').change(function(){
+    if($(this).val() === 'slide'){
+        $('.support_effect_slide').show();
+    } else {
+        $('.support_effect_slide').hide();
+    }
+});
+$('#input-slide-effect').change();
+
+/**
+ * Get HTML of Slide
+ * @param int slide_key biggest index key of slide
+ * @return jQuery object
+ **/
+function getSlideHTML(slide_key){
+    var html = '<li><a href="#tab-slide-' + slide_key +'" data-toggle="tab">{{ text_slide }} ' + (slide_key + 1) + '</a></li>';
+    return $(html);
+}
+
+function getSlideContentHTML(slide_key){
+    var html = '';
+    
+    html +=  '<div id="tab-slide-' + slide_key + '" class="tab-pane fade">';
+    
+      html += '<div class="form-group">'  + 
+              '  <label class="col-xs-3 control-label" for="input-slide-status">{{ entry_status }}</label>  '  + 
+              '  <div class="col-xs-9">  '  + 
+              '    <div class="mz-switch-field">  '  + 
+              '      <input type="radio" name="slides[' + slide_key + '][status]" value="1" id="input-slide-status-enabled-' + slide_key + '" >  '  + 
+              '      <label for="input-slide-status-enabled-' + slide_key + '">{{ text_enabled }}</label>  '  + 
+              '      <input type="radio" name="slides[' + slide_key + '][status]" value="0" id="input-slide-status-disabled-' + slide_key + '" checked>  '  + 
+              '      <label for="input-slide-status-disabled-' + slide_key + '" >{{ text_disabled }}</label>  '  + 
+              '    </div>  '  + 
+              '  </div>  '  + 
+              '</div>  ';
+      
+      html += '<div class="form-group required">  '  + 
+              '  <label class="col-xs-3 control-label" for="input-sort-order-' + slide_key + '">{{ entry_sort_order }}</label>  '  + 
+              '  <div class="col-xs-9">  '  + 
+              '    <input class="form-control" id="input-sort-order-' + slide_key + '" placeholder="{{ entry_sort_order }}" type="text" name="slides[' + slide_key + '][sort_order]" value="0" >  '  + 
+              '  </div>  '  + 
+              '</div>  ';
+      
+      html += '<div class="form-group">'+
+              '  <label class="col-xs-3 control-label">{{ entry_type }}</label>'+
+              '  <div class="col-xs-9">'+
+              '    <div class="mz-switch-field">'+
+                    {% for type in types %}
+                      {% if ('image' == type['code']) %}
+              '        <input type="radio" name="slides[' + slide_key + '][type]" value="{{ type['code'] }}" id="input-slide-type-{{ type['code'] }}-' + slide_key + '" checked>'+
+              '        <label data-toggle="tab" href="#tab-type-{{ type['code'] }}-' + slide_key + '" for="input-slide-type-{{ type['code'] }}-' + slide_key + '" >{{ type['text'] }}</label>'+
+                      {% else %}
+              '        <input type="radio" name="slides[' + slide_key + '][type]" value="{{ type['code'] }}" id="input-slide-type-{{ type['code'] }}-' + slide_key + '">'+
+              '        <label data-toggle="tab" href="#tab-type-{{ type['code'] }}-' + slide_key + '" for="input-slide-type-{{ type['code'] }}-' + slide_key + '" >{{ type['text'] }}</label>'+
+                      {% endif %}
+                    {% endfor %}
+              '    </div>'+
+              '  </div>'+
+              '</div>';
+
+      html += '<div class="tab-content">'+
+              '  <div id="tab-type-image-' + slide_key + '" class="tab-pane active">'+
+              '    <div class="form-group">'+
+              '      <label class="col-xs-3 control-label">{{ entry_image }}</label>'+
+              '      <div class="col-xs-9">'+
+              '        <ul class="nav nav-tabs">'+
+              '          <li class="active"><a href="#tab-slide-image-' + slide_key + '" data-meta="image" data-toggle="tab">{{ tab_image }}</a></li>'+
+              '          <li><a href="#tab-slide-svg-' + slide_key + '" data-meta="image" data-toggle="tab">{{ tab_svg }}</a></li>'+
+              '        </ul>'+
+              '        <div class="tab-content">'+
+              '          <div class="tab-pane active" id="tab-slide-image-' + slide_key + '">'+
+              '            <div class="el-group">'+
+                          {% for language in languages %} 
+              '              <span class="el-item-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>'+
+              '              <div class="el-item">'+
+              '                <a href="" id="thumb-slide-image{{ language['language_id'] }}-' + slide_key + '" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder_image }}" alt="" title="" data-placeholder="{{ placeholder_image }}" /></a><input type="hidden" name="slides[' + slide_key + '][slide_image][{{ language['language_id'] }}]" value="" id="input-slide-image{{ language['language_id'] }}-' + slide_key + '" />'+
+              '              </div>'+
+                          {% endfor %} 
+              '            </div>'+
+              '          </div>'+
+              '          <div class="tab-pane" id="tab-slide-svg-' + slide_key + '">'+
+              '            <div class="el-group">'+
+                          {% for language in languages %} 
+              '              <span class="el-item-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>'+
+              '              <div class="el-item">'+
+              '                <a href="" id="thumb-slide-svg{{ language['language_id'] }}-' + slide_key + '" data-toggle="svg" class="img-thumbnail"><img width="100" height="100" src="{{ placeholder_svg }}" alt="" title="" data-placeholder="{{ placeholder_svg }}" /></a><input type="hidden" name="slides[' + slide_key + '][slide_svg][{{ language['language_id'] }}]" value="" id="input-slide-svg{{ language['language_id'] }}-' + slide_key + '" />'+
+              '              </div>'+
+                          {% endfor %} 
+              '            </div>'+
+              '          </div>'+
+              '        </div>'+
+              '      </div>'+
+              '    </div>'+
+              '    <div class="form-group">'  + 
+              '      <label class="col-xs-3 control-label"><span data-toggle="tooltip" title="{{ help_alt }}">{{ entry_alt }}</span></label>  '  + 
+              '      <div class="col-xs-9">  '  + 
+                      {% for language in languages %} 
+              '        <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>  '  + 
+              '          <input class="form-control" type="text" name="slides[' + slide_key + '][alt][{{ language['language_id'] }}]" value="" data-slide_key="' + slide_key + '" placeholder="{{ entry_alt }}" >  '  + 
+              '        </div>'+ 
+                      {% endfor %} 
+              '      </div>'+ 
+              '    </div>'+
+              '    <div class="form-group">' +
+              '      <label class="col-xs-3 control-label">{{ entry_url }}</label>' +
+              '      <div class="col-xs-9">' +
+              '        <div class="input-group">' +
+              '          <span class="input-group-addon"><i class="fa fa-link"></i></span>' +
+              '          <input type="text" value="" class="form-control" placeholder="{{ text_link_select }}" readonly />' +
+              '          <input id="input-setting-design-url-' + slide_key + '" type="hidden" name="slides[' + slide_key + '][url_link_code]" value=""  />' +
+              '          <div class="input-group-btn">' +
+              '            <button type="button" data-toggle="linkmanager" class="btn btn-primary"><i class="fa fa-pencil"></i></button>' +
+              '            <button type="button" data-toggle="linkmanager-delete" class="btn btn-danger"><i class="fa fa-trash"></i></button>' +
+              '          </div>' +
+              '        </div>' +
+              '      </div>' +
+              '    </div>' +
+              '    <div class="form-group">'+
+              '      <label class="col-xs-3 control-label">{{ entry_caption }}</label>'+
+              '      <div class="col-xs-9">'+
+              '        <ul class="nav nav-tabs tab-dynamic">'+
+                        {% for language in languages %}
+              '          <li><a href="#slide-type-image-caption-language-{{ language.language_id }}-' + slide_key + '" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>'+
+                        {% endfor %}
+              '        </ul>'+
+              '        <div class="tab-content">'+
+                        {% for language in languages %}
+              '          <div class="tab-pane" id="slide-type-image-caption-language-{{ language.language_id }}-' + slide_key + '">'+
+              '            <textarea name="slides[' + slide_key + '][caption][{{ language.language_id }}]" placeholder="{{ entry_caption }}" id="input-slide-type-image-caption-language-{{ language.language_id }}-' + slide_key + '" data-dialogsInBody="true" data-ckeditor="{{ code }}" class="form-control"></textarea>'+
+              '          </div>'+
+                        {% endfor %}
+              '        </div>'+
+              '      </div>'+
+              '    </div>'+
+              '  </div>'+
+              '  <div id="tab-type-html-' + slide_key + '" class="tab-pane">'+
+              '    <div class="form-group">'+
+              '      <label class="col-xs-3 control-label">{{ text_html }}</label>'+
+              '      <div class="col-xs-9">'+
+              '        <ul class="nav nav-tabs tab-dynamic">'+
+                        {% for language in languages %}
+              '          <li><a href="#slide-type-html-language-{{ language.language_id }}-' + slide_key + '" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>'+
+                        {% endfor %}
+              '        </ul>'+
+              '        <div class="tab-content">'+
+                        {% for language in languages %}
+              '          <div class="tab-pane" id="slide-type-html-language-{{ language.language_id }}-' + slide_key + '">'+
+              '            <textarea name="slides[' + slide_key + '][html][{{ language.language_id }}]" placeholder="{{ entry_html }}" id="input-slide-type-html-language-{{ language.language_id }}-' + slide_key + '" data-dialogsInBody="true" data-ckeditor="{{ code }}" class="form-control"></textarea>'+
+              '          </div>'+
+                        {% endfor %}
+              '        </div>'+
+              '      </div>'+
+              '    </div>'+
+              '  </div>'+
+              '  <div id="tab-type-module-' + slide_key + '" class="tab-pane">'+
+              '    <div class="form-group">'+
+              '      <label class="col-xs-3 control-label" for="input-type-module-' + slide_key + '">{{ text_module }}</label>'+
+              '      <div class="col-xs-9">'+
+              '        <select name="slides[' + slide_key + '][module]" id="input-type-module-' + slide_key + '" class="form-control">'+
+              '          <option value=""></option>'+
+                        {% for extension in extensions %}
+              '          <optgroup label="{{ extension.name|e('js') }}">'+
+                        {% if not extension.module %}
+              '            <option value="{{ extension.code }}">{{ extension.name|e('js') }}</option>'+
+                        {% else %}
+                        {% for module in extension.module %}
+              '            <option value="{{ module.code }}">{{ module.name|e('js') }}</option>'+
+                        {% endfor %}
+                        {% endif %}
+              '          </optgroup>'+
+                        {% endfor %}
+              '        </select>'+
+              '      </div>'+
+              '    </div>'+
+              '  </div>'+
+              '  <div id="tab-type-content-' + slide_key + '" class="tab-pane">'+
+              '    <div class="form-group">'+
+              '      <label class="col-xs-3 control-label" for="input-type-content-name-' + slide_key + '">{{ text_content }}</label>'+
+              '      <div class="col-xs-9">'+
+              '        <input type="text" name="slides[' + slide_key + '][content_name]" value="" data-slide_key="' + slide_key + '" placeholder="{{ help_content }}" id="input-type-content-name-' + slide_key + '" class="form-control input-content-builder" />'+
+              '        <input id="input-type-content-id-' + slide_key + '" type="hidden" name="slides[' + slide_key + '][content_id]" value=""  />'+
+              '      </div>'+
+              '    </div>'+
+              '  </div>'+
+              '</div>';
+      
+    html += '</div>'; 
+        
+    return html;
+}
+
+var slide_key = {{ slide_key }};
+
+// add slides
+$('#button-add-slide').on('click', function(){
+    // increase key value by one
+    slide_key = slide_key + 1;
+    
+    // Add slide
+    $('#tab-slide').append(getSlideHTML(slide_key));
+    
+    // Add slide content
+    $('#tab-slide-content').append(getSlideContentHTML(slide_key));
+    
+    // Initilalise slide javascript
+    initSlideContent('#tab-slide-' + slide_key);
+    
+    // Active slide in case of only one slide available
+    if($('#tab-slide li').length == 1){
+        $('#tab-slide a:first').tab('show');
+    }
+});
+
+// Remove slide
+$('#button-remove-slide').on('click', function(){
+    $('#tab-slide>.active, #tab-slide-content>.tab-pane.active').remove();
+    $('#tab-slide a:first').tab('show');
+});
+
+// initialise all slide content
+initSlideContent('#tab-slide-content');
+
+/**
+ * initialise Javascript to slide content
+ * @param {String} slide_content slide content selector
+ * */
+function initSlideContent(slide_content){
+    InitJsGlobal(slide_content);
+    
+    // Tooltip
+    $(slide_content).find('[data-toggle="tooltip"]').tooltip();
+    
+    // Content
+    $(slide_content).find('.input-content-builder').autocomplete({
+            'source': function(request, response) {
+                    $.ajax({
+                            url: 'index.php?route=extension/maza/content_builder/autocomplete&user_token={{ user_token }}{{ skip_content_id?'&skip_content_id=' ~ skip_content_id }}&filter_name=' +  encodeURIComponent(request),
+                            dataType: 'json',
+                            success: function(json) {
+                                    response($.map(json, function(item) {
+                                            return {
+                                                    label: item['name'],
+                                                    value: item['content_id']
+                                            };
+                                    }));
+                            }
+                    });
+            },
+            'select': function(item) {
+                    $(this).val(item['label']);
+                    $('#input-type-content-id-' + $(this).data('slide_key')).val(item['value']);
+            }
+    });
+}
+</script>
+<form action="{{ import }}" enctype="multipart/form-data" method="post" id="form-import" style="display: none;"><input type="file" accept=".json" name="file" /></form>
+<script>
+$('#button-import').on('click', function(){
+    $('#form-import input[name=\'file\']').val('').trigger('click');
+    
+    if (typeof timer != 'undefined') {
+    	clearInterval(timer);
+    }
+
+    timer = setInterval(function() {
+        if ($('#form-import input[name=\'file\']').val() != '') {
+            clearInterval(timer);
+            $('#form-import').submit();
+        }
+    }, 500);
+    
+});
+{#Confirm before delete module#}
+$('#button-delete').on('click', function(){
+    if(confirm("{{ text_confirm }}")){
+        return true;
+    } else {
+        return false;
+    }
+});
+</script>
+{{ mz_footer }}

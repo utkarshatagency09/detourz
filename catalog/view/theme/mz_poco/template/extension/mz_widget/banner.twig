@@ -1,0 +1,16 @@
+{% if heading_title is not empty %}
+<h3 class="widget-title">{{ heading_title }}</h3>
+{% endif %}
+      
+{% if url %}<a class="d-block" href="{{ url.href }}" {{ url.attr }} {% if alt %}title="{{ alt|e }}"{% endif %} {% if url_target %}target="{{ url_target }}"{% endif %}>{% endif %}
+<div class="hover-effect {{ widget_banner_effect }}">
+  {% if lazy_loading %}
+  <img class="lazy-load loader-spinner" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="{{ banner_width }}" height="{{ banner_height }}" data-src="{{ banner_image }}" {% if banner_srcset %}data-srcset="{{ banner_srcset }}"{% endif %} {% if srcset_sizes %}data-sizes="{{ srcset_sizes }}"{% endif %} {% if alt %}alt="{{ alt|e }}"{% endif %} />
+  {% else %}
+  <img src="{{ banner_image }}" {% if banner_srcset %}srcset="{{ banner_srcset }}"{% endif %} {% if srcset_sizes %}sizes="{{ srcset_sizes }}"{% endif %} {% if alt %}alt="{{ alt|e }}"{% endif %} />
+  {% endif %}
+  {% if banner_caption is not empty %}
+  <div class="overlay-caption">{{ banner_caption }}</div>
+  {% endif %}
+</div>
+{% if url %}</a>{% endif %}

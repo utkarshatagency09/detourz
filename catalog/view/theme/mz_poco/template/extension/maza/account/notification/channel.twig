@@ -1,0 +1,103 @@
+{{ header }}
+<div id="extension-maza-account-notification-channel" class="container content pb-5">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      {% for breadcrumb in breadcrumbs|slice(0,-1) %}
+        <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+      {% endfor %}
+      <li class="breadcrumb-item active" aria-current="page">{{ breadcrumbs|last.text }}</li>
+    </ol>
+  </nav>
+  <div class="row">{{ column_left }}
+    {% if column_left and column_right %}
+      {% set class = 'col-md-6' %}
+    {% elseif column_left or column_right %}
+      {% set class = 'col-md-9' %}
+    {% else %}
+      {% set class = 'col-md-12' %}
+    {% endif %}
+    <div id="content" class="{{ class }}">
+      {{ content_top }}
+      <h1 class="page-title h3 mb-5">{{ heading_title }}</h1>
+
+      <form action="{{ action }}" method="post" class="ajax-form">
+        {% if channels %}
+          <div class="row py-4">
+            <div class="col-12 col-lg-5 mb-3">
+              <h5>{{ text_email }}</h5>
+              <p>{{ text_email_description }}</p>
+            </div>
+            <div class="col-12 col-lg-7">
+              {% for channel in channels %}
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" name="channel[{{ channel.channel_id }}][methods][]" value="email" id="input-channel-email{{ channel.channel_id }}" {{ 'email' in channel.methods ? 'checked' }}>
+                <label class="form-check-label fw-bold" for="input-channel-email{{ channel.channel_id }}">{{ channel.name }}</label>
+                {% if channel.description %}
+                <p class="text-muted">{{ channel.description }}</p>
+                {% endif %}
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% if sms_notification %}
+          <div class="row py-4">
+            <div class="col-12 col-lg-5 mb-3">
+              <h5>{{ text_sms }}</h5>
+              <p>{{ text_sms_description }}</p>
+            </div>
+            <div class="col-12 col-lg-7">
+              {% for channel in channels %}
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" name="channel[{{ channel.channel_id }}][methods][]" value="sms" id="input-channel-sms{{ channel.channel_id }}" {{ 'sms' in channel.methods ? 'checked' }}>
+                <label class="form-check-label fw-bold" for="input-channel-sms{{ channel.channel_id }}">{{ channel.name }}</label>
+                {% if channel.description %}
+                <p class="text-muted">{{ channel.description }}</p>
+                {% endif %}
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+          {% if push_notification %}
+          <div class="row py-4">
+            <div class="col-12 col-lg-5 mb-3">
+              <h5>{{ text_push }}</h5>
+              <p>{{ text_push_description }}</p>
+            </div>
+            <div class="col-12 col-lg-7">
+              {% for channel in channels %}
+              <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" name="channel[{{ channel.channel_id }}][methods][]" value="push" id="input-channel-push{{ channel.channel_id }}" {{ 'push' in channel.methods ? 'checked' }}>
+                <label class="form-check-label fw-bold" for="input-channel-push{{ channel.channel_id }}">{{ channel.name }}</label>
+                {% if channel.description %}
+                <p class="text-muted">{{ channel.description }}</p>
+                {% endif %}
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
+        {% else %}<p>{{ text_empty }}</p>
+        {% endif %}
+        
+        <div class="buttons clearfix my-4">
+          <ul class="nav nav-pills bg-light float-start">
+            <li class="nav-item">
+              <a class="nav-link active" href="{{ channel }}">{{ text_channel }}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ product }}">{{ text_product }}</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ manufacturer }}">{{ text_manufacturer }}</a>
+            </li>
+          </ul>
+          <div class="float-end"><button type="submit" class="btn btn-primary" data-loading="{{ text_loading }}">{{ button_continue }}</button></div>
+        </div>
+      </form>
+      {{ content_bottom }}
+    </div>
+    {{ column_right }}
+  </div>
+</div>
+{{ footer }}

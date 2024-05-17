@@ -1,0 +1,124 @@
+// Gutter padding
+.gutters{
+    padding: $grid-gutter-width / 2 !important;
+    
+    &-off {
+        margin: - $grid-gutter-width / 2 !important;
+    }
+    
+    &-x{
+        padding-left: $grid-gutter-width / 2 !important;
+        padding-right: $grid-gutter-width / 2 !important;
+        
+        &-off {
+            margin-left: - $grid-gutter-width / 2 !important;
+            margin-right: - $grid-gutter-width / 2 !important;
+        }
+    }
+    
+    &-y{
+        padding-top: $grid-gutter-width / 2 !important;
+        padding-bottom: $grid-gutter-width / 2 !important;
+        
+        &-off {
+            margin-top: - $grid-gutter-width / 2 !important;
+            margin-bottom: - $grid-gutter-width / 2 !important;
+        }
+    }
+}
+.gutter-bottom{
+    margin-bottom: $grid-gutter-width;
+}
+
+// Fix font icon size
+.fixed-icon-size{
+    i.icon{
+        width: 1em;
+        text-align: center;
+    }
+}
+.fixed-size-icon-group{
+    .icon{
+        width: 1em;
+        height: 1em;
+        text-align: center;
+    }
+}
+
+// Sticky
+.mz-sticky{
+    position: fixed !important;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: $zindex-sticky;
+
+    & &-hidden {
+        display: none;
+    }
+}
+
+// Icon position
+.btn, .dropdown-item {
+    &.icon-top.both{
+        display: inline-flex;
+        flex-direction: column;
+
+        .icon{
+            margin-bottom: map-get($spacers, 1);
+        }
+    }
+    &.icon-right.both{
+        display: inline-flex;
+        align-items: center;
+        
+        .icon{
+            @include rtl-prop(margin-left, map-get($spacers, 2));
+            order: 1;
+        }
+    }
+    &.icon-left.both{
+        display: inline-flex;
+        align-items: center;
+        
+        .icon{
+            @include rtl-prop(margin-right, map-get($spacers, 2));
+        }
+    }
+}
+.dropdown-item {
+    &.icon-top.both{
+        display: flex;
+    }
+    &.icon-right.both{
+        display: flex;
+    }
+    &.icon-left.both{
+        display: flex;
+    }
+}
+
+// center font awesome icon over image
+.fa-center-icon{
+    position: relative;
+
+    &::before{
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 300%;
+    }
+}
+
+// Swap in rtl
+@if $rtl{
+    .rtl-swap{
+        -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1)";
+        transform: scaleX(-1);
+    }
+}
+
+// rounded
+.rounded-enabled {
+    @include border-radius();
+}

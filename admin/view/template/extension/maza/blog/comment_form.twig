@@ -1,0 +1,162 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- form -->
+  <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-mz-comment" class="form-horizontal">
+    <div class="tab-content">
+      <div class="tab-pane active" id="tab-mz-general">
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_general }}</div>
+          <div class="panel-body">
+            <div class="form-group required">
+              <label class="col-sm-2 control-label" for="input-article"><span data-toggle="tooltip" title="{{ help_article }}">{{ entry_article }}</span></label>
+              <div class="col-sm-10">
+                <input type="text" name="article" value="{{ article }}" placeholder="{{ entry_article }}" id="input-article" class="form-control" />
+                <input type="hidden" name="article_id" value="{{ article_id }}" />
+                {% if err_article %}
+                <div class="text-danger">{{ err_article }}</div>
+                {% endif %} </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="input-customer-id">{{ entry_customer }}</label>
+              <div class="col-sm-10">
+                <input type="text" name="customer_name" value="{{ customer_name }}" placeholder="{{ entry_customer }}" id="input-customer-id" class="form-control" />
+                <input type="hidden" name="customer_id" value="{{ customer_id }}" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="input-date-added">{{ entry_date_added }}</label>
+              <div class="col-sm-3">
+                <div class="input-group datetime">
+                  <input type="text" name="date_added" value="{{ date_added }}" placeholder="{{ entry_date_added }}" data-date-format="YYYY-MM-DD HH:mm:ss" id="input-date-added" class="form-control" />
+                  <span class="input-group-btn">
+                  <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                  </span> </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+              <div class="col-sm-10">
+                <select name="status" id="input-status" class="form-control">
+                  {% if status %}
+                  <option value="1" selected="selected">{{ text_enabled }}</option>
+                  <option value="0">{{ text_disabled }}</option>
+                  {% else %}
+                  <option value="1">{{ text_enabled }}</option>
+                  <option value="0" selected="selected">{{ text_disabled }}</option>
+                  {% endif %}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_data }}</div>
+          <div class="panel-body">
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="input-parent-comment-id">{{ entry_reply_to }}</label>
+              <div class="col-sm-10">
+                <input type="number" name="parent_comment_id" value="{{ parent_comment_id }}" placeholder="{{ column_comment_id }}" id="input-parent-comment-id" class="form-control" />
+                {% if err_reply_to %}
+                <div class="text-danger">{{ err_reply_to }}</div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="input-author">{{ entry_author }}</label>
+              <div class="col-sm-10">
+                <input type="text" name="author" value="{{ author }}" placeholder="{{ entry_author }}" id="input-author" class="form-control" />
+                {% if err_author %}
+                <div class="text-danger">{{ err_author }}</div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="input-email">{{ entry_email }}</label>
+              <div class="col-sm-10">
+                <input type="text" name="email" value="{{ email }}" placeholder="{{ entry_email }}" id="input-email" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="input-website">{{ entry_website }}</label>
+              <div class="col-sm-10">
+                <input type="text" name="website" value="{{ website }}" placeholder="{{ entry_website }}" id="input-website" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-sm-2 control-label" for="input-text">{{ entry_comment }}</label>
+              <div class="col-sm-10">
+                <textarea name="text" cols="60" rows="8" placeholder="{{ entry_comment }}" id="input-text" class="form-control">{{ text }}</textarea>
+                {% if err_text %}
+                <div class="text-danger">{{ err_text }}</div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <script type="text/javascript"><!--
+$('.datetime').datetimepicker({
+	language: '{{ datepicker }}',
+	pickDate: true,
+	pickTime: true
+});
+//--></script> 
+  <script type="text/javascript"><!--
+$('input[name=\'article\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=extension/maza/blog/article/autocomplete{{ default_url }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',			
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['article_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'article\']').val(item['label']);
+		$('input[name=\'article_id\']').val(item['value']);		
+	}	
+});
+//--></script>
+<script type="text/javascript"><!--
+$('input[name=\'customer_name\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=customer/customer/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['customer_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'customer_name\']').val(item['label']);
+                $('input[name=\'customer_id\']').val(item['value']);
+	}
+});
+//--></script> 
+</div>
+{{ mz_footer }}

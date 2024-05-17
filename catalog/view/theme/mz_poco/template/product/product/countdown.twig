@@ -1,0 +1,19 @@
+{% verbatim %}
+{% if price %}
+{% if mz_special_expire_at or mz_special_sold %}
+<div class="deal-status">
+  {% if mz_special_sold_perc %}
+  <div class="progress mb-1"><div class="progress-bar bg-secondary" role="progressbar" style="width: {{ mz_special_sold_perc }}%" aria-valuenow="{{ mz_special_sold_perc }}" aria-valuemin="0" aria-valuemax="100"></div></div>
+  {% endif %}
+  <div class="deal-info d-flex flex-wrap">
+  {% if mz_special_sold %}
+  <span class="claimed text-secondary me-3">{{ mz_special_sold_text }}</span>
+  {% endif %}
+  {% if mz_special_expire_at %}
+  <span class="countdown">{{ text_endin }} <span data-countdown="{{ mz_special_expire_at }}" data-compact="true"></span></span>
+  {% endif %}
+  </div>
+</div>
+{% endif %}
+{% endif %}
+{% endverbatim %}

@@ -1,0 +1,20 @@
+<div class="toast m-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="10000">
+	{% if title %}
+	<div class="toast-header{% if color %} text-bg-{{ color }}{% endif %}"> 
+		<span class="me-auto">{% if icon %}<i class="{{ icon }}"></i> {% endif %}{{ title }}</span>
+		<button type="button" class="ms-2 mb-1 btn-close btn-close-{{ color }}-contrast" data-bs-dismiss="toast" aria-label="Close"></button>
+	</div>
+	{% endif %}
+	<div class="toast-body">
+		{% if thumb %}
+		<div class="d-flex mb-3 align-items-start">
+			<img src="{{ thumb }}" class="img-thumbnail me-2 flex-shrink-0" /> <p>{{ message }}</p>
+		</div>
+		{% else %}<p class="mb-3">{{ message }}</p>{% endif %}
+		{% if actions %}<div class="row g-3">
+			{% for action in actions %}
+			<div class="col d-grid"><a class="btn btn-{{ action.color }}" href="{{ action.href }}">{{ action.name }} <i class="fas fa-long-arrow-alt-right rtl-swap"></i></a></div>
+			{% endfor %}
+		</div>{% endif %}
+	</div>
+</div>

@@ -1,0 +1,122 @@
+<div id="font-icon-manager" class="modal-dialog modal-lg">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h4 class="modal-title">{{ heading_title }}</h4>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-sm-5"><a href="{{ parent }}" data-toggle="tooltip" title="{{ button_parent }}" id="button-parent" class="btn btn-default"><i class="fa fa-level-up"></i></a>
+        </div>
+        <div class="col-sm-7">
+          <div class="input-group">
+            <input type="text" name="search" value="{{ filter_name }}" placeholder="{{ entry_search }}" class="form-control">
+            <span class="input-group-btn">
+            <button type="button" data-toggle="tooltip" title="{{ button_search }}" id="button-search" class="btn btn-primary"><i class="fa fa-search"></i></button>
+            </span></div>
+        </div>
+      </div>
+      <hr />
+      {% if style_class is not empty %}
+        {% for style in style_class %}
+        <div class="input-group inline">
+          <span class="input-group-addon"><input id="input-{{ style.class|replace({' ': '-'}) }}" type="checkbox" name="style_class" value="{{ style.class }}" /></span>
+          <label class="form-control input-sm" for="input-{{ style.class|replace({' ': '-'}) }}">{{ style.label }}</label>
+        </div>
+        {% endfor %}
+      <hr />
+      {% endif %}
+      {% for item in items|batch(6) %}
+      <div class="row">
+        {% for item in item %}
+        <div class="col-xs-2 text-center">
+          {% if item.type == 'package' %}
+          <div class="text-center"><a href="{{ item.href }}" class="package" style="vertical-align: middle;"><i class="fa fa-folder fa-5x"></i></a></div>
+          <label>{{ item.name }}</label>
+          {% endif %}
+          {% if item.type == 'icon' %}
+          <div class="text-center"><a href="" data-icon_class="{{ item.class }}" class="icon-thumb"><i class="{{ item.class }}"></i></a></a></div>
+          <label>{{ item.name }}</label>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      <br />
+      {% endfor %}
+    </div>
+    <div class="modal-footer">{{ pagination }}</div>
+  </div>
+</div>
+<script type="text/javascript">
+{% if target %}
+$('#font-icon-manager a.icon-thumb').on('click', function(e) {
+	e.preventDefault();
+
+	{% if thumb %}
+	$('#{{ thumb }}').find('i').attr('class', $(this).data('icon_class'));
+	{% endif %}
+
+	$('#{{ target }}').val($(this).data('icon_class'));
+
+	$('#modal-image').modal('hide');
+});
+{% endif %}
+
+$('a.package').on('click', function(e) {
+	e.preventDefault();
+
+	$('#modal-image').load($(this).attr('href'));
+});
+
+$('.pagination a').on('click', function(e) {
+	e.preventDefault();
+
+	$('#modal-image').load($(this).attr('href'));
+});
+
+$('#button-parent').on('click', function(e) {
+	e.preventDefault();
+
+	$('#modal-image').load($(this).attr('href'));
+});
+
+
+$('input[name=\'search\']').on('keydown', function(e) {
+	if (e.which == 13) {
+		$('#button-search').trigger('click');
+	}
+});
+
+$('#button-search').on('click', function(e) {
+	var url = 'index.php?route=extension/maza/common/font_icon_manager&user_token={{ user_token }}{{ url }}&package={{ package }}';
+
+	var filter_name = $('input[name=\'search\']').val();
+
+	if (filter_name) {
+		url += '&filter_name=' + encodeURIComponent(filter_name);
+	}
+
+	{% if thumb %}
+	url += '&thumb=' + '{{ thumb }}';
+	{% endif %}
+
+	{% if target %}
+	url += '&target=' + '{{ target }}';
+	{% endif %}
+
+	$('#modal-image').load(url);
+});
+
+$('[name="style_class"]').on('change', function(e){
+    var target_class_input = $(e.target);
+    
+    $('#font-icon-manager a.icon-thumb').each(function(){
+        if(target_class_input.is(':checked')){
+            $(this).children('i').addClass(target_class_input.val());
+        } else {
+            $(this).children('i').removeClass(target_class_input.val());
+        }
+        $(this).data('icon_class', $(this).children('i').attr('class'));
+    });
+});
+</script>

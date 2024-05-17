@@ -1,0 +1,21 @@
+<div class="mb-5" id="payment-method">
+  <h4 class="mb-4">{{ text_payment_method }}</h4>
+  {% if error_warning %}
+    <div class="alert alert-warning"><i class="fas fa-exclamation-circle"></i> {{ error_warning }}</div>
+  {% endif %}
+  {% for payment_method in payment_methods %}
+    <div class="form-check">
+      {% if payment_method.code == code %}
+        <input type="radio" id="input-payment-method-{{ payment_method.code }}" name="payment_method" value="{{ payment_method.code }}" class="form-check-input" checked="checked">
+      {% else %}
+        <input type="radio" id="input-payment-method-{{ payment_method.code }}" name="payment_method" value="{{ payment_method.code }}" class="form-check-input">
+      {% endif %}
+      <label class="form-check-label" for="input-payment-method-{{ payment_method.code }}">
+        {{ payment_method.title }}
+        {% if payment_method.terms %}
+          ({{ payment_method.terms }})
+        {% endif %}
+      </label>
+    </div>
+  {% endfor %}
+</div>

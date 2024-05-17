@@ -1,0 +1,24 @@
+{% verbatim %}{% if products %}{% endverbatim %}
+{% if label %}<div class="input-group flex-nowrap">
+  <label class="input-group-text m-0" for="input-sort-{{ mz_suffix }}">{% verbatim %}{{ text_sort }}{% endverbatim %}</label>{% endif %}
+  <select id="input-sort-{{ mz_suffix }}" class="form-select" onchange="location = this.value;">
+  {% verbatim %}{% for sort_data in sorts %}
+    {% if sort_data.value == '%s-%s'|format(sort, order) %}
+    <option value="{{ sort_data.href }}" selected="selected">{{ sort_data.text }}</option>
+    {% else %}
+    <option value="{{ sort_data.href }}">{{ sort_data.text }}</option>
+    {% endif %}
+  {% endfor %}{% endverbatim %}
+  </select>
+  {# <div id="input-sort" class="dropdown">
+    {% set label = '' %}
+    {% for sort_data in sorts %}{% if sort_data.value == '%s-%s'|format(sort, order) %}{% set label = sort_data.text %}{% endif %}{% endfor %}
+    <button type="button" class="btn border dropdown-toggle" data-bs-toggle="dropdown">{{ label }}</button>
+    <div class="dropdown-menu">
+      {% for sort_data in sorts %}
+        <a class="dropdown-item" href="{{ sort_data.href }}">{{ sort_data.text }}</a>
+      {% endfor %}
+    </div>
+  </div> #}
+{% if label %}</div>{% endif %}
+{% verbatim %}{% endif %}{% endverbatim %}

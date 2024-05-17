@@ -1,0 +1,9 @@
+/*.content{
+    &-search-criteria{
+        @include media-breakpoint-up('sm'){
+            [name="category_id"]{
+                @include rtl-prop(border-left, 0);
+            }
+        }
+    }
+}*/

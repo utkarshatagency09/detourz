@@ -1,0 +1,311 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- Form -->
+  <form action="{{ action }}" class="form-horizontal" enctype="multipart/form-data" id="form-newsletter" method="post">
+    <div class="tab-content">
+      <div id="tab-mz-general" class="tab-pane active">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            {# Newsletter confirm subscribe status#}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-newsletter-confirm-subscribe-status">{{ entry_subscribe_confirmation }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (newsletter_confirm_subscribe_status) %} 
+                  <input type="radio" name="newsletter_confirm_subscribe_status" value="1" id="input-newsletter-confirm-subscribe-status-enabled" checked>
+                  <label for="input-newsletter-confirm-subscribe-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="newsletter_confirm_subscribe_status" value="0" id="input-newsletter-confirm-subscribe-status-disabled">
+                  <label for="input-newsletter-confirm-subscribe-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="newsletter_confirm_subscribe_status" value="1" id="input-newsletter-confirm-subscribe-status-enabled" >
+                  <label for="input-newsletter-confirm-subscribe-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="newsletter_confirm_subscribe_status" value="0" id="input-newsletter-confirm-subscribe-status-disabled" checked>
+                  <label for="input-newsletter-confirm-subscribe-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+            
+            {# Newsletter confirm unsubscribe status#}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-newsletter-confirm-unsubscribe-status">{{ entry_unsubscribe_confirmation }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (newsletter_confirm_unsubscribe_status) %} 
+                  <input type="radio" name="newsletter_confirm_unsubscribe_status" value="1" id="input-newsletter-confirm-unsubscribe-status-enabled" checked>
+                  <label for="input-newsletter-confirm-unsubscribe-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="newsletter_confirm_unsubscribe_status" value="0" id="input-newsletter-confirm-unsubscribe-status-disabled">
+                  <label for="input-newsletter-confirm-unsubscribe-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="newsletter_confirm_unsubscribe_status" value="1" id="input-newsletter-confirm-unsubscribe-status-enabled" >
+                  <label for="input-newsletter-confirm-unsubscribe-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="newsletter_confirm_unsubscribe_status" value="0" id="input-newsletter-confirm-unsubscribe-status-disabled" checked>
+                  <label for="input-newsletter-confirm-unsubscribe-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            {#Newsletter welcome mail status#}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-newsletter-welcome-mail-status">{{ entry_send_welcome_mail }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (newsletter_welcome_mail_status) %} 
+                  <input type="radio" name="newsletter_welcome_mail_status" value="1" id="input-newsletter-welcome-mail-status-enabled" checked>
+                  <label for="input-newsletter-welcome-mail-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="newsletter_welcome_mail_status" value="0" id="input-newsletter-welcome-mail-status-disabled">
+                  <label for="input-newsletter-welcome-mail-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="newsletter_welcome_mail_status" value="1" id="input-newsletter-welcome-mail-status-enabled" >
+                  <label for="input-newsletter-welcome-mail-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="newsletter_welcome_mail_status" value="0" id="input-newsletter-welcome-mail-status-disabled" checked>
+                  <label for="input-newsletter-welcome-mail-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            {#Newsletter required approval#}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-newsletter-required-approval">{{ entry_required_approval }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (newsletter_required_approval) %} 
+                  <input type="radio" name="newsletter_required_approval" value="1" id="input-newsletter-required-approval-yes" checked>
+                  <label for="input-newsletter-required-approval-yes" >{{ text_yes }}</label>
+                  <input type="radio" name="newsletter_required_approval" value="0" id="input-newsletter-required-approval-no">
+                  <label for="input-newsletter-required-approval-no">{{ text_no }}</label>
+                  {% else %} 
+                  <input type="radio" name="newsletter_required_approval" value="1" id="input-newsletter-required-approval-yes" >
+                  <label for="input-newsletter-required-approval-yes">{{ text_yes }}</label>
+                  <input type="radio" name="newsletter_required_approval" value="0" id="input-newsletter-required-approval-no" checked>
+                  <label for="input-newsletter-required-approval-no" >{{ text_no }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="tab-mz-translate" class="tab-pane">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            {# Subscribe success #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-newsletter-translate-subscribe-success">{{ entry_subscribe_success }}</label>
+              <div class="col-xs-9">
+              {% for language in languages %} 
+                <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" newsletter_translate="{{ language['name'] }}" /></span>
+                  <input id="input-newsletter-translate-subscribe-success" class="form-control" type="text" name="newsletter_translate[{{ language['language_id'] }}][subscribe_success]" value="{{ newsletter_translate[language['language_id']]['subscribe_success'] is defined?newsletter_translate[language['language_id']]['subscribe_success']:'' }}" placeholder="{{ entry_subscribe_success }}" >
+                </div>
+              {% endfor %} 
+              </div>
+            </div>
+              
+            {# Unsubscribe success #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-newsletter-translate-unsubscribe-success">{{ entry_unsubscribe_success }}</label>
+              <div class="col-xs-9">
+              {% for language in languages %} 
+                <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" newsletter_translate="{{ language['name'] }}" /></span>
+                  <input id="input-newsletter-translate-unsubscribe-success" class="form-control" type="text" name="newsletter_translate[{{ language['language_id'] }}][unsubscribe_success]" value="{{ newsletter_translate[language['language_id']]['unsubscribe_success'] is defined?newsletter_translate[language['language_id']]['unsubscribe_success']:'' }}" placeholder="{{ entry_unsubscribe_success }}" >
+                </div>
+              {% endfor %} 
+              </div>
+            </div>
+              
+            {# Subscribe confirm mail sent success #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-newsletter-translate-subscribe-confirm-mail-sent-success">{{ entry_subscribe_confirm_mail_sent_success }}</label>
+              <div class="col-xs-9">
+              {% for language in languages %} 
+                <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" newsletter_translate="{{ language['name'] }}" /></span>
+                  <input id="input-newsletter-translate-subscribe-confirm-mail-sent-success" class="form-control" type="text" name="newsletter_translate[{{ language['language_id'] }}][subscribe_confirm_mail_sent_success]" value="{{ newsletter_translate[language['language_id']]['subscribe_confirm_mail_sent_success'] is defined?newsletter_translate[language['language_id']]['subscribe_confirm_mail_sent_success']:'' }}" placeholder="{{ entry_subscribe_confirm_mail_sent_success }}" >
+                </div>
+              {% endfor %} 
+              </div>
+            </div>
+              
+            {# Unsubscribe confirm mail sent success #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-newsletter-translate-unsubscribe-confirm-mail-sent-success">{{ entry_unsubscribe_confirm_mail_sent_success }}</label>
+              <div class="col-xs-9">
+              {% for language in languages %} 
+                <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" newsletter_translate="{{ language['name'] }}" /></span>
+                  <input id="input-newsletter-translate-unsubscribe-confirm-mail-sent-success" class="form-control" type="text" name="newsletter_translate[{{ language['language_id'] }}][unsubscribe_confirm_mail_sent_success]" value="{{ newsletter_translate[language['language_id']]['unsubscribe_confirm_mail_sent_success'] is defined?newsletter_translate[language['language_id']]['unsubscribe_confirm_mail_sent_success']:'' }}" placeholder="{{ entry_unsubscribe_confirm_mail_sent_success }}" >
+                </div>
+              {% endfor %} 
+              </div>
+            </div>
+              
+            {# Invalid email#}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-newsletter-translate-invalid-email">{{ entry_invalid_email }}</label>
+              <div class="col-xs-9">
+              {% for language in languages %} 
+                <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" newsletter_translate="{{ language['name'] }}" /></span>
+                  <input id="input-newsletter-translate-invalid-email" class="form-control" type="text" name="newsletter_translate[{{ language['language_id'] }}][invalid_email]" value="{{ newsletter_translate[language['language_id']]['invalid_email'] is defined?newsletter_translate[language['language_id']]['invalid_email']:'' }}" placeholder="{{ entry_invalid_email }}" >
+                </div>
+              {% endfor %} 
+              </div>
+            </div>
+              
+            {# Email not found #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-newsletter-translate-email-not-found">{{ entry_email_not_found }}</label>
+              <div class="col-xs-9">
+              {% for language in languages %} 
+                <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" newsletter_translate="{{ language['name'] }}" /></span>
+                  <input id="input-newsletter-translate-email-not-found" class="form-control" type="text" name="newsletter_translate[{{ language['language_id'] }}][email_not_found]" value="{{ newsletter_translate[language['language_id']]['email_not_found'] is defined?newsletter_translate[language['language_id']]['email_not_found']:'' }}" placeholder="{{ entry_email_not_found }}" >
+                </div>
+              {% endfor %} 
+              </div>
+            </div>
+              
+            {# Email exist #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-newsletter-translate-email-exist">{{ entry_email_exist }}</label>
+              <div class="col-xs-9">
+              {% for language in languages %} 
+                <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" newsletter_translate="{{ language['name'] }}" /></span>
+                  <input id="input-newsletter-translate-email-exist" class="form-control" type="text" name="newsletter_translate[{{ language['language_id'] }}][email_exist]" value="{{ newsletter_translate[language['language_id']]['email_exist'] is defined?newsletter_translate[language['language_id']]['email_exist']:'' }}" placeholder="{{ entry_email_exist }}" >
+                </div>
+              {% endfor %} 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="tab-mz-template" class="tab-pane">
+        
+        {#Confirm subscribe email#}
+        <div class="panel mz-panel-default">
+          <div class="panel-heading clearfix">
+            <h4 class="pull-left panel-title">{{ text_confirm_subscribe_email }}</h4>
+            <ul class="nav nav-tabs tab-dynamic pull-right mz-nav-sandwich-tab">
+              {% for language in languages %}
+              <li><a href="#language-confirm-subscribe-email{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="panel-body">
+            <div class="tab-content">
+              {% for language in languages %}
+              <div class="tab-pane" id="language-confirm-subscribe-email{{ language.language_id }}">
+                <div class="form-group">
+                  <label class="col-xs-2 control-label" for="input-newsletter-confirm-subscribe-template-subject{{ language.language_id }}">{{ entry_subject }}</label>
+                  <div class="col-xs-10">
+                    <input type="text" name="newsletter_confirm_subscribe_template[{{ language.language_id }}][subject]" value="{{ newsletter_confirm_subscribe_template[language.language_id]['subject'] is defined ? newsletter_confirm_subscribe_template[language.language_id]['subject'] }}"  id="input-newsletter-confirm-subscribe-template-subject{{ language.language_id }}" placeholder="{{ entry_subject }}" class="form-control large" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-xs-2 control-label" for="input-newsletter-confirm-subscribe-template-message{{ language.language_id }}"><span data-toggle="tooltip" title="{{ help_confirm_subscribe_message }}">{{ entry_message }}</span></label>
+                  <div class="col-xs-10">
+                    <textarea name="newsletter_confirm_subscribe_template[{{ language.language_id }}][message]" placeholder="{{ entry_message }}" id="input-newsletter-confirm-subscribe-template-message{{ language.language_id }}" data-ckeditor="{{ code }}" class="form-control">{{ newsletter_confirm_subscribe_template[language.language_id]['message'] is defined ? newsletter_confirm_subscribe_template[language.language_id]['message'] : '[subscribe]' }}</textarea>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+            
+        {#Confirm unsubscribe email#}
+        <div class="panel mz-panel-default">
+          <div class="panel-heading clearfix">
+            <h4 class="pull-left panel-title">{{ text_confirm_unsubscribe_email }}</h4>
+            <ul class="nav nav-tabs tab-dynamic pull-right mz-nav-sandwich-tab">
+              {% for language in languages %}
+              <li><a href="#language-confirm-unsubscribe-email{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="panel-body">
+            <div class="tab-content">
+              {% for language in languages %}
+              <div class="tab-pane" id="language-confirm-unsubscribe-email{{ language.language_id }}">
+                <div class="form-group">
+                  <label class="col-xs-2 control-label" for="input-newsletter-confirm-unsubscribe-template-subject{{ language.language_id }}">{{ entry_subject }}</label>
+                  <div class="col-xs-10">
+                    <input type="text" name="newsletter_confirm_unsubscribe_template[{{ language.language_id }}][subject]" value="{{ newsletter_confirm_unsubscribe_template[language.language_id]['subject'] is defined ? newsletter_confirm_unsubscribe_template[language.language_id]['subject'] }}"  id="input-newsletter-confirm-unsubscribe-template-subject{{ language.language_id }}" placeholder="{{ entry_subject }}" class="form-control large" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-xs-2 control-label" for="input-newsletter-confirm-unsubscribe-template-message{{ language.language_id }}"><span data-toggle="tooltip" title="{{ help_confirm_unsubscribe_message }}">{{ entry_message }}</span></label>
+                  <div class="col-xs-10">
+                    <textarea name="newsletter_confirm_unsubscribe_template[{{ language.language_id }}][message]" placeholder="{{ entry_message }}" id="input-newsletter-confirm-unsubscribe-template-message{{ language.language_id }}" data-ckeditor="{{ code }}" class="form-control">{{ newsletter_confirm_unsubscribe_template[language.language_id]['message'] is defined ? newsletter_confirm_unsubscribe_template[language.language_id]['message'] : '[unsubscribe]' }}</textarea>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+            
+        {#Welcome email#}
+        <div class="panel mz-panel-default">
+          <div class="panel-heading clearfix">
+            <h4 class="pull-left panel-title">{{ text_welcome_email }}</h4>
+            <ul class="nav nav-tabs tab-dynamic pull-right mz-nav-sandwich-tab">
+              {% for language in languages %}
+              <li><a href="#language-newsletter-welcome-email{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="panel-body">
+            <div class="tab-content">
+              {% for language in languages %}
+              <div class="tab-pane" id="language-newsletter-welcome-email{{ language.language_id }}">
+                <div class="form-group">
+                  <label class="col-xs-2 control-label" for="input-newsletter-welcome-mail-template-subject{{ language.language_id }}">{{ entry_subject }}</label>
+                  <div class="col-xs-10">
+                    <input type="text" name="newsletter_welcome_mail_template[{{ language.language_id }}][subject]" value="{{ newsletter_welcome_mail_template[language.language_id]['subject'] is defined ? newsletter_welcome_mail_template[language.language_id]['subject'] }}"  id="input-newsletter-welcome-mail-template-subject{{ language.language_id }}" placeholder="{{ entry_subject }}" class="form-control large" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-xs-2 control-label" for="input-newsletter-welcome-mail-template-message{{ language.language_id }}">{{ entry_message }}</label>
+                  <div class="col-xs-10">
+                    <textarea name="newsletter_welcome_mail_template[{{ language.language_id }}][message]" placeholder="{{ entry_message }}" id="input-newsletter-welcome-mail-template-message{{ language.language_id }}" data-ckeditor="{{ code }}" class="form-control">{{ newsletter_welcome_mail_template[language.language_id]['message'] is defined ? newsletter_welcome_mail_template[language.language_id]['message'] }}</textarea>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <script src="view/javascript/maza/ckeditor/ckeditor.js"></script>
+  <form action="{{ import }}" enctype="multipart/form-data" method="post" id="form-import" style="display: none;"><input type="file" accept=".json" name="file" /></form>
+<script>
+$('#button-import').on('click', function(){
+    $('#form-import input[name=\'file\']').val('').trigger('click');
+    
+    if (typeof timer != 'undefined') {
+    	clearInterval(timer);
+    }
+
+    timer = setInterval(function() {
+        if ($('#form-import input[name=\'file\']').val() != '') {
+            clearInterval(timer);
+            $('#form-import').submit();
+        }
+    }, 500);
+    
+});
+</script>
+</div>
+{{ mz_footer }}

@@ -1,0 +1,20 @@
+@include media-breakpoint-up(md) {
+    .header, .footer, .content {
+        .entry-section { 
+            padding-left:  $grid-gutter-width; 
+            padding-right: $grid-gutter-width;
+        }
+    }
+    .container.content { 
+        padding-left:  $grid-gutter-width; 
+        padding-right: $grid-gutter-width;
+    }
+}
+@if $mz_box_layout {
+    @include media-breakpoint-up(xl) {
+        html { 
+            padding-top: $html-padding-y; 
+            padding-bottom: $html-padding-y; 
+        }
+    }
+}

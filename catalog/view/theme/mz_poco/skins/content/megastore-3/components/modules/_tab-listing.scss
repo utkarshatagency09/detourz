@@ -1,0 +1,79 @@
+.mz-tab-listing{
+    .module-title{
+        @include rtl-prop(margin-right, mz-spacer(20));
+    }
+    .nav-tabs + .mz-tab-listing-navigation{
+        @include rtl-prop(margin-left, mz-spacer(20));
+    }
+    .nav-tabs{
+        margin-bottom: mz-spacer(30);
+    }
+    .mz-tab-listing-navigation{
+        @include rtl-prop(text-align, right, left);
+        white-space: nowrap;
+        flex: 0 0 auto;
+        
+        & > div{
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: $module-title-font-size;
+            @include breakpoint-font-size($module-title-font-size);
+            min-height: 1em * $headings-line-height;
+        }
+        
+        & > .mz-swiper-nav-prev{
+            @include rtl-prop(margin-right, map-get($spacers, 1));
+        }
+        & > .mz-swiper-nav-next{
+            -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1)";
+            transform: scaleX(-1);
+        }
+        
+        .icon{
+            padding: 0;
+        }
+    }
+    
+    .mz-tab-listing-header{
+        
+        &.tabs{
+            .mz-tab-listing-navigation {
+                & > div{
+                    font-size: $nav-tab-font-size;
+                    @include breakpoint-font-size($nav-tab-font-size);
+                    min-height: calc(#{$nav-tab-padding-y * 2} + #{1em * $nav-tab-line-height});
+                }
+            }
+        }
+    }
+    
+    .mz-tab-listing-banner *{
+        display: block;
+        height: 100%;
+    }
+    
+    @include media-breakpoint-up(sm){
+        .mz-tab-listing-banner{
+            @include rtl-prop(margin-right, $grid-gutter-width);
+        }
+    }
+}
+
+.custom-pager-bg{
+    .swiper-button{
+        &-prev, &-next{
+            display: flex;
+            padding: 0.875em 0.1875em;
+            background-color: $border-color !important;
+        }
+        &-prev{
+            @include rtl-prop(left, 0);
+            @include border-start-radius($border-radius);
+        }
+        &-next{
+            @include rtl-prop(right, 0);
+            @include border-end-radius($border-radius);
+        }
+    }
+}

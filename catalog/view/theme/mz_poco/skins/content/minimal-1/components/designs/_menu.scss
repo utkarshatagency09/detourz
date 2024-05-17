@@ -1,0 +1,88 @@
+.design-menu{
+    margin-bottom: $spacer;
+    
+    .nav-link{
+        padding-top: $design-nav-link-padding-y;
+        padding-bottom: $design-nav-link-padding-y;
+    }
+    
+    .design-title{
+        margin-bottom: map-get($spacers, 2);
+    }
+    
+    .menu-wraper{
+        padding-left: $nav-link-padding-x;
+        padding-right: $nav-link-padding-x;
+        
+        .nav {
+            margin-left: -$nav-link-padding-x;
+            margin-right: -$nav-link-padding-x;
+        }
+    }
+    
+    .horizontal{
+        .design-title{
+            display: inline-block;
+            font-size: 1em;
+            line-height: $line-height-base;
+            margin-bottom: 0;
+            padding: $design-nav-link-padding-y 0;
+            @include rtl-prop(margin-right, $nav-link-padding-x);
+        }
+        
+        .menu-items{
+            display: inline-flex !important;
+            font-family: $headings-font-family;
+        }
+        
+        .nav-link.icon{
+            padding: $design-nav-link-padding-y $nav-link-padding-x * 0.5;
+            
+            &:first-child{
+                @include rtl-prop(padding-left, $nav-link-padding-x);
+            }
+            &:last-child{
+                @include rtl-prop(padding-right, $nav-link-padding-x);
+            }
+        }
+    }
+    
+    .image{
+        &-top, &-bottom{
+            .menu-image{
+                margin-bottom: map-get($spacers, 2);
+            }
+        }
+        
+        &-bottom{
+            .menu-items{
+                flex-direction: column;
+            }
+        }
+        
+        &-left{
+            .menu-image + .nav{
+                margin-left: 0;
+            }
+        }
+        
+        &-right{
+            .menu-image{
+                order: 2;
+                
+                & + .nav{
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+    
+    .both.icon-left .icon{
+        @include rtl-prop(margin-right, mz-spacer(10));
+        @include rtl-prop(padding-left, 0);
+    }
+    .both.icon-right .icon{
+        @include rtl-prop(margin-left, mz-spacer(10));
+        @include rtl-prop(padding-right, 0);
+    }
+}

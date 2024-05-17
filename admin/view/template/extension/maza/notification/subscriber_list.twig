@@ -1,0 +1,220 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  <div class="panel-group mz-panel-action-bar">
+    <div class="panel panel-default">
+      <div class="panel-heading clearfix" data-toggle="collapse" data-target="#filter-mz-subscriber">
+        <h4 class="panel-title pull-left">{{ text_filter }}</h4>
+        <span class="pull-right"><i class="fa fa-chevron-circle-down"></i></span>
+      </div>
+      <div id="filter-mz-subscriber" class="panel-collapse collapse">
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="control-label" for="input-filter-customer">{{ entry_customer }}</label>
+                <input type="text" name="filter_customer" value="{{ filter_customer }}" placeholder="{{ entry_customer }}" id="input-filter-customer" class="form-control large" />
+                <input type="hidden" name="filter_customer_id" value="{{ filter_customer_id }}" />
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="input-filter-product">{{ entry_product }}</label>
+                <input type="text" name="filter_product" value="{{ filter_product }}" placeholder="{{ entry_product }}" id="input-filter-product" class="form-control large" />
+                <input type="hidden" name="filter_product_id" value="{{ filter_product_id }}" />
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="control-label" for="input-filter-email">{{ entry_email }}</label>
+                <input type="email" name="filter_email" value="{{ filter_email }}" placeholder="{{ entry_email }}" id="input-filter-email" class="form-control large" />
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="input-filter-manufacturer">{{ entry_manufacturer }}</label>
+                <input type="text" name="filter_manufacturer" value="{{ filter_manufacturer }}" placeholder="{{ entry_manufacturer }}" id="input-filter-manufacturer" class="form-control large" />
+                <input type="hidden" name="filter_manufacturer_id" value="{{ filter_manufacturer_id }}" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer text-right">
+          <button type="button" id="button-reset" class="btn btn-info"><i class="fa fa-times"></i> {{ button_reset }}</button>
+          <button type="button" id="button-filter" class="btn btn-primary"><i class="fa fa-filter"></i> {{ button_filter }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+      
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <div class="panel mz-panel-default">
+    <div class="panel-body">
+      <form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form-mz-subscriber">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+                <td class="text-left">{% if sort == 'customer' %}
+                  <a href="{{ sort_customer }}" class="{{ order|lower }}">{{ column_customer }}</a>
+                  {% else %}
+                  <a href="{{ sort_customer }}">{{ column_customer }}</a>
+                  {% endif %}</td>
+                <td class="text-left">{% if sort == 'product' %}
+                  <a href="{{ sort_product }}" class="{{ order|lower }}">{{ column_product }}</a>
+                  {% else %}
+                  <a href="{{ sort_product }}">{{ column_product }}</a>
+                  {% endif %}</td>
+                <td class="text-center">{% if sort == 'manufacturer' %}
+                  <a href="{{ sort_manufacturer }}" class="{{ order|lower }}">{{ column_manufacturer }}</a>
+                  {% else %}
+                  <a href="{{ sort_manufacturer }}">{{ column_manufacturer }}</a>
+                  {% endif %}</td>
+                <td class="text-right">{% if sort == 'date_added' %}
+                  <a href="{{ sort_date_added }}" class="{{ order|lower }}">{{ column_date_added }}</a>
+                  {% else %}
+                  <a href="{{ sort_date_added }}">{{ column_date_added }}</a>
+                  {% endif %}</td>
+                <td class="text-right">{{ column_action }}</td>
+              </tr>
+            </thead>
+            <tbody>
+              {% if subscribers %}
+              {% for subscriber in subscribers %}
+              <tr>
+                <td class="text-center">{% if subscriber.subscriber_id in selected %}
+                  <input type="checkbox" name="selected[]" value="{{ subscriber.subscribe_id }}" checked="checked" />
+                  {% else %}
+                  <input type="checkbox" name="selected[]" value="{{ subscriber.subscribe_id }}" />
+                  {% endif %}</td>
+                {% if subscriber.customer %}
+                <td class="text-left"><a target="_blank" href="{{ subscriber.customer_edit }}">{{ subscriber.customer }}</a></td>
+                {% else %}
+                <td class="text-left">{{ subscriber.email }}</td>
+                {% endif %}
+                <td class="text-left">{{ subscriber.product?:'-' }}</td>
+                <td class="text-center">{{ subscriber.manufacturer?:'-' }}</td>
+                <td class="text-right">{{ subscriber.date_added }}</td>
+                <td class="text-right"><a href="{{ subscriber.edit }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+              </tr>
+              {% endfor %}
+              {% else %}
+              <tr>
+                <td class="text-center" colspan="6">{{ text_no_results }}</td>
+              </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </form>
+      <div class="row">
+        <div class="col-sm-6 text-left">{{ pagination }}</div>
+        <div class="col-sm-6 text-right">{{ results }}</div>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript">
+$('#button-filter').on('click', function() {
+	var url = '';
+
+	var filter_customer = $('input[name=\'filter_customer\']').val();
+  var filter_customer_id = $('input[name=\'filter_customer_id\']').val();
+	if (filter_customer && filter_customer_id) {
+		url += '&filter_customer_id=' + encodeURIComponent(filter_customer_id);
+	}
+
+  var filter_email = $('input[name=\'filter_email\']').val();
+	if (filter_email) {
+		url += '&filter_email=' + encodeURIComponent(filter_email);
+	}
+
+  var filter_product = $('input[name=\'filter_product\']').val();
+  var filter_product_id = $('input[name=\'filter_product_id\']').val();
+	if (filter_product && filter_product_id) {
+		url += '&filter_product_id=' + encodeURIComponent(filter_product_id);
+	}
+
+  var filter_manufacturer = $('input[name=\'filter_manufacturer\']').val();
+  var filter_manufacturer_id = $('input[name=\'filter_manufacturer_id\']').val();
+	if (filter_manufacturer && filter_manufacturer_id) {
+		url += '&filter_manufacturer_id=' + encodeURIComponent(filter_manufacturer_id);
+	}
+        
+	location = 'index.php?route=extension/maza/notification{{ default_url }}' + url;
+});
+
+$('#button-reset').on('click', function(){
+  location = 'index.php?route=extension/maza/notification{{ default_url }}';
+});
+</script>
+<script type="text/javascript">
+$('input[name=\'filter_customer\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=customer/customer/autocomplete{{ default_url }}&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['customer_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_customer\']').val(item['label']);
+    $('input[name=\'filter_customer_id\']').val(item['value']);
+  }
+});
+
+$('input[name=\'filter_product\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=catalog/product/autocomplete{{ default_url }}&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['product_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_product\']').val(item['label']);
+    $('input[name=\'filter_product_id\']').val(item['value']);
+  }
+});
+
+$('input[name=\'filter_manufacturer\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=catalog/manufacturer/autocomplete{{ default_url }}&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['manufacturer_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_manufacturer\']').val(item['label']);
+    $('input[name=\'filter_manufacturer_id\']').val(item['value']);
+  }
+});
+</script>
+</div>
+{{ mz_footer }}

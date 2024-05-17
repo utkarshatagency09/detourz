@@ -1,0 +1,9 @@
+@import "skins/header/minimal-1/variables";
+@import "skins/header/minimal-1/typography";
+
+// Components
+@import "skins/header/minimal-1/components/navbar";
+
+// Widgets
+@import "skins/header/minimal-1/widget/search";
+@import "skins/header/minimal-1/widget/cart";

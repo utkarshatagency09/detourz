@@ -1,0 +1,289 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  <div class="panel-group mz-panel-action-bar">
+    <div class="panel panel-default">
+      <div class="panel-heading clearfix" data-toggle="collapse" data-target="#filter-mz-value">
+        <h4 class="panel-title pull-left">{{ text_filter }}</h4>
+        <span class="pull-right"><i class="fa fa-chevron-circle-down"></i></span>
+      </div>
+      <div id="filter-mz-value" class="panel-collapse collapse">
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-name">{{ entry_name }}</label>
+                <input type="text" name="filter_name" value="{{ filter_name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control large" />
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-type">{{ entry_type }}</label>
+                <select name="filter_regex" id="input-type" class="form-control large">
+                  <option value=""></option>
+                  {% if (filter_regex == '1') %} 
+                  <option value="1" selected="selected">{{ text_regex }}</option>
+                  {% else %} 
+                  <option value="1">{{ text_regex }}</option>
+                  {% endif %} 
+                  {% if (filter_regex == '0') %} 
+                  <option value="0" selected="selected">{{ text_text }}</option>
+                  {% else %} 
+                  <option value="0">{{ text_text }}</option>
+                  {% endif %} 
+                </select>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-status">{{ entry_status }}</label>
+                <select name="filter_status" id="input-status" class="form-control large">
+                  <option value=""></option>
+                  {% if (filter_status == '1') %} 
+                  <option value="1" selected="selected">{{ text_enabled }}</option>
+                  {% else %} 
+                  <option value="1">{{ text_enabled }}</option>
+                  {% endif %} 
+                  {% if (filter_status == '0') %} 
+                  <option value="0" selected="selected">{{ text_disabled }}</option>
+                  {% else %} 
+                  <option value="0">{{ text_disabled }}</option>
+                  {% endif %} 
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer text-right"><button type="button" id="button-filter" class="btn btn-primary"><i class="fa fa-filter"></i> {{ button_filter }}</button></div>
+      </div>
+    </div>
+  </div>
+      
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success alert-dismissible"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning alert-dismissible"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %}
+  
+  <div class="panel mz-panel-default">
+    <div class="panel-body">
+      <form method="post" enctype="multipart/form-data" id="form-mz-value">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+                <td class="text-left">{% if (sort == 'name') %} 
+                  <a href="{{ sort_name }}" class="{{ order|lower }}">{{ column_name }}</a>
+                  {% else %} 
+                  <a href="{{ sort_name }}">{{ column_name }}</a>
+                  {% endif %}</td>
+                <td class="text-center">{{ column_image }}</td>
+                <td class="text-center">{% if (sort == 'total_product') %} 
+                  <a href="{{ sort_total_product }}" class="{{ order|lower }}">{{ column_product }}</a>
+                  {% else %} 
+                  <a href="{{ sort_total_product }}">{{ column_product }}</a>
+                  {% endif %}</td>
+                <td class="text-center">{% if (sort == 'regex') %} 
+                  <a href="{{ sort_regex }}" class="{{ order|lower }}">{{ column_type }}</a>
+                  {% else %} 
+                  <a href="{{ sort_regex }}">{{ column_type }}</a>
+                  {% endif %}</td>
+                <td class="text-center">{% if (sort == 'sort_order') %} 
+                  <a href="{{ sort_sort_order }}" class="{{ order|lower }}">{{ column_sort_order }}</a>
+                  {% else %} 
+                  <a href="{{ sort_sort_order }}">{{ column_sort_order }}</a>
+                  {% endif %}</td>
+                <td class="text-center">{% if (sort == 'status') %} 
+                  <a href="{{ sort_status }}" class="{{ order|lower }}">{{ column_status }}</a>
+                  {% else %} 
+                  <a href="{{ sort_status }}">{{ column_status }}</a>
+                  {% endif %}</td>
+                <td class="text-right">{{ column_action }}</td>
+              </tr>
+            </thead>
+            <tbody>
+              {% if (values) %} 
+              {% for value in values %} 
+              <tr>
+                <td class="text-center">{% if (value['value_id'] in selected) %} 
+                  <input type="checkbox" name="selected[]" value="{{ value['value_id'] }}" checked="checked" />
+                  {% else %} 
+                  <input type="checkbox" name="selected[]" value="{{ value['value_id'] }}" />
+                  {% endif %}</td>
+                <td class="text-left">{{ value['name'] }}</td>
+                <td class="text-center">{% if (value['image']) %} <img src="{{ value['image'] }}" alt="{{ value['name'] }}" class="img-thumbnail" /> {% else %} <span class="img-thumbnail list"><i class="fa fa-camera fa-2x"></i></span> {% endif %}</td>
+                <td class="text-center">{{ value['total_product'] }}</td>
+                <td class="text-center">{{ value['type'] }}</td>
+                <td class="text-center">{{ value['sort_order'] }}</td>
+                <td class="text-center">{{ value['status'] }}</td>
+                <td class="text-right"><a href="{{ value['edit'] }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+              </tr>
+              {% endfor %} 
+              {% else %} 
+              <tr>
+                <td class="text-center" colspan="6">{{ text_no_results }}</td>
+              </tr>
+              {% endif %} 
+            </tbody>
+          </table>
+        </div>
+      </form>
+      <div class="row">
+        <div class="col-sm-6 text-left">{{ pagination }}</div>
+        <div class="col-sm-6 text-right">{{ results }}</div>
+      </div>
+    </div>
+  </div>
+    
+<div id="modal-import" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title"><i class="fa fa-upload"></i> {{ text_import_values }}</h4>
+      </div>
+      <div class="modal-body">
+        <form id="form-import" method="post" class="form-horizontal" enctype="multipart/form-data">
+            <!--Data-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_data }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  <input type="radio" name="merge" value="1" id="input-merge-enabled" checked>
+                  <label for="input-merge-enabled">{{ text_merge }}</label>
+                  <input type="radio" name="merge" value="0" id="input-merge-disabled">
+                  <label for="input-merge-disabled" >{{ text_replace }}</label>
+                </div>
+              </div>
+            </div>
+            
+            <!--File CSV-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_csv }}</label>
+              <div class="col-xs-9">
+                <label class="btn btn-default"><i class="fa fa-upload"></i> {{ text_browse }} <input type="file" name="file" class="hide" accept=".csv" required /></label>
+              </div>
+            </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="button-submit-import" class="btn btn-info">{{ button_import }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $('#button-filter').on('click', function() {
+	var url = '';
+
+	var filter_name = $('input[name=\'filter_name\']').val();
+
+	if (filter_name) {
+		url += '&filter_name=' + encodeURIComponent(filter_name);
+	}
+
+	var filter_status = $('select[name=\'filter_status\']').val();
+
+	if (filter_status !== '') {
+		url += '&filter_status=' + encodeURIComponent(filter_status);
+	}
+        
+        var filter_regex = $('select[name=\'filter_regex\']').val();
+
+	if (filter_regex !== '') {
+		url += '&filter_regex=' + encodeURIComponent(filter_regex);
+	}
+        
+	location = 'index.php?route=extension/maza/filter/value{{ default_url }}' + url;
+});
+</script>
+<script>
+$('#button-sync').click(function(){
+    if(!confirm('{{ text_confirm }}')) return false; // Confirm action
+    
+    var button_sync = $(this);
+    button_sync.data('loading-text', '<i class="fa fa-refresh fa-spin"></i>');
+    
+    $('.alert-dismissible').remove();
+    
+    $.ajax({
+            url: "index.php?route=extension/maza/filter/sync&user_token={{ user_token }}",
+            type: 'post',
+            data: {filter_id: {{ filter_id }}},
+            dataType: 'json',
+            beforeSend: function () {
+                button_sync.button('loading');
+            },
+            success: function(json) {
+                    if (json['success']) {
+                            $('#content').prepend('<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                            setTimeout(function(){ location.reload(); }, 1000);
+                    }
+                    if (json['error']) {
+                            $('#content').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                    }
+            },
+            complete: function () {
+                button_sync.button('reset');
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                    alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+    });
+});
+</script>
+<script>
+$('#button-import').click(function(){
+    $('#modal-import').modal('show');
+});
+$('#button-submit-import').click(function(){
+    $('.alert-dismissible').remove();
+    
+    $.ajax({
+        url: 'index.php?route=extension/maza/filter/value/import{{ default_url }}',
+        type: 'post',
+        dataType: 'json',
+        data: new FormData($('#form-import')[0]),
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+                $('#button-submit-import').button('loading');
+        },
+        complete: function() {
+                $('#button-submit-import').button('reset');
+        },
+        success: function(json) {
+                if (json['error']) {
+                        $('#form-import').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                }
+
+                if (json['success']) {
+                        $('#modal-import').modal('hide');
+                        $('#content').prepend('<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                        setTimeout(function(){ location.reload(); }, 1000);
+                }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+    });
+});
+</script>
+<script>
+// Confirm Actions 
+$('#button-delete,#button-enable,#button-disable').on('click', function(){
+    if(confirm("{{ text_confirm }}")){
+        return true;
+    } else {
+        return false;
+    }
+});
+
+</script>
+</div>
+<?php echo $mz_footer ?>

@@ -1,0 +1,170 @@
+{% if heading_title is not empty %}
+<h3 class="module-title">{{ heading_title }}</h3>
+{% endif %}
+<div id="mz-slider-{{ mz_suffix }}" class="swiper" dir="{{ direction }}">
+  <div class="swiper-wrapper">{% for slide in slides %}
+    <div class="swiper-slide">
+      {% if slide.image %}
+        {% if slide.image.url %}
+
+          <a {% if url_target %}target="{{ url_target }}"{% endif %} href="{{ slide.image.url.href }}" {{ slide.image.url.attr }} class="d-block w-100">
+            {% if slide.image.svg %}
+              {% if lazy_loading %}
+              <img width="{{ slide.image.width }}" src="{{ transparent?:'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}" data-src="{{ slide.image.svg }}" alt="{{ slide.image.alt }}" title="{{ slide.image.alt }}" class="lazy-load slide-image" />
+              {% else %}
+              <img width="{{ slide.image.width }}" src="{{ slide.image.svg }}" alt="{{ slide.image.alt }}" title="{{ slide.image.alt }}" class="slide-image" />
+              {% endif %}
+            {% else %}
+              {% if lazy_loading %}
+              <img width="{{ slide.image.width }}" src="{{ transparent?:'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}" data-src="{{ slide.image.image }}" {% if srcset_sizes %}data-sizes="{{ srcset_sizes }}"{% endif %} alt="{{ slide.image.alt }}" title="{{ slide.image.alt }}" class="lazy-load slide-image" />
+              {% else %}
+              <img width="{{ slide.image.width }}" src="{{ slide.image.image }}" {% if slide.image.srcset %}srcset="{{ slide.image.srcset }}"{% endif %} {% if srcset_sizes %}sizes="{{ srcset_sizes }}"{% endif %} alt="{{ slide.image.alt }}" title="{{ slide.image.alt }}" class="slide-image" />
+              {% endif %}
+            {% endif %}
+
+            {% if slide.image.caption %}
+            <div class="overlay-caption">{{ slide.image.caption }}</div>
+            {% endif %}
+          </a>
+        {% else %}
+          {% if slide.image.svg %}
+            {% if lazy_loading %}
+            <img width="{{ slide.image.width }}" src="{{ transparent?:'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}" data-src="{{ slide.image.svg }}" alt="{{ slide.image.alt }}" title="{{ slide.image.alt }}" class="lazy-load slide-image" />
+            {% else %}
+            <img width="{{ slide.image.width }}" src="{{ slide.image.svg }}" alt="{{ slide.image.alt }}" title="{{ slide.image.alt }}" class="slide-image" />
+            {% endif %}
+          {% else %}
+            {% if lazy_loading %}
+            <img width="{{ slide.image.width }}" src="{{ transparent?:'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}" data-src="{{ slide.image.image }}" {% if srcset_sizes %}data-sizes="{{ srcset_sizes }}"{% endif %} alt="{{ slide.image.alt }}" title="{{ slide.image.alt }}" class="lazy-load slide-image" />
+            {% else %}
+            <img width="{{ slide.image.width }}" src="{{ slide.image.image }}" {% if slide.image.srcset %}srcset="{{ slide.image.srcset }}"{% endif %} {% if srcset_sizes %}sizes="{{ srcset_sizes }}"{% endif %} alt="{{ slide.image.alt }}" title="{{ slide.image.alt }}" class="slide-image" />
+            {% endif %}
+          {% endif %}
+
+          {% if slide.image.caption %}
+          <div class="overlay-caption">{{ slide.image.caption }}</div>
+          {% endif %}
+        {% endif %}
+
+      {% elseif slide.content %}
+      <div class="mz-slide-content">{{ slide.content }}</div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+
+  {% if pagination %}
+  <div id="mz-slider-pagination-{{ mz_suffix }}" class="swiper-pagination"></div>
+  {% endif %}
+
+  {% if navigation %}
+  <div class="swiper-pager custom-pager">
+    <div class="swiper-button-next" role="button">
+      {% if nav_icon_font %}
+      <i class="icon {{ nav_icon_font }}" {{ nav_icon_size?'style="font-size: ' ~ nav_icon_size ~ 'px"':'' }}></i>
+      {% elseif nav_icon_svg %}
+      <div class="icon svg-icon" style="{{ nav_icon_width?'width:' ~ nav_icon_width ~ 'px;' }}{{ nav_icon_height?'height:' ~ nav_icon_height ~ 'px;' }}">{{ nav_icon_svg }}</div>
+      {% elseif nav_icon_image %}
+      <img class="icon" width="{{ nav_icon_width }}" height="{{ nav_icon_height }}" src="{{ nav_icon_image }}"  />
+      {% endif %}
+    </div>
+    <div class="swiper-button-prev" role="button">
+      {% if nav_icon_font %}
+      <i class="icon {{ nav_icon_font }}" {{ nav_icon_size?'style="font-size: ' ~ nav_icon_size ~ 'px"':'' }}></i>
+      {% elseif nav_icon_svg %}
+      <div class="icon svg-icon" style="{{ nav_icon_width?'width:' ~ nav_icon_width ~ 'px;' }}{{ nav_icon_height?'height:' ~ nav_icon_height ~ 'px;' }}">{{ nav_icon_svg }}</div>
+      {% elseif nav_icon_image %}
+      <img class="icon" width="{{ nav_icon_width }}" height="{{ nav_icon_height }}" src="{{ nav_icon_image }}"  />
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+</div>
+<script>
+$(function(){
+  var _mz_swiper_options = {grabCursor: true};
+  {% if speed > 0 %}
+  _mz_swiper_options['speed'] = {{ speed }};
+  {% endif %}
+  {% if auto_height %}
+  _mz_swiper_options['autoHeight'] = true;
+  {% endif %}
+  {% if navigation %}
+  _mz_swiper_options['navigation'] = {
+    nextEl: '#mz-slider-{{ mz_suffix }} .swiper-button-next',
+    prevEl: '#mz-slider-{{ mz_suffix }} .swiper-button-prev',
+  };
+  {% endif %}
+  {% if autoplay_status %}
+  _mz_swiper_options['autoplay'] = {
+    delay: {{ autoplay_delay }},
+    disableOnInteraction: true,
+  };
+  {% endif %}
+  {% if keyboard_control %}
+  _mz_swiper_options['keyboard'] = true;
+  {% endif %}
+  {% if mousewheel_control %}
+  _mz_swiper_options['mousewheel'] = {forceToAxis: true};
+  {% endif %}
+  {% if not simulate_touch %}
+  _mz_swiper_options['simulateTouch'] = false;
+  {% endif %}
+  {% if loop %}
+  _mz_swiper_options['loop'] = true;
+  {% endif %}
+  {% if slide_effect != 'slide' %}
+  _mz_swiper_options['effect'] = '{{ slide_effect }}';
+  _mz_swiper_options['cubeEffect'] = {shadow: false};
+  {% endif %}
+  {% if pagination %}
+  _mz_swiper_options['pagination'] = {
+    el: '#mz-slider-pagination-{{ mz_suffix }}',
+    type: '{{ pagination_type }}',
+    clickable: true,
+  };
+  {% else %}
+  _mz_swiper_options['pagination'] = false;
+  {% endif %}
+  {% if space_between_slide > 0 %}
+  _mz_swiper_options['spaceBetween'] = {{ space_between_slide }};
+  {% endif %}
+  {% if slide_effect == 'slide' %}
+    {% if slide_per_column > 1 %}
+    _mz_swiper_options['grid'] = {fill: 'row', rows: {{ slide_per_column }}};
+    _mz_swiper_options['loop'] = false;
+    {% endif %}
+    _mz_swiper_options['slidesPerView'] = {{ column_xs }};
+    _mz_swiper_options['breakpoints'] = {
+      {{ breakpoint_sm }}: {
+        slidesPerView: {{ column_sm }}
+      },
+      {{ breakpoint_md }}: {
+        slidesPerView: {{ column_md }}
+      },
+      {{ breakpoint_lg }}: {
+        slidesPerView: {{ column_lg }}
+      },
+      {{ breakpoint_xl }}: {
+        slidesPerView: {{ column_xl }}
+      },
+    };
+  {% endif %}
+  _mz_swiper_options['observer'] = true;
+  _mz_swiper_options['observeParents'] = true;
+
+  {% if lazy_loading %}
+  _mz_swiper_options['on'] = {
+    slideNextTransitionEnd: function(swiper){
+      $(swiper.slides[swiper.activeIndex]).find('img.lazy-load').each(function(){
+          if($(this).data("plugin_lazy")){
+              $(this).data("plugin_lazy").update();
+          }
+      });
+    },
+  };
+  {% endif %}
+  
+  new Swiper('#mz-slider-{{ mz_suffix }}', _mz_swiper_options);
+});
+</script>

@@ -1,0 +1,102 @@
+.swiper {
+    --swiper-theme-color: #{$primary};
+    --swiper-navigation-color: #{$swiper-control-color};
+    --swiper-pagination-color: #{$swiper-pagination-color};
+}
+
+// Button
+.swiper-button-disabled{
+    opacity: 0.5;
+}
+.swiper-pager{
+    display: none;
+    
+    &.custom-pager{
+        .swiper-button-next, .swiper-button-prev{
+            background: none;
+            font-size: initial;
+            width: auto;
+            height: auto;
+            transform: translateY(-50%);
+            margin: 0;
+
+            &::after{
+                display: none !important;
+            }
+        }
+        .swiper-button-next{
+            -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1)";
+            transform: translateY(-50%) scaleX(-1);
+        }
+    }
+}
+
+.swiper:hover .swiper-pager{
+    display: block;
+}
+
+
+// Pagination
+.swiper-pagination-bullets{
+    position: static !important;
+}
+.swiper-pagination-bullet{
+    width: $swiper-pagination-bullet-size !important;
+    height: $swiper-pagination-bullet-size !important;
+    transition: all .5s;
+
+    &-active{
+        width: $swiper-pagination-bullet-size * 2 !important;
+        border-radius: mz-spacer(10) !important;
+    }
+}
+.swiper-pagination-horizontal{
+    &.swiper-pagination-progressbar{
+        top: auto !important;
+        bottom: 0 !important;
+    }
+}
+
+// Slide
+.swiper-slide{
+    height: 100%;
+    
+    img.loader-spinner{
+        // max-height: mz-spacer(160);
+        background-size: mz-spacer(80);
+        mask-size: mz-spacer(80);
+    }
+    img.slide-image{
+        display: block;
+        @include border-radius();
+        
+        &[src^="http"]{
+            width: 100%;
+        }
+        &.lazy-load[src^="data"]{
+            margin: auto;
+            height: 100%;
+        }
+    }
+    
+    & > img{
+        @include border-radius();
+    }
+}
+
+/* Custom class */
+.no-border-radius .swiper-slide {
+    & > img, img.slide-image{
+        @include border-radius(0);
+    }
+}
+
+.swiper-pager{
+    .carousel-control-prev, .carousel-control-next{
+        visibility: inherit;
+
+        &.swiper-button-disabled{
+            display: none;
+        }
+    }
+}

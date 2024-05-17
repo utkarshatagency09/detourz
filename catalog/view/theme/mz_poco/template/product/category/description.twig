@@ -1,0 +1,16 @@
+{% if category_image %}{% verbatim %}{% if description or thumb %}{% endverbatim %}{% else %}{% verbatim %}{% if description %}{% endverbatim %}{% endif %}
+<div class="description">
+{% if category_image %}
+  {% verbatim %}
+  {% if thumb %}
+  <img src="{{ thumb }}" alt="{{ heading_title }}" title="{{ heading_title }}" class="img-thumbnail float-sm-start me-3" />
+  {% endif %}
+  {% endverbatim %}
+{% endif %}
+{% if limit %}
+{% verbatim %}{{ description|slice(0,{% endverbatim %}{{ limit }}{% verbatim %}) }}{% endverbatim %}
+{% else %}
+{% verbatim %}{{ description }}{% endverbatim %}
+{% endif %}
+</div>
+{% verbatim %}{% endif %}{% endverbatim %}

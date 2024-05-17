@@ -1,0 +1,89 @@
+<div class="menu-wraper image-{{ image_position }} {{ orientation }}">
+  {% if image_position == 'top' %}
+    {% if image_font %}
+    <i class="menu-image {{ image_font }}" {{ image_size?'style="font-size: ' ~ image_size ~ 'px"':'' }}></i>
+    {% elseif image_svg %}
+    <div class="menu-image img-fluid svg-icon" style="width:{{ image_width?:200 }}px;height:{{ image_height?:200 }}px;">{{ image_svg }}</div>
+    {% elseif image_image %}
+    <img class="menu-image img-fluid" src="{{ image_image }}" width="{{ image_width }}" height="{{ image_height }}" />
+    {% endif %}
+  {% endif %}
+
+  {% if heading_title is not empty %}
+    {% if title_url %}
+    <h3 class="design-title"><a href="{{ title_url.href }}" {{ title_url.attr }} class="text-reset">{{ heading_title }}</a></h3>
+    {% else %}
+    <h3 class="design-title">{{ heading_title }}</h3>
+    {% endif %}
+  {% endif %}
+
+  <div class="menu-items d-flex align-items-start">
+    {% if image_position != 'top' %}
+      {% if image_font %}
+      <i class="menu-image {{ image_font }}" {{ image_size?'style="font-size: ' ~ image_size ~ 'px"':'' }}></i>
+      {% elseif image_svg %}
+      <div class="menu-image img-fluid svg-icon" style="width:{{ image_width?:200 }}px;height:{{ image_height?:200 }}px;">{{ image_svg }}</div>
+      {% elseif image_image %}
+      <img class="menu-image img-fluid" src="{{ image_image }}" width="{{ image_width }}" height="{{ image_height }}" />
+      {% endif %}
+    {% endif %}
+
+    {% if orientation == 'vertical' %}
+    <ul class="nav flex-column {{ orientation }}">
+      {% for item in items %}
+      <li class="nav-item">
+        <a class="nav-link icon-{{ icon_position }} {{ show }}" href="{{ item.url.href }}" {{ item.url.attr }} {% if item.url_target != '_self' %}target="{{ item.url_target }}"{% endif %} {{ item.nofollow?'rel="nofollow"' }} title="{{ item.name }}">
+          {% if item.icon_font %}
+          <i title="{{ item.name }}" class="icon {{ item.icon_font }}" {{ icon_width?'style="font-size: ' ~ icon_width ~ 'px"':'' }}></i>
+          {% elseif item.icon_svg %}
+          <div title="{{ item.name }}" class="icon svg-icon" style="{{ icon_width?'width:' ~ icon_width ~ 'px;' }}{{ icon_height?'height:' ~ icon_height ~ 'px;' }}">{{ item.icon_svg }}</div>
+          {% elseif item.icon_image %}
+          <img class="icon" width="{{ item.image_width }}" height="{{ item.image_height }}" alt="{{ item.name }}" src="{{ item.icon_image }}" />
+          {% endif %}
+
+          {% if show != 'icon' and item.description %}
+          <div class="info">
+            {% if item.name %}
+            <span class="title">{{ item.name }}</span>
+            {% endif %}
+            {% if item.description %}
+            <span class="description text-muted">{{ item.description }}</span>
+            {% endif %}
+          </div>
+          {% elseif show != 'icon' %}
+          {{ item.name }}
+          {% endif %}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <nav class="nav {{ orientation }}">
+      {% for item in items %}
+      <a class="nav-link icon-{{ icon_position }} {{ show }}" href="{{ item.url.href }}" {{ item.url.attr }} {% if item.url_target != '_self' %}target="{{ item.url_target }}"{% endif %} {{ item.nofollow?'rel="nofollow"' }} title="{{ item.name }}">
+        {% if item.icon_font %}
+        <i title="{{ item.name }}" class="icon {{ item.icon_font }}" {{ icon_width?'style="font-size: ' ~ icon_width ~ 'px"':'' }}></i>
+        {% elseif item.icon_svg %}
+        <div title="{{ item.name }}" class="icon svg-icon" style="{{ icon_width?'width:' ~ icon_width ~ 'px;' }}{{ icon_height?'height:' ~ icon_height ~ 'px;' }}">{{ item.icon_svg }}</div>
+        {% elseif item.icon_image %}
+        <img class="icon" width="{{ item.image_width }}" height="{{ item.image_height }}" alt="{{ item.name }}" src="{{ item.icon_image }}" />
+        {% endif %}
+
+        {% if show != 'icon' and item.description %}
+        <div class="info">
+          {% if item.name %}
+          <span class="title">{{ item.name }}</span>
+          {% endif %}
+          {% if item.description %}
+          <span class="description text-muted">{{ item.description }}</span>
+          {% endif %}
+        </div>
+        {% elseif show != 'icon' %}
+        {{ item.name }}
+        {% endif %}
+      </a>
+      {% endfor %}
+    </nav>
+    {% endif %}
+  </div>
+</div>

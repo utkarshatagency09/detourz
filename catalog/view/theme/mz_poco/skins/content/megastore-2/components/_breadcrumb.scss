@@ -1,0 +1,16 @@
+.breadcrumb {
+    color: $page-gray;
+    border-bottom: $border-width solid $border-color;
+}
+
+div[id="product-category"], div[id="product-manufacturer"], div[id="product-search"], div[id="product-special"], div[id="extension-maza-products"]{
+    .breadcrumb{
+        @include media-breakpoint-up(lg){
+            margin-bottom: 0;
+        }
+    }
+}
+div[id^="product-product"] .breadcrumb{
+    border-bottom: 0;
+    margin-bottom: 0;
+}

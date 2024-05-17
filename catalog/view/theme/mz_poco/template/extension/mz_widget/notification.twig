@@ -1,0 +1,11 @@
+<a href="{{ notification_url }}" data-mz-toggle="ajaxpopover" data-bs-placement="bottom" aria-haspopup="true" aria-expanded="false" class="notification-toggle {{ notification_total > 0?'active' }} text-reset text-decoration-none">
+  {% if icon_font %}
+  <i data-bs-toggle="tooltip" title="{{ title }}" class="icon {{ icon_font }}" {{ icon_size?'style="font-size: ' ~ icon_size ~ 'px"':'' }}></i>
+  {% elseif icon_svg %}
+  <div data-bs-toggle="tooltip" title="{{ title }}" class="icon svg-icon" style="{{ icon_width?'width:' ~ icon_width ~ 'px;' }}{{ icon_height?'height:' ~ icon_height ~ 'px;' }}">{{ icon_svg }}</div>
+  {% elseif icon_image %}
+  <img data-bs-toggle="tooltip" title="{{ title }}" class="icon" width="{{ icon_width }}" height="{{ icon_height }}" src="{{ icon_image }}" />
+  {% else %}
+  <i data-bs-toggle="tooltip" title="{{ title }}" class="icon far fa-bell" {{ icon_size?'style="font-size: ' ~ icon_size ~ 'px"':'' }}></i>
+  {% endif %}
+</a>

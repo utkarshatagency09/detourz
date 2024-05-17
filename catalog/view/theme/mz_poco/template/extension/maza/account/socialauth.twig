@@ -1,0 +1,19 @@
+{% if providers %}
+<link rel="stylesheet" href="/catalog/view/javascript/maza/stylesheet/socialauth/style.css" />
+
+{% if 'google' in providers|keys %}
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+{% endif %}
+
+{% if inline %}
+{% for code, provider in providers %}
+<a class="btn btn-{{ code }} btn-{{ size }} mb-2 me-1" href="{{ provider.href }}"><i class="fa-brands fa-{{ code }} me-2"></i> {{ provider.name }}</a>
+{% endfor %}
+{% else %}
+<div class="d-grid gap-{{ size == 'lg' ? 3 : 2 }} mt-3">
+{% for code, provider in providers %}
+<a class="btn btn-{{ code }} btn-{{ size }} d-flex align-items-center" href="{{ provider.href }}"><i class="fa-brands fa-{{ code }} me-2"></i> <span class="text-center flex-fill">{{ provider.title }}</span></a>
+{% endfor %}
+</div>
+{% endif %}
+{% endif %}

@@ -1,0 +1,528 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- Form -->
+  <form action="{{ action }}" class="form-horizontal" enctype="multipart/form-data" id="form-mz-setting" method="post">
+    <div class="tab-content">
+      <div id="tab-mz-setting" class="tab-pane active">
+        {# Testimonial submit Form #}
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_submit_testimonial }}</div>
+          <div class="panel-body">
+            {# submit status #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" >{{ entry_status }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (testimonial_submit_status) %} 
+                  <input type="radio" name="testimonial_submit_status" value="1" id="input-submit-status-enabled" checked>
+                  <label for="input-submit-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="testimonial_submit_status" value="0" id="input-submit-status-disabled">
+                  <label for="input-submit-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="testimonial_submit_status" value="1" id="input-submit-status-enabled" >
+                  <label for="input-submit-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="testimonial_submit_status" value="0" id="input-submit-status-disabled" checked>
+                  <label for="input-submit-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            {# Require approval of new testimonial #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" >{{ entry_require_approval }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (testimonial_submit_require_approval) %} 
+                  <input type="radio" name="testimonial_submit_require_approval" value="1" id="input-submit-require-approval-enabled" checked>
+                  <label for="input-submit-require-approval-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="testimonial_submit_require_approval" value="0" id="input-submit-require-approval-disabled">
+                  <label for="input-submit-require-approval-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="testimonial_submit_require_approval" value="1" id="input-submit-require-approval-enabled" >
+                  <label for="input-submit-require-approval-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="testimonial_submit_require_approval" value="0" id="input-submit-require-approval-disabled" checked>
+                  <label for="input-submit-require-approval-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            {# thank you mail status #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" >{{ entry_thank_you_mail }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (testimonial_mail_status) %} 
+                  <input type="radio" name="testimonial_mail_status" value="1" id="input-mail-status-enabled" checked>
+                  <label for="input-mail-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="testimonial_mail_status" value="0" id="input-mail-status-disabled">
+                  <label for="input-mail-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="testimonial_mail_status" value="1" id="input-mail-status-enabled" >
+                  <label for="input-mail-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="testimonial_mail_status" value="0" id="input-mail-status-disabled" checked>
+                  <label for="input-mail-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+                
+        {#Testimonial submit mail#}
+        <div class="panel mz-panel-default">
+          <div class="panel-heading clearfix">
+            <h4 class="pull-left panel-title">{{ text_mail_template }}</h4>
+            <ul class="nav nav-tabs tab-dynamic pull-right mz-nav-sandwich-tab">
+              {% for language in languages %}
+              <li><a href="#language-mail-template{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="panel-body">
+            <div class="tab-content">
+              {% for language in languages %}
+              <div class="tab-pane" id="language-mail-template{{ language.language_id }}">
+                <div class="form-group">
+                  <label class="col-xs-2 control-label" for="input-testimonial-mail-template-subject{{ language.language_id }}">{{ entry_subject }}</label>
+                  <div class="col-xs-10">
+                    <input type="text" name="testimonial_mail_template[{{ language.language_id }}][subject]" value="{{ testimonial_mail_template[language.language_id]['subject'] is defined ? testimonial_mail_template[language.language_id]['subject'] }}"  id="input-testimonial-mail-template-subject{{ language.language_id }}" placeholder="{{ entry_subject }}" class="form-control large" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-xs-2 control-label" for="input-testimonial-mail-template-message{{ language.language_id }}">{{ entry_message }}</label>
+                  <div class="col-xs-10">
+                    <textarea name="testimonial_mail_template[{{ language.language_id }}][message]" placeholder="{{ entry_message }}" id="input-testimonial-mail-template-message{{ language.language_id }}" data-ckeditor="{{ code }}" class="form-control">{{ testimonial_mail_template[language.language_id]['message'] is defined ? testimonial_mail_template[language.language_id]['message'] : '' }}</textarea>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+                
+      </div>
+            
+      {# form #}
+      <div id="tab-mz-form" class="tab-pane">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            {# Rating #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" >{{ entry_rating }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% for field in list_field_status %}
+                    {% if (testimonial_form_rating == field['id']) %} 
+                    <input type="radio" name="testimonial_form_rating" value="{{ field['id'] }}" id="input-form-rating-{{ field['id'] }}" checked>
+                    <label for="input-form-rating-{{ field['id'] }}" >{{ field['text'] }}</label>
+                    {% else %}
+                    <input type="radio" name="testimonial_form_rating" value="{{ field['id'] }}" id="input-form-rating-{{ field['id'] }}">
+                    <label for="input-form-rating-{{ field['id'] }}" >{{ field['text'] }}</label>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+                
+            {# Email #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" >{{ entry_email }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% for field in list_field_status %}
+                    {% if (testimonial_form_email == field['id']) %} 
+                    <input type="radio" name="testimonial_form_email" value="{{ field['id'] }}" id="input-form-email-{{ field['id'] }}" checked>
+                    <label for="input-form-email-{{ field['id'] }}" >{{ field['text'] }}</label>
+                    {% else %}
+                    <input type="radio" name="testimonial_form_email" value="{{ field['id'] }}" id="input-form-email-{{ field['id'] }}">
+                    <label for="input-form-email-{{ field['id'] }}" >{{ field['text'] }}</label>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+                
+            {# Image #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" >{{ entry_image }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% for field in list_field_status %}
+                    {% if (testimonial_form_image == field['id']) %} 
+                    <input type="radio" name="testimonial_form_image" value="{{ field['id'] }}" id="input-form-image-{{ field['id'] }}" checked>
+                    <label for="input-form-image-{{ field['id'] }}" >{{ field['text'] }}</label>
+                    {% else %}
+                    <input type="radio" name="testimonial_form_image" value="{{ field['id'] }}" id="input-form-image-{{ field['id'] }}">
+                    <label for="input-form-image-{{ field['id'] }}" >{{ field['text'] }}</label>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+                
+            {# Extra #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" ><span data-toggle="tooltip" title="{{ help_extra }}">{{ entry_extra }}</span></label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% for field in list_field_status %}
+                    {% if (testimonial_form_extra == field['id']) %} 
+                    <input type="radio" name="testimonial_form_extra" value="{{ field['id'] }}" id="input-form-extra-{{ field['id'] }}" checked>
+                    <label for="input-form-extra-{{ field['id'] }}" >{{ field['text'] }}</label>
+                    {% else %}
+                    <input type="radio" name="testimonial_form_extra" value="{{ field['id'] }}" id="input-form-extra-{{ field['id'] }}">
+                    <label for="input-form-extra-{{ field['id'] }}" >{{ field['text'] }}</label>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+                
+            {# captcha #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" >{{ entry_captcha }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (testimonial_form_captcha) %} 
+                  <input type="radio" name="testimonial_form_captcha" value="1" id="input-form-captcha-enabled" checked>
+                  <label for="input-form-captcha-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="testimonial_form_captcha" value="0" id="input-form-captcha-disabled">
+                  <label for="input-form-captcha-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="testimonial_form_captcha" value="1" id="input-form-captcha-enabled" >
+                  <label for="input-form-captcha-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="testimonial_form_captcha" value="0" id="input-form-captcha-disabled" checked>
+                  <label for="input-form-captcha-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        
+      {# Listing #}
+      <div id="tab-mz-listing" class="tab-pane">
+        {#General#}
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_general }}</div>
+          <div class="panel-body">
+            {# Rating #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" >{{ entry_rating }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (testimonial_list_rating) %} 
+                  <input type="radio" name="testimonial_list_rating" value="1" id="input-list-rating-enabled" checked>
+                  <label for="input-list-rating-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="testimonial_list_rating" value="0" id="input-list-rating-disabled">
+                  <label for="input-list-rating-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="testimonial_list_rating" value="1" id="input-list-rating-enabled" >
+                  <label for="input-list-rating-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="testimonial_list_rating" value="0" id="input-list-rating-disabled" checked>
+                  <label for="input-list-rating-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            {# Timestamp #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" >{{ entry_timestamp }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (testimonial_list_timestamp) %} 
+                  <input type="radio" name="testimonial_list_timestamp" value="1" id="input-list-timestamp-enabled" checked>
+                  <label for="input-list-timestamp-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="testimonial_list_timestamp" value="0" id="input-list-timestamp-disabled">
+                  <label for="input-list-timestamp-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="testimonial_list_timestamp" value="1" id="input-list-timestamp-enabled" >
+                  <label for="input-list-timestamp-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="testimonial_list_timestamp" value="0" id="input-list-timestamp-disabled" checked>
+                  <label for="input-list-timestamp-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            {# Image #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" >{{ entry_image }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (testimonial_list_image) %} 
+                  <input type="radio" name="testimonial_list_image" value="1" id="input-list-image-enabled" checked>
+                  <label for="input-list-image-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="testimonial_list_image" value="0" id="input-list-image-disabled">
+                  <label for="input-list-image-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="testimonial_list_image" value="1" id="input-list-image-enabled" >
+                  <label for="input-list-image-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="testimonial_list_image" value="0" id="input-list-image-disabled" checked>
+                  <label for="input-list-image-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            {# Extra #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" ><span data-toggle="tooltip" title="{{ help_extra }}">{{ entry_extra }}</span></label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (testimonial_list_extra) %} 
+                  <input type="radio" name="testimonial_list_extra" value="1" id="input-list-extra-enabled" checked>
+                  <label for="input-list-extra-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="testimonial_list_extra" value="0" id="input-list-extra-disabled">
+                  <label for="input-list-extra-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="testimonial_list_extra" value="1" id="input-list-extra-enabled" >
+                  <label for="input-list-extra-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="testimonial_list_extra" value="0" id="input-list-extra-disabled" checked>
+                  <label for="input-list-extra-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          
+        {#Quote Icon#}
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_quote_icon }}</div>
+          <div class="panel-body">
+            <div class="input-image-widget">
+              <div class="form-group">
+                <label class="col-xs-3 control-label" >{{ entry_icon }}</label>
+                <div class="col-xs-9">
+                  <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab-testimonial-quote-icon-image" data-meta="image" data-toggle="tab">{{ tab_image }}</a></li>
+                    <li><a href="#tab-testimonial-quote-icon-svg" data-meta="image" data-toggle="tab">{{ tab_svg }}</a></li>
+                    <li><a href="#tab-testimonial-quote-icon-font" data-meta="font" data-toggle="tab">{{ tab_font }}</a></li>
+                  </ul>
+                  <div class="tab-content">
+                    <div class="tab-pane active" id="tab-testimonial-quote-icon-image">
+                      <div class="el-group">
+                      {% for language in languages %}
+                        <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                        <div class="el-item">
+                          <a href="" id="thumb-testimonial-quote-icon-image{{ language.language_id }}" data-toggle="image" class="img-thumbnail"><img src="{{ (thumb_testimonial_quote_icon_image[language.language_id] is defined)?thumb_testimonial_quote_icon_image[language.language_id]:placeholder_image }}" alt="" title="" data-placeholder="{{ placeholder_image }}" /></a><input type="hidden" name="testimonial_quote_icon_image[{{ language.language_id }}]" value="{{ (testimonial_quote_icon_image[language.language_id] is defined)?testimonial_quote_icon_image[language.language_id]:'' }}" id="input-testimonial-quote-icon-image{{ language.language_id }}" />
+                        </div>
+                      {% endfor %}
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="tab-testimonial-quote-icon-svg">
+                      <div class="el-group">
+                      {% for language in languages %}
+                        <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                        <div class="el-item">
+                          <a href="" id="thumb-testimonial-quote-icon-svg{{ language.language_id }}" data-toggle="svg" class="img-thumbnail"><img width="100" height="100" src="{{ (thumb_testimonial_quote_icon_svg[language.language_id] is defined)?thumb_testimonial_quote_icon_svg[language.language_id]:placeholder_svg }}" alt="" title="" data-placeholder="{{ placeholder_svg }}" /></a><input type="hidden" name="testimonial_quote_icon_svg[{{ language.language_id }}]" value="{{ (testimonial_quote_icon_svg[language.language_id] is defined)?testimonial_quote_icon_svg[language.language_id]:'' }}" id="input-testimonial-quote-icon-svg{{ language.language_id }}" />
+                        </div>
+                      {% endfor %}
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="tab-testimonial-quote-icon-font">
+                      <div class="el-group">
+                      {% for language in languages %}
+                        <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                        <div class="el-item">
+                          <a href="" id="thumb-testimonial-quote-icon-font{{ language.language_id }}" data-toggle="font" class="img-thumbnail icon-thumb"><i class="{{ (testimonial_quote_icon_font[language.language_id] is not empty)?testimonial_quote_icon_font[language.language_id]:placeholder_font }}" data-placeholder="{{ placeholder_font }}"></i></a><input type="hidden" name="testimonial_quote_icon_font[{{ language.language_id }}]" value="{{ (testimonial_quote_icon_font[language.language_id] is defined)?testimonial_quote_icon_font[language.language_id]:'' }}" id="input-testimonial-quote-icon-font{{ language.language_id }}" />
+                        </div>
+                      {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="image-meta-tab-content tab-content">
+                <div class="tab-image active tab-pane">
+                  {# Icon width#}
+                  <div class="form-group">
+                    <label class="col-xs-3 control-label" for="input-testimonial-quote-icon-width">{{ entry_width }}</label>
+                    <div class="col-xs-9">
+                      <input type="number" name="testimonial_quote_icon_width" value="{{ testimonial_quote_icon_width }}" placeholder="{{ entry_width }}" id="input-testimonial-quote-icon-width" class="form-control" />
+                    </div>
+                  </div>
+
+                  {# Icon height#}
+                  <div class="form-group">
+                    <label class="col-xs-3 control-label" for="input-testimonial-quote-icon-height">{{ entry_height }}</label>
+                    <div class="col-xs-9">
+                      <input type="number" name="testimonial_quote_icon_height" value="{{ testimonial_quote_icon_height }}" placeholder="{{ entry_height }}" id="input-testimonial-quote-icon-height" class="form-control" />
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-font tab-pane">
+                  <!--icon size-->
+                  <div class="form-group">
+                    <label class="col-xs-3 control-label" for="input-testimonial-quote-icon-size">{{ entry_size }}</label>
+                    <div class="col-xs-9">
+                      <input type="number" name="testimonial_quote_icon_size" value="{{ testimonial_quote_icon_size }}" placeholder="{{ entry_size }}" class="form-control" id="input-testimonial-quote-icon-size" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {# page #}
+      <div id="tab-mz-page" class="tab-pane">
+        {# testimonial page #}  
+        {# <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_testimonial_page }}</div>
+          <div class="panel-body">
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-testimonial-meta-title">{{ entry_meta_title }}</label>
+              <div class="col-xs-9">
+                <input type="text" name="testimonial_meta_title" value="{{ testimonial_meta_title }}" placeholder="{{ entry_meta_title }}" id="input-testimonial-meta-title" class="form-control large" />
+                {% if err_meta_title %}
+                <div class="text-danger">{{ err_meta_title }}</div>
+                {% endif %} </div>
+            </div>
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-testimonial-meta-description">{{ entry_meta_description }}</label>
+              <div class="col-xs-9">
+                <textarea name="testimonial_meta_description" rows="5" placeholder="{{ entry_meta_description }}" id="input-testimonial-meta-description" class="form-control large">{{ testimonial_meta_description }}</textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-testimonial-meta-keyword">{{ entry_meta_keyword }}</label>
+              <div class="col-xs-9">
+                <textarea name="testimonial_meta_keyword" rows="5" placeholder="{{ entry_meta_keyword }}" id="input-testimonial-meta-keyword" class="form-control large">{{ testimonial_meta_keyword }}</textarea>
+              </div>
+            </div>
+          </div>
+        </div> #}
+              
+        {# Testimonial listing #}
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_listing }}</div>
+          <div class="panel-body">
+              
+            {#Testimonial limit per page#}
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-testimonial-limit">{{ entry_limit }}</label>
+              <div class="col-xs-9">
+                <input type="number" name="testimonial_limit" value="{{ testimonial_limit }}" placeholder="{{ entry_limit }}" id="input-testimonial-limit" class="form-control" />
+                {% if err_testimonial_limit %}
+                <div class="text-danger">{{ err_testimonial_limit }}</div>
+                {% endif %}
+              </div>
+            </div>
+              
+            {#Testimonial thumb size#}
+            <div class="form-group required">
+              <label class="col-xs-3 control-label">{{ entry_thumb_size }}</label>
+              <div class="col-xs-9">
+                <input type="number" name="testimonial_thumb_width" value="{{ testimonial_thumb_width }}" placeholder="{{ text_width }}" id="input-testimonial-image-width" class="form-control small" />
+                <input type="number" name="testimonial_thumb_height" value="{{ testimonial_thumb_height }}" placeholder="{{ text_height }}" id="input-testimonial-image-height" class="form-control small" />
+                {% if err_testimonial_thumb_size %}
+                <div class="text-danger">{{ err_testimonial_thumb_size }}</div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {# Testimonial grid per row #}
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_testimonial_per_row }}</div>
+          <div class="panel-body">
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-testimonial-column-xl"><span data-toggle="tooltip" title="{{ help_column_xl }}">{{ entry_column_xl }}</span></label>
+              <div class="col-xs-5">
+                <div class="input-group">
+                  <input type="range" name="testimonial_column_xl" min="1" max="6" value="{{ testimonial_column_xl }}" id="input-testimonial-column-xl" class="form-control" />
+                  <span class="input-group-addon">{{ testimonial_column_xl }}</span>
+                </div>
+              </div>
+            </div>
+                
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-testimonial-column-lg"><span data-toggle="tooltip" title="{{ help_column_lg }}">{{ entry_column_lg }}</span></label>
+              <div class="col-xs-5">
+                <div class="input-group">
+                  <input type="range" name="testimonial_column_lg" min="1" max="6" value="{{ testimonial_column_lg }}" id="input-testimonial-column-lg" class="form-control" />
+                  <span class="input-group-addon">{{ testimonial_column_lg }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-testimonial-column-md"><span data-toggle="tooltip" title="{{ help_column_md }}">{{ entry_column_md }}</span></label>
+              <div class="col-xs-5">
+                <div class="input-group">
+                  <input type="range" name="testimonial_column_md" min="1" max="6" value="{{ testimonial_column_md }}" id="input-testimonial-column-md" class="form-control" />
+                  <span class="input-group-addon">{{ testimonial_column_md }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-testimonial-column-sm"><span data-toggle="tooltip" title="{{ help_column_sm }}">{{ entry_column_sm }}</span></label>
+              <div class="col-xs-5">
+                <div class="input-group">
+                  <input type="range" name="testimonial_column_sm" min="1" max="6" value="{{ testimonial_column_sm }}" id="input-testimonial-column-sm" class="form-control" />
+                  <span class="input-group-addon">{{ testimonial_column_sm }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-testimonial-column-xs"><span data-toggle="tooltip" title="{{ help_column_xs }}">{{ entry_column_xs }}</span></label>
+              <div class="col-xs-5">
+                <div class="input-group">
+                  <input type="range" name="testimonial_column_xs" min="1" max="6" value="{{ testimonial_column_xs }}" id="input-testimonial-column-xs" class="form-control" />
+                  <span class="input-group-addon">{{ testimonial_column_xs }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <script src="view/javascript/maza/ckeditor/ckeditor.js"></script>
+  <script>
+$('input[type="range"]').on('input change', function(){
+    $(this).siblings('.input-group-addon').text($(this).val());
+});
+</script>
+<form action="{{ import }}" enctype="multipart/form-data" method="post" id="form-import" style="display: none;"><input type="file" accept=".json" name="file" /></form>
+<script>
+$('#button-import').on('click', function(){
+    $('#form-import input[name=\'file\']').val('').trigger('click');
+    
+    if (typeof timer != 'undefined') {
+    	clearInterval(timer);
+    }
+
+    timer = setInterval(function() {
+        if ($('#form-import input[name=\'file\']').val() != '') {
+            clearInterval(timer);
+            $('#form-import').submit();
+        }
+    }, 500);
+    
+});
+</script>
+</div>
+{{ mz_footer }}

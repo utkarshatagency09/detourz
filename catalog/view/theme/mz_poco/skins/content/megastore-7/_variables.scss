@@ -1,0 +1,98 @@
+$html-padding-y: mz-spacer(50);
+
+// Navs
+$nav-tab-font-size: 1.25em;
+$nav-tab-padding-x: 0;
+$nav-tab-padding-y: mz-spacer(6.5);
+$nav-tab-color: $gray-500;
+$nav-tab-hover-color: $primary;
+$nav-tab-margin-right: mz-spacer(30);
+$nav-tab-margin-bottom: mz-spacer(10);
+
+// Pagination
+$pagination-margin-right: mz-spacer(10);
+
+// Products
+$product-title-font-size: 1em;
+$product-listview-title-font-size: 1.125em;
+
+$product-deal-font-size: $font-size-sm;
+
+$product-image-carousel-indicator-top: 15%;
+$product-image-carousel-indicator-bottom: 15%;
+$product-image-carousel-indicator-size: mz-spacer(30);
+$product-image-carousel-indicator-margin: 5px;
+
+$product-action-bottom: 100%;
+$product-action-hover-bottom: 40%;
+$product-action-border-radius: $border-radius;
+$product-action-btn-padding: mz-spacer(6) mz-spacer(12);
+
+$product-caption-padding: mz-spacer(14) 0 0;
+$product-caption-item-margin-bottom: mz-spacer(10);
+$product-price-line-height: 1.1;
+$product-price-new-color: black;
+$product-price-new-size: 1.142857142857143em;
+$product-price-old-color: $gray-500;
+$product-price-old-size: 0.875em;
+$product-price-tax-color: $gray-600;
+$product-price-tax-font-size: .857em;
+$product-rating-color: #ffb100;
+$product-rating-font-size: .8125em;
+
+// Product label
+$product-label-font-size: 0.85em;
+$product-label-shape-square-padding: .3em .5em;
+$product-label-shape-circle-padding: 0.584em;
+$product-label-gutter: 8px;
+$product-label-margin-bottom: $product-label-gutter;
+$product-label-color: $secondary;
+
+// Articles
+$article-title-font-size: 1em;
+// $article-title-margin-bottom: mz-spacer(15);
+$article-metadata-font-size: $font-size-sm;
+$article-metadata-color: #777777;
+
+$article-description-margin-top: mz-spacer(15);
+$article-caption-background-color: $white;
+$article-caption-padding-top: mz-spacer(20);
+$article-metadata-margin-top: $spacer;
+$article-timestamp-color: $primary;
+
+// Testimnonial
+$testimonial-quote-color: $black;
+$testimonial-description-margin-bottom: mz-spacer(30);
+$testimonial-description-font-size: 1.25em;
+$testimonial-description-font-family: $headings-font-family;
+$testimonial-description-color: #aaaaaa;
+$testimonial-author-font-size: mz-spacer(20);
+$testimonial-rating-color: #ffb100;
+$testimonial-rating-font-size: .9em;
+$testimonial-timestamp-color: $gray-600;
+$testimonial-timestamp-font-size: $font-size-sm;
+
+// Page
+$page-gray: $gray-600;
+
+// Module
+$module-title-margin-bottom: mz-spacer(28);
+$module-title-font-size: 1.875em;
+$module-margin-bottom: mz-spacer(30);
+
+// Category wall
+$module-category-wall-hover-color: $primary;
+$module-category-wall-font-size: 1.142857142857143em;
+$module-category-wall-font-color: $white;
+$module-category-wall-font-hover-color: $primary;
+
+// Filter
+$module-filter-card-header: mz-spacer(20) mz-spacer(30);
+$module-filter-value-margin-bottom: mz-spacer(8);
+$module-filter-group-header-padding: mz-spacer(30);
+$module-filter-group-content-padding: mz-spacer(30);
+$module-filter-reset-left-margin: mz-spacer(30);
+$module-filter-product-total-font-size: 0.875em;
+
+// Design menu
+$design-nav-link-padding-y: mz-spacer(5);

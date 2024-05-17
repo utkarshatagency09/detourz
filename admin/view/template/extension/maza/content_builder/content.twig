@@ -1,0 +1,1198 @@
+{% macro addEntry(entries, root = false) %}
+  {% for entry in entries %} 
+
+    {# Device profile #}
+    {% set class = '' %}
+    {% set data = '' %}
+    {% set span_size_count = '' %}
+
+    {# Device hidden #}
+    {% if (entry['device_hidden'] is not empty) %}
+        {% for device,is_hidden in entry['device_hidden'] %} 
+            {% if (is_hidden == 1) %}
+                {% set class = class ~ " gc-hidden-#{device}" %} {# device hidden class #}
+                {% set data = data ~ " data-device_#{device}_hidden='1'" %} {# Device profile data #}
+            {% else %} 
+                {% set data = data ~ " data-device_#{device}_hidden='0'" %} {# Device profile data #}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {# Device size #}
+    {% if entry['device_size'] is not empty %}
+        {% for device,size in entry['device_size'] %} 
+            {% set class = class ~ " gc-#{device}-#{size}" %} {# device size class #}
+            {% set data = data ~ " data-device_#{device}_size='#{size}'" %} {# Device profile data #}
+            {% set span_size_count = span_size_count ~ " <span class='col-#{device}-count'>#{size}/12</span>" %} {# Device size count span element #}
+        {% endfor %}
+    {% endif %}
+
+    {# Device Order #}
+    {% if entry['device_order'] is not empty %}
+        {% for device,order in entry['device_order'] %}
+            {% set data = data ~ " data-device_#{device}_order='#{order}'" %} {# Device profile data #}
+        {% endfor %}
+    {% endif %}
+ 
+    {% if (entry['type'] == 'row') %} {# Row entry #}
+    <div {{ data }} data-setting="{{ entry['setting'] }}" class="grid-row entry row {{ class ~ (root?' grid-root') }}">
+      <div class="child-entry row"><span class="empty-placeholder"></span>
+        {% if (entry['child_entry'] is not empty) %}
+        {{ _self.addEntry(entry['child_entry'], false) }}
+        {% endif %} 
+      </div>
+    </div>
+
+    {% elseif (entry['type'] == 'col') %} {# column entry #}
+    <div {{ data }} data-setting="{{ entry['setting'] }}" class="{{ class }} grid-col entry">
+      {{ span_size_count }}
+      <div class="child-entry">
+        <span class="empty-placeholder"></span>
+        {% if (entry['child_entry'] is not empty) %}
+        {{ _self.addEntry(entry['child_entry'], false) }}
+        {% endif %} 
+      </div>
+    </div>
+
+    {% elseif (entry['type'] == 'module') %} {# module entry #}
+    <div {{ data }} class="extension-pill module entry {{ class }}" data-setting="{{ entry['setting'] }}" data-code="{{ entry['code'] }}" data-name="{{ entry['name'] }}" data-path="{{ entry['path'] }}"><i class="fa fa-plug drag-icon"></i> <span class="extension-label">{{ entry['path'] }}</span> 
+        <a href="#" class="extension-pill-action action-remove" target="_blank"><i class="fa fa-times"></i></a> 
+        <a href="#" class="extension-pill-action action-hide" ><i class="fa fa-eye-slash"></i></a>
+        <a href="#" class="extension-pill-action action-duplicate"><i class="fa fa-copy"></i></a> 
+        <a href="{{ entry['edit'] }}" class="extension-pill-action action-cog" target="_blank"><i class="fa fa-cog"></i></a> 
+        <a href="#" class="extension-pill-action action-edit" target="_blank"><i class="fa fa-pencil"></i></a> 
+    </div>
+
+    {% elseif (entry['type'] == 'widget') %} {# widget entry #}
+    <div {{ data }} class="extension-pill widget entry {{ class }}" data-setting="{{ entry['setting'] }}" data-widget_data="{{ entry['widget_data'] }}" data-code="{{ entry['code'] }}" data-name="{{ entry['name'] }}"><i class="fa fa-puzzle-piece drag-icon"></i> <span class="extension-label">{{ entry['name'] }}</span> 
+        <a href="#" class="extension-pill-action action-remove" target="_blank"><i class="fa fa-times"></i></a> 
+        <a href="#" class="extension-pill-action action-hide" ><i class="fa fa-eye-slash"></i></a>
+        <a href="#" class="extension-pill-action action-duplicate"><i class="fa fa-copy"></i></a> 
+        <a href="#" class="extension-pill-action action-cog" target="_blank"><i class="fa fa-cog"></i></a> 
+        <a href="#" class="extension-pill-action action-edit" target="_blank"><i class="fa fa-pencil"></i></a>
+    </div>
+
+    {% elseif (entry['type'] == 'design') %} {# design entry #}
+    <div {{ data }} class="extension-pill design entry {{ class }}" data-setting="{{ entry['setting'] }}" data-design_data="{{ entry['design_data'] }}" data-code="{{ entry['code'] }}" data-name="{{ entry['name'] }}"><i class="fa fa-paint-brush drag-icon"></i> <span class="extension-label">{{ entry['name'] }}</span> 
+        <a href="#" class="extension-pill-action action-remove" target="_blank"><i class="fa fa-times"></i></a> 
+        <a href="#" class="extension-pill-action action-hide" ><i class="fa fa-eye-slash"></i></a>
+        <a href="#" class="extension-pill-action action-duplicate"><i class="fa fa-copy"></i></a> 
+        <a href="#" class="extension-pill-action action-cog" target="_blank"><i class="fa fa-cog"></i></a> 
+        <a href="#" class="extension-pill-action action-edit" target="_blank"><i class="fa fa-pencil"></i></a>
+    </div>
+    {% endif %} 
+
+  {% endfor %}
+{% endmacro %}
+{{ header }}
+<style>
+#container{
+    background-color: white;
+}
+#header{
+    display: none;
+}
+.grid-col > .child-entry > .empty-placeholder::after{
+    content: "{{ text_col_placeholder }}";
+}
+.grid-row > .child-entry > .empty-placeholder::after{
+    content: "{{ text_row_placeholder }}";
+}
+</style>
+<div class="layout-builder clearfix">
+    
+  <!--Layout header-->
+  <div class="layout-builder-header clearfix">
+    <div class="col-xs-3">
+      {% if (content_name is defined) %} 
+      <h1>{{ content_name }}</h1>
+      {% endif %} 
+    </div>
+    <div class="col-xs-4 text-center">
+      <ul class="nav nav-tabs device-view">
+        {% for device in device_views %} 
+          {% if (device['code'] == 'xl') %} 
+          <li class="active"><a href="#" data-toggle="device-switch" data-device="{{ device['code'] }}"><i class="fa {{ device['icon'] }}"></i></a></li>
+          {% else %} 
+          <li><a href="#" data-toggle="device-switch" data-device="{{ device['code'] }}"><i class="fa {{ device['icon'] }}"></i></a></li>
+          {% endif %} 
+        {% endfor %} 
+      </ul>
+    </div>
+    <div class="col-xs-5 text-right">
+      <!--Select skin-->
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary">{{ text_skin }}</button>
+        <button type="button" class="btn btn-default" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ mz_skin_info['name'] }} <span class="caret"></span></button>
+        <ul id="layout-skin" class="dropdown-menu">
+          {% for mz_skin in mz_skins %} 
+            {% if (mz_skin['skin_id'] == mz_skin_info['skin_id']) %} 
+            <li class="active"><a href="{{ skin_target }}&mz_skin_id={{ mz_skin['skin_id'] }}">{{ mz_skin['name'] }}</a></li>
+            {% else %} 
+            <li><a href="{{ skin_target }}&mz_skin_id={{ mz_skin['skin_id'] }}">{{ mz_skin['name'] }}</a></li>
+            {% endif %} 
+          {% endfor %} 
+        </ul>
+        <button type="button" data-toggle="modal" title="{{ button_duplicate }}" data-target="#modal-duplicate-skin-layout" class="btn btn-primary"><i class="fa fa-copy" aria-hidden="true"></i></button>
+      </div>
+
+      <div class="btn-group">
+        <a id="button-export" href="{{ export }}" data-toggle="tooltip" data-placement="bottom" title="{{ button_export }}" class="btn btn-primary"><i class="fa fa-download"></i></a>
+        <button id="button-import" type="button" data-toggle="tooltip" data-placement="bottom" title="{{ button_import }}" class="btn btn-primary"><i class="fa fa-upload"></i></button>
+      </div>
+      
+      <!--button save-->
+      <button id="button-layout-save" type="button" class="btn btn-primary"><i class="fa fa-save"></i> {{ button_save }}</button>
+      
+      <!--Button cancel-->
+      <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+
+      <!--Button Docs-->
+      <a href="https://docs.pocotheme.com/#reference-layout-builder" data-toggle="tooltip" data-placement="bottom" title="{{ button_docs }}" class="btn btn-warning"><i class="fa fa-info"></i></a>
+    </div>
+  </div>
+  
+  <!-- Grid action-->
+  <div id="grid-action" data-spy="affix" data-offset-top="10">
+    <div id="grid-row-action" class="collapse">
+      <div class="grid-action-panel bg-info clearfix">
+        <a href="#grid-row-action" class="close" data-toggle="collapse"><i class="fa fa-times-circle" aria-hidden="true"></i></a>
+        <h4 class="pull-left"><i class="fa fa-pencil" aria-hidden="true"></i> {{ text_row }}</h4>
+        <div class="pull-right">
+          <div class="btn-group">
+            <button type="button" class="btn btn-add-column btn-default btn-sm" data-toggle="modal" data-target="#add-column-setting"><i class="fa fa-plus" aria-hidden="true"></i> {{ button_add_column }}</button>
+            <button type="button" class="btn btn-edit btn-default btn-sm" data-toggle="modal" data-target="#edit-row"><i class="fa fa-pencil" aria-hidden="true"></i> {{ button_edit }}</button>
+            <button type="button" class="btn btn-duplicate btn-default btn-sm"><i class="fa fa-copy" aria-hidden="true"></i> {{ button_duplicate }}</button>
+            <button type="button" class="btn btn-hide btn-default btn-sm" data-text_hide="{{ button_hide }}" data-text_show="{{ button_show }}"><i class="fa fa-eye-slash" aria-hidden="true"></i> {{ button_hide }}</button>
+            <button type="button" class="btn btn-delete btn-default btn-sm"><i class="fa fa-trash-o" aria-hidden="true"></i> {{ button_delete }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="grid-col-action" class="collapse">
+      <div class="grid-action-panel bg-info clearfix">
+        <a href="#grid-col-action" class="close" data-toggle="collapse"><i class="fa fa-times-circle" aria-hidden="true"></i></a>
+        <h4 class="pull-left"><i class="fa fa-pencil" aria-hidden="true"></i> {{ text_column }}</h4>
+        <div class="pull-right">
+          <div class="btn-group">
+            <button type="button" class="btn btn-add-column btn-default btn-sm" data-toggle="modal" data-target="#add-row-setting"><i class="fa fa-plus" aria-hidden="true"></i> {{ button_add_row }}</button>
+            <button type="button" class="btn btn-edit btn-default btn-sm" data-toggle="modal" data-target="#edit-col"><i class="fa fa-pencil" aria-hidden="true"></i> {{ button_edit }}</button>
+            <button type="button" class="btn btn-duplicate btn-default btn-sm"><i class="fa fa-copy" aria-hidden="true"></i> {{ button_duplicate }}</button>
+            <button type="button" class="btn btn-hide btn-default btn-sm" data-text_hide="{{ button_hide }}" data-text_show="{{ button_show }}"><i class="fa fa-eye-slash" aria-hidden="true"></i> {{ button_hide }}</button>
+            <button type="button" class="btn btn-delete btn-default btn-sm"><i class="fa fa-trash-o" aria-hidden="true"></i> {{ button_delete }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  <!--Layout content-->
+  <div id="layout-builder-content" class="device-xl" data-device="xl">
+      
+    {% if (warning is defined) %} 
+      <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+    {% endif %} 
+    
+    <!--Popup content-->
+    <fieldset id="content_builder" style="text-align: left" class="layout-builder-section">
+      <legend class="clearfix">
+        <h4 class="pull-left">{{ text_add_row }}</h4>
+        <div class="pull-right">
+          <div class="btn-group">
+            <button type="button" class="btn btn-default row-plus btn-sm"><i class="fa fa-plus" aria-hidden="true"></i></button>
+            <button type="button" class="btn btn-default row-count btn-sm">{{ content_builder|length }}</button>
+            <button type="button" class="btn btn-default row-minus btn-sm"><i class="fa fa-minus" aria-hidden="true"></i></button>
+          </div>
+          <button type="button" data-show="0" class="btn btn-default visibility-toggle btn-sm"><i class="fa fa-eye-slash" aria-hidden="true"></i></button>
+        </div>
+      </legend>
+      <div class="layout-builder-section-content content-sortable">
+        {{ _self.addEntry(content_builder, true) }} 
+      </div>
+    </fieldset>
+  </div>
+  
+  <!--extension panel-->
+  <aside class="layout-builder-sidebar">
+    <!--extension list-->
+    <div id="extension-panel">
+      <ul class="nav nav-tabs nav-justified">
+        <li class="active"><a href="#tab-widget" data-toggle="tab"><span data-toggle="tooltip" title="{{ text_widget }}"><i class="fa fa-puzzle-piece drag-icon"></i></span></a></li>
+        <li><a href="#tab-design" data-toggle="tab"><span data-toggle="tooltip" title="{{ text_design }}"><i class="fa fa-paint-brush drag-icon"></i></span></a></li>
+        <li><a href="#tab-module" data-toggle="tab"><span data-toggle="tooltip" title="{{ text_module }}"><i class="fa fa-plug drag-icon"></i></span></a></li>
+      </ul>
+      <div class="tab-content">
+        <div id="tab-widget" class="tab-pane active">
+          {% for widget in widgets %} 
+            <div data-code="{{ widget['code'] }}" data-name="{{ widget['name'] }}" class="extension-pill widget entry ui-state-default"><i class="fa fa-puzzle-piece drag-icon"></i> <span class="extension-label">{{ widget['name'] }}</span></div>
+          {% endfor %} 
+        </div>
+        <div id="tab-design" class="tab-pane">
+          {% for design in designs %} 
+            <div data-code="{{ design['code'] }}" data-name="{{ design['name'] }}" class="extension-pill design entry ui-state-default"><i class="fa fa-paint-brush drag-icon"></i> <span class="extension-label">{{ design['name'] }}</span></div>
+          {% endfor %} 
+        </div>
+        <div id="tab-module" class="tab-pane">
+          {% for extension in extensions %} 
+            {% if (extension['module']) %} 
+            <div class="extension-pill-panel">
+              <div class="extension-pill-panel-header">{{ extension['name'] }} <a href="{{ extension['edit'] }}" class="extension-pill-action action-cog" target="_blank"><i class="fa fa-plus"></i></a></div>
+              {% for module in extension['module'] %} 
+              <div data-code="{{ module['code'] }}" data-path="{{ module['path'] }}" data-name="{{ module['name'] }}" class="extension-pill module entry ui-state-default"><i class="fa fa-plug drag-icon"></i> <span class="extension-label">{{ module['name'] }}</span> <a href="{{ module['edit'] }}" class="extension-pill-action action-cog" target="_blank"><i class="fa fa-cog"></i></a></div>
+              {% endfor %} 
+            </div>
+            {% else %} 
+            <div data-code="{{ extension['code'] }}" data-path="{{ extension['path'] }}" data-name="{{ extension['name'] }}" class="extension-pill module entry ui-state-default"><i class="fa fa-plug drag-icon"></i> <span class="extension-label">{{ extension['name'] }}</span> <a href="{{ extension['edit'] }}" class="extension-pill-action action-cog" target="_blank"><i class="fa fa-cog"></i></a></div>
+            {% endif %} 
+          {% endfor %} 
+        </div>
+      </div>
+    </div>
+    
+    <!-- responsive limit sliders-->
+    <div class="layout-responsive-limit-slider">
+      <input name="layout_responsive_limit" type="range" min="0" max="200" value="0" id="layout-responsive-limit" class="form-control large" />
+    </div>
+  </aside>
+  
+  <!--Add row popup-->
+  <div id="add-row-setting" class="modal fade mz-model-default" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><i class="fa fa-cog"></i> {{ text_row_setting }}</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal">
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-add-row-desktop"><i class="fa fa-desktop"></i> {{ text_desktop }} <span data-toggle="tooltip" title="{{ help_desktop_size }}"></span></label>
+              <div class="col-xs-9 d-flex">
+                <div style="margin-right: 10px;" class="mz-switch-field">
+                  <input type="radio" name="add_row_desktop_visibility" value="1" id="input-add-row-desktop-visibility-show" checked>
+                  <label for="input-add-row-desktop-visibility-show" >{{ text_show }}</label>
+                  <input type="radio" name="add_row_desktop_visibility" value="0" id="input-add-row-desktop-visibility-hide">
+                  <label for="input-add-row-desktop-visibility-hide">{{ text_hide }}</label>
+                </div>
+                <div class="input-group inline">
+                  <span class="input-group-addon">{{ text_column }}</span>
+                  <select name="add_row_desktop_size" id="input-desktop-add-row-column-size" class="form-control">
+                    {% set i = 1 %}{% for i in i..12 %} 
+                      {% if (i == 12) %} 
+                      <option value="{{ i }}" selected="">{{ i }}/12</option>
+                      {% else %} 
+                      <option value="{{ i }}">{{ i }}/12</option>
+                      {% endif %} 
+                    {% endfor %} 
+                  </select>
+                </div>
+              </div>
+            </div>
+              
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-add-row-laptop"><i class="fa fa-laptop"></i> {{ text_laptop }} <span data-toggle="tooltip" title="{{ help_laptop_size }}"></span></label>
+              <div class="col-xs-9 d-flex">
+                <div style="margin-right: 10px;" class="mz-switch-field">
+                  <input type="radio" name="add_row_laptop_visibility" value="1" id="input-add-row-laptop-visibility-show" checked>
+                  <label for="input-add-row-laptop-visibility-show" >{{ text_show }}</label>
+                  <input type="radio" name="add_row_laptop_visibility" value="0" id="input-add-row-laptop-visibility-hide">
+                  <label for="input-add-row-laptop-visibility-hide">{{ text_hide }}</label>
+                </div>
+                <div class="input-group inline">
+                  <span class="input-group-addon">{{ text_column }}</span>
+                  <select name="add_row_laptop_size" id="input-laptop-add-row-column-size" class="form-control">
+                    {% set i = 1 %}{% for i in i..12 %} 
+                      {% if (i == 12) %} 
+                      <option value="{{ i }}" selected="">{{ i }}/12</option>
+                      {% else %} 
+                      <option value="{{ i }}">{{ i }}/12</option>
+                      {% endif %} 
+                    {% endfor %} 
+                  </select>
+                </div>
+              </div>
+            </div>
+              
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-add-row-tablet"><i class="fa fa-tablet"></i> {{ text_tablet }} <span data-toggle="tooltip" title="{{ help_tablet_size }}"></span></label>
+              <div class="col-xs-9 d-flex">
+                <div style="margin-right: 10px;" class="mz-switch-field">
+                  <input type="radio" name="add_row_tablet_visibility" value="1" id="input-add-row-tablet-visibility-show" checked>
+                  <label for="input-add-row-tablet-visibility-show" >{{ text_show }}</label>
+                  <input type="radio" name="add_row_tablet_visibility" value="0" id="input-add-row-tablet-visibility-hide">
+                  <label for="input-add-row-tablet-visibility-hide">{{ text_hide }}</label>
+                </div>
+                <div class="input-group inline">
+                  <span class="input-group-addon">{{ text_column }}</span>
+                  <select name="add_row_tablet_size" id="input-tablet-add-row-column-size" class="form-control">
+                    {% set i = 1 %}{% for i in i..12 %} 
+                      {% if (i == 12) %} 
+                      <option value="{{ i }}" selected="">{{ i }}/12</option>
+                      {% else %} 
+                      <option value="{{ i }}">{{ i }}/12</option>
+                      {% endif %} 
+                    {% endfor %} 
+                  </select>
+                </div>
+              </div>
+            </div>
+              
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-add-row-tablet2"><i class="fa fa-tablet fa-rotate-270"></i> {{ text_tablet2 }} <span data-toggle="tooltip" title="{{ help_tablet2_size }}"></span></label>
+              <div class="col-xs-9 d-flex">
+                <div style="margin-right: 10px;" class="mz-switch-field">
+                  <input type="radio" name="add_row_tablet2_visibility" value="1" id="input-add-row-tablet2-visibility-show" checked>
+                  <label for="input-add-row-tablet2-visibility-show" >{{ text_show }}</label>
+                  <input type="radio" name="add_row_tablet2_visibility" value="0" id="input-add-row-tablet2-visibility-hide">
+                  <label for="input-add-row-tablet2-visibility-hide">{{ text_hide }}</label>
+                </div>
+                <div class="input-group inline">
+                  <span class="input-group-addon">{{ text_column }}</span>
+                  <select name="add_row_tablet2_size" id="input-tablet2-add-row-column-size" class="form-control">
+                    {% set i = 1 %}{% for i in i..12 %} 
+                      {% if (i == 12) %} 
+                      <option value="{{ i }}" selected="">{{ i }}/12</option>
+                      {% else %} 
+                      <option value="{{ i }}">{{ i }}/12</option>
+                      {% endif %} 
+                    {% endfor %} 
+                  </select>
+                </div>
+              </div>
+            </div>
+              
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-add-row-mobile"><i class="fa fa-mobile"></i> {{ text_mobile }} <span data-toggle="tooltip" title="{{ help_mobile_size }}"></span></label>
+              <div class="col-xs-9 d-flex">
+                <div style="margin-right: 10px;" class="mz-switch-field">
+                  <input type="radio" name="add_row_mobile_visibility" value="1" id="input-add-row-mobile-visibility-show" checked>
+                  <label for="input-add-row-mobile-visibility-show" >{{ text_show }}</label>
+                  <input type="radio" name="add_row_mobile_visibility" value="0" id="input-add-row-mobile-visibility-hide">
+                  <label for="input-add-row-mobile-visibility-hide">{{ text_hide }}</label>
+                </div>
+                <div class="input-group inline">
+                  <span class="input-group-addon">{{ text_column }}</span>
+                  <select name="add_row_mobile_size" id="input-mobile-add-row-column-size" class="form-control">
+                    {% set i = 1 %}{% for i in i..12 %} 
+                      {% if (i == 12) %} 
+                      <option value="{{ i }}" selected="">{{ i }}/12</option>
+                      {% else %} 
+                      <option value="{{ i }}">{{ i }}/12</option>
+                      {% endif %} 
+                    {% endfor %} 
+                  </select>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button id="button-add-row" type="button" class="btn btn-primary" data-dismiss="modal">{{ button_add_row }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- edit row popup-->
+  <div id="edit-row" class="modal fade mz-model-default" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><i class="fa fa-cog"></i> {{ text_edit_row }}</h4>
+        </div>
+        <div class="modal-body">
+          <div id="edit-row-content"></div>
+          <div class="loader text-center"><i class="fa fa-2x fa-circle-o-notch fa-spin"></i></div>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-xs-4">
+              <ul class="nav nav-pills select-edit-type">
+                <li class="active"><a href="#tab-row-edit-style" data-toggle="pill" >{{ text_style }}</a></li>
+                <li><a href="#tab-row-edit-setting" data-toggle="pill" >{{ text_setting }}</a></li>
+              </ul>
+            </div>
+            <div class="col-xs-4 text-center">
+              <ul class="nav nav-pills select-device">
+                {% for device in device_views %} 
+                  {% if (device['code'] == 'xl') %} 
+                  <li class="active"><a href="#tab-row-edit-screen-{{ device['code'] }}" data-device="{{ device['code'] }}" data-toggle="pill" ><i class="fa {{ device['icon'] }}"></i></a></li>
+                  {% else %} 
+                  <li><a href="#tab-row-edit-screen-{{ device['code'] }}" data-device="{{ device['code'] }}" data-toggle="pill" ><i class="fa {{ device['icon'] }}"></i></a></li>
+                  {% endif %} 
+                {% endfor %} 
+              </ul>
+            </div>
+            <div class="col-xs-4">
+              <button id="button-edit-row-save" type="button" class="btn btn-primary btn-lg pull-right" data-dismiss="modal">{{ button_save }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--add column popup-->
+  <div id="add-column-setting" class="modal fade mz-model-default" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><i class="fa fa-cog"></i> {{ text_column_setting }}</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal">
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-add-column-desktop"><i class="fa fa-desktop"></i> {{ text_desktop }} <span data-toggle="tooltip" title="{{ help_desktop_size }}"></span></label>
+              <div class="col-xs-9 d-flex">
+                <div style="margin-right: 10px;" class="mz-switch-field">
+                  <input type="radio" name="add_column_desktop_visibility" value="1" id="input-add-column-desktop-visibility-show" checked>
+                  <label for="input-add-column-desktop-visibility-show" >{{ text_show }}</label>
+                  <input type="radio" name="add_column_desktop_visibility" value="0" id="input-add-column-desktop-visibility-hide">
+                  <label for="input-add-column-desktop-visibility-hide">{{ text_hide }}</label>
+                </div>
+                <div class="input-group inline">
+                  <span class="input-group-addon">{{ text_column }}</span>
+                  <select name="add_column_desktop_size" id="input-add-column-desktop-size" class="form-control">
+                    {% set i = 1 %}{% for i in i..12 %} 
+                      {% if (i == 12) %} 
+                      <option value="{{ i }}" selected="">{{ i }}/12</option>
+                      {% else %} 
+                      <option value="{{ i }}">{{ i }}/12</option>
+                      {% endif %} 
+                    {% endfor %} 
+                  </select>
+                </div>
+              </div>
+            </div>
+              
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-add-column-laptop"><i class="fa fa-laptop"></i> {{ text_laptop }} <span data-toggle="tooltip" title="{{ help_laptop_size }}"></span></label>
+              <div class="col-xs-9 d-flex">
+                <div style="margin-right: 10px;" class="mz-switch-field">
+                  <input type="radio" name="add_column_laptop_visibility" value="1" id="input-add-column-laptop-visibility-show" checked>
+                  <label for="input-add-column-laptop-visibility-show" >{{ text_show }}</label>
+                  <input type="radio" name="add_column_laptop_visibility" value="0" id="input-add-column-laptop-visibility-hide">
+                  <label for="input-add-column-laptop-visibility-hide">{{ text_hide }}</label>
+                </div>
+                <div class="input-group inline">
+                  <span class="input-group-addon">{{ text_column }}</span>
+                  <select name="add_column_laptop_size" id="input-add-column-laptop-size" class="form-control">
+                    {% set i = 1 %}{% for i in i..12 %} 
+                      {% if (i == 12) %} 
+                      <option value="{{ i }}" selected="">{{ i }}/12</option>
+                      {% else %} 
+                      <option value="{{ i }}">{{ i }}/12</option>
+                      {% endif %} 
+                    {% endfor %} 
+                  </select>
+                </div>
+              </div>
+            </div>
+              
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-add-column-tablet"><i class="fa fa-tablet"></i> {{ text_tablet }} <span data-toggle="tooltip" title="{{ help_tablet_size }}"></span></label>
+              <div class="col-xs-9 d-flex">
+                <div style="margin-right: 10px;" class="mz-switch-field">
+                  <input type="radio" name="add_column_tablet_visibility" value="1" id="input-add-column-tablet-visibility-show" checked>
+                  <label for="input-add-column-tablet-visibility-show" >{{ text_show }}</label>
+                  <input type="radio" name="add_column_tablet_visibility" value="0" id="input-add-column-tablet-visibility-hide">
+                  <label for="input-add-column-tablet-visibility-hide">{{ text_hide }}</label>
+                </div>
+                <div class="input-group inline">
+                  <span class="input-group-addon">{{ text_column }}</span>
+                  <select name="add_column_tablet_size" id="input-add-column-tablet-size" class="form-control">
+                    {% set i = 1 %}{% for i in i..12 %} 
+                      {% if (i == 12) %} 
+                      <option value="{{ i }}" selected="">{{ i }}/12</option>
+                      {% else %} 
+                      <option value="{{ i }}">{{ i }}/12</option>
+                      {% endif %} 
+                    {% endfor %} 
+                  </select>
+                </div>
+              </div>
+            </div>
+              
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-add-column-tablet2"><i class="fa fa-tablet fa-rotate-270"></i> {{ text_tablet2 }} <span data-toggle="tooltip" title="{{ help_tablet2_size }}"></span></label>
+              <div class="col-xs-9 d-flex">
+                <div style="margin-right: 10px;" class="mz-switch-field">
+                  <input type="radio" name="add_column_tablet2_visibility" value="1" id="input-add-column-tablet2-visibility-show" checked>
+                  <label for="input-add-column-tablet2-visibility-show" >{{ text_show }}</label>
+                  <input type="radio" name="add_column_tablet2_visibility" value="0" id="input-add-column-tablet2-visibility-hide">
+                  <label for="input-add-column-tablet2-visibility-hide">{{ text_hide }}</label>
+                </div>
+                <div class="input-group inline">
+                  <span class="input-group-addon">{{ text_column }}</span>
+                  <select name="add_column_tablet2_size" id="input-add-column-tablet2-size" class="form-control">
+                    {% set i = 1 %}{% for i in i..12 %} 
+                      {% if (i == 12) %} 
+                      <option value="{{ i }}" selected="">{{ i }}/12</option>
+                      {% else %} 
+                      <option value="{{ i }}">{{ i }}/12</option>
+                      {% endif %} 
+                    {% endfor %} 
+                  </select>
+                </div>
+              </div>
+            </div>
+              
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-add-column-mobile"><i class="fa fa-mobile"></i> {{ text_mobile }} <span data-toggle="tooltip" title="{{ help_mobile_size }}"></span></label>
+              <div class="col-xs-9 d-flex">
+                <div style="margin-right: 10px;" class="mz-switch-field">
+                  <input type="radio" name="add_column_mobile_visibility" value="1" id="input-add-column-mobile-visibility-show" checked>
+                  <label for="input-add-column-mobile-visibility-show" >{{ text_show }}</label>
+                  <input type="radio" name="add_column_mobile_visibility" value="0" id="input-add-column-mobile-visibility-hide">
+                  <label for="input-add-column-mobile-visibility-hide">{{ text_hide }}</label>
+                </div>
+                <div class="input-group inline">
+                  <span class="input-group-addon">{{ text_column }}</span>
+                  <select name="add_column_mobile_size" id="input-add-column-mobile-size" class="form-control">
+                    {% set i = 1 %}{% for i in i..12 %} 
+                      {% if (i == 12) %} 
+                      <option value="{{ i }}" selected="">{{ i }}/12</option>
+                      {% else %} 
+                      <option value="{{ i }}">{{ i }}/12</option>
+                      {% endif %} 
+                    {% endfor %} 
+                  </select>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button id="button-add-column" type="button" class="btn btn-primary" data-dismiss="modal">{{ button_add_column }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- edit column popup-->
+  <div id="edit-col" class="modal fade mz-model-default" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><i class="fa fa-cog"></i> {{ text_edit_column }}</h4>
+        </div>
+        <div class="modal-body">
+          <div id="edit-col-content"></div>
+          <div class="loader text-center"><i class="fa fa-2x fa-circle-o-notch fa-spin"></i></div>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-xs-4">
+              <ul class="nav nav-pills select-edit-type">
+                <li class="active"><a href="#tab-col-edit-style" data-toggle="pill" >{{ text_style }}</a></li>
+                <li><a href="#tab-col-edit-setting" data-toggle="pill" >{{ text_setting }}</a></li>
+              </ul>
+            </div>
+            <div class="col-xs-4 text-center">
+              <ul class="nav nav-pills select-device">
+                {% for device in device_views %} 
+                  {% if (device['code'] == 'xl') %} 
+                  <li class="active"><a href="#tab-col-edit-screen-{{ device['code'] }}" data-device="{{ device['code'] }}" data-toggle="pill" ><i class="fa {{ device['icon'] }}"></i></a></li>
+                  {% else %} 
+                  <li><a href="#tab-col-edit-screen-{{ device['code'] }}" data-device="{{ device['code'] }}" data-toggle="pill" ><i class="fa {{ device['icon'] }}"></i></a></li>
+                  {% endif %} 
+                {% endfor %} 
+              </ul>
+            </div>
+            <div class="col-xs-4">
+              <button id="button-edit-col-save" type="button" class="btn btn-primary btn-lg pull-right" data-dismiss="modal">{{ button_save }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- edit module popup-->
+  <div id="edit-module" class="modal fade mz-model-default" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <!--modal header-->
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><i class="fa fa-cog"></i> {{ text_edit_module }}</h4>
+        </div>
+        <!--modal body-->
+        <div class="modal-body">
+          <div id="edit-module-content"></div>
+          <div class="loader text-center"><i class="fa fa-2x fa-circle-o-notch fa-spin"></i></div>
+        </div>
+        <!--modal footer-->
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-xs-4">
+              <ul class="nav nav-pills select-edit-type">
+                <li class="active"><a href="#tab-module-edit-style" data-toggle="pill" >{{ text_style }}</a></li>
+                <li><a href="#tab-module-edit-setting" data-toggle="pill" >{{ text_setting }}</a></li>
+              </ul>
+            </div>
+            <div class="col-xs-4 text-center">
+              <ul class="nav nav-pills select-device">
+                {% for device in device_views %} 
+                  {% if (device['code'] == 'xl') %} 
+                  <li class="active"><a href="#tab-module-edit-screen-{{ device['code'] }}" data-device="{{ device['code'] }}" data-toggle="pill" ><i class="fa {{ device['icon'] }}"></i></a></li>
+                  {% else %} 
+                  <li><a href="#tab-module-edit-screen-{{ device['code'] }}" data-device="{{ device['code'] }}" data-toggle="pill" ><i class="fa {{ device['icon'] }}"></i></a></li>
+                  {% endif %} 
+                {% endfor %} 
+              </ul>
+            </div>
+            <div class="col-xs-4">
+              <button id="button-edit-module-save" type="button" class="btn btn-primary btn-lg pull-right" data-dismiss="modal">{{ button_save }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- edit widget popup-->
+  <div id="edit-widget" class="modal fade mz-model-default" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><i class="fa fa-cog"></i> {{ text_edit_widget }}</h4>
+        </div>
+        <div class="modal-body">
+          <div id="edit-widget-content"></div>
+          <div class="loader text-center"><i class="fa fa-2x fa-circle-o-notch fa-spin"></i></div>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-xs-4">
+              <ul class="nav nav-pills select-edit-type">
+                <li class="active"><a href="#tab-widget-edit-style" data-toggle="pill" >{{ text_style }}</a></li>
+                <li><a href="#tab-widget-edit-setting" data-toggle="pill" >{{ text_setting }}</a></li>
+              </ul>
+            </div>
+            <div class="col-xs-4 text-center">
+              <ul class="nav nav-pills select-device">
+                {% for device in device_views %} 
+                  {% if (device['code'] == 'xl') %} 
+                  <li class="active"><a href="#tab-widget-edit-screen-{{ device['code'] }}" data-device="{{ device['code'] }}" data-toggle="pill" ><i class="fa {{ device['icon'] }}"></i></a></li>
+                  {% else %} 
+                  <li><a href="#tab-widget-edit-screen-{{ device['code'] }}" data-device="{{ device['code'] }}" data-toggle="pill" ><i class="fa {{ device['icon'] }}"></i></a></li>
+                  {% endif %} 
+                {% endfor %} 
+              </ul>
+            </div>
+            <div class="col-xs-4">
+              <button id="button-edit-widget-save" type="button" class="btn btn-primary btn-lg pull-right" data-dismiss="modal">{{ button_save }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- setting widget popup-->
+  <div id="setting-widget" class="modal fade mz-model-default" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><i class="fa fa-cog"></i> {{ text_setting_widget }}</h4>
+        </div>
+        <div class="modal-body">
+          <div id="setting-widget-content"></div>
+          <div class="loader text-center"><i class="fa fa-2x fa-circle-o-notch fa-spin"></i></div>
+        </div>
+        <div class="modal-footer">
+          <button id="button-setting-widget-save" type="button" class="btn btn-primary" data-dismiss="modal">{{ button_save }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- edit design popup-->
+  <div id="edit-design" class="modal fade mz-model-default" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><i class="fa fa-cog"></i> {{ text_edit_design }}</h4>
+        </div>
+        <div class="modal-body">
+          <div id="edit-design-content"></div>
+          <div class="loader text-center"><i class="fa fa-2x fa-circle-o-notch fa-spin"></i></div>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <div class="col-xs-4">
+              <ul class="nav nav-pills select-edit-type">
+                <li class="active"><a href="#tab-design-edit-style" data-toggle="pill" >{{ text_style }}</a></li>
+                <li><a href="#tab-design-edit-setting" data-toggle="pill" >{{ text_setting }}</a></li>
+              </ul>
+            </div>
+            <div class="col-xs-4 text-center">
+              <ul class="nav nav-pills select-device">
+                {% for device in device_views %} 
+                  {% if (device['code'] == 'xl') %} 
+                  <li class="active"><a href="#tab-design-edit-screen-{{ device['code'] }}" data-device="{{ device['code'] }}" data-toggle="pill" ><i class="fa {{ device['icon'] }}"></i></a></li>
+                  {% else %} 
+                  <li><a href="#tab-design-edit-screen-{{ device['code'] }}" data-device="{{ device['code'] }}" data-toggle="pill" ><i class="fa {{ device['icon'] }}"></i></a></li>
+                  {% endif %} 
+                {% endfor %} 
+              </ul>
+            </div>
+            <div class="col-xs-4">
+              <button id="button-edit-design-save" type="button" class="btn btn-primary btn-lg pull-right" data-dismiss="modal">{{ button_save }}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- setting design popup-->
+  <div id="setting-design" class="modal fade mz-model-default" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><i class="fa fa-cog"></i> {{ text_setting_design }}</h4>
+        </div>
+        <div class="modal-body">
+          <div id="setting-design-content"></div>
+          <div class="loader text-center"><i class="fa fa-2x fa-circle-o-notch fa-spin"></i></div>
+        </div>
+        <div class="modal-footer">
+          <button id="button-setting-design-save" type="button" class="btn btn-primary" data-dismiss="modal">{{ button_save }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!--duplicate layout skin-->
+  <div id="modal-duplicate-skin-layout" class="modal fade mz-model-default" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><i class="fa fa-cog"></i> {{ text_duplicate_layout }}</h4>
+        </div>
+        <div class="modal-body">
+          <form id="form-duplicate-skin-layout" class="form-horizontal">
+            <div class="form-group">
+              <label class="col-xs-4 control-label" for="input-duplicate-layout-to-skin-id">{{ entry_duplicate_to_skin }}</label>
+              <div class="col-xs-8">
+                <select name="duplicate_layout_to_skin_id" class="form-control large" id="input-duplicate-layout-to-skin-id">
+                  {% for mz_skin in mz_skins %} 
+                    {% if (mz_skin['skin_id'] != mz_skin_info['skin_id']) %} 
+                    <option value="{{ mz_skin['skin_id'] }}">{{ mz_skin['name'] }}</option>
+                    {% endif %} 
+                  {% endfor %} 
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button id="button-duplicate-skin-layout" type="button" class="btn btn-primary">{{ button_duplicate }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+<script>
+layout('#content_builder');
+
+//edit row
+$('#edit-row').on('show.bs.modal', function(){
+    // row instance
+    var row = $(this).data('row');
+    
+    $('#edit-row-content').empty();
+    $(this).find('.modal-footer .nav').find('a:first').tab('show');
+    
+    // Get row setting
+    $.ajax({
+        url: 'index.php?route=extension/maza/layout_builder/edit_row&user_token={{ user_token }}{{ url }}',
+        dataType: 'html',
+        data: row.data('setting'),
+        type: 'post',
+        beforeSend: function(){
+            $('#edit-row .loader').show();
+        },
+        success: function(html){
+            $('#edit-row-content').html(html);
+            InitJsGlobal($('#edit-row-content'));
+            $('#edit-row [data-device="' + $('#layout-builder-content').data('device') + '"]').tab('show');
+        },
+        complete: function(){
+            $('#edit-row .loader').hide();
+        }
+    });
+});
+$('#button-edit-row-save').on('click', function(){
+    // row instance
+    $('#edit-row').data('row').data('setting', $('#edit-row-form').serialize());
+});
+
+// edit col
+$('#edit-col').on('show.bs.modal', function(){
+    // col instance
+    var col = $(this).data('col');
+    
+    $('#edit-col-content').empty();
+    $(this).find('.modal-footer .nav').find('a:first').tab('show');
+    
+    // Get col setting
+    $.ajax({
+        url: 'index.php?route=extension/maza/layout_builder/edit_column&user_token={{ user_token }}{{ url }}',
+        dataType: 'html',
+        data: col.data('setting'),
+        type: 'post',
+        beforeSend: function(){
+            $('#edit-col .loader').show();
+        },
+        success: function(html){
+            $('#edit-col-content').html(html);
+            InitJsGlobal($('#edit-col-content'));
+            $('#edit-col [data-device="' + $('#layout-builder-content').data('device') + '"]').tab('show');
+        },
+        complete: function(){
+            $('#edit-col .loader').hide();
+        }
+    });
+});
+
+$('#button-edit-col-save').on('click', function(){
+    // col instance
+    $('#edit-col').data('col').data('setting', $('#edit-col-form').serialize());
+});
+
+// Edit module
+$('#layout-builder-content').delegate('.module .action-edit', 'click', function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    $('#edit-module').data('module', $(this).closest('.module')).modal('show');
+});
+$('#edit-module').on('show.bs.modal', function(){
+    // module instance
+    var module = $(this).data('module');
+    
+    // Change title of modal
+    $(this).find('.modal-title').text('{{ text_edit_module }} (' + module.data('path') + ')');
+    
+    $('#edit-module-content').empty();
+    $(this).find('.modal-footer .nav').find('a:first').tab('show');
+    
+    // Get module setting
+    $.ajax({
+        url: 'index.php?route=extension/maza/layout_builder/edit_module&user_token={{ user_token }}{{ url }}',
+        dataType: 'html',
+        data: module.data('setting'),
+        type: 'post',
+        beforeSend: function(){
+            $('#edit-module .loader').show();
+        },
+        success: function(html){
+            $('#edit-module-content').html(html);
+            InitJsGlobal($('#edit-module-content'));
+            $('#edit-module [data-device="' + $('#layout-builder-content').data('device') + '"]').tab('show');
+        },
+        complete: function(){
+            $('#edit-module .loader').hide();
+        }
+    });
+    
+});
+$('#button-edit-module-save').on('click', function(){
+    // module instance
+    $('#edit-module').data('module').data('setting', $('#edit-module-form').serialize());
+});
+
+// edit widget
+$('#layout-builder-content').delegate('.widget .action-edit', 'click', function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    $('#edit-widget').data('widget', $(this).closest('.widget')).modal('show');
+});
+
+$('#edit-widget').on('show.bs.modal', function(){
+    // widget instance
+    var widget = $(this).data('widget');
+    
+    // Change title of modal
+    $(this).find('.modal-title').text('{{ text_edit_widget }} (' + widget.data('name') + ')');
+    
+    $('#edit-widget-content').empty();
+    $(this).find('.modal-footer .nav').find('a:first').tab('show');
+    
+    // Get module setting
+    $.ajax({
+        url: 'index.php?route=extension/mz_widget/' + widget.data('code') + '/edit&user_token={{ user_token }}{{ url }}',
+        dataType: 'html',
+        data: widget.data('setting'),
+        type: 'post',
+        beforeSend: function(){
+            $('#edit-widget .loader').show();
+        },
+        success: function(html){
+            $('#edit-widget-content').html(html);
+            InitJsGlobal($('#edit-widget-content'));
+            $('#edit-widget [data-device="' + $('#layout-builder-content').data('device') + '"]').tab('show');
+        },
+        complete: function(){
+            $('#edit-widget .loader').hide();
+        }
+    });
+});
+$('#button-edit-widget-save').on('click', function(){
+    // widget instance
+    $('#edit-widget').data('widget').data('setting', $('#edit-widget-form').serialize());
+});
+
+// setting widget
+$('#layout-builder-content').delegate('.widget .action-cog', 'click', function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    $('#setting-widget').data('widget', $(this).closest('.widget')).modal('show');
+});
+
+$('#setting-widget').on('show.bs.modal', function(){
+    // widget instance
+    var widget = $(this).data('widget');
+    
+    // Change title of modal
+    $(this).find('.modal-title').text('{{ text_setting_widget }} (' + widget.data('name') + ')');
+    
+    $('#setting-widget-content').empty();
+    
+    // Get module setting
+    $.ajax({
+        url: 'index.php?route=extension/mz_widget/' + widget.data('code') + '&user_token={{ user_token }}{{ url }}',
+        dataType: 'html',
+        data: widget.data('widget_data'),
+        type: 'post',
+        beforeSend: function(){
+            $('#setting-widget .loader').show();
+        },
+        success: function(html){
+            $('#setting-widget-content').html(html);
+            InitJsGlobal($('#setting-widget-content'));
+        },
+        complete: function(){
+            $('#setting-widget .loader').hide();
+        }
+    });
+});
+$('#button-setting-widget-save').on('click', function(){
+    // widget instance
+    $('#setting-widget').data('widget').data('widget_data', $('#setting-widget-form').serialize());
+    
+    $('#setting-widget').trigger('save');
+});
+
+// edit design
+$('#layout-builder-content').delegate('.design .action-edit', 'click', function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    $('#edit-design').data('design', $(this).closest('.design')).modal('show');
+});
+
+$('#edit-design').on('show.bs.modal', function(){
+    // design instance
+    var design = $(this).data('design');
+    
+    // Change title of modal
+    $(this).find('.modal-title').text('{{ text_edit_design }} (' + design.data('name') + ')');
+    
+    $('#edit-design-content').empty();
+    $(this).find('.modal-footer .nav').find('a:first').tab('show');
+    
+    // Get module setting
+    $.ajax({
+        url: 'index.php?route=extension/mz_design/' + design.data('code') + '/edit&user_token={{ user_token }}{{ url }}',
+        dataType: 'html',
+        data: design.data('setting'),
+        type: 'post',
+        beforeSend: function(){
+            $('#edit-design .loader').show();
+        },
+        success: function(html){
+            $('#edit-design-content').html(html);
+            InitJsGlobal($('#edit-design-content'));
+            $('#edit-design [data-device="' + $('#layout-builder-content').data('device') + '"]').tab('show');
+        },
+        complete: function(){
+            $('#edit-design .loader').hide();
+        }
+    });
+});
+$('#button-edit-design-save').on('click', function(){
+    // design instance
+    $('#edit-design').data('design').data('setting', $('#edit-design-form').serialize());
+});
+
+// setting design
+$('#layout-builder-content').delegate('.design .action-cog', 'click', function(e){
+    e.preventDefault();
+    e.stopPropagation();
+    $('#setting-design').data('design', $(this).closest('.design')).modal('show');
+});
+
+$('#setting-design').on('show.bs.modal', function(){
+    // design instance
+    var design = $(this).data('design');
+    
+    // Change title of modal
+    $(this).find('.modal-title').text('{{ text_setting_design }} (' + design.data('name') + ')');
+    
+    $('#setting-design-content').empty();
+    
+    // Get module setting
+    $.ajax({
+        url: 'index.php?route=extension/mz_design/' + design.data('code') + '&user_token={{ user_token }}&skip_content_id={{ content_id }}{{ url }}',
+        dataType: 'html',
+        data: design.data('design_data'),
+        type: 'post',
+        beforeSend: function(){
+            $('#setting-design .loader').show();
+        },
+        success: function(html){
+            $('#setting-design-content').html(html);
+            InitJsGlobal($('#setting-design-content'));
+        },
+        complete: function(){
+            $('#setting-design .loader').hide();
+        }
+    });
+});
+$('#button-setting-design-save').on('click', function(){
+    // design instance
+    $('#setting-design').data('design').data('design_data', $('#setting-design-form').serialize());
+});
+</script>
+<script>
+// save layout to current active skin
+$('#button-layout-save').on('click', function(){
+    var button_save = $(this);
+    
+    // Data to be send to server
+    var data = {};
+    data['content_builder'] = serializeTable('#content_builder');
+    
+    $.ajax({
+        url: 'index.php?route=extension/maza/content_builder/submitContentForm&user_token={{ user_token }}{{ url }}',
+        dataType: 'json',
+        data: data,
+        type: 'post',
+        beforeSend: function(){
+            button_save.button('loading');
+            $('.alert').remove();
+        },
+        success: function(json){
+            if(json['error']){
+                $('#layout-builder-content').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+            }
+
+            if(json['success']){
+                $('#layout-builder-content').prepend('<div class="alert alert-success alert-dismissible"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+            }
+        },
+        complete: function(){
+            button_save.button('reset');
+        }
+    });
+});
+
+//send post request to copy layout from active skin to selected skin
+$('#button-duplicate-skin-layout').on('click', function(){
+    var button_save = $(this);
+    
+    // Data to be send to server
+    var duplicate_to_skin_id = $('select[name="duplicate_layout_to_skin_id"]').val();
+    
+    var data = {};
+    
+    if(duplicate_to_skin_id){
+        data['duplicate_to_skin_id'] = duplicate_to_skin_id;
+    }
+    
+    
+    $.ajax({
+        url: 'index.php?route=extension/maza/content_builder/duplicateLayout&user_token={{ user_token }}{{ url }}',
+        dataType: 'json',
+        data: data,
+        type: 'post',
+        beforeSend: function(){
+            button_save.button('loading');
+            $('.alert').remove();
+        },
+        success: function(json){
+            if(json['error']){
+                $('#layout-builder-content').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+            }
+
+            if(json['success']){
+                $('#layout-builder-content').prepend('<div class="alert alert-success alert-dismissible"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                $('#modal-duplicate-skin-layout').modal('hide');
+            }
+        },
+        complete: function(){
+            button_save.button('reset');
+        }
+    });
+});
+</script>
+<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" accept=".json" name="file" /></form>
+<script>
+$('#button-import').on('click', function(){
+    $('.alert-dismissible').remove();
+    
+    $('#form-upload input[name=\'file\']').val('').trigger('click');
+    
+    if (typeof timer != 'undefined') {
+    	clearInterval(timer);
+    }
+
+    timer = setInterval(function() {
+        if ($('#form-upload input[name=\'file\']').val() != '') {
+            clearInterval(timer);
+            
+            $.ajax({
+                url: 'index.php?route=extension/maza/content_builder/import&user_token={{ user_token }}&content_id={{ content_id }}{{ url }}',
+                type: 'post',
+                dataType: 'json',
+                data: new FormData($('#form-upload')[0]),
+                cache: false,
+                contentType: false,
+                processData: false,
+                beforeSend: function() {
+                        $('#button-import').html('<i class="fa fa-cog fa-spin"></i>');
+                },
+                complete: function() {
+                        $('#button-import').html('<i class="fa fa-upload"></i>');
+                },
+                success: function(json) {
+                        if (json['error']) {
+                                $('#layout-builder-content').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                        }
+
+                        if (json['success']) {
+                                $('#layout-builder-content').prepend('<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                                setTimeout(function(){ location.reload(); }, 2000);
+                        }
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                }
+            });
+        }
+    }, 500);
+});
+</script>
+{{ mz_footer }}

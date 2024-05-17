@@ -1,0 +1,15 @@
+.notification-toggle {
+    &.active {
+        position: relative;
+
+        &::after {
+            content: "";
+            padding: 5px;
+            background-color: $red;
+            border-radius: 100%;
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+    }
+}

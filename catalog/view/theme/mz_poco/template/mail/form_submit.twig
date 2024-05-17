@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{{ title }}</title>
+</head>
+<body style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000; text-align:left;">
+<div style="width: 680px;">
+  <h3>{{ text_information }}</h3>
+  <table border="1" cellspacing="0" cellpadding="10" style="border-color: #ddd;">
+    <tbody>
+      <tr><th>{{ entry_form }}</th><td>{{ title }}</td></tr>
+      <tr><th>{{ entry_language }}</th><td>{{ language }}</td></tr>
+      <tr><th>{{ entry_currency }}</th><td>{{ currency }}</td></tr>
+      <tr><th>{{ entry_store }}</th><td><a href="{{ store.url }}">{{ store.name }}</a></td></tr>
+      <tr><th>{{ entry_page }}</th><td><a href="{{ page_url }}">{{ page_url }}</a></td></tr>
+      {# <tr><th>{{ entry_ip_address }}</th><td>{{ ip_address }}</td></tr> #}
+    </tbody>
+  </table>
+  <h3>{{ text_form_data }}</h3>
+  <table border="1" cellspacing="0" cellpadding="10" style="border-color: #ddd;">
+    <tbody>
+      {% for name, value in fields %}
+        {% if value is iterable %}
+        <tr><th>{{ name }}</th><td><ul>{% for item in value %}<li>{{ item }}</li>{% endfor %}</ul></td></tr>
+        {% else %}
+        <tr><th>{{ name }}</th><td>{{ value }}</td></tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+  {% if customer %}
+  <h3>{{ text_customer }}</h3>
+  <table border="1" cellspacing="0" cellpadding="10" style="border-color: #ddd;">
+    <tbody>
+      <tr><th>{{ entry_firstname }}</th><td>{{ customer.firstname }}</td></tr>
+      <tr><th>{{ entry_lastname }}</th><td>{{ customer.lastname }}</td></tr>
+      <tr><th>{{ entry_email }}</th><td><a href="mailto:{{ customer.email }}">{{ customer.email }}</a></td></tr>
+      <tr><th>{{ entry_telephone }}</th><td><a href="tel:{{ customer.telephone }}">{{ customer.telephone }}</a></td></tr>
+      <tr><th>{{ entry_customer_group }}</th><td>{{ customer.customer_group }}</td></tr>
+    </tbody>
+  </table>
+  {% endif %}
+</div>
+</body>
+</html>

@@ -1,0 +1,35 @@
+{% if products %}
+{% for product in products %}
+<li class="product-thumb px-3 py-2 m-0 image-left">
+  <div class="image"><a href="{{ product['href'] }}"><img src="{{ product['image'] }}" alt="{{ product['name'] }}" /></a></div>
+  <div class="caption ps-3">
+    <h4 class="title"><a href="{{ product['href'] }}">{{ product['name'] }}</a></h4>
+    {% if product['rating'] > 0 %}
+      <div class="rating">
+        {% for i in range(1, 5) %}
+          {% if product.rating >= i %}
+          <i class="fas fa-star"></i>
+          {% elseif (product.rating + 0.5) >= i %}
+          <i class="fas fa-star-half-alt"></i>
+          {% else %}
+          <i class="far fa-star"></i>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% if product.price %}
+    <div class="price">
+      {% if not product.special %}
+      <span class="price-new">{{ product.price }}</span>
+      {% else %}
+      <span class="price-new">{{ product.special }}</span> <span class="price-old">{{ product.price }}</span>
+      {% endif %}
+      {% if product.tax %}
+      <span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+</li>
+{% endfor %}
+{% endif %}

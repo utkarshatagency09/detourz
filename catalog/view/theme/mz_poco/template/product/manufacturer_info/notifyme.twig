@@ -1,0 +1,5 @@
+{% verbatim %}{% if mz_notifyme %}{% endverbatim %}
+<button type="button" data-toggle-notifyme data-bs-toggle="tooltip" title="{% verbatim %}{{ button_notifyme_unsubscribe }}{% endverbatim %}" class="btn btn-{{ size }} btn-{{ outline?'outline-' }}{{ color }} subscribed"><i class="far fa-fw fa-bell-slash d-none"></i><i class="far fa-fw fa-bell"></i></button>
+{% verbatim %}{% else %}{% endverbatim %}
+<button type="button" data-toggle-notifyme data-bs-toggle="tooltip" title="{% verbatim %}{{ button_notifyme_subscribe }}{% endverbatim %}" class="btn btn-{{ size }} btn-{{ outline?'outline-' }}{{ color }}"><i class="far fa-fw fa-bell-slash"></i><i class="far fa-fw fa-bell d-none"></i></button>
+{% verbatim %}{% endif %}{% endverbatim %}

@@ -1,0 +1,50 @@
+{% if heading_title %}
+<h3 class="design-title">{{ heading_title }}</h3>
+{% endif %}
+<div class="accordion" id="mz-design-accordion-{{ mz_suffix }}">
+  {% for key, panel in accordion %}
+    <div class="accordion-item">
+      <h5 id="mz-accordion-label-{{ mz_suffix }}-{{ key }}" class="accordion-header">
+        <button class="accordion-button {% if key or collapsed %} collapsed{% endif %}" type="button" data-bs-toggle="collapse" aria-expanded="{{ not key?'true':'false' }}" aria-controls="mz-accordion-panel-{{ mz_suffix }}-{{ key }}" data-bs-target="#mz-accordion-panel-{{ mz_suffix }}-{{ key }}">
+        {% if panel.icon_font %}
+        <i class="icon flex-shrink-0 me-1 {{ panel.icon_font }}" {{ icon_width?'style="font-size: ' ~ icon_width ~ 'px"':'' }}></i>
+        {% elseif panel.icon_svg %}
+        <div title="{{ panel.name }}" class="icon flex-shrink-0 me-1 svg-icon" style="{{ icon_width?'width:' ~ icon_width ~ 'px;' }}{{ icon_height?'height:' ~ icon_height ~ 'px;' }}">{{ panel.icon_svg }}</div>
+        {% elseif panel.icon_image %}
+        <img class="icon flex-shrink-0 me-1" src="{{ panel.icon_image }}" width="{{ panel.image_width }}" height="{{ panel.image_height }}" alt="{{ panel.name }}" />
+        {% endif %}
+        {{ panel.name }}
+       
+      </button>
+      </h5>
+      <div id="mz-accordion-panel-{{ mz_suffix }}-{{ key }}" aria-labelledby="mz-accordion-label-{{ mz_suffix }}-{{ key }}"  class="accordion-collapse collapse{% if not key and not collapsed %} show{% endif %}" {{ auto_close?'data-bs-parent="#mz-design-accordion-'~ mz_suffix ~'"' }}>
+        <div class="accordion-body">{{ panel.content }}</div>
+      </div>
+    </div>
+  {% endfor %}
+  {# accordion hook #}
+  {% if hook %}
+  {% if accordion.length > 0 or collapsed %}{% verbatim %}{% set isActive = false %}{% endverbatim %}{% endif %}
+  {% verbatim %}{% for key, panel in mz_hook.fetch('accordion') %}{% endverbatim %}
+    {% if not accordion and not collapsed %}{% verbatim %}{% set isActive = not key %}{% endverbatim %}{% endif %}
+    <div class="accordion-item">
+      <h5 id="mz-accordion-label-hook-{{ mz_suffix }}-{% verbatim %}{{ key }}{% endverbatim %}" class="accordion-header">
+        <button class="accordion-button{% verbatim %}{% if not isActive %} collapsed{% endif %}{% endverbatim %}" data-bs-toggle="collapse" aria-expanded="{% verbatim %}{{ isActive?'true':'false' }}{% endverbatim %}" aria-controls="mz-accordion-panel-hook-{{ mz_suffix }}-{% verbatim %}{{ key }}{% endverbatim %}" data-bs-target="#mz-accordion-panel-hook-{{ mz_suffix }}-{% verbatim %}{{ key }}{% endverbatim %}">
+          {% verbatim %}{% if panel.icon_font %}
+          <i class="icon flex-shrink-0 me-2 {{ panel.icon_font }}" {{ panel.icon_size?'style="font-size: ' ~ panel.icon_size ~ 'px"':'' }}></i>
+          {% elseif panel.icon_svg %}
+          <div title="{{ panel.title }}" class="icon flex-shrink-0 me-2 svg-icon" style="{{ panel.image_width?'width:' ~ panel.image_width ~ 'px;' }}{{ panel.image_height?'height:' ~ panel.image_height ~ 'px;' }}">{{ panel.icon_svg }}</div>
+          {% elseif panel.icon_image %}
+          <img class="icon flex-shrink-0 me-2" src="{{ panel.icon_image }}" width="{{ panel.image_width }}" height="{{ panel.image_height }}" alt="{{ panel.name }}" />
+          {% endif %}
+          {{ panel.title }}{% endverbatim %}
+        </button>
+      </h5>
+      <div id="mz-accordion-panel-hook-{{ mz_suffix }}-{% verbatim %}{{ key }}{% endverbatim %}" aria-labelledby="mz-accordion-label-hook-{{ mz_suffix }}-{% verbatim %}{{ key }}{% endverbatim %}"  class="accordion-collapse collapse{% verbatim %}{% if isActive %} show{% endif %}{% endverbatim %}" {{ auto_close?'data-bs-parent="#mz-design-accordion-'~ mz_suffix ~'"' }}>
+        <div class="accordion-body">{% verbatim %}{{ panel.content }}{% endverbatim %}</div>
+      </div>
+    </div>
+  {% verbatim %}{% endfor %}{% endverbatim %}
+  {% endif %}
+  {# - accordion hook #}
+</div>

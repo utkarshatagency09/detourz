@@ -1,0 +1,20 @@
+<a href="{{ url.href }}" {{ url.attr }} class="cart text-reset text-decoration-none {% if title is empty %}no-title{% endif %}">
+  {% if icon_font or icon_svg or icon_image %}
+  <div class="cart-icon">
+    {% if icon_font %}
+    <i class="icon {{ icon_font }}" {{ icon_size?'style="font-size: ' ~ icon_size ~ 'px"':'' }}></i>
+    {% elseif icon_svg %}
+    <div class="icon svg-icon" style="{{ icon_width?'width:' ~ icon_width ~ 'px;' }}{{ icon_height?'height:' ~ icon_height ~ 'px;' }}">{{ icon_svg }}</div>
+    {% elseif icon_image %}
+    <img class="icon" width="{{ icon_width }}" height="{{ icon_height }}" src="{{ icon_image }}" />
+    {% endif %}
+    <span class="badge rounded-pill cart-item-total">{{ total_item }}</span>
+  </div>
+  {% endif %}
+  <div class="cart-info">
+    {% if title %}
+    <div class="cart-title">{{ title }} <span class="cart-item-total">({{ total_item }})</span></div>
+    {% endif %}
+    <div class="cart-items">{{ text_items }}</div>
+  </div>
+</a>

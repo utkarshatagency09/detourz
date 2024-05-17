@@ -1,0 +1,62 @@
+<!-- Form -->
+<form id="setting-widget-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <!--widget status-->
+  <div class="form-group">
+    <label class="col-sm-3 control-label" for="input-setting-widget-status">{{ entry_status }}</label>
+    <div class="col-sm-9">
+      <div class="mz-switch-field">
+        {% if (widget_status) %} 
+        <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" checked>
+        <label for="input-widget-status-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled">
+        <label for="input-widget-status-disabled">{{ text_disabled }}</label>
+        {% else %} 
+        <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" >
+        <label for="input-widget-status-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled" checked>
+        <label for="input-widget-status-disabled" >{{ text_disabled }}</label>
+        {% endif %} 
+      </div>
+    </div>
+  </div>
+
+  <!--widget label type-->
+  <div class="form-group">
+    <label class="col-sm-3 control-label">{{ entry_label_type }}</label>
+    <div class="col-sm-9">
+      <div class="mz-switch-field">
+        {% if (widget_label_type == 'name') %} 
+        <input type="radio" name="widget_label_type" value="name" id="input-widget-label-type-name" checked>
+        <label for="input-widget-label-type-name" >{{ text_currency_name }}</label>
+        <input type="radio" name="widget_label_type" value="code" id="input-widget-label-type-code">
+        <label for="input-widget-label-type-code">{{ text_currency_code }}</label>
+        {% else %} 
+        <input type="radio" name="widget_label_type" value="name" id="input-widget-label-type-name" >
+        <label for="input-widget-label-type-name">{{ text_currency_name }}</label>
+        <input type="radio" name="widget_label_type" value="code" id="input-widget-label-type-code" checked>
+        <label for="input-widget-label-type-code" >{{ text_currency_code }}</label>
+        {% endif %} 
+      </div>
+    </div>
+  </div>
+      
+  <!--widget position-->
+  <div class="form-group">
+    <label class="col-sm-3 control-label" for="input-setting-widget-position">{{ entry_position }}</label>
+    <div class="col-sm-9">
+      <div class="mz-switch-field">
+        {% if (widget_position == 'left') %} 
+        <input type="radio" name="widget_position" value="left" id="input-widget-position-left" checked>
+        <label for="input-widget-position-left" >{{ text_left }}</label>
+        <input type="radio" name="widget_position" value="right" id="input-widget-position-right">
+        <label for="input-widget-position-right">{{ text_right }}</label>
+        {% else %} 
+        <input type="radio" name="widget_position" value="left" id="input-widget-position-left" >
+        <label for="input-widget-position-left">{{ text_left }}</label>
+        <input type="radio" name="widget_position" value="right" id="input-widget-position-right" checked>
+        <label for="input-widget-position-right" >{{ text_right }}</label>
+        {% endif %} 
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,32 @@
+{% if total_btn > 1 %}
+<div class="btn-group {{ block?'d-flex' }}" role="group">
+{% elseif block %}
+<div class="d-grid">
+{% endif %}
+{% if cart %}
+<button type="button" {{ show == 'icon'?'data-bs-toggle="tooltip"' }} class="{{ show }} btn btn-{{ size }} btn-{{ outline?'outline-' }}{{ color }} btn-cart button-cart cart-{% verbatim %}{{ product_id }}{% endverbatim %}" data-loading-text="{% verbatim %}{{ text_loading }}{% endverbatim %}" title="{% verbatim %}{{ button_cart }}{% endverbatim %}" {% verbatim %}{% if quantity <= 0 and not oc_config.get('config_stock_checkout') %}disabled{% endif %}{% endverbatim %}>
+{% if show != 'text' %}<i class="fas fa-cart-arrow-down"></i>{% endif %}
+{% if show != 'icon' %}{% verbatim %}{% if {% endverbatim %}{{ stock_status }}{% verbatim %} and quantity <= 0 %}{{ stock_status }}{% else %}{{ button_cart }}{% endif %}{% endverbatim %}{% endif %}
+</button>
+{% endif %}
+{% if buynow %}
+<button type="button" data-redirectToCart="1" {{ show == 'icon'?'data-bs-toggle="tooltip"' }} class="{{ show }} btn btn-{{ size }} btn-{{ outline?'outline-' }}{{ color }} btn-buynow button-buynow cart-{% verbatim %}{{ product_id }}{% endverbatim %}" data-loading-text="{% verbatim %}{{ text_loading }}{% endverbatim %}" title="{% verbatim %}{{ button_buynow }}{% endverbatim %}" {% verbatim %}{% if quantity <= 0 and not oc_config.get('config_stock_checkout') %}disabled{% endif %}{% endverbatim %}>
+{% if show != 'text' %}<i class="fas fa-shopping-bag"></i>{% endif %}
+{% if show != 'icon' %}{% verbatim %}{% if {% endverbatim %}{{ stock_status }}{% verbatim %} and quantity <= 0 %}{{ stock_status }}{% else %}{{ button_buynow }}{% endif %}{% endverbatim %}{% endif %}
+</button>
+{% endif %}
+{% if wishlist %}
+<button type="button" {{ show == 'icon'?'data-bs-toggle="tooltip"' }} class="{{ show }} btn btn-{{ size }} btn-{{ outline?'outline-' }}{{ color }} btn-wishlist wishlist-{% verbatim %}{{ product_id }}{% endverbatim %} {% verbatim %}{{ mz_wishlist?'wished' }}{% endverbatim %}" data-wishlist="{% verbatim %}{{ mz_wishlist }}{% endverbatim %}" title="{% verbatim %}{{ button_wishlist }}{% endverbatim %}" onclick="wishlist.add('{% verbatim %}{{ product_id }}{% endverbatim %}', this);">
+{% if show != 'text' %}<span class='icon'><i class="fas fa-heart"></i><i class="fas fa-check"></i></span>{% endif %}{% if show != 'icon' %} {% verbatim %}{{ button_wishlist }}{% endverbatim %}{% endif %}
+</button>
+{% endif %}
+{% if compare %}
+<button type="button" {{ show == 'icon'?'data-bs-toggle="tooltip"' }} class="{{ show }} btn btn-{{ size }} btn-{{ outline?'outline-' }}{{ color }} btn-compare compare-{% verbatim %}{{ product_id }}{% endverbatim %} {% verbatim %}{{ mz_compare?'compared' }}{% endverbatim %}" data-compare="{% verbatim %}{{ mz_compare }}{% endverbatim %}" title="{% verbatim %}{{ button_compare }}{% endverbatim %}" onclick="compare.add('{% verbatim %}{{ product_id }}{% endverbatim %}', this);">
+{% if show != 'text' %}<span class='icon'><i class="fas fa-sync-alt"></i><i class="fas fa-check"></i></span>{% endif %}{% if show != 'icon' %} {% verbatim %}{{ button_compare }}{% endverbatim %}{% endif %}
+</button>
+{% endif %}
+{% if total_btn > 1 %}
+</div>
+{% elseif block %}
+</div>
+{% endif %}

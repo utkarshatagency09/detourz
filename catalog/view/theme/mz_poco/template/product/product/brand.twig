@@ -1,0 +1,8 @@
+{% verbatim %}{% if mz_manufacturer_image %}{% endverbatim %}
+<figure class="figure m-0">
+  <a href="{% verbatim %}{{ manufacturers }}{% endverbatim %}"><img src="{% verbatim %}{{ mz_manufacturer_image }}{% endverbatim %}" class="img-fluid img-thumbnail" alt="{% verbatim %}{{ manufacturer }}{% endverbatim %}"></a>
+  {% if show_caption %}
+  <figcaption class="figure-caption"><a href="{% verbatim %}{{ manufacturers }}{% endverbatim %}">{% verbatim %}{{ manufacturer }}{% endverbatim %}</a></figcaption>
+  {% endif %}
+</figure>
+{% verbatim %}{% endif %}{% endverbatim %}

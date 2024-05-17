@@ -1,0 +1,13 @@
+{% if width == 'block' %}<div class="d-grid">{% endif %}
+<a href="{{ url.href }}" {{ url.attr }} target="{{ url_target }}" class="icon-{{ icon_position }} {{ name?'both' }} btn btn-{{ outline?'outline-' }}{{ color }} btn-{{ size }}" role="button">
+  {% if icon_font %}
+  <i class="icon {{ icon_font }} rtl-swap" {{ icon_size?'style="font-size: ' ~ icon_size ~ 'px"':'' }}></i>
+  {% elseif icon_svg %}
+  <div class="icon rtl-swap svg-icon" style="{{ icon_width?'width:' ~ icon_width ~ 'px;' }}{{ icon_height?'height:' ~ icon_height ~ 'px;' }}">{{ icon_svg }}</div>
+  {% elseif icon_image %}
+  <img class="icon rtl-swap" src="{{ icon_image }}" alt="{{ name }}" width="{{ icon_width?:'1em' }}" height="{{ icon_height?:'1em' }}" />
+  {% endif %}
+  {{ name?name }}
+</a>
+{% if width == 'block' %}</div>{% endif %}
+

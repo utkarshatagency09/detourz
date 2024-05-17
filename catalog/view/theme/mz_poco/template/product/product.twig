@@ -1,0 +1,396 @@
+{# 
+Here is a file location of product component
+
+## product specific component
+- catalog/view/theme/mz_poco/template/product/product/*
+
+## common component across the page including product page
+- catalog/view/theme/mz_poco/template/product/common/*
+
+Do following to add custom twig code in product page
+Go to admin -> extension -> mazatheme -> layout builder -> product
+and use "HTML/Twig/PHP" widget to add your own twig code
+You can use variables from product/product controller
+
+#}
+{{ header }}
+
+{% if mz_component %}
+<script>$('body').prepend('{{ mz_component|e("js") }}');</script>
+{% endif %}
+
+<div id="product-product" class="content">{{ mz_content }}</div>
+<input type="hidden" name="product_id" value="{{ product_id }}" />
+
+<script>
+$(document).on('change', 'select[name=\'recurring_id\'], input[name="quantity"]', function(){
+	$.ajax({
+		url: 'index.php?route=product/product/getRecurringDescription',
+		type: 'post',
+		data: $('input[name=\'product_id\'], input[name=\'quantity\']:visible, select[name=\'recurring_id\']:visible'),
+		dataType: 'json',
+		beforeSend: function() {
+			$('#recurring-description').html('');
+		},
+		success: function(json) {
+			$('.alert-dismissible, .text-danger').remove();
+
+			if (json['success']) {
+				$('#recurring-description').html(json['success']);
+			}
+		}
+	});
+});
+</script> 
+<script>
+$(document).on('click', '.button-cart, .button-buynow', function() {
+	var button = $(this);
+
+	var data = $('.content-options:visible, .content-quantity:visible, .content-recurring:visible').find('input[type=\'text\'], input[type=\'number\'], input[type=\'hidden\'], input[type=\'radio\']:checked, input[type=\'checkbox\']:checked, select, textarea');
+        
+	$.ajax({
+		url: 'index.php?route=checkout/cart/add',
+		type: 'post',
+		data: data.add('input[name=\'product_id\']'),
+		dataType: 'json',
+		beforeSend: function() {
+			button.prepend('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>');
+		},
+		complete: function() {
+			button.children('.spinner-grow').remove();
+		},
+		success: function(json) {
+			$('.alert-dismissible, .text-danger').remove();
+
+			if (json['error']) {
+				if (json['error']['option']) {
+					for (i in json['error']['option']) {
+						var element = $('[id^="input-option' + i.replace('_', '-') + '"]');
+
+						if (element.parent().hasClass('input-group')) {
+							element.parent().after('<div class="text-danger">' + json['error']['option'][i] + '</div>');
+						} else {
+							element.after('<div class="text-danger">' + json['error']['option'][i] + '</div>');
+						}
+					}
+				}
+
+				if (json['error']['recurring']) {
+					$('select[name=\'recurring_id\']').after('<div class="text-danger">' + json['error']['recurring'] + '</div>');
+				}
+			}
+
+			if (json['success']) {
+					if(button.data('redirecttocart')){
+						location = 'index.php?route=checkout/checkout';
+					} else {
+						var toast =  $(json['toast']);
+							
+						$('#notification-box-top').append(toast);
+						toast.toast('show')
+
+						// Dispose toast
+						toast.on('hidden.bs.toast', function(){ toast.remove() });
+
+						$('.widget-cart').mz_reload('cart');
+						$('.widget-total').mz_reload('total');
+					}
+			}
+		},
+        error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+	});
+});
+</script> 
+{% if mz_config.get('catalog_option_update_price') %}
+<script>
+$('.content-options').find('input[type=\'radio\'], input[type=\'checkbox\'], select').on('change', function() {
+	$.ajax({
+		url: 'index.php?route=extension/maza/product/product/priceWithOptions&product_id={{ product_id }}',
+		type: 'post',
+		data: $('.content-options:visible').find('input[type=\'radio\']:checked, input[type=\'checkbox\']:checked, select'),
+		dataType: 'json',
+		beforeSend: function(){
+			$('.button-buynow').prop('disabled', 1);
+			$('.button-cart').prop('disabled', 1).prepend('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>');
+		},
+		complete: function(){
+			$('.button-buynow').prop('disabled', 0);
+			$('.button-cart').prop('disabled', 0).children('.spinner-grow').remove();
+		},
+		success: function(json) {
+                    if (json['price']) {
+                        $('[data-update="price"]').text(json['price']);
+                    }
+                    if (json['special']) {
+                        $('[data-update="special"]').text(json['special']);
+                    }
+                    if (json['tax']) {
+                        $('[data-update="tax"]').text(json['tax']);
+                    }
+                    if (json['points']) {
+                        $('[data-update="points"]').text(json['points']);
+                    }
+                    if (json['special_discount']) {
+                        $('[data-update="special-discount"]').text(json['special_discount']);
+                    }
+                    if (json['discounts']) {
+                        for(var i in json['discounts']){
+                            $('[data-update="discounts"] li').eq(i).text(json['discounts'][i]['quantity'] + '{{ text_discount }}' + json['discounts'][i]['price']);
+                        }
+                    }
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+});
+</script> 
+{% endif %}
+<script>
+$(function(){
+	$('.content-options .datetime').daterangepicker({
+		singleDatePicker: true,
+		autoApply: true,
+		timePicker: true,
+		timePicker24Hour: true,
+		locale: {
+		format: 'YYYY-MM-DD HH:mm'
+		}
+	});
+
+	$('.content-options .time').daterangepicker({
+		singleDatePicker: true,
+		datePicker: false,
+		autoApply: true,
+		timePicker: true,
+		timePicker24Hour: true,
+		locale: {
+		format: 'HH:mm'
+		}
+	}).on('show.daterangepicker', function (ev, picker) {
+		picker.container.find('.calendar-table').hide();
+	});
+
+	$('.content-options .date').daterangepicker({
+		singleDatePicker: true,
+		autoApply: true,
+		locale: {
+		format: 'YYYY-MM-DD'
+		}
+	});
+});
+</script>
+<script>
+$('button[id^=\'button-upload\']').on('click', function() {
+	var node = this;
+
+	$('#form-upload').remove();
+
+	$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+
+	$('#form-upload input[name=\'file\']').trigger('click');
+
+	if (typeof timer != 'undefined') {
+    	clearInterval(timer);
+	}
+
+	timer = setInterval(function() {
+		if ($('#form-upload input[name=\'file\']').val() != '') {
+			clearInterval(timer);
+
+			$.ajax({
+				url: 'index.php?route=tool/upload',
+				type: 'post',
+				dataType: 'json',
+				data: new FormData($('#form-upload')[0]),
+				cache: false,
+				contentType: false,
+				processData: false,
+				beforeSend: function() {
+					$(node).button('loading');
+				},
+				complete: function() {
+					$(node).button('reset');
+				},
+				success: function(json) {
+					$('.text-danger').remove();
+
+					if (json['error']) {
+						$(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
+					}
+
+					if (json['success']) {
+						alert(json['success']);
+
+						$(node).parent().find('input').val(json['code']);
+					}
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		}
+	}, 500);
+});
+</script> 
+<script>
+$('.review').on('click', '.pagination a', function(e) {
+    e.preventDefault();
+
+    $('.review').fadeOut('slow');
+
+    $('.review').load(this.href);
+
+    $('.review').fadeIn('slow');
+});
+
+$('.review').load('index.php?route=product/product/review&product_id={{ product_id }}');
+
+$('#button-review').on('click', function() {
+	$.ajax({
+		url: 'index.php?route=product/product/write&product_id={{ product_id }}',
+		type: 'post',
+		dataType: 'json',
+		data: $("#form-review").serialize(),
+		beforeSend: function() {
+			$('#button-review').prepend('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>');
+		},
+		complete: function() {
+			$('#button-review').children('.spinner-grow').remove();
+		},
+		success: function(json) {
+			$('.alert-dismissible').remove();
+
+			if (json['error']) {
+				$('#form-review .content-title').after('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
+			}
+
+			if (json['success']) {
+				$('#form-review .content-title').after('<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
+
+				$('#form-review input[name=\'name\']').val('');
+				$('#form-review textarea[name=\'text\']').val('');
+				$('#form-review input[name=\'rating\']:checked').prop('checked', false);
+			}
+		}
+	});
+});
+</script>
+{% if oc_config.get('maza_notification_status') %}
+<script>
+{% if oc_config.get('maza_notification_manufacturer') and manufacturer_id %}
+$('[data-mz-notifyme]').on('click', function(e) {
+	var notifyme = $(this).data('mz-notifyme');
+	
+	if(notifyme == 'product' || notifyme == 'manufacturer'){
+		var action = 'subscribe';
+	} else {
+		var action = 'unsubscribe';
+	}
+	
+	if(notifyme == 'product' || notifyme == 'unsubscribe'){
+		var data = 'product_id={{ product_id }}';
+	} else {
+		var data = 'manufacturer_id={{ manufacturer_id }}';
+	}
+
+	var notifyme_toggle = $(this).parents('.dropdown').children('[data-mz-notifyme-state]');
+
+	if(notifyme_toggle.data('mz-notifyme-state') == notifyme){
+		return;
+	}
+
+    $.ajax({
+		url: 'index.php?route=extension/maza/notification/' + action,
+		type: 'post',
+		data: data,
+		dataType: 'json',
+		beforeSend: function() {
+			notifyme_toggle.prop('disabled', 1);
+		},
+		complete: function() {
+			notifyme_toggle.prop('disabled', 0);
+		},
+		success: function(json) {
+			if (json['toast']) {
+				var toast =  $(json['toast']);
+								
+				$('#notification-box-top').append(toast);
+				toast.toast('show');
+								
+				// Dispose toast
+				toast.on('hidden.bs.toast', function(){ toast.remove(); });
+			}
+
+			if(json['success']) {
+				notifyme_toggle.children('i').attr('class', $(e.currentTarget).data('mz-icon'));
+
+				if(action == 'subscribe'){
+					notifyme_toggle.children('span').text('{{ button_unsubscribe }}');
+				} else {
+					notifyme_toggle.children('span').text('{{ button_subscribe }}');
+				}
+				
+				notifyme_toggle.data('mz-notifyme-state', notifyme);
+			}
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+});
+{% else %}
+$('[data-toggle-notifyme]').on('click', function(e) {
+	$(e.currentTarget).tooltip('hide');
+	
+	if($(this).hasClass('subscribed')){
+		var action = 'unsubscribe';
+	} else {
+		var action = 'subscribe';
+	}
+    $.ajax({
+		url: 'index.php?route=extension/maza/notification/' + action,
+		type: 'post',
+		data: 'product_id={{ product_id }}',
+		dataType: 'json',
+		beforeSend: function() {
+			$(e.currentTarget).prop('disabled', 1);
+		},
+		complete: function() {
+			$(e.currentTarget).prop('disabled', 0);
+		},
+		success: function(json) {
+			if (json['toast']) {
+				var toast =  $(json['toast']);
+								
+				$('#notification-box-top').append(toast);
+				toast.toast('show');
+								
+				// Dispose toast
+				toast.on('hidden.bs.toast', function(){ toast.remove(); });
+			}
+
+			if(json['success']) {
+				$(e.currentTarget).children('i').addClass('d-none');
+
+				if(action == 'subscribe'){
+					$(e.currentTarget).attr('data-original-title', '{{ button_notifyme_unsubscribe|e('js') }}').children('.far.fa-bell').removeClass('d-none');
+					$(e.currentTarget).children('span').text('{{ button_unsubscribe }}');
+				} else {
+					$(e.currentTarget).attr('data-original-title', '{{ button_notifyme_product|e('js') }}').children('.fa-bell-slash').removeClass('d-none');
+					$(e.currentTarget).children('span').text('{{ button_subscribe }}');
+				}
+				$(e.currentTarget).toggleClass('subscribed');
+			}
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+});
+{% endif %}
+</script>
+{% endif %}
+{{ footer }}

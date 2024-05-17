@@ -1,0 +1,13 @@
+<a href="{{ url.href }}" {{ url.attr }} class="icon-{{ icon_position }} {{ show }} text-reset" target="{{ url_target }}" {{ url_nofollow?'rel="nofollow"' }} aria-label="{{ name }}">
+  {% if show != 'text' %}
+    {% if icon_font %}
+    <i {% if show == 'icon' and name %}data-bs-toggle="tooltip" title="{{ name }}"{% endif %} class="icon rtl-swap {{ icon_font }}" {{ icon_size?'style="font-size: ' ~ icon_size ~ 'px"':'' }}></i>
+    {% elseif icon_svg %}
+    <span {% if show == 'icon' and name %}data-bs-toggle="tooltip" title="{{ name }}"{% endif %} class="icon rtl-swap svg-icon" style="{{ icon_width?'width:' ~ icon_width ~ 'px;' }}{{ icon_height?'height:' ~ icon_height ~ 'px;' }}">{{ icon_svg }}</span>
+    {% elseif icon_image %}
+    <img {% if show == 'icon' and name %}data-bs-toggle="tooltip" title="{{ name }}"{% endif %} class="icon rtl-swap" width="{{ image_width }}" height="{{ image_height }}" src="{{ icon_image }}" />
+    {% endif %}
+  {% endif %}
+  {{ show != 'icon' and name?name }}
+</a>
+

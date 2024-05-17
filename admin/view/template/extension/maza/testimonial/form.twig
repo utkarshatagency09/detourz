@@ -1,0 +1,185 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- form -->
+  <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-mz-testimonial" class="form-horizontal">
+    <div class="tab-content">
+      <div class="tab-pane active" id="tab-mz-general">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <div class="form-group required">
+              <label class="col-sm-2 control-label" for="input-name">{{ entry_name }}</label>
+              <div class="col-sm-10">
+                {% for language in languages %}
+                <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                  <input type="text" name="testimonial_description[{{ language.language_id }}][name]" value="{{ testimonial_description[language.language_id] ? testimonial_description[language.language_id].name }}" placeholder="{{ entry_name }}" id="input-name{{ language.language_id }}" class="form-control" />
+                  {% if err_name[language.language_id] is defined %}
+                  <div class="text-danger">{{ err_name[language.language_id] }}</div>
+                  {% endif %}
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="input-extra"><span data-toggle="tooltip" title="{{ help_extra }}">{{ entry_extra }}</span></label>
+              <div class="col-sm-10">
+                {% for language in languages %}
+                <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                  <input type="text" name="testimonial_description[{{ language.language_id }}][extra]" value="{{ testimonial_description[language.language_id] ? testimonial_description[language.language_id].extra }}" placeholder="{{ entry_extra }}" id="input-extra{{ language.language_id }}" class="form-control" />
+                  {% if err_extra[language.language_id] is defined %}
+                  <div class="text-danger">{{ err_extra[language.language_id] }}</div>
+                  {% endif %}
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">{{ entry_image }}</label>
+              <div class="col-sm-10"><a href="" id="thumb-image" data-toggle="image" class="img-thumbnail"><img src="{{ thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                <input type="hidden" name="image" value="{{ image }}" id="input-image" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="input-email">{{ entry_email }}</label>
+              <div class="col-sm-10">
+                <input type="email" name="email" value="{{ email }}" placeholder="{{ entry_email ~ ' ' ~ text_optional  }}" id="input-email" class="form-control" />
+                {% if err_email %}
+                <div class="text-danger">{{ err_email }}</div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-sm-2 control-label">{{ entry_rating }}</label>
+              <div class="col-sm-10">
+                <label class="radio-inline"> {% if rating == 1 %}
+                  <input type="radio" name="rating" value="1" checked="checked" />
+                  1
+                  {% else %}
+                  <input type="radio" name="rating" value="1" />
+                  1
+                  {% endif %} </label>
+                <label class="radio-inline"> {% if rating == 2 %}
+                  <input type="radio" name="rating" value="2" checked="checked" />
+                  2
+                  {% else %}
+                  <input type="radio" name="rating" value="2" />
+                  2
+                  {% endif %} </label>
+                <label class="radio-inline"> {% if rating == 3 %}
+                  <input type="radio" name="rating" value="3" checked="checked" />
+                  3
+                  {% else %}
+                  <input type="radio" name="rating" value="3" />
+                  3
+                  {% endif %} </label>
+                <label class="radio-inline"> {% if rating == 4 %}
+                  <input type="radio" name="rating" value="4" checked="checked" />
+                  4
+                  {% else %}
+                  <input type="radio" name="rating" value="4" />
+                  4
+                  {% endif %} </label>
+                <label class="radio-inline"> {% if rating == 5 %}
+                  <input type="radio" name="rating" value="5" checked="checked" />
+                  5
+                  {% else %}
+                  <input type="radio" name="rating" value="5" />
+                  5
+                  {% endif %} </label>
+                {% if err_rating %}
+                <div class="text-danger">{{ err_rating }}</div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="form-group required">
+              <label class="col-sm-2 control-label" for="input-description">{{ entry_description }}</label>
+              <div class="col-sm-10">
+                {% for language in languages %}
+                <div class="input-group"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['description'] }}" /></span>
+                  <textarea name="testimonial_description[{{ language.language_id }}][description]" placeholder="{{ entry_description }}" id="input-description{{ language.language_id }}" class="form-control" >{{ testimonial_description[language.language_id] ? testimonial_description[language.language_id].description }}</textarea>
+                  {% if err_description[language.language_id] is defined %}
+                  <div class="text-danger">{{ err_description[language.language_id] }}</div>
+                  {% endif %}
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" id="tab-mz-data">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <div class="form-group">
+              <label class="col-sm-2 control-label">{{ entry_store }}</label>
+              <div class="col-sm-10">
+                <div class="well well-sm" style="height: 150px; overflow: auto;"> {% for store in stores %}
+                  <div class="checkbox">
+                    <label> {% if store.store_id in testimonial_store %}
+                      <input type="checkbox" name="testimonial_store[]" value="{{ store.store_id }}" checked="checked" />
+                      {{ store.name }}
+                      {% else %}
+                      <input type="checkbox" name="testimonial_store[]" value="{{ store.store_id }}" />
+                      {{ store.name }}
+                      {% endif %} </label>
+                  </div>
+                  {% endfor %}</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="input-date-added">{{ entry_date_added }}</label>
+              <div class="col-sm-3">
+                <div class="input-group date">
+                  <input type="text" name="date_added" value="{{ date_added }}" placeholder="{{ entry_date_added }}" data-date-format="YYYY-MM-DD" id="input-date-added" class="form-control" />
+                  <span class="input-group-btn">
+                  <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                  </span> </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_sort_order }}</label>
+              <div class="col-sm-10">
+                <input type="text" name="sort_order" value="{{ sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+              <div class="col-sm-10">
+                <select name="status" id="input-status" class="form-control">
+                  {% if status %}
+                  <option value="1" selected="selected">{{ text_enabled }}</option>
+                  <option value="0">{{ text_disabled }}</option>
+                  {% else %}
+                  <option value="1">{{ text_enabled }}</option>
+                  <option value="0" selected="selected">{{ text_disabled }}</option>
+                  {% endif %}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  
+  <script type="text/javascript"><!--
+$('.date').datetimepicker({
+        language: '{{ datepicker }}',
+        pickDate: true,
+        pickTime: false
+});
+
+$('#language a:first').tab('show');
+//--></script>
+</div>
+{{ mz_footer }}

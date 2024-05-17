@@ -1,0 +1,24 @@
+{% verbatim %}{% if oc_config.get('maza_notification_manufacturer') and manufacturer_id %}{% endverbatim %}
+<div class="dropdown {{ block?'d-grid' }}">
+  {% verbatim %}{% if mz_notifyme == 'M' %}{% endverbatim %}
+  <button type="button" data-bs-toggle="dropdown" data-mz-notifyme-state="manufacturer" class="icon-{{ icon_position }} {{ show }} btn btn-{{ size }} btn-{{ outline?'outline-' }}{{ color }}" aria-haspopup="true" aria-expanded="false"><i class="icon fas fa-bell fa-fw"></i>{% if show != 'icon' %}<span>{% verbatim %}{{ button_unsubscribe }}{% endverbatim %}</span>{% endif %}</button>
+  {% verbatim %}{% elseif mz_notifyme == 'P' %}{% endverbatim %}
+  <button type="button" data-bs-toggle="dropdown" data-mz-notifyme-state="product" class="icon-{{ icon_position }} {{ show }} btn btn-{{ size }} btn-{{ outline?'outline-' }}{{ color }}" aria-haspopup="true" aria-expanded="false"><i class="icon far fa-bell fa-fw"></i>{% if show != 'icon' %}<span>{% verbatim %}{{ button_unsubscribe }}{% endverbatim %}</span>{% endif %}</button>
+  {% verbatim %}{% else %}{% endverbatim %}
+  <button type="button" data-bs-toggle="dropdown" data-mz-notifyme-state="unsubscribe" class="icon-{{ icon_position }} {{ show }} btn btn-{{ size }} btn-{{ outline?'outline-' }}{{ color }}" aria-haspopup="true" aria-expanded="false"><i class="icon far fa-bell-slash fa-fw"></i>{% if show != 'icon' %}<span>{% verbatim %}{{ button_subscribe }}{% endverbatim %}</span>{% endif %}</button>
+  {% verbatim %}{% endif %}{% endverbatim %}
+  <div class="dropdown-menu dropdown-menu-{{ dropdown_align }} dropdown-menu-striped py-3">
+    <button data-mz-notifyme="manufacturer" data-mz-icon="icon fas fa-bell fa-fw" class="dropdown-item align-items-center d-flex" type="button"><i class="fas fa-bell fa-fw fa-2x me-2 flex-shrink-0"></i> <div class="flex-grow-1">{% verbatim %}{{ button_notifyme_manufacturer }}{% endverbatim %}</div></button>
+    <button data-mz-notifyme="product" data-mz-icon="icon far fa-bell fa-fw" class="dropdown-item align-items-center d-flex" type="button"><i class="far fa-bell fa-fw fa-2x me-2 flex-shrink-0"></i> <div class="flex-grow-1">{% verbatim %}{{ button_notifyme_product }} <p class="text-muted small">({{ text_notifyme_product }})</p>{% endverbatim %}</div></button>
+    <button data-mz-notifyme="unsubscribe" data-mz-icon="icon far fa-bell-slash fa-fw" class="dropdown-item align-items-center d-flex" type="button"><i class="far fa-bell-slash fa-fw fa-2x me-2 flex-shrink-0"></i> <div class="flex-grow-1">{% verbatim %}{{ button_notifyme_unsubscribe }}{% endverbatim %}</div></button>
+  </div>
+</div>
+{% verbatim %}{% else %}{% endverbatim %}
+  {% if block %}<div class="d-grid">{% endif %}
+  {% verbatim %}{% if mz_notifyme == 'P' %}{% endverbatim %}
+  <button type="button" data-toggle-notifyme data-bs-toggle="tooltip" title="{% verbatim %}{{ button_notifyme_unsubscribe }}{% endverbatim %}" class="icon-{{ icon_position }} {{ show }} btn btn-{{ size }} btn-{{ outline?'outline-' }}{{ color }} subscribed"><i class="icon far fa-fw fa-bell-slash d-none"></i><i class="icon far fa-fw fa-bell"></i>{% if show != 'icon' %}<span>{% verbatim %}{{ button_unsubscribe }}{% endverbatim %}</span>{% endif %}</button>
+  {% verbatim %}{% else %}{% endverbatim %}
+  <button type="button" data-toggle-notifyme data-bs-toggle="tooltip" title="{% verbatim %}{{ button_notifyme_product }}{% endverbatim %}" class="icon-{{ icon_position }} {{ show }} btn btn-{{ size }} btn-{{ outline?'outline-' }}{{ color }}"><i class="icon far fa-fw fa-bell-slash"></i><i class="icon far fa-fw fa-bell d-none"></i>{% if show != 'icon' %}<span>{% verbatim %}{{ button_subscribe }}{% endverbatim %}</span>{% endif %}</button>
+  {% verbatim %}{% endif %}{% endverbatim %}
+  {% if block %}</div>{% endif %}
+{% verbatim %}{% endif %}{% endverbatim %}

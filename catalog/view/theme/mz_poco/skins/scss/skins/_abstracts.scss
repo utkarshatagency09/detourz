@@ -1,0 +1,25 @@
+// Skin variable
+@if($active_skin_code == 'megastore-1'){
+    @import "skins/content/megastore-1/variables";
+}
+@elseif($active_skin_code == 'megastore-2'){
+    @import "skins/content/megastore-2/variables";
+}
+@elseif($active_skin_code == 'megastore-3'){
+    @import "skins/content/megastore-3/variables";
+}
+@elseif($active_skin_code == 'megastore-4'){
+    @import "skins/content/megastore-4/variables";
+}
+@elseif($active_skin_code == 'megastore-5'){
+    @import "skins/content/megastore-5/variables";
+}
+@elseif($active_skin_code == 'megastore-6'){
+    @import "skins/content/megastore-6/variables";
+}
+@elseif($active_skin_code == 'megastore-7'){
+    @import "skins/content/megastore-7/variables";
+}
+@elseif($active_skin_code == 'minimal-1'){
+    @import "skins/content/minimal-1/variables";
+}

@@ -1,0 +1,6 @@
+{{ header }}
+{% if mz_component %}
+<script>$('body').prepend('{{ mz_component|e("js") }}');</script>
+{% endif %}
+<div id="maza-page" class="content">{{ mz_content }}</div>
+{{ footer }}

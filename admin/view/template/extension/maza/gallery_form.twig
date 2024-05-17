@@ -1,0 +1,179 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- Form -->
+  <form action="{{ action }}" class="form-horizontal" enctype="multipart/form-data" id="form-mz-gallery" method="post">
+    <div class="tab-content">
+        
+      <!--General-->
+      <div id="tab-mz-general" class="tab-pane fade in active">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <!--name-->
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-name">{{ entry_name }}</label>
+              <div class="col-xs-9">
+                <input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control large" />
+                {% if err_name %}
+                <div class="text-danger">{{ err_name }}</div>
+                {% endif %}
+              </div>
+            </div>
+            
+            <!--status-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-status">{{ entry_status }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (status) %} 
+                  <input type="radio" name="status" value="1" id="input-status-enabled" checked>
+                  <label for="input-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="status" value="0" id="input-status-disabled">
+                  <label for="input-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="status" value="1" id="input-status-enabled" >
+                  <label for="input-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="status" value="0" id="input-status-disabled" checked>
+                  <label for="input-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--Image-->
+      <div id="tab-mz-image" class="tab-pane fade">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table id="images" class="table table-striped table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <td class="text-left">{{ column_image }}</td>
+                    <td class="text-left">{{ column_title }}</td>
+                    <td class="text-right">{{ column_sort_order }}</td>
+                    <td></td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% set image_row = 0 %}
+                  {% for image in images %}
+                    <tr id="image-row{{ image_row }}">
+                      <td class="text-left"><a href="" id="thumb-image{{ image_row }}" data-toggle="image" class="img-thumbnail"><img src="{{ image.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}"/></a> <input type="hidden" name="image[{{ image_row }}][image]" value="{{ image.image }}" id="input-image{{ image_row }}"/></td>
+                      <td class="text-left">
+                        {% for language in languages %} 
+                        <div class="input-group"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                          <input class="form-control" type="text" name="image[{{ image_row }}][title][{{ language['language_id'] }}]" value="{{ image['title'][language['language_id']] is defined?image['title'][language['language_id']]:'' }}" placeholder="{{ column_title }}" >
+                        </div>
+                        {% endfor %} 
+                      </td>
+                      <td class="text-right"><input type="text" name="image[{{ image_row }}][sort_order]" value="{{ image.sort_order }}" placeholder="{{ column_sort_order }}" class="form-control large"/></td>
+                      <td class="text-left"><button type="button" onclick="$('#image-row{{ image_row }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+                    </tr>
+                    {% set image_row = image_row + 1 %}
+                  {% endfor %}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="3"></td>
+                    <td class="text-left"><button type="button" data-toggle="mz-multi-image" data-callback="addImage" title="{{ button_add }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--Video-->
+      <div id="tab-mz-video" class="tab-pane fade">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <div class="alert alert-info"><i class="fa fa-info-circle" aria-hidden="true"></i> {{ help_video }}</div>
+            <div class="table-responsive">
+              <table id="videos" class="table table-striped table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <td class="text-left">{{ column_url }}</td>
+                    <td class="text-center">{{ column_thumb }}</td>
+                    <td class="text-right">{{ column_sort_order }}</td>
+                    <td></td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% set video_row = 0 %}
+                  {% for video in videos %}
+                    <tr id="video-row{{ video_row }}">
+                      <td class="text-left"><input type="text" name="video[{{ video_row }}][url]" value="{{ video.url }}" placeholder="{{ column_url }}" class="form-control large"/></td>
+                      <td class="text-center"><a href="" id="thumb-video{{ video_row }}" data-toggle="image" class="img-thumbnail"><img src="{{ video.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}"/></a> <input type="hidden" name="video[{{ video_row }}][image]" value="{{ video.image }}" id="input-video{{ video_row }}"/></td>
+                      <td class="text-right"><input type="number" name="video[{{ video_row }}][sort_order]" value="{{ video.sort_order }}" placeholder="{{ column_sort_order }}" class="form-control large"/></td>
+                      <td class="text-left"><button type="button" onclick="$('#video-row{{ video_row }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+                    </tr>
+                    {% set video_row = video_row + 1 %}
+                  {% endfor %}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="3"></td>
+                    <td class="text-left"><button type="button" onclick="addVideo();" data-toggle="tooltip" title="{{ button_add }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+<script type="text/javascript"><!--
+var image_row = {{ image_row }};
+
+function addImage(input, thumb) {
+  html = '<tr id="image-row' + image_row + '">';
+  html += '  <td class="text-left"><a href="" id="thumb-image' + image_row + '"data-toggle="image" class="img-thumbnail"><img src="' + thumb + '" alt="" title="" data-placeholder="{{ placeholder }}" /></a><input type="hidden" name="image[' + image_row + '][image]" value="' + input + '" id="input-image' + image_row + '" /></td>';
+  html += '  <td class="text-left">';
+  {% for language in languages %} 
+    html += '  <div class="input-group"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>';
+    html += '     <input class="form-control" type="text" name="image[' + image_row + '][title][{{ language['language_id'] }}]" value="" placeholder="{{ column_title }}" >';
+    html += '  </div>';
+  {% endfor %}
+  html += '  </td>';
+  html += '  <td class="text-right"><input type="text" name="image[' + image_row + '][sort_order]" value="" placeholder="{{ column_sort_order }}" class="form-control large" /></td>';
+  html += '  <td class="text-left"><button type="button" onclick="$(\'#image-row' + image_row + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+  html += '</tr>';
+
+  $('#images tbody').append(html);
+
+  image_row++;
+}
+</script>
+<script type="text/javascript"><!--
+var video_row = {{ video_row }};
+
+function addVideo() {
+  html = '<tr id="video-row' + video_row + '">';
+  html += '  <td class="text-left"><input type="text" name="video[' + video_row + '][url]" value="" placeholder="{{ column_url }}" class="form-control large" /></td>';
+  html += '  <td class="text-center"><a href="" id="thumb-video' + video_row + '" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a><input type="hidden" name="video[' + video_row + '][image]" value="" id="input-video' + video_row + '" /></td>';
+  html += '  <td class="text-right"><input type="text" name="video[' + video_row + '][sort_order]" value="" placeholder="{{ column_sort_order }}" class="form-control large" /></td>';
+  html += '  <td class="text-left"><button type="button" onclick="$(\'#video-row' + video_row + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+  html += '</tr>';
+
+  $('#videos tbody').append(html);
+
+  video_row++;
+}
+</script>
+</div>
+{{ mz_footer }}

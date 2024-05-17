@@ -1,0 +1,39 @@
+<div class="{{ direction }}">
+  <a href="" class="{% if type == 'btn' %}btn btn-{{ btn_outline?'outline-' }}{{ btn_color }} btn-{{ btn_size }}{% else %}text-reset{% endif %} dropdown-toggle icon-{{ title_icon_position }} {{ title_show }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    {% if title_icon_font %}
+    <i title="{{ heading_title }}" class="icon {{ title_icon_font }}" {{ title_icon_size?'style="font-size: ' ~ title_icon_size ~ 'px"':'' }}></i>
+    {% elseif title_icon_svg %}
+    <div title="{{ heading_title }}" class="icon svg-icon" style="{{ title_icon_width?'width:' ~ title_icon_width ~ 'px;' }}{{ title_icon_height?'height:' ~ title_icon_height ~ 'px;' }}">{{ title_icon_svg }}</div>
+    {% elseif title_icon_image %}
+    <img class="icon" width="{{ title_icon_width }}" height="{{ title_icon_height }}" alt="{{ heading_title }}" src="{{ title_icon_image }}" />
+    {% endif %}
+    {# {% if title_show != 'icon' and heading_title %}<span>{{ heading_title }} <i class="ms-1 fas fa-caret-down"></i></span>{% endif %} #}
+    {% if title_show != 'icon' and heading_title %}{{ heading_title }}{% endif %}
+  </a>
+  <div class="dropdown-menu dropdown-menu-{{ alignment }}">
+    {% for item in items %}
+      <a class="dropdown-item icon-{{ icon_position }} {{ show }}" href="{{ item.url.href }}" {{ item.url.attr }} title="{{ item.name }}">
+        {% if item.icon_font %}
+        <i title="{{ item.name }}" class="icon {{ item.icon_font }}" {{ icon_width?'style="font-size: ' ~ icon_width ~ 'px"':'' }}></i>
+        {% elseif item.icon_svg %}
+        <div title="{{ item.name }}" class="icon svg-icon" style="{{ icon_width?'width:' ~ icon_width ~ 'px;' }}{{ icon_height?'height:' ~ icon_height ~ 'px;' }}">{{ item.icon_svg }}</div>
+        {% elseif item.icon_image %}
+        <img class="icon" width="{{ item.image_width }}" height="{{ item.image_height }}" alt="{{ item.name }}" src="{{ item.icon_image }}" />
+        {% endif %}
+
+        {% if show != 'icon' and item.description %}
+        <div class="info">
+          {% if item.name %}
+          <span class="title">{{ item.name }}</span>
+          {% endif %}
+          {% if item.description %}
+          <span class="description text-muted">{{ item.description }}</span>
+          {% endif %}
+        </div>
+        {% elseif show != 'icon' %}
+        {{ item.name }}
+        {% endif %}
+      </a>
+    {% endfor %}
+  </div>
+</div>

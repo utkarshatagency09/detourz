@@ -1,0 +1,63 @@
+{{ header }}
+<div id="information-tracking" class="container content">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      {% for breadcrumb in breadcrumbs|slice(0,-1) %}
+        <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+      {% endfor %}
+      <li class="breadcrumb-item active" aria-current="page">{{ breadcrumbs|last.text }}</li>
+    </ol>
+  </nav>
+  <div class="row">{{ column_left }}
+    {% if column_left and column_right %}
+    {% set class = 'col-md-6' %}
+    {% elseif column_left or column_right %}
+    {% set class = 'col-md-9' %}
+    {% else %}
+    {% set class = 'col-md-12' %}
+    {% endif %}
+    <div id="content" class="{{ class }}">{{ content_top }}
+      <h1>{{ heading_title }}</h1>
+      <p>Please enter your shipping tracking No. below:</p>
+      
+        <div class="mb-3 row required">
+          <label class="col-sm-2 col-form-label" for="input-code">{{ entry_code }} </label>
+          <div class="col-sm-10">
+            <input type="text" name="code" value="{{ code }}" placeholder="{{ entry_code }}" id="input-code" class="form-control" />
+          </div>
+        </div>
+      
+      
+      
+      
+      {{ content_bottom }}</div>
+    {{ column_right }}</div>
+    
+<script><!--
+$('#button-tracking').on('click', function() {
+    $.ajax({
+        url: 'index.php?route=information/tracking/tracking&code=' + $('input[name="code"]').val(),
+        dataType: 'json',
+        beforeSend: function() {
+        	$('#button-login').prepend('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>');
+		},
+        complete: function() {
+            $('#button-login').children('.spinner-grow').remove();
+        },
+        success: function(json) {
+            $('.alert-dismissible, .text-danger').remove();
+
+            if (json['redirect']) {
+                location = json['redirect'];
+            } else if (json['error']) {
+                $('#collapse-checkout-option .panel-body').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error']['warning'] + '<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+		   }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+    });
+});
+</script>
+</div>
+{{ footer }}

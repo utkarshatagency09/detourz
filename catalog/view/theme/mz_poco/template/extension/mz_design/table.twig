@@ -1,0 +1,15 @@
+{% if heading_title %}
+<h4 class="design-title">{{ heading_title }}</h4>
+{% endif %}
+<table class="table table-{{ size }} {{ table_striped?'table-striped ' }}{{ table_dark?'table-dark ' }}{{ table_bordered?'table-bordered ' }}{{ table_borderless?'table-borderless ' }}{{ table_hover?'table-hover' }}">
+  {% if caption %}
+  <caption>{{ caption }}</caption>
+  {% endif %}
+  {% if head_status and table[0] is defined %}
+  <thead class="table-{{ head_style }}"><tr>{% for cell in table[0] %}<th scope="col">{{ cell }}</th>{% endfor %}</tr></thead>
+  {% set table = table|slice(1) %}
+  {% endif %}
+  <tbody>{% for row in table %}
+  <tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>
+  {% endfor %}</tbody>
+</table>

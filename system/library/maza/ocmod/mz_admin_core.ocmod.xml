@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+    <name>Maza admin</name>
+    <code>maza_admin_core</code>
+    <version>1.0</version>
+    <author>TemplateMaza.com</author>
+    <link>https://pocotheme.com/</link>
+    <file path="admin/controller/startup/startup.php">
+        <operation>
+            <search trim='true'><![CDATA[set('encryption']]></search>
+            <add position="after"><![CDATA[$this->load->controller('extension/maza/startup');]]></add>
+        </operation>
+    </file>
+
+    <!-- File manager multiple upload -->
+    <file path="admin/controller/common/filemanager.php">
+        <operation>
+            <search><![CDATA[$this->load->view('common/filemanager']]></search>
+            <add position="before"><![CDATA[
+            if(isset($this->request->get['mz_callback_func'])){
+                $data['mz_callback_func'] = $this->request->get['mz_callback_func'];
+            } else {
+                $data['mz_callback_func'] = '';
+            }
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[$url .= '&target=' . $this->request->get['target'];]]></search>
+            <add position="after" offset="1"><![CDATA[
+        if (isset($this->request->get['mz_callback_func'])) {
+			$url .= '&mz_callback_func=' . $this->request->get['mz_callback_func'];
+		}
+            ]]></add>
+        </operation>
+    </file>
+    <file path="admin/language/en-gb/common/filemanager.php">
+        <operation>
+            <search><![CDATA[<?php]]></search>
+            <add position="after"><![CDATA[$_['mz_btn_add_selected'] = 'Add Selected';]]></add>
+        </operation>
+    </file>
+    <file path="admin/view/template/common/filemanager.twig">
+        <operation>
+            <search><![CDATA[<div class="modal-footer">{{ pagination }}</div>]]></search>
+            <add position="replace"><![CDATA[
+    {% if mz_callback_func %}
+	<div class="modal-footer"><div class="pull-left">{{ pagination }}</div> <button id="button-add-selected" class="btn btn-primary pull-right">{{ mz_btn_add_selected }}</button></div>
+    {% else %}
+    <div class="modal-footer">{{ pagination }}</div>
+	{% endif %}
+            ]]></add>
+        </operation>
+        <operation>
+            <search index="0"><![CDATA[{% if target %}]]></search>
+            <add position="replace"><![CDATA[
+{% if mz_callback_func %}
+$('a.thumbnail').on('click', function(e) {
+	e.preventDefault();
+    $(this).parent().find('input').trigger('click');
+    $(this).blur();
+});
+$('input[name="path[]"]').on('change', function(e) {
+    if($(this).prop('checked')){
+        $(this).parent().prev('a').addClass('active');
+    } else {
+        $(this).parent().prev('a').removeClass('active');
+    }
+});
+$('#button-add-selected').on('click', function(e) {
+    $('a.thumbnail.active').each(function(){
+        {{ mz_callback_func }}($(this).parent().find('input').val(), $(this).find('img').attr('src'));
+    });
+    $('#modal-image').modal('hide');
+});
+{% elseif target %}
+            ]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[url += '&target=' + '{{ target|escape('js') }}';]]></search>
+            <add position="after" offset="1"><![CDATA[
+    {% if mz_callback_func %}
+	url += '&mz_callback_func=' + '{{ mz_callback_func|escape('js') }}';
+	{% endif %}
+            ]]></add>
+        </operation>
+    </file>
+
+    <file path="admin/view/template/catalog/product_form.twig">
+        <operation>
+            <search trim='true'><![CDATA[title="{{ button_save }}"]]></search>
+            <add position="after"><![CDATA[
+            {% if mz_preview %}
+            <a href="{{ mz_preview }}" target="_blank" class="btn btn-info"><i class="fa fa-eye"></i></a>
+            {% endif %}
+            {% if mz_edit %}
+            <a href="{{ mz_edit }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-info"><i class="fa fa-pencil"></i></a>
+            {% endif %}
+            {% if mz_notification %}
+            <a href="{{ mz_notification }}" target="_blank" class="btn btn-info"><i class="fa fa-paper-plane"></i></a>
+            {% endif %}
+            ]]></add>
+        </operation>
+    </file>
+
+    <file path="admin/view/template/catalog/manufacturer_form.twig">
+        <operation>
+            <search trim='true'><![CDATA[title="{{ button_save }}"]]></search>
+            <add position="after"><![CDATA[
+            {% if mz_edit %}
+            <a href="{{ mz_edit }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-info"><i class="fa fa-pencil"></i></a>
+            {% endif %}
+            ]]></add>
+        </operation>
+    </file>
+</modification>

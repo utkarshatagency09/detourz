@@ -1,0 +1,23 @@
+@import "skins/footer/megastore-3/variables";
+@import "skins/footer/megastore-3/components/social";
+@import "skins/footer/megastore-3/components/newsletter";
+
+.footer{
+    color: $footer-text-color;
+    background-color: $footer-bg-color;
+    
+    h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6{
+        color: $footer-headings-color;
+    }
+    
+    .design, .module, .widget{
+        &-title{
+            font-size: $h6-font-size;
+            margin-bottom: $footer-headings-margin-bottom;
+            text-transform: uppercase;
+        }
+    }
+    .design-menu, .widget-contact_us{
+        margin-bottom: 0;
+    }
+}

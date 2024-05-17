@@ -1,0 +1,69 @@
+{% verbatim %}{% if thumb and images is empty %}{% endverbatim %}
+<img src="{% verbatim %}{{ thumb }}{% endverbatim %}" {% verbatim %}{% if srcset %}srcset="{{ srcset }}"{% endif %}{% endverbatim %} {% if srcset_sizes %}sizes="{{ srcset_sizes }}"{% endif %} title="{% verbatim %}{{ heading_title }}{% endverbatim %}" class="img-fluid mx-auto" alt="{% verbatim %}{{ heading_title }}{% endverbatim %}" />
+{% verbatim %}{% elseif thumb and images %}{% endverbatim %}
+{% if additional_image_position == 'top' %}
+<div id="article-image-carousel-indicators{{ suffix }}" class="swiper mb-2">
+  <div class="swiper-wrapper">
+    <div data-bs-target="#article-image-carousel{{ suffix }}" data-bs-slide-to="0" class="swiper-slide active"><img src="{% verbatim %}{{ thumb }}{% endverbatim %}" {% verbatim %}{% if srcset %}srcset="{{ srcset }}"{% endif %}{% endverbatim %} {% if srcset_sizes %}sizes="{{ srcset_sizes }}"{% endif %} class="img-fluid" alt="{% verbatim %}{{ heading_title }}{% endverbatim %}" /></div>
+    {% verbatim %}{% set slide_to = 1 %}{% endverbatim %}
+    {% verbatim %}{% for image in images %}{% endverbatim %}
+      <div data-bs-target="#article-image-carousel{{ suffix }}" data-bs-slide-to="{% verbatim %}{{ slide_to }}{% endverbatim %}" class="swiper-slide"><img src="{% verbatim %}{{ image.image }}{% endverbatim %}" {% verbatim %}{% if image.srcset %}srcset="{{ image.srcset }}"{% endif %}{% endverbatim %} {% if srcset_sizes %}sizes="{{ srcset_sizes }}"{% endif %} class="img-fluid" alt="{% verbatim %}{{ heading_title }}{% endverbatim %}" /></div>
+      {% verbatim %}{% set slide_to = slide_to + 1 %}{% endverbatim %}
+    {% verbatim %}{% endfor %}{% endverbatim %}
+  </div>
+  <div class="swiper-pager custom-pager">
+    <div class="swiper-button-prev fa fa-chevron-left"></div>
+    <div class="swiper-button-next fa fa-chevron-left"></div>
+  </div>
+</div>
+{% endif %}
+<div id="article-image-carousel{{ suffix }}" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="{% verbatim %}{{ thumb }}{% endverbatim %}" {% verbatim %}{% if srcset %}srcset="{{ srcset }}"{% endif %}{% endverbatim %} {% if srcset_sizes %}sizes="{{ srcset_sizes }}"{% endif %} class="d-block w-100" alt="{% verbatim %}{{ heading_title }}{% endverbatim %}" />
+    </div>
+    {% verbatim %}{% for image in images %}{% endverbatim %}
+    <div class="carousel-item">
+      <img src="{% verbatim %}{{ image.image }}{% endverbatim %}" {% verbatim %}{% if image.srcset %}srcset="{{ image.srcset }}"{% endif %}{% endverbatim %} {% if srcset_sizes %}sizes="{{ srcset_sizes }}"{% endif %} class="d-block w-100" alt="{% verbatim %}{{ heading_title }}{% endverbatim %}" />
+    </div>
+    {% verbatim %}{% endfor %}{% endverbatim %}
+  </div>
+  <a class="carousel-control-prev" href="#article-image-carousel{{ suffix }}" role="button" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#article-image-carousel{{ suffix }}" role="button" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </a>
+</div>
+{% if additional_image_position == 'bottom' %}
+<div id="article-image-carousel-indicators{{ suffix }}" class="swiper mt-2">
+  <div class="swiper-wrapper">
+    <div data-bs-target="#article-image-carousel{{ suffix }}" data-bs-slide-to="0" class="swiper-slide active"><img src="{% verbatim %}{{ thumb }}{% endverbatim %}" {% verbatim %}{% if srcset %}srcset="{{ srcset }}"{% endif %}{% endverbatim %} {% if srcset_sizes %}sizes="{{ srcset_sizes }}"{% endif %} class="img-fluid" alt="{% verbatim %}{{ heading_title }}{% endverbatim %}" /></div>
+    {% verbatim %}{% set slide_to = 1 %}{% endverbatim %}
+    {% verbatim %}{% for image in images %}{% endverbatim %}
+      <div data-bs-target="#article-image-carousel{{ suffix }}" data-bs-slide-to="{% verbatim %}{{ slide_to }}{% endverbatim %}" class="swiper-slide"><img src="{% verbatim %}{{ image.image }}{% endverbatim %}" {% verbatim %}{% if image.srcset %}srcset="{{ image.srcset }}"{% endif %}{% endverbatim %} {% if srcset_sizes %}sizes="{{ srcset_sizes }}"{% endif %} class="img-fluid" alt="{% verbatim %}{{ heading_title }}{% endverbatim %}" /></div>
+      {% verbatim %}{% set slide_to = slide_to + 1 %}{% endverbatim %}
+    {% verbatim %}{% endfor %}{% endverbatim %}
+  </div>
+  <div class="swiper-pager custom-pager">
+    <div class="swiper-button-prev fa fa-chevron-left"></div>
+    <div class="swiper-button-next fa fa-chevron-left"></div>
+  </div>
+</div>
+{% endif %}
+{% verbatim %}{% endif %}{% endverbatim %}
+<script>
+$(function(){
+  new Swiper('#article-image-carousel-indicators{{ suffix }}', {
+    slidesPerView: 5,
+    navigation: {
+      nextEl: '#article-image-carousel-indicators{{ suffix }} .swiper-button-next',
+      prevEl: '#article-image-carousel-indicators{{ suffix }} .swiper-button-prev',
+    },
+    spaceBetween: 10,
+    loop: false
+  });
+});
+</script>

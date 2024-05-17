@@ -1,0 +1,244 @@
+<!-- Form -->
+<form id="setting-content-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#tab-general" data-toggle="tab">{{ tab_general }}</a></li>
+    <li><a href="#tab-grid-size" data-toggle="tab">{{ tab_grid_size }}</a></li>
+    <li><a href="#tab-element" data-toggle="tab">{{ tab_element }}</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="tab-general" class="tab-pane active">
+      <!--content status-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label">{{ entry_status }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_status) %} 
+            <input type="radio" name="content_status" value="1" id="input-setting-content-status-enabled" checked>
+            <label for="input-setting-content-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_status" value="0" id="input-setting-content-status-disabled">
+            <label for="input-setting-content-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_status" value="1" id="input-setting-content-status-enabled" >
+            <label for="input-setting-content-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_status" value="0" id="input-setting-content-status-disabled" checked>
+            <label for="input-setting-content-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <!--content view-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label">{{ entry_view }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_list_grid == 'grid') %} 
+            <input type="radio" name="content_list_grid" value="grid" id="input-setting-content-list-grid-grid" checked>
+            <label for="input-setting-content-list-grid-grid" >{{ text_grid }}</label>
+            <input type="radio" name="content_list_grid" value="list" id="input-setting-content-list-grid-list">
+            <label for="input-setting-content-list-grid-list">{{ text_list }}</label>
+            {% else %} 
+            <input type="radio" name="content_list_grid" value="grid" id="input-setting-content-list-grid-grid" >
+            <label for="input-setting-content-list-grid-grid">{{ text_grid }}</label>
+            <input type="radio" name="content_list_grid" value="list" id="input-setting-content-list-grid-list" checked>
+            <label for="input-setting-content-list-grid-list" >{{ text_list }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="tab-grid-size" class="tab-pane">
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-content-column-xl"><span data-toggle="tooltip" title="{{ help_column_xl }}">{{ entry_column_xl }}</span></label>
+        <div class="col-xs-5">
+          <div class="input-group">
+            <input type="range" name="content_column_xl" min="1" max="6" value="{{ content_column_xl }}" id="input-setting-content-column-xl" class="form-control" />
+            <span class="input-group-addon">{{ content_column_xl }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-content-column-lg"><span data-toggle="tooltip" title="{{ help_column_lg }}">{{ entry_column_lg }}</span></label>
+        <div class="col-xs-5">
+          <div class="input-group">
+            <input type="range" name="content_column_lg" min="1" max="6" value="{{ content_column_lg }}" id="input-setting-content-column-lg" class="form-control" />
+            <span class="input-group-addon">{{ content_column_lg }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-content-column-md"><span data-toggle="tooltip" title="{{ help_column_md }}">{{ entry_column_md }}</span></label>
+        <div class="col-xs-5">
+          <div class="input-group">
+            <input type="range" name="content_column_md" min="1" max="6" value="{{ content_column_md }}" id="input-setting-content-column-md" class="form-control" />
+            <span class="input-group-addon">{{ content_column_md }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-content-column-sm"><span data-toggle="tooltip" title="{{ help_column_sm }}">{{ entry_column_sm }}</span></label>
+        <div class="col-xs-5">
+          <div class="input-group">
+            <input type="range" name="content_column_sm" min="1" max="6" value="{{ content_column_sm }}" id="input-setting-content-column-sm" class="form-control" />
+            <span class="input-group-addon">{{ content_column_sm }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-content-column-xs"><span data-toggle="tooltip" title="{{ help_column_xs }}">{{ entry_column_xs }}</span></label>
+        <div class="col-xs-5">
+          <div class="input-group">
+            <input type="range" name="content_column_xs" min="1" max="6" value="{{ content_column_xs }}" id="input-setting-content-column-xs" class="form-control" />
+            <span class="input-group-addon">{{ content_column_xs }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="tab-element" class="tab-pane">
+      <!--comment count-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label">{{ entry_comment_count }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_comment_count) %} 
+            <input type="radio" name="content_comment_count" value="1" id="input-setting-content-comment-count-enabled" checked>
+            <label for="input-setting-content-comment-count-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_comment_count" value="0" id="input-setting-content-comment-count-disabled">
+            <label for="input-setting-content-comment-count-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_comment_count" value="1" id="input-setting-content-comment-count-enabled" >
+            <label for="input-setting-content-comment-count-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_comment_count" value="0" id="input-setting-content-comment-count-disabled" checked>
+            <label for="input-setting-content-comment-count-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <!--viewed count-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label">{{ entry_viewed_count }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_viewed_count) %} 
+            <input type="radio" name="content_viewed_count" value="1" id="input-setting-content-viewed-count-enabled" checked>
+            <label for="input-setting-content-viewed-count-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_viewed_count" value="0" id="input-setting-content-viewed-count-disabled">
+            <label for="input-setting-content-viewed-count-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_viewed_count" value="1" id="input-setting-content-viewed-count-enabled" >
+            <label for="input-setting-content-viewed-count-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_viewed_count" value="0" id="input-setting-content-viewed-count-disabled" checked>
+            <label for="input-setting-content-viewed-count-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <!--author-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label">{{ entry_author }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_author) %} 
+            <input type="radio" name="content_author" value="1" id="input-setting-content-author-enabled" checked>
+            <label for="input-setting-content-author-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_author" value="0" id="input-setting-content-author-disabled">
+            <label for="input-setting-content-author-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_author" value="1" id="input-setting-content-author-enabled" >
+            <label for="input-setting-content-author-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_author" value="0" id="input-setting-content-author-disabled" checked>
+            <label for="input-setting-content-author-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+
+      <!--category-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label">{{ entry_category }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_category) %} 
+            <input type="radio" name="content_category" value="1" id="input-setting-content-category-enabled" checked>
+            <label for="input-setting-content-category-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_category" value="0" id="input-setting-content-category-disabled">
+            <label for="input-setting-content-category-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_category" value="1" id="input-setting-content-category-enabled" >
+            <label for="input-setting-content-category-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_category" value="0" id="input-setting-content-category-disabled" checked>
+            <label for="input-setting-content-category-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <!--timestamp-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label">{{ entry_timestamp }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_timestamp) %} 
+            <input type="radio" name="content_timestamp" value="1" id="input-setting-content-timestamp-enabled" checked>
+            <label for="input-setting-content-timestamp-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_timestamp" value="0" id="input-setting-content-timestamp-disabled">
+            <label for="input-setting-content-timestamp-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_timestamp" value="1" id="input-setting-content-timestamp-enabled" >
+            <label for="input-setting-content-timestamp-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_timestamp" value="0" id="input-setting-content-timestamp-disabled" checked>
+            <label for="input-setting-content-timestamp-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <!--readmore-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label">{{ entry_readmore }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_readmore) %} 
+            <input type="radio" name="content_readmore" value="1" id="input-setting-content-readmore-enabled" checked>
+            <label for="input-setting-content-readmore-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_readmore" value="0" id="input-setting-content-readmore-disabled">
+            <label for="input-setting-content-readmore-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_readmore" value="1" id="input-setting-content-readmore-enabled" >
+            <label for="input-setting-content-readmore-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_readmore" value="0" id="input-setting-content-readmore-disabled" checked>
+            <label for="input-setting-content-readmore-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <!--Description-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label">{{ entry_description }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_description) %} 
+            <input type="radio" name="content_description" value="1" id="input-setting-content-description-enabled" checked>
+            <label for="input-setting-content-description-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_description" value="0" id="input-setting-content-description-disabled">
+            <label for="input-setting-content-description-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_description" value="1" id="input-setting-content-description-enabled" >
+            <label for="input-setting-content-description-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_description" value="0" id="input-setting-content-description-disabled" checked>
+            <label for="input-setting-content-description-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    $('input[type="range"]').on('input change', function(){
+        $(this).siblings('.input-group-addon').text($(this).val());
+    });
+  </script>
+</form>

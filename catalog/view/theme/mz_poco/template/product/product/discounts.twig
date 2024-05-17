@@ -1,0 +1,9 @@
+{% verbatim %}
+{% if price and discounts %}
+<ul data-update="discounts" class="list-group flex-sm-row flex-sm-nowrap">
+{% for discount in discounts %}
+<li class="list-group-item">{{ discount.quantity }}{{ text_discount }}{{ discount.price }}</li>
+{% endfor %}
+</ul>
+{% endif %}
+{% endverbatim %}

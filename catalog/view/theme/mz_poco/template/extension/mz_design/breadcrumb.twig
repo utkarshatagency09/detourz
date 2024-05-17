@@ -1,0 +1,21 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+    {% set position = 1 %}
+    <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a itemprop="item" href="{{ home }}"><span class="d-none" itemprop="name">Home</span>{{ text_home }}</a>
+      <meta itemprop="position" content="{{ position }}" />
+    </li>
+    {% for key, item in items|slice(0,-1) %}
+      {% if item.url %}{% set position = position + 1 %}
+      <li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a itemscope itemtype="https://schema.org/WebPage" itemprop="item" itemid="{{ item.url.href }}" href="{{ item.url.href }}" {{ item.url.attr }}><span itemprop="name">{{ item.name }}</span></a>
+        <meta itemprop="position" content="{{ position }}" />
+      </li>
+      {% endif %}
+    {% endfor %}
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
+      <span itemprop="name">{{ items|last.name }}</span>
+      <meta itemprop="position" content="{{ position + 1 }}" />
+    </li>
+  </ol>
+</nav>

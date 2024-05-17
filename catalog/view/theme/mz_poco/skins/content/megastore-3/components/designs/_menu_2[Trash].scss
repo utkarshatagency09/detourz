@@ -1,0 +1,49 @@
+.design-menu{
+    margin-bottom: $spacer;
+    
+    .design-title{
+      padding: 0 $nav-link-padding-x;
+      margin-bottom: map-get($spacers, 2);
+      
+      &.horizontal{
+        display: inline-block;
+        margin: 0;
+        font-size: 1em;
+        font-weight: $font-weight-bold;
+        @include rtl-prop(padding, $nav-link-padding-y 0 $nav-link-padding-y $nav-link-padding-x, $nav-link-padding-y $nav-link-padding-x $nav-link-padding-y 0);
+      }
+    }
+    .menu-image{
+        margin: 0 $nav-link-padding-x map-get($spacers, 2);
+    }
+    .image-left{
+        .menu-image{
+            @include rtl-prop(margin, 0 0 0 $nav-link-padding-x, 0 $nav-link-padding-x 0 0);
+        }
+    }
+    .image-right{
+        .menu-image{
+            @include rtl-prop(margin, 0 $nav-link-padding-x 0 0, 0 0 0 $nav-link-padding-x);
+            order: 2;
+        }
+    }
+    .image-bottom{
+        flex-direction: column;
+    }
+    
+    .both.icon-left .icon{
+        @include rtl-prop(margin-right, mz-spacer(10));
+        @include rtl-prop(padding-left, 0);
+    }
+    .both.icon-right .icon{
+        @include rtl-prop(margin-left, mz-spacer(10));
+        @include rtl-prop(padding-right, 0);
+    }
+    
+    
+    .menu-items.horizontal{
+        display: inline-flex !important;
+        font-family: $headings-font-family;
+    }
+    
+}

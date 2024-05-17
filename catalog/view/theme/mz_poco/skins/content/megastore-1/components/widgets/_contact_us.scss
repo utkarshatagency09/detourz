@@ -1,0 +1,24 @@
+.widget-contact_us{
+    margin-bottom: $spacer;
+    
+    .widget-title{
+      padding: 0 $nav-link-padding-x;  
+    }
+    
+    li{
+        padding: $design-nav-link-padding-y $nav-link-padding-x;
+        
+        &.both{
+            display: flex;
+            
+            .icon{
+                line-height: $line-height-base;
+                flex: 0 0 auto;
+            }
+        }
+    }
+    
+    .both .icon{
+        @include rtl-prop(margin-right, mz-spacer(10));
+    }
+}

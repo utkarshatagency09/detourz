@@ -1,0 +1,44 @@
+{% if heading_title %}
+<h3 class="widget-title">{{ heading_title }}</h3>
+{% endif %}
+{# {% if carousel %}
+<div id="widget-gallery-{{ mz_suffix }}" class="swiper-container swiper-viewport">
+  <div class="swiper-wrapper">
+    {% for gallery in galleries %}
+      {% if gallery.type == 'image' %}
+      <div class="swiper-slide"><a class="gallery-item {{ gutter?'gallery-item__gutter' }} mfp-image" href="{{ gallery.popup }}" title="{{ gallery.title }}"> <img src="{{ gallery.thumb }}"  title="{{ gallery.title }}" alt="{{ gallery.title }}" /></a></div>
+      {% elseif gallery.type == 'video' %}
+      <div class="swiper-slide"><a class="gallery-item {{ gutter?'gallery-item__gutter' }} mfp-iframe" href="{{ gallery.url }}"><img src="{{ gallery.thumb }}" /></a></div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <div class="swiper-pagination"></div>
+  <div class="swiper-button-prev"></div>
+  <div class="swiper-button-next"></div>
+</div>
+<script>
+$(function() {
+  $('#widget-gallery-{{ mz_suffix }}').swiper();
+});
+</script>
+{% else %} #}
+<div id="widget-gallery-{{ mz_suffix }}" class="gallery-container {{ gutter?'gallery-gutters' }}">
+  {% for gallery in galleries %}
+    {% if gallery.type == 'image' %}
+    <a class="gallery-item mfp-image" href="{{ gallery.popup }}" title="{{ gallery.title }}"> <img class="img-fluid" src="{{ gallery.thumb }}"  title="{{ gallery.title }}" alt="{{ gallery.title }}" /></a>
+    {% elseif gallery.type == 'video' %}
+    <a class="gallery-item mfp-iframe" href="{{ gallery.url }}"><img class="img-fluid" src="{{ gallery.thumb }}" /></a>
+    {% endif %}
+  {% endfor %}
+</div>
+{# {% endif %} #}
+<script type="text/javascript">
+$(function(){
+  $('#widget-gallery-{{ mz_suffix }}').magnificPopup({
+    delegate: 'a',
+    gallery: {
+      enabled: true
+    }
+  });
+});
+</script>

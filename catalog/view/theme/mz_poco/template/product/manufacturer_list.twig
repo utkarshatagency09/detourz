@@ -1,0 +1,45 @@
+{{ header }}
+<div id="product-manufacturer-list" class="container content pb-5">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      {% for breadcrumb in breadcrumbs|slice(0,-1) %}
+        <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+      {% endfor %}
+      <li class="breadcrumb-item active" aria-current="page">{{ breadcrumbs|last.text }}</li>
+    </ol>
+  </nav>
+  <div class="row">{{ column_left }}
+    {% if column_left and column_right %}
+    {% set class = 'col-md-6' %}
+    {% elseif column_left or column_right %}
+    {% set class = 'col-md-9' %}
+    {% else %}
+    {% set class = 'col-md-12' %}
+    {% endif %}
+    <div id="content" class="{{ class }}">{{ content_top }}
+      <h1 class="page-title mb-3 h3">{{ heading_title }}</h1>
+      {% if categories %}
+      <p><strong>{{ text_index }}</strong> {% for category in categories %}
+        &nbsp;&nbsp;&nbsp;<a class="text-decoration-none" href="index.php?route=product/manufacturer#{{ category.name }}">{{ category.name }}</a> {% endfor %} </p>
+      {% for category in categories %}
+      <div class="card card-body mb-3">
+      <h2 class="card-title" id="{{ category.name }}">{{ category.name }}</h2>
+      {% if category.manufacturer %}
+      {% for manufacturers in category.manufacturer|batch(4) %}
+      <div class="row mb-3"> {% for manufacturer in manufacturers %}
+        <div class="col-6 col-sm-3 col-md-2"><a href="{{ manufacturer.href }}" class="text-decoration-none">{{ manufacturer.name }}</a></div>
+        {% endfor %} </div>
+      {% endfor %}
+      {% endif %}
+      </div>
+      {% endfor %}
+      {% else %}
+      <p>{{ text_empty }}</p>
+      <div class="buttons clearfix">
+        <div class="float-end"><a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a></div>
+      </div>
+      {% endif %}
+      {{ content_bottom }}</div>
+    {{ column_right }}</div>
+</div>
+{{ footer }}

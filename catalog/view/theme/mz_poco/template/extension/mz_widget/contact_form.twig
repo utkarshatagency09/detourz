@@ -1,0 +1,14 @@
+<div class="contact-form">
+  {% if heading_title %}
+  <h4 class="widget-title contact-form-title">{{ heading_title }}</h4>
+  {% endif %}
+  <form action="{{ action }}" onsubmit="mz_sendMessage(this);return false;" method="post">
+    <div class="mb-3"><input type="text" name="name" placeholder="{{ text_name }}" aria-label="{{ text_name }}" class="form-control form-control-{{ size }}" /></div>
+    <div class="mb-3"><input type="text" name="email" placeholder="{{ text_email }}" aria-label="{{ text_email }}" class="form-control form-control-{{ size }}" /></div>
+    <div class="mb-3"><input type="text" name="subject" placeholder="{{ text_subject }}" aria-label="{{ text_subject }}" class="form-control form-control-{{ size }}" /></div>
+    <div class="mb-3"><textarea name="message" placeholder="{{ text_message }}" aria-label="{{ text_message }}" class="form-control form-control-{{ size }}"></textarea></div>
+    <input type="hidden" name="entry_id" value="{{ entry_id }}" />
+    {{ captcha }}
+    <div class="d-grid"><button type="submit" data-loading="{{ text_loading }}" class="btn btn-{{ color }} btn-{{ size }}">{{ text_submit }}</button></div>
+  </form>
+</div>

@@ -1,0 +1,16 @@
+.cart-card {
+    background-color: $light;
+    border: $border-width solid $border-color;
+
+    @include media-breakpoint-up(sm){
+        padding: map-get($spacers, 4);
+    }
+}
+
+#checkout-cart {
+    thead th{
+        text-transform: uppercase;
+        font-size: 0.75em;
+        white-space: nowrap;
+    }
+}

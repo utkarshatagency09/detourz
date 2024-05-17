@@ -1,0 +1,621 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- Form -->
+  <form action="{{ action }}" class="form-horizontal" enctype="multipart/form-data" id="form-mz-testimonial" method="post">
+    <div class="tab-content">
+        
+      <!--General-->
+      <div id="tab-general" class="tab-pane fade in active">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <!--module name-->
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-name">{{ entry_module_name }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-name" placeholder="{{ entry_module_name }}" type="text" name="name" value="{{ name }}" >
+                {% if (err_name is defined) %} 
+                <div class="text-danger">{{ err_name }}</div>
+                {% endif %} 
+              </div>
+            </div>
+            
+            <!--status-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-status">{{ entry_status }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (status) %} 
+                  <input type="radio" name="status" value="1" id="input-status-enabled" checked>
+                  <label for="input-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="status" value="0" id="input-status-disabled">
+                  <label for="input-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="status" value="1" id="input-status-enabled" >
+                  <label for="input-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="status" value="0" id="input-status-disabled" checked>
+                  <label for="input-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+            
+            <!--module title-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-title">{{ entry_title }}</label>
+              <div class="col-xs-9">
+              {% for language in languages %} 
+                <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                  <input class="form-control" type="text" name="title[{{ language['language_id'] }}]" value="{{ title[language['language_id']] is defined?title[language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+                </div>
+              {% endfor %} 
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div> <!-- // General -->
+      
+      {#Data#}
+      <div id="tab-data" class="tab-pane fade">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            {# testimonial source #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-testimonial-source">{{ entry_testimonial_source }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                {% for source in list_testimonial_source %}
+                  {% if (source.id == testimonial_source) %} 
+                  <input type="radio" name="testimonial_source" value="{{ source.id }}" id="input-testimonial-source-{{ source.id }}" checked>
+                  <label for="input-testimonial-source-{{ source.id }}" >{{ source.name }}</label>
+                  {% else %} 
+                  <input type="radio" name="testimonial_source" value="{{ source.id }}" id="input-testimonial-source-{{ source.id }}" >
+                  <label for="input-testimonial-source-{{ source.id }}">{{ source.name }}</label>
+                  {% endif %} 
+                {% endfor %}
+                </div>
+              </div>
+            </div>
+                
+            <div id="testimonial-source-content" class="tab-content">
+              {#featured testimonial#}
+              <div id="tab-source-featured" class="tab-pane">
+                <!-- testimonial-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-featured-testimonial"><span data-toggle="tooltip" title="{{ help_testimonial }}">{{ entry_testimonial }}</span></label>
+                  <div class="col-xs-9">
+                    <input type="text" name="featured_testimonial_input" value="" placeholder="{{ entry_testimonial }}"  id="input-featured-testimonial" class="form-control" />
+                    <div id="featured-testimonial" class="well well-sm" style="height: 150px; overflow: auto;">
+                      {% for testimonial in featured_testimonials %} 
+                      <div id="featured-testimonial-{{ testimonial.testimonial_id }}"><i class="fa fa-minus-circle"></i> {{ testimonial.name }} 
+                        <input type="hidden" name="featured_testimonial[]" value="{{ testimonial.testimonial_id }}" />
+                      </div>
+                      {% endfor %} 
+                    </div>
+                  </div>
+                </div>
+              </div>
+                    
+              {#Filter testimonial#}
+              <div id="tab-source-filter" class="tab-pane">
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_min_rating }}</label>
+                  <div class="col-xs-9">
+                    <label class="radio-inline"> {% if filter_min_rating == 1 %}
+                      <input type="radio" name="filter_min_rating" value="1" checked="checked" />
+                      1
+                      {% else %}
+                      <input type="radio" name="filter_min_rating" value="1" />
+                      1
+                      {% endif %} </label>
+                    <label class="radio-inline"> {% if filter_min_rating == 2 %}
+                      <input type="radio" name="filter_min_rating" value="2" checked="checked" />
+                      2
+                      {% else %}
+                      <input type="radio" name="filter_min_rating" value="2" />
+                      2
+                      {% endif %} </label>
+                    <label class="radio-inline"> {% if filter_min_rating == 3 %}
+                      <input type="radio" name="filter_min_rating" value="3" checked="checked" />
+                      3
+                      {% else %}
+                      <input type="radio" name="filter_min_rating" value="3" />
+                      3
+                      {% endif %} </label>
+                    <label class="radio-inline"> {% if filter_min_rating == 4 %}
+                      <input type="radio" name="filter_min_rating" value="4" checked="checked" />
+                      4
+                      {% else %}
+                      <input type="radio" name="filter_min_rating" value="4" />
+                      4
+                      {% endif %} </label>
+                    <label class="radio-inline"> {% if filter_min_rating == 5 %}
+                      <input type="radio" name="filter_min_rating" value="5" checked="checked" />
+                      5
+                      {% else %}
+                      <input type="radio" name="filter_min_rating" value="5" />
+                      5
+                      {% endif %} </label>
+                  </div>
+                </div>
+                  
+                {# filter sort #}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-filter-sort">{{ entry_sort }}</label>
+                  <div class="col-xs-9">
+                    <select name="filter_sort" id="input-filter-sort" class="form-control">
+                    {% for sort in list_sort %}
+                      {% if (sort.id == filter_sort) %} 
+                      <option value="{{ sort.id }}" selected="selected">{{ sort.name }}</option>
+                      {% else %} 
+                      <option value="{{ sort.id }}">{{ sort.name }}</option>
+                      {% endif %} 
+                    {% endfor %}
+                    </select>
+                  </div>
+                </div>
+                    
+                {# filter order #}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-filter-order">{{ entry_order }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                    {% for order in list_order %}
+                      {% if (order.id == filter_order) %} 
+                      <input type="radio" name="filter_order" value="{{ order.id }}" id="input-filter-order-{{ order.id }}" checked>
+                      <label for="input-filter-order-{{ order.id }}" >{{ order.name }}</label>
+                      {% else %} 
+                      <input type="radio" name="filter_order" value="{{ order.id }}" id="input-filter-order-{{ order.id }}" >
+                      <label for="input-filter-order-{{ order.id }}">{{ order.name }}</label>
+                      {% endif %} 
+                    {% endfor %}
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+                    
+        {# Button #}
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_button }}</div>
+          <div class="panel-body">
+            <!--Button add status-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-button-add-status">{{ entry_add_testimonial }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (button_add_status) %} 
+                  <input type="radio" name="button_add_status" value="1" id="input-button-add-status-enabled" checked>
+                  <label for="input-button-add-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="button_add_status" value="0" id="input-button-add-status-disabled">
+                  <label for="input-button-add-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="button_add_status" value="1" id="input-button-add-status-enabled" >
+                  <label for="input-button-add-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="button_add_status" value="0" id="input-button-add-status-disabled" checked>
+                  <label for="input-button-add-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            <!--Button view status-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-button-view-status">{{ entry_view_testimonial }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (button_view_status) %} 
+                  <input type="radio" name="button_view_status" value="1" id="input-button-view-status-enabled" checked>
+                  <label for="input-button-view-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="button_view_status" value="0" id="input-button-view-status-disabled">
+                  <label for="input-button-view-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="button_view_status" value="1" id="input-button-view-status-enabled" >
+                  <label for="input-button-view-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="button_view_status" value="0" id="input-button-view-status-disabled" checked>
+                  <label for="input-button-view-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {#Layout#}
+      <div id="tab-layout" class="tab-pane fade">
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_general }}</div>
+          <div class="panel-body">
+            {#Filter Testimonial limit#}
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-limit">{{ entry_testimonial_limit }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-limit" placeholder="{{ entry_testimonial_limit }}" type="number" min="1" name="limit" value="{{ limit }}" >
+                {% if (err_limit is defined) %} 
+                <div class="text-danger">{{ err_limit }}</div>
+                {% endif %} 
+              </div>
+            </div>
+                
+            {# Testimonial image width#}
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-image-width">{{ entry_image_width }}</label>
+              <div class="col-xs-9">
+                <input type="number" min="1" name="image_width" value="{{ image_width }}" placeholder="{{ entry_image_width }}" id="input-image-width" class="form-control" />
+                {% if (err_image_width is defined) %} 
+                <div class="text-danger">{{ err_image_width }}</div>
+                {% endif %} 
+              </div>
+            </div>
+            
+            {# Testimonial image height #}
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-image-height">{{ entry_image_height }}</label>
+              <div class="col-xs-9">
+                <input type="number" min="1" name="image_height" value="{{ image_height }}" placeholder="{{ entry_image_height }}" id="input-image-height" class="form-control" />
+                {% if (err_image_height is defined) %} 
+                <div class="text-danger">{{ err_image_height }}</div>
+                {% endif %} 
+              </div>
+            </div>
+             
+            <!--collapsed-->
+            <div class="form-group required">
+              <label class="col-sm-3 control-label" for="input-collapsed"><span data-toggle="tooltip" title="{{ help_collapsed }}">{{ entry_collapsed }}</span></label>
+              <div class="col-sm-9">
+                <input type="number" name="collapsed" value="{{ collapsed }}" min="0" placeholder="{{ entry_collapsed }}" id="input-collapsed" class="form-control" />
+              </div>
+            </div>
+              
+            {# lazy loading #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-lazy-loading">{{ entry_lazy_loading }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (lazy_loading) %} 
+                  <input type="radio" name="lazy_loading" value="1" id="input-lazy-loading-enabled" checked>
+                  <label for="input-lazy-loading-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="lazy_loading" value="0" id="input-lazy-loading-disabled">
+                  <label for="input-lazy-loading-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="lazy_loading" value="1" id="input-lazy-loading-enabled" >
+                  <label for="input-lazy-loading-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="lazy_loading" value="0" id="input-lazy-loading-disabled" checked>
+                  <label for="input-lazy-loading-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {# Column #}
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_column }}</div>
+          <div class="panel-body">
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-column-xl"><span data-toggle="tooltip" title="{{ help_column_xl }}">{{ entry_column_xl }}</span></label>
+              <div class="col-xs-5">
+                <div class="input-group">
+                  <input type="range" name="column_xl" min="1" max="6" value="{{ column_xl }}" id="input-column-xl" class="form-control" />
+                  <span class="input-group-addon">{{ column_xl }}</span>
+                </div>
+              </div>
+            </div>
+                
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-column-lg"><span data-toggle="tooltip" title="{{ help_column_lg }}">{{ entry_column_lg }}</span></label>
+              <div class="col-xs-5">
+                <div class="input-group">
+                  <input type="range" name="column_lg" min="1" max="6" value="{{ column_lg }}" id="input-column-lg" class="form-control" />
+                  <span class="input-group-addon">{{ column_lg }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-column-md"><span data-toggle="tooltip" title="{{ help_column_md }}">{{ entry_column_md }}</span></label>
+              <div class="col-xs-5">
+                <div class="input-group">
+                  <input type="range" name="column_md" min="1" max="6" value="{{ column_md }}" id="input-column-md" class="form-control" />
+                  <span class="input-group-addon">{{ column_md }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-column-sm"><span data-toggle="tooltip" title="{{ help_column_sm }}">{{ entry_column_sm }}</span></label>
+              <div class="col-xs-5">
+                <div class="input-group">
+                  <input type="range" name="column_sm" min="1" max="6" value="{{ column_sm }}" id="input-column-sm" class="form-control" />
+                  <span class="input-group-addon">{{ column_sm }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-column-xs"><span data-toggle="tooltip" title="{{ help_column_xs }}">{{ entry_column_xs }}</span></label>
+              <div class="col-xs-5">
+                <div class="input-group">
+                  <input type="range" name="column_xs" min="1" max="6" value="{{ column_xs }}" id="input-column-xs" class="form-control" />
+                  <span class="input-group-addon">{{ column_xs }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+                
+      {#carousel#}
+      <div id="tab-carousel" class="tab-pane fade">
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_general }}</div>
+          <div class="panel-body">
+            <!--carousel status-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-carousel-status">{{ entry_status }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (carousel_status) %} 
+                  <input type="radio" name="carousel_status" value="1" id="input-carousel-status-enabled" checked>
+                  <label for="input-carousel-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="carousel_status" value="0" id="input-carousel-status-disabled">
+                  <label for="input-carousel-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="carousel_status" value="1" id="input-carousel-status-enabled" >
+                  <label for="input-carousel-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="carousel_status" value="0" id="input-carousel-status-disabled" checked>
+                  <label for="input-carousel-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            <!--carousel pagination status-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-carousel-pagination">{{ entry_pagination }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (carousel_pagination) %} 
+                  <input type="radio" name="carousel_pagination" value="1" id="input-carousel-pagination-enabled" checked>
+                  <label for="input-carousel-pagination-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="carousel_pagination" value="0" id="input-carousel-pagination-disabled">
+                  <label for="input-carousel-pagination-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="carousel_pagination" value="1" id="input-carousel-pagination-enabled" >
+                  <label for="input-carousel-pagination-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="carousel_pagination" value="0" id="input-carousel-pagination-disabled" checked>
+                  <label for="input-carousel-pagination-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+            
+            {#carousel autoplay#}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-carousel-autoplay"><span data-toggle="tooltip" title="{{ help_carousel_autoplay }}">{{ entry_autoplay }}</span></label>
+              <div class="col-xs-9">
+                <input type="number" min="0" name="carousel_autoplay" value="{{ carousel_autoplay }}" placeholder="{{ entry_autoplay }}" id="input-carousel-autoplay" class="form-control" />
+              </div>
+            </div>
+              
+            <!--carousel loop status-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-carousel-loop">{{ entry_loop }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (carousel_loop) %} 
+                  <input type="radio" name="carousel_loop" value="1" id="input-carousel-loop-enabled" checked>
+                  <label for="input-carousel-loop-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="carousel_loop" value="0" id="input-carousel-loop-disabled">
+                  <label for="input-carousel-loop-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="carousel_loop" value="1" id="input-carousel-loop-enabled" >
+                  <label for="input-carousel-loop-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="carousel_loop" value="0" id="input-carousel-loop-disabled" checked>
+                  <label for="input-carousel-loop-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            {#carousel row#}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-carousel-row">{{ entry_row }}</label>
+              <div class="col-xs-9">
+                <input type="number" min="1" name="carousel_row" value="{{ carousel_row }}" placeholder="{{ entry_row }}" id="input-carousel-row" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {#Navigation#}
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_navigation }}</div>
+          <div class="panel-body input-image-widget">
+            <!--status-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-carousel-nav-status">{{ entry_status }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (carousel_nav_status) %} 
+                  <input type="radio" name="carousel_nav_status" value="1" id="input-carousel-nav-status-enabled" checked>
+                  <label for="input-carousel-nav-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="carousel_nav_status" value="0" id="input-carousel-nav-status-disabled">
+                  <label for="input-carousel-nav-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="carousel_nav_status" value="1" id="input-carousel-nav-status-enabled" >
+                  <label for="input-carousel-nav-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="carousel_nav_status" value="0" id="input-carousel-nav-status-disabled" checked>
+                  <label for="input-carousel-nav-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+            
+            {#Icon#}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" >{{ entry_icon }}</label>
+              <div class="col-xs-9">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#tab-carousel-nav-icon-image" data-meta="image" data-toggle="tab">{{ tab_image }}</a></li>
+                  <li><a href="#tab-carousel-nav-icon-svg" data-meta="image" data-toggle="tab">{{ tab_svg }}</a></li>
+                  <li><a href="#tab-carousel-nav-icon-font" data-meta="font" data-toggle="tab">{{ tab_font }}</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="tab-carousel-nav-icon-image">
+                    <div class="el-group">
+                    {% for language in languages %}
+                      <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                      <div class="el-item">
+                        <a href="" id="thumb-carousel-nav-icon-image{{ language.language_id }}" data-toggle="image" class="img-thumbnail"><img src="{{ (thumb_carousel_nav_icon_image[language.language_id] is defined)?thumb_carousel_nav_icon_image[language.language_id]:placeholder_image }}" alt="" title="" data-placeholder="{{ placeholder_image }}" /></a><input type="hidden" name="carousel_nav_icon_image[{{ language.language_id }}]" value="{{ (carousel_nav_icon_image[language.language_id] is defined)?carousel_nav_icon_image[language.language_id]:'' }}" id="input-carousel-nav-icon-image{{ language.language_id }}" />
+                      </div>
+                    {% endfor %}
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tab-carousel-nav-icon-svg">
+                    <div class="el-group">
+                    {% for language in languages %}
+                      <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                      <div class="el-item">
+                        <a href="" id="thumb-carousel-nav-icon-svg{{ language.language_id }}" data-toggle="svg" class="img-thumbnail"><img width="100" height="100" src="{{ (thumb_carousel_nav_icon_svg[language.language_id] is defined)?thumb_carousel_nav_icon_svg[language.language_id]:placeholder_svg }}" alt="" title="" data-placeholder="{{ placeholder_svg }}" /></a><input type="hidden" name="carousel_nav_icon_svg[{{ language.language_id }}]" value="{{ (carousel_nav_icon_svg[language.language_id] is defined)?carousel_nav_icon_svg[language.language_id]:'' }}" id="input-carousel-nav-icon-svg{{ language.language_id }}" />
+                      </div>
+                    {% endfor %}
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tab-carousel-nav-icon-font">
+                    <div class="el-group">
+                    {% for language in languages %}
+                      <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                      <div class="el-item">
+                        <a href="" id="thumb-carousel-nav-icon-font{{ language.language_id }}" data-toggle="font" class="img-thumbnail icon-thumb"><i class="{{ (carousel_nav_icon_font[language.language_id] is not empty)?carousel_nav_icon_font[language.language_id]:placeholder_font }}" data-placeholder="{{ placeholder_font }}"></i></a><input type="hidden" name="carousel_nav_icon_font[{{ language.language_id }}]" value="{{ (carousel_nav_icon_font[language.language_id] is defined)?carousel_nav_icon_font[language.language_id]:'' }}" id="input-carousel-nav-icon-font{{ language.language_id }}" />
+                      </div>
+                    {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+                    
+            <div class="image-meta-tab-content tab-content">
+              <div class="tab-image active tab-pane">
+                {# Icon width#}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-carousel-nav-icon-width">{{ entry_width }}</label>
+                  <div class="col-xs-9">
+                    <input type="number" name="carousel_nav_icon_width" value="{{ carousel_nav_icon_width }}" placeholder="{{ entry_width }}" id="input-carousel-nav-icon-width" class="form-control" />
+                  </div>
+                </div>
+
+                {# Icon height#}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-carousel-nav-icon-height">{{ entry_height }}</label>
+                  <div class="col-xs-9">
+                    <input type="number" name="carousel_nav_icon_height" value="{{ carousel_nav_icon_height }}" placeholder="{{ entry_height }}" id="input-carousel-nav-icon-height" class="form-control" />
+                  </div>
+                </div>
+              </div>
+              <div class="tab-font tab-pane">
+                <!--icon size-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-carousel-nav-icon-size">{{ entry_size }}</label>
+                  <div class="col-xs-9">
+                    <input type="number" name="carousel_nav_icon_size" value="{{ carousel_nav_icon_size }}" placeholder="{{ entry_size }}" class="form-control" id="input-carousel-nav-icon-size" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<script>
+{# testimonial source #}
+$('input[name="testimonial_source"]').on('change', function(){
+    var testimonial_source = $(this).val();
+
+    $('#testimonial-source-content').children('.tab-pane.active').removeClass('active');
+
+    $('#tab-source-' + testimonial_source).addClass('active');
+});
+
+$('#tab-source-{{ testimonial_source }}').addClass('active');   
+
+// Manufaturer
+$('input[name=\'featured_testimonial_input\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=extension/maza/testimonial/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['testimonial_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'featured_testimonial_input\']').val('');
+
+		$('#featured-testimonial-' + item['value']).remove();
+
+		$('#featured-testimonial').append('<div id="featured-testimonial' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="featured_testimonial[]" value="' + item['value'] + '" /></div>');
+	}
+});
+
+$('#featured-testimonial').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+
+
+$('input[type="range"]').on('input change', function(){
+    $(this).siblings('.input-group-addon').text($(this).val());
+});
+</script>
+<form action="{{ import }}" enctype="multipart/form-data" method="post" id="form-import" style="display: none;"><input type="file" accept=".json" name="file" /></form>
+<script>
+$('#button-import').on('click', function(){
+    $('#form-import input[name=\'file\']').val('').trigger('click');
+    
+    if (typeof timer != 'undefined') {
+    	clearInterval(timer);
+    }
+
+    timer = setInterval(function() {
+        if ($('#form-import input[name=\'file\']').val() != '') {
+            clearInterval(timer);
+            $('#form-import').submit();
+        }
+    }, 500);
+    
+});
+{#Confirm before delete module#}
+$('#button-delete').on('click', function(){
+    if(confirm("{{ text_confirm }}")){
+        return true;
+    } else {
+        return false;
+    }
+});
+</script>
+{{ mz_footer }}

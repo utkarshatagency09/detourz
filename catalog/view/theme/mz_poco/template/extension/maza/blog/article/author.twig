@@ -1,0 +1,15 @@
+<div class="author d-sm-flex{{ not description_status?' align-items-center' }}">
+  <a href="{% verbatim %}{{ author.link }}{% endverbatim %}" class="me-3 mb-3 flex-shrink-0 align-items-start"><img class="author-image" src="{% verbatim %}{{ author.image }}{% endverbatim %}" alt="{% verbatim %}{{ author.name }}{% endverbatim %}"></a>
+  {% if description_status %}
+  <div class="author-body mb-3">
+    <h5 class="author-name mt-0"><a class="text-decoration-none" href="{% verbatim %}{{ author.link }}{% endverbatim %}">{% verbatim %}{{ author.name }}{% endverbatim %}</a></h5>
+    {% if collapsed %}
+    <div class="author-description text-collapsed" data-line="{{ collapsed }}" data-showtext="<i class='fas fa-angle-down'></i> {{ text_showmore }}" data-hidetext="<i class='fas fa-angle-up'></i> {{ text_showless }}">{% verbatim %}{{ author.description }}{% endverbatim %}</div>
+    {% else %}
+    <div class="author-description">{% verbatim %}{{ author.description }}{% endverbatim %}</div>
+    {% endif %}
+  </div>
+  {% else %}
+  <h5 class="author-name mt-0 mb-3"><a href="{% verbatim %}{{ author.link }}{% endverbatim %}">{% verbatim %}{{ author.name }}{% endverbatim %}</a></h5>
+  {% endif %}
+</div>

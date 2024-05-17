@@ -1,0 +1,102 @@
+a{
+    display: inline-flex;
+    align-items: center;
+    
+    &.nav-link, &.dropdown-item{
+        display: flex;
+        position: relative;
+        align-items: center;
+        // --bs-dropdown-link-color: inherit;
+        // --bs-navbar-color: inherit;
+        
+        .title, .description{
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+    
+    &.icon-right, &.icon-bottom{
+        & > .icon {
+            order: 2;
+        }
+    }
+    &.icon-top,&.icon-bottom{
+        flex-direction: column;
+    }
+    
+    &.both, &.nav-link{
+        & >.icon{
+            box-sizing: content-box;
+        }
+    }
+
+    &.both{
+        &.icon-left >.icon{
+            @include rtl-prop(margin-right, map-get($spacers, 2));
+        }
+        &.icon-right >.icon{
+            @include rtl-prop(margin-left, map-get($spacers, 2));
+        }
+        &.icon-top >.icon{
+            margin-bottom: map-get($spacers, 2);
+        }
+        &.icon-bottom >.icon{
+            margin-top: map-get($spacers, 2);
+        }
+    }
+}
+
+.mega-menu{
+    .nav.flex-column{
+        .nav-link{
+            padding: $nav-link-padding-y * 0.5 $nav-link-padding-x;
+        }
+    }
+}
+
+// Fixed oveflow problem in sticky 
+.mz-sticky .dropdown-menu.mega-menu-content{
+    max-height: 90vh;
+    overflow-y: auto !important;
+}
+
+
+// Nav nowrap and scroll horizontally
+.nav-scroll{
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
+    
+    &::-webkit-scrollbar { /* Safari and Chrome */
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+    
+    .nav-item{
+        flex: 0 0 auto;
+    }
+    
+    .nav-link{
+        white-space: nowrap;
+    }
+}
+
+// Entry
+.design-link a{
+    vertical-align: middle;
+}
+
+// Navbar
+.navbar-default {
+    --bs-navbar-hover-color: inherit;
+    --bs-navbar-color: inherit;
+    --bs-navbar-active-color: inherit;
+}
+.nav {
+    --bs-nav-link-color: inherit;
+}

@@ -1,0 +1,44 @@
+{% if heading_title is not empty %}
+<h4 class="design-title">{{ heading_title }}</h4>
+{% endif %}
+<ul class="list-group">
+  {% for item in items %}
+    {% if item.url %}
+    <a href="{{ item.url.href }}" {{ item.url.attr }} class="list-group-item d-flex align-items-center list-group-item-action">
+      {% if item.icon_font %}
+      <i title="{{ item.name }}" class="icon {{ item.icon_font }}" {{ icon_width?'style="font-size: ' ~ icon_width ~ 'px"':'' }}></i>
+      {% elseif item.icon_svg %}
+      <div title="{{ item.name }}" class="icon svg-icon" style="{{ icon_width?'width:' ~ icon_width ~ 'px;' }}{{ icon_height?'height:' ~ icon_height ~ 'px;' }}">{{ item.icon_svg }}</div>
+      {% elseif item.icon_image %}
+      <img class="icon" width="{{ item.image_width }}" height="{{ item.image_height }}" alt="{{ item.name }}" src="{{ item.icon_image }}" />
+      {% endif %}
+      <div class="info">
+        {% if item.name %}
+        <span class="title">{{ item.name }}</span>
+        {% endif %}
+        {% if item.description %}
+        <span class="description d-block text-muted">{{ item.description }}</span>
+        {% endif %}
+      </div>
+    </a>
+    {% else %}
+    <li class="list-group-item d-flex align-items-center">
+      {% if item.icon_font %}
+      <i title="{{ item.name }}" class="icon {{ item.icon_font }}" {{ icon_width?'style="font-size: ' ~ icon_width ~ 'px"':'' }}></i>
+      {% elseif item.icon_svg %}
+      <div title="{{ item.name }}" class="icon svg-icon" style="{{ icon_width?'width:' ~ icon_width ~ 'px;' }}{{ icon_height?'height:' ~ icon_height ~ 'px;' }}">{{ item.icon_svg }}</div>
+      {% elseif item.icon_image %}
+      <img class="icon" width="{{ item.image_width }}" height="{{ item.image_height }}" alt="{{ item.name }}" src="{{ item.icon_image }}" />
+      {% endif %}
+      <div class="info">
+        {% if item.name %}
+        <span class="title">{{ item.name }}</span>
+        {% endif %}
+        {% if item.description %}
+        <span class="description d-block text-muted">{{ item.description }}</span>
+        {% endif %}
+      </div>
+    </li>
+    {% endif %}
+  {% endfor %}
+</ul>

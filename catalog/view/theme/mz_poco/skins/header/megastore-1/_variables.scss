@@ -1,0 +1,17 @@
+// Top Header
+$top-header-font-size: $font-size-sm;
+$top-header-bg-color: $secondary;
+$top-header-text-color: color-contrast($top-header-bg-color, darken($top-header-bg-color, 50), lighten($secondary, 50));
+
+// Cart
+$widget-cart-icon-size: 2.1875em;
+$widget-cart-total-color: $info;
+$widget-cart-total-size: 0.75em;
+$widget-cart-total-padding: 0.833333333333333em 0.533333333333333em;
+
+// Search
+$widget-search-font-size: $font-size-sm;
+$widget-search-inner-padding: mz-spacer(8) 0;
+$widget-search-button-padding-x: mz-spacer(28);
+$widget-search-dropdown-caret: '\f107';
+$widget-search-dropdown-caret-left: mz-spacer(14);

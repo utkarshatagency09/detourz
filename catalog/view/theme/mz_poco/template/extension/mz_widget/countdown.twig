@@ -1,0 +1,13 @@
+<div class="{{ direction }}" id="widget-countdown-{{ mz_suffix }}" ></div>
+<script>
+$(function(){
+    $('#widget-countdown-{{ mz_suffix }}').countdown({
+        until: new Date('{{ until }}'),
+        format: '{{ format }}',
+        compact: {{ compact?'true':'false' }},
+        {% if compact %}
+        layout: '<div class="compact">{% if title %}<span class="countdown-title">{{ title }}</span> {% endif %}<span class="day">{dn}{dl}</span> <span class="time">{hnn}{sep}{mnn}{sep}{snn}</span></div>'
+        {% endif %}
+    });
+});
+</script>

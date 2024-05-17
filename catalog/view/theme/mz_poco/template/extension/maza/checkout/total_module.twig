@@ -1,0 +1,10 @@
+{% if modules %}
+<div id="accordion" class="accordion mt-3">
+{% for module in modules %}{{ module }}{% endfor %}
+<script type="text/javascript">
+$(function(){
+    $('#accordion .collapse:first').collapse('show');
+});
+</script>
+</div>
+{% endif %}

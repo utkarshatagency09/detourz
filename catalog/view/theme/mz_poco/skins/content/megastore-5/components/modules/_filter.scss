@@ -1,0 +1,259 @@
+.mz-filter{
+    .module-title{
+        font-size: $h5-font-size;
+    }
+    
+    .card-header{
+        display: flex;
+        align-items: center;
+        border: none;
+        transition: all .3s;
+        background: transparent;
+        
+        .mz-filter-reset {
+            font-size: 1.2em !important;
+        }
+        
+        &:not(.collapsed){
+            padding: $module-filter-card-header;
+        }
+    }
+    
+    label{
+        cursor: pointer;
+    }
+}
+.mz-filter-group:not(:last-child){
+    border-bottom: $border-width solid $card-border-color;
+}
+.mz-filter-group-header{
+    display: flex;
+    padding: $module-filter-group-header-padding;
+    cursor: pointer;
+    font-size: $font-size-sm;
+    font-family: $headings-font-family;
+    text-transform: uppercase;
+    font-weight: $headings-font-weight;
+    align-items: center;
+    
+    &.collapsed{
+        border: none;
+    }
+}
+.mz-filter-reset{
+    display: inline-block;
+    line-height: 0;
+    cursor: pointer;
+    font-size: .85em;
+    color: $danger !important;
+    /*margin-top: ($line-height-base/2 - 0.5) * 1em;*/
+    @include rtl-prop(margin-left, map-get($spacers, 2));
+}
+.mz-filter-group-header.collapsed .fa-angle-up:before{
+    content: "\f107";
+}
+.mz-filter-group-content{
+    display: block;
+    padding: $module-filter-group-content-padding;
+    padding-top: 0;
+    transition: all 0.3s;
+    
+    .ui-slider{
+        margin-bottom: calc(#{$module-filter-value-margin-bottom} + .6em); // .6em is a half of ui-slider-handle height
+    }
+    
+    &.scroll{
+        max-height: mz-spacer(200);
+        overflow-y: auto;
+    }
+    
+    &.more:not(.show){
+        max-height: 200px;
+        overflow: hidden;
+        position: relative;
+
+        .mz-see-more{
+            position: absolute;
+            padding: $module-filter-group-content-padding;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgb(255,255,255);
+            background: linear-gradient(0deg, rgba(255,255,255,1) 60%, rgba(255,255,255,0) 100%);
+        }
+    }
+  
+    input[type="number"]{
+        -moz-appearance: textfield;
+        height: auto;
+        padding: $input-padding-y-sm * 0.5 $input-padding-x-sm;
+        
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+    }
+    
+    .mz-product-total{
+        @include rtl-prop(margin-left, auto);
+        font-size: $module-filter-product-total-font-size;
+        font-weight: normal;
+        @include border-radius(1em);
+        background-color: $gray-200;
+        color: $page-gray;
+        --bs-badge-padding-x: .4em;
+        --bs-badge-padding-y: .25em;
+    }
+    
+    .mz-see-more{
+        display: block;
+        text-transform: uppercase;
+        // outline: none !important;
+        text-decoration: none !important;
+        font-size: $font-size-sm;
+        font-weight: 600;
+        // color: $secondary;
+        margin-top: map-get($spacers, 1);
+    }
+}
+
+.mz-filter-value{
+    display: flex;
+    align-items: center;
+    
+    &:not(:last-child){
+        margin-bottom: $module-filter-value-margin-bottom;
+    }
+
+    &.both, &.image, &.button{
+        input{
+            display: none;
+        }
+        .form-check{
+            padding: 0;
+        }
+    }
+    
+    &.image, &.button{
+        display: inline-block;
+        @include rtl-prop(margin-right, $module-filter-value-margin-bottom);
+    }
+    
+    &:not(.button.both){
+        img{
+            border: $border-width solid transparent;
+            padding: 1px;
+            @include border-radius(5px);
+            cursor: pointer;
+        }
+        
+        input{
+            &:checked + label img{
+                border-color: $component-active-bg;
+            }
+            &:disabled + label img{
+                opacity: 0.5;
+            }
+        }
+    }
+
+    &.button:not(.image){
+        label{
+            border: $border-width solid $border-color;
+            @include border-radius();
+            padding: $btn-padding-y $btn-padding-x;
+        }
+        
+        input{
+            &:checked + label{
+                background-color: $component-active-bg;
+                border-color: $component-active-bg;
+                color: $component-active-color;
+            }
+            &:disabled + label{
+                background-color: $input-disabled-bg;
+                color: color-contrast($input-disabled-bg);
+                border-color: $input-disabled-bg;
+                cursor: not-allowed;
+            }
+        }
+    }
+}
+
+.mz-filter-group-search{
+    position: relative;
+    margin: 0 $module-filter-group-content-padding $module-filter-group-content-padding * 0.5;
+    
+    .fas{
+        position: absolute;
+        color: $gray-500;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    
+    input{
+        width: 100%;
+        border: none;
+        border-bottom: 1px solid $border-color;
+        padding: rtl-value(0 0 0 1.5em, 0 1.5em 0 0);
+        margin: 0;
+        height: auto;
+        border-radius: 0;
+        
+        &:focus{
+            border: none;
+            outline: none;
+            border-bottom: 1px solid #bdbdbd;
+        }
+    }
+}
+.mz-filter-loading{
+    cursor: wait !important;
+    
+    .content-products{
+        position: relative;
+        max-height: 100vh;
+        overflow: hidden;
+    }
+}
+.mz-filter-loader{
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: $white;
+    z-index: 99;
+    
+    .loader-spinner{
+        width: mz-spacer(70);
+        height: mz-spacer(70);
+        z-index: 100;
+    }
+}
+
+// Price range
+.ui-widget{
+    &.ui-widget-content{
+        border: none !important;
+        background-color: $gray-300;
+        height: .5em;
+    }
+    .ui-widget-header{
+        background-color: $secondary;
+    }
+}
+.ui-slider{
+    display: flex;
+    align-items: center;
+    
+    .ui-slider-handle{
+        border: none !important;
+        @include border-radius(1rem, 0);
+        background-color: $primary !important;
+        top: auto !important;
+        cursor: pointer !important;
+    }
+}
+
+.module-mz_filter{
+    margin-bottom: map-get($spacers, 3);
+}

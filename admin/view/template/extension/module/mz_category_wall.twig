@@ -1,0 +1,582 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- Form -->
+  <form action="{{ action }}" class="form-horizontal" enctype="multipart/form-data" id="form-mz-category-wall" method="post">
+    <div class="tab-content">
+        
+      <!--General-->
+      <div id="tab-general" class="tab-pane fade in active">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <!--module name-->
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-name">{{ entry_module_name }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-name" placeholder="{{ entry_module_name }}" type="text" name="name" value="{{ name }}" >
+                {% if (err_name is defined) %} 
+                <div class="text-danger">{{ err_name }}</div>
+                {% endif %} 
+              </div>
+            </div>
+            
+            <!--status-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-status">{{ entry_status }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (status) %} 
+                  <input type="radio" name="status" value="1" id="input-status-enabled" checked>
+                  <label for="input-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="status" value="0" id="input-status-disabled">
+                  <label for="input-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="status" value="1" id="input-status-enabled" >
+                  <label for="input-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="status" value="0" id="input-status-disabled" checked>
+                  <label for="input-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+            
+            <!--module title-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-title">{{ entry_title }}</label>
+              <div class="col-xs-9">
+              {% for language in languages %} 
+                <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                  <input class="form-control" type="text" name="title[{{ language['language_id'] }}]" value="{{ title[language['language_id']] is defined?title[language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+                </div>
+              {% endfor %} 
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div> <!-- // General -->
+      
+      {#Data#}
+      <div id="tab-data" class="tab-pane fade">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            {# category source #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-category-source">{{ entry_category_source }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                {% for source in list_category_source %}
+                  {% if (source.id == category_source) %} 
+                  <input type="radio" name="category_source" value="{{ source.id }}" id="input-category-source-{{ source.id }}" checked>
+                  <label for="input-category-source-{{ source.id }}" >{{ source.name }}</label>
+                  {% else %} 
+                  <input type="radio" name="category_source" value="{{ source.id }}" id="input-category-source-{{ source.id }}" >
+                  <label for="input-category-source-{{ source.id }}">{{ source.name }}</label>
+                  {% endif %} 
+                {% endfor %}
+                </div>
+              </div>
+            </div>
+                
+            <div id="category-source-content" class="tab-content">
+              {#featured category#}
+              <div id="tab-source-featured" class="tab-pane">
+                <!-- category-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-featured-category"><span data-toggle="tooltip" title="{{ help_category }}">{{ entry_category }}</span></label>
+                  <div class="col-xs-9">
+                    <input type="text" name="featured_category_input" value="" placeholder="{{ entry_category }}"  id="input-featured-category" class="form-control" />
+                    <div id="featured-category" class="well well-sm" style="height: 150px; overflow: auto;">
+                      {% for category in featured_categories %} 
+                      <div id="featured-category-{{ category.category_id }}"><i class="fa fa-minus-circle"></i> {{ category.name }} 
+                        <input type="hidden" name="featured_category[]" value="{{ category.category_id }}" />
+                      </div>
+                      {% endfor %} 
+                    </div>
+                  </div>
+                </div>
+                    
+                <!--sub category-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-featured-sub-category">{{ entry_sub_category }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (featured_sub_category) %} 
+                      <input type="radio" name="featured_sub_category" value="1" id="input-featured-sub-category-enabled" checked>
+                      <label for="input-featured-sub-category-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="featured_sub_category" value="0" id="input-featured-sub-category-disabled">
+                      <label for="input-featured-sub-category-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="featured_sub_category" value="1" id="input-featured-sub-category-enabled" >
+                      <label for="input-featured-sub-category-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="featured_sub_category" value="0" id="input-featured-sub-category-disabled" checked>
+                      <label for="input-featured-sub-category-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+                  
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <!--Product count-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-category-product-count">{{ entry_product_count }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (category_product_count) %} 
+                  <input type="radio" name="category_product_count" value="1" id="input-category-product-count-enabled" checked>
+                  <label for="input-category-product-count-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="category_product_count" value="0" id="input-category-product-count-disabled">
+                  <label for="input-category-product-count-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="category_product_count" value="1" id="input-category-product-count-enabled" >
+                  <label for="input-category-product-count-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="category_product_count" value="0" id="input-category-product-count-disabled" checked>
+                  <label for="input-category-product-count-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                    
+            {# category sort #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-category-sort">{{ entry_sort }}</label>
+              <div class="col-xs-9">
+                <select name="category_sort" id="input-category-sort" class="form-control">
+                {% for sort in list_sort %}
+                  {% if (sort.id == category_sort) %} 
+                  <option value="{{ sort.id }}" selected="selected">{{ sort.name }}</option>
+                  {% else %} 
+                  <option value="{{ sort.id }}">{{ sort.name }}</option>
+                  {% endif %} 
+                {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            {# category order #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-category-order">{{ entry_order }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                {% for order in list_order %}
+                  {% if (order.id == category_order) %} 
+                  <input type="radio" name="category_order" value="{{ order.id }}" id="input-category-order-{{ order.id }}" checked>
+                  <label for="input-category-order-{{ order.id }}" >{{ order.name }}</label>
+                  {% else %} 
+                  <input type="radio" name="category_order" value="{{ order.id }}" id="input-category-order-{{ order.id }}" >
+                  <label for="input-category-order-{{ order.id }}">{{ order.name }}</label>
+                  {% endif %} 
+                {% endfor %}
+                </div>
+              </div>
+            </div>
+
+            {# category limit#}
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-category-limit">{{ entry_limit }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-category-limit" placeholder="{{ entry_limit }}" type="number" min="1" name="category_limit" value="{{ category_limit }}" >
+                {% if (err_category_limit is defined) %} 
+                <div class="text-danger">{{ err_category_limit }}</div>
+                {% endif %} 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {#Layout#}
+      <div id="tab-layout" class="tab-pane fade">
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_general }}</div>
+          <div class="panel-body">
+            {# Show content #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-show-content">{{ entry_show_content }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                {% for content in list_show_content %}
+                  {% if (content.id == show_content) %} 
+                  <input type="radio" name="show_content" value="{{ content.id }}" id="input-show-content-{{ content.id }}" checked>
+                  <label for="input-show-content-{{ content.id }}" >{{ content.name }}</label>
+                  {% else %} 
+                  <input type="radio" name="show_content" value="{{ content.id }}" id="input-show-content-{{ content.id }}" >
+                  <label for="input-show-content-{{ content.id }}">{{ content.name }}</label>
+                  {% endif %} 
+                {% endfor %}
+                </div>
+              </div>
+            </div>
+                
+            {# Category image width#}
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-image-width">{{ entry_image_width }}</label>
+              <div class="col-xs-9">
+                <input type="number" min="1" name="image_width" value="{{ image_width }}" placeholder="{{ entry_image_width }}" id="input-image-width" class="form-control" />
+                {% if (err_image_width is defined) %} 
+                <div class="text-danger">{{ err_image_width }}</div>
+                {% endif %} 
+              </div>
+            </div>
+            
+            {# Category image height #}
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-image-height">{{ entry_image_height }}</label>
+              <div class="col-xs-9">
+                <input type="number" min="1" name="image_height" value="{{ image_height }}" placeholder="{{ entry_image_height }}" id="input-image-height" class="form-control" />
+                {% if (err_image_height is defined) %} 
+                <div class="text-danger">{{ err_image_height }}</div>
+                {% endif %} 
+              </div>
+            </div>
+              
+            {# Image position #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-image-position">{{ entry_image_position }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                {% for position in list_image_position %}
+                  {% if (position.id == image_position) %} 
+                  <input type="radio" name="image_position" value="{{ position.id }}" id="input-image-position-{{ position.id }}" checked>
+                  <label for="input-image-position-{{ position.id }}" >{{ position.name }}</label>
+                  {% else %} 
+                  <input type="radio" name="image_position" value="{{ position.id }}" id="input-image-position-{{ position.id }}" >
+                  <label for="input-image-position-{{ position.id }}">{{ position.name }}</label>
+                  {% endif %} 
+                {% endfor %}
+                </div>
+              </div>
+            </div>
+                
+            {# lazy loading #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-lazy-loading">{{ entry_lazy_loading }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (lazy_loading) %} 
+                  <input type="radio" name="lazy_loading" value="1" id="input-lazy-loading-enabled" checked>
+                  <label for="input-lazy-loading-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="lazy_loading" value="0" id="input-lazy-loading-disabled">
+                  <label for="input-lazy-loading-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="lazy_loading" value="1" id="input-lazy-loading-enabled" >
+                  <label for="input-lazy-loading-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="lazy_loading" value="0" id="input-lazy-loading-disabled" checked>
+                  <label for="input-lazy-loading-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+              
+          </div>
+        </div>
+                
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_column }}</div>
+          <div class="panel-body">
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-column-xl"><span data-toggle="tooltip" title="{{ help_column_xl }}">{{ entry_column_xl }}</span></label>
+              <div class="col-xs-5">
+                <div class="input-group">
+                  <input type="range" name="column_xl" min="1" max="6" value="{{ column_xl }}" id="input-column-xl" class="form-control" />
+                  <span class="input-group-addon">{{ column_xl }}</span>
+                </div>
+              </div>
+            </div>
+                
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-column-lg"><span data-toggle="tooltip" title="{{ help_column_lg }}">{{ entry_column_lg }}</span></label>
+              <div class="col-xs-5">
+                <div class="input-group">
+                  <input type="range" name="column_lg" min="1" max="6" value="{{ column_lg }}" id="input-column-lg" class="form-control" />
+                  <span class="input-group-addon">{{ column_lg }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-column-md"><span data-toggle="tooltip" title="{{ help_column_md }}">{{ entry_column_md }}</span></label>
+              <div class="col-xs-5">
+                <div class="input-group">
+                  <input type="range" name="column_md" min="1" max="6" value="{{ column_md }}" id="input-column-md" class="form-control" />
+                  <span class="input-group-addon">{{ column_md }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-column-sm"><span data-toggle="tooltip" title="{{ help_column_sm }}">{{ entry_column_sm }}</span></label>
+              <div class="col-xs-5">
+                <div class="input-group">
+                  <input type="range" name="column_sm" min="1" max="6" value="{{ column_sm }}" id="input-column-sm" class="form-control" />
+                  <span class="input-group-addon">{{ column_sm }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-column-xs"><span data-toggle="tooltip" title="{{ help_column_xs }}">{{ entry_column_xs }}</span></label>
+              <div class="col-xs-5">
+                <div class="input-group">
+                  <input type="range" name="column_xs" min="1" max="6" value="{{ column_xs }}" id="input-column-xs" class="form-control" />
+                  <span class="input-group-addon">{{ column_xs }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+                
+      {#carousel#}
+      <div id="tab-carousel" class="tab-pane fade">
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_general }}</div>
+          <div class="panel-body">
+            <!--carousel status-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-carousel-status">{{ entry_status }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (carousel_status) %} 
+                  <input type="radio" name="carousel_status" value="1" id="input-carousel-status-enabled" checked>
+                  <label for="input-carousel-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="carousel_status" value="0" id="input-carousel-status-disabled">
+                  <label for="input-carousel-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="carousel_status" value="1" id="input-carousel-status-enabled" >
+                  <label for="input-carousel-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="carousel_status" value="0" id="input-carousel-status-disabled" checked>
+                  <label for="input-carousel-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            <!--carousel pagination status-->
+            {#<div class="form-group">
+              <label class="col-xs-3 control-label" for="input-carousel-pagination">{{ entry_pagination }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (carousel_pagination) %} 
+                  <input type="radio" name="carousel_pagination" value="1" id="input-carousel-pagination-enabled" checked>
+                  <label for="input-carousel-pagination-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="carousel_pagination" value="0" id="input-carousel-pagination-disabled">
+                  <label for="input-carousel-pagination-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="carousel_pagination" value="1" id="input-carousel-pagination-enabled" >
+                  <label for="input-carousel-pagination-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="carousel_pagination" value="0" id="input-carousel-pagination-disabled" checked>
+                  <label for="input-carousel-pagination-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>#}
+            
+            {#carousel autoplay#}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-carousel-autoplay"><span data-toggle="tooltip" title="{{ help_carousel_autoplay }}">{{ entry_autoplay }}</span></label>
+              <div class="col-xs-9">
+                <input type="number" min="0" name="carousel_autoplay" value="{{ carousel_autoplay }}" placeholder="{{ entry_autoplay }}" id="input-carousel-autoplay" class="form-control" />
+              </div>
+            </div>
+              
+            <!--carousel loop status-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-carousel-loop">{{ entry_loop }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (carousel_loop) %} 
+                  <input type="radio" name="carousel_loop" value="1" id="input-carousel-loop-enabled" checked>
+                  <label for="input-carousel-loop-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="carousel_loop" value="0" id="input-carousel-loop-disabled">
+                  <label for="input-carousel-loop-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="carousel_loop" value="1" id="input-carousel-loop-enabled" >
+                  <label for="input-carousel-loop-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="carousel_loop" value="0" id="input-carousel-loop-disabled" checked>
+                  <label for="input-carousel-loop-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            {#carousel row#}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-carousel-row">{{ entry_row }}</label>
+              <div class="col-xs-9">
+                <input type="number" min="1" name="carousel_row" value="{{ carousel_row }}" placeholder="{{ entry_row }}" id="input-carousel-row" class="form-control" />
+              </div>
+            </div>
+          </div>
+        </div>
+              
+        {#Navigation icon#}
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_navigation_icon }}</div>
+          <div class="panel-body input-image-widget">
+            {#Icon#}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" >{{ entry_icon }}</label>
+              <div class="col-xs-9">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#tab-carousel-nav-icon-image" data-meta="image" data-toggle="tab">{{ tab_image }}</a></li>
+                  <li><a href="#tab-carousel-nav-icon-svg" data-meta="image" data-toggle="tab">{{ tab_svg }}</a></li>
+                  <li><a href="#tab-carousel-nav-icon-font" data-meta="font" data-toggle="tab">{{ tab_font }}</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="tab-carousel-nav-icon-image">
+                    <div class="el-group">
+                    {% for language in languages %}
+                      <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                      <div class="el-item">
+                        <a href="" id="thumb-carousel-nav-icon-image{{ language.language_id }}" data-toggle="image" class="img-thumbnail"><img src="{{ (thumb_carousel_nav_icon_image[language.language_id] is defined)?thumb_carousel_nav_icon_image[language.language_id]:placeholder_image }}" alt="" title="" data-placeholder="{{ placeholder_image }}" /></a><input type="hidden" name="carousel_nav_icon_image[{{ language.language_id }}]" value="{{ (carousel_nav_icon_image[language.language_id] is defined)?carousel_nav_icon_image[language.language_id]:'' }}" id="input-carousel-nav-icon-image{{ language.language_id }}" />
+                      </div>
+                    {% endfor %}
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tab-carousel-nav-icon-svg">
+                    <div class="el-group">
+                    {% for language in languages %}
+                      <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                      <div class="el-item">
+                        <a href="" id="thumb-carousel-nav-icon-svg{{ language.language_id }}" data-toggle="svg" class="img-thumbnail"><img width="100" height="100" src="{{ (thumb_carousel_nav_icon_svg[language.language_id] is defined)?thumb_carousel_nav_icon_svg[language.language_id]:placeholder_svg }}" alt="" title="" data-placeholder="{{ placeholder_svg }}" /></a><input type="hidden" name="carousel_nav_icon_svg[{{ language.language_id }}]" value="{{ (carousel_nav_icon_svg[language.language_id] is defined)?carousel_nav_icon_svg[language.language_id]:'' }}" id="input-carousel-nav-icon-svg{{ language.language_id }}" />
+                      </div>
+                    {% endfor %}
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tab-carousel-nav-icon-font">
+                    <div class="el-group">
+                    {% for language in languages %}
+                      <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                      <div class="el-item">
+                        <a href="" id="thumb-carousel-nav-icon-font{{ language.language_id }}" data-toggle="font" class="img-thumbnail icon-thumb"><i class="{{ (carousel_nav_icon_font[language.language_id] is not empty)?carousel_nav_icon_font[language.language_id]:placeholder_font }}" data-placeholder="{{ placeholder_font }}"></i></a><input type="hidden" name="carousel_nav_icon_font[{{ language.language_id }}]" value="{{ (carousel_nav_icon_font[language.language_id] is defined)?carousel_nav_icon_font[language.language_id]:'' }}" id="input-carousel-nav-icon-font{{ language.language_id }}" />
+                      </div>
+                    {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+                    
+            <div class="image-meta-tab-content tab-content">
+              <div class="tab-image active tab-pane">
+                {# Icon width#}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-carousel-nav-icon-width">{{ entry_width }}</label>
+                  <div class="col-xs-9">
+                    <input type="number" name="carousel_nav_icon_width" value="{{ carousel_nav_icon_width }}" placeholder="{{ entry_width }}" id="input-carousel-nav-icon-width" class="form-control" />
+                  </div>
+                </div>
+
+                {# Icon height#}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-carousel-nav-icon-height">{{ entry_height }}</label>
+                  <div class="col-xs-9">
+                    <input type="number" name="carousel_nav_icon_height" value="{{ carousel_nav_icon_height }}" placeholder="{{ entry_height }}" id="input-carousel-nav-icon-height" class="form-control" />
+                  </div>
+                </div>
+              </div>
+              <div class="tab-font tab-pane">
+                <!--icon size-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-carousel-nav-icon-size">{{ entry_size }}</label>
+                  <div class="col-xs-9">
+                    <input type="number" name="carousel_nav_icon_size" value="{{ carousel_nav_icon_size }}" placeholder="{{ entry_size }}" class="form-control" id="input-carousel-nav-icon-size" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<script>
+{# category source #}
+$('input[name="category_source"]').on('change', function(){
+    var category_source = $(this).val();
+
+    $('#category-source-content').children('.tab-pane.active').removeClass('active');
+
+    $('#tab-source-' + category_source).addClass('active');
+});
+
+$('#tab-source-{{ category_source }}').addClass('active');   
+
+
+// Category
+$('input[name=\'featured_category_input\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/category/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['category_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'featured_category_input\']').val('');
+
+		$('#featured-category-' + item['value']).remove();
+
+		$('#featured-category').append('<div id="featured-category-' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="featured_category[]" value="' + item['value'] + '" /></div>');
+	}
+});
+
+$('#featured-category').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+
+$('input[type="range"]').on('input change', function(){
+    $(this).siblings('.input-group-addon').text($(this).val());
+});
+</script>
+<form action="{{ import }}" enctype="multipart/form-data" method="post" id="form-import" style="display: none;"><input type="file" accept=".json" name="file" /></form>
+<script>
+$('#button-import').on('click', function(){
+    $('#form-import input[name=\'file\']').val('').trigger('click');
+    
+    if (typeof timer != 'undefined') {
+    	clearInterval(timer);
+    }
+
+    timer = setInterval(function() {
+        if ($('#form-import input[name=\'file\']').val() != '') {
+            clearInterval(timer);
+            $('#form-import').submit();
+        }
+    }, 500);
+    
+});
+{#Confirm before delete module#}
+$('#button-delete').on('click', function(){
+    if(confirm("{{ text_confirm }}")){
+        return true;
+    } else {
+        return false;
+    }
+});
+</script>
+{{ mz_footer }}

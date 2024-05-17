@@ -1,0 +1,27 @@
+{% verbatim %}
+<div class="d-flex flex-wrap align-items-center">
+{% if price %}
+<div class="price">
+  {% if not special %}
+  <h3 data-update="price" class="price-new mb-0">{{ price }}</h3>
+  {% else %}
+  <h3 data-update="special" class="price-new special mb-0">{{ special }}</h3>
+  <span data-update="price" class="price-old" style="text-decoration: line-through;">{{ price }}</span>
+  <span data-update="special-discount" class="price-sale">{{ mz_sale }}</span>
+  {% endif %}
+  {% if tax or points %}
+  <span class='price-info' data-bs-toggle="popover" data-bs-trigger='hover focus' data-bs-html='true' data-bs-content="
+    <ul class='list-unstyled m-0'>
+    {% if tax %}
+    <li>{{ text_tax|escape }} <span data-update='tax'>{{ tax|escape }}</span></li>
+    {% endif %}
+    {% if points %}
+    <li>{{ text_points|escape }} <span data-update='points'>{{ points|escape }}</span></li>
+    {% endif %}
+    </ul>
+    "><i class="far fa-question-circle"></i></span>
+  {% endif %}
+</div>
+{% endif %}
+</div>
+{% endverbatim %}

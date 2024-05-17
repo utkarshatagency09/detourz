@@ -1,0 +1,11 @@
+.design-image{
+    a{
+        display: inline-block;
+        // &:focus{
+        //     outline: none;
+        // }
+    }
+    .figure, .figure-img:only-child, a:only-child .figure-img{
+        margin: 0;
+    }
+}

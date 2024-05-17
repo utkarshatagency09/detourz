@@ -1,0 +1,57 @@
+<div class="clearfix">
+  {% if heading_title %}
+  <h3 class="float-start design-title">{{ heading_title }}</h3>
+  {% endif %}
+  <div class="{{ heading_title?'float-end' }}">
+    <ul class="nav nav-tabs active-first" role="tablist">
+      {% for key, tab in tabs %}
+        {% if tab.condition %}{{ "{% if #{tab.condition} %}" }}{% endif %}
+        <li class="nav-item">
+          <a class="nav-link {{ show }} icon-{{ icon_position }}" data-bs-toggle="tab" href="#mz-design-tab-{{ mz_suffix }}-{{ key }}" role="tab">
+          {% if tab.icon_font %}
+          <i class="icon {{ tab.icon_font }}" {{ icon_width?'style="font-size: ' ~ icon_width ~ 'px"':'' }}></i>
+          {% elseif tab.icon_svg %}
+          <div title="{{ tab.name }}" class="icon svg-icon" style="{{ icon_width?'width:' ~ icon_width ~ 'px;' }}{{ icon_height?'height:' ~ icon_height ~ 'px;' }}">{{ tab.icon_svg }}</div>
+          {% elseif tab.icon_image %}
+          <img class="icon" width="{{ tab.image_width }}" height="{{ tab.image_height }}" src="{{ tab.icon_image }}" alt="{{ tab.name }}" />
+          {% endif %}
+          {{ show != 'icon'?tab.name }}</a>
+        </li>
+        {% if tab.condition %}{{ "{% endif %}" }}{% endif %}
+      {% endfor %}
+      {% if hook %}
+      {# tab hook #}
+      {% verbatim %}{% for key, tab in mz_hook.fetch('tab') %}{% endverbatim %}
+      <li class="nav-item">
+        <a class="nav-link {{ show }} icon-{{ icon_position }}" data-bs-toggle="tab" href="#mz-design-tab-hook-{{ mz_suffix }}-{% verbatim %}{{ key }}{% endverbatim %}" role="tab">
+        {% if show != 'text' %}
+          {% verbatim %}{% if tab.icon_font %}
+          <i class="icon {{ tab.icon_font }}" {{ tab.icon_size?'style="font-size: ' ~ tab.icon_size ~ 'px"':'' }}></i>
+          {% elseif tab.icon_svg %}
+          <div title="{{ tab.title }}" class="icon svg-icon" style="{{ tab.image_width?'width:' ~ tab.image_width ~ 'px;' }}{{ tab.image_height?'height:' ~ tab.image_height ~ 'px;' }}">{{ tab.icon_svg }}</div>
+          {% elseif tab.icon_image %}
+          <img class="icon" width="{{ tab.image_width }}" height="{{ tab.image_height }}" src="{{ tab.icon_image }}" alt="{{ tab.title }}" />
+          {% endif %}{% endverbatim %}
+        {% endif %}
+        {% if show != 'icon' %}{% verbatim %}{{ tab.title }}{% endverbatim %}{% endif %}</a>
+      </li>
+      {% verbatim %}{% endfor %}{% endverbatim %}
+      {# - tab hook #}
+      {% endif %}
+    </ul>
+  </div>
+</div>
+<div class="tab-content">
+  {% for key, tab in tabs %}
+  {% if tab.condition %}{{ "{% if #{tab.condition} %}" }}{% endif %}
+  <div id="mz-design-tab-{{ mz_suffix }}-{{ key }}" class="tab-pane {{ fade?'fade' }}">{{ tab.content }}</div>
+  {% if tab.condition %}{{ "{% endif %}" }}{% endif %}
+  {% endfor %}
+  {% if hook %}
+  {# tab hook #}
+  {% verbatim %}{% for key, tab in mz_hook.fetch('tab') %}{% endverbatim %}
+  <div id="mz-design-tab-hook-{{ mz_suffix }}-{% verbatim %}{{ key }}{% endverbatim %}" class="tab-pane {{ fade?'fade' }}">{% verbatim %}{{ tab.content }}{% endverbatim %}</div>
+  {% verbatim %}{% endfor %}{% endverbatim %}
+  {# - tab hook #}
+  {% endif %}
+</div>

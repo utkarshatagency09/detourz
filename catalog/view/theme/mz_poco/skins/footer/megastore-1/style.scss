@@ -1,0 +1,27 @@
+@import "skins/footer/megastore-1/variables";
+@import "skins/footer/megastore-1/components/social";
+@import "skins/footer/megastore-1/components/newsletter";
+
+.footer{
+    border-top: $border-width solid $border-color;
+    
+    .design, .module, .widget{
+        &-title{
+            font-size: $h6-font-size;
+            margin-bottom: $footer-headings-margin-bottom;
+        }
+    }
+    .design-menu, .widget-contact_us{
+        margin-bottom: 0;
+    }
+    .design-menu{
+        .design-title{
+            margin-bottom: $footer-headings-margin-bottom - $design-nav-link-padding-y;
+        }
+    }
+    .widget-contact_us{
+        .widget-title{
+            margin-bottom: $footer-headings-margin-bottom - $design-nav-link-padding-y;
+        }
+    }
+}

@@ -1,0 +1,31 @@
+<div id="{{ button_id }}"></div>
+
+<style type="text/css">
+	#{{ button_id }} {
+		padding-bottom: 15px;
+		text-align: right;
+	}
+</style>
+<script id="amazon-login-sdk" src="https://api-cdn.amazon.com/sdk/login1.js"></script>
+<script>
+$(function(){
+	amazon.Login.setClientId('{{ client_id }}');
+
+	OffAmazonPayments.Button("{{ button_id }}", "{{ merchant_id }}", {
+		type: "{{ button_type }}",
+		color: "{{ button_colour }}",
+		size: "{{ button_size }}",
+		language: "{{ language }}",
+		authorization: function() {
+			amazon.Login.authorize({
+				scope: 'profile postal_code payments:widget payments:shipping_address'
+			}, "{{ return_url }}");
+		},
+		onError: function(error) {
+			{% if sandbox %}
+				console.log("Amazon Login Error (" + error.getErrorCode() + "): " + error.getErrorMessage());
+			{% endif %}
+		}
+	});
+});
+</script>

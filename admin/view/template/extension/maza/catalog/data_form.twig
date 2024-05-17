@@ -1,0 +1,921 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- form -->
+  <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-mz-data" class="form-horizontal">
+    <div class="tab-content">
+      {# General #}
+      <div class="tab-pane active" id="tab-mz-general">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <!--Name-->
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-name">{{ entry_name }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" >
+                {% if (err_name is defined) %} 
+                  <div class="text-danger">{{ err_name }}</div>
+                {% endif %} 
+              </div>
+            </div>
+            
+            <!--status-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-status">{{ entry_status }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (status) %} 
+                  <input type="radio" name="status" value="1" id="input-status-enabled" checked>
+                  <label for="input-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="status" value="0" id="input-status-disabled">
+                  <label for="input-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="status" value="1" id="input-status-enabled" >
+                  <label for="input-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="status" value="0" id="input-status-disabled" checked>
+                  <label for="input-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+
+            <!--sort order-->
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-sort-order">{{ entry_sort_order }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-sort-order" placeholder="{{ entry_sort_order }}" type="number" min="0" name="sort_order" value="{{ sort_order }}" >
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      {# Title #}
+      <div class="tab-pane" id="tab-mz-title">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <!--Title-->
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-setting-title">{{ entry_title }}</label>
+              <div class="col-xs-9">
+              {% for language in languages %} 
+                <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                  <input class="form-control" type="text" name="setting[title][{{ language['language_id'] }}]" value="{{ setting['title'][language['language_id']] }}" placeholder="{{ entry_title }}" >
+                </div>
+                {% if (err_setting['title'][language['language_id']] is defined) %} 
+                  <div class="text-danger">{{ err_setting['title'][language['language_id']] }}</div>
+                {% endif %} 
+              {% endfor %} 
+              </div>
+            </div>
+
+            {#Icon#}
+            <div class="input-image-widget">
+              <div class="form-group">
+                <label class="col-xs-3 control-label" >{{ entry_icon }}</label>
+                <div class="col-xs-9">
+                  <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab-setting-icon-image" data-meta="image" data-toggle="tab">{{ tab_image }}</a></li>
+                    <li><a href="#tab-setting-icon-svg" data-meta="image" data-toggle="tab">{{ tab_svg }}</a></li>
+                    <li><a href="#tab-setting-icon-font" data-meta="font" data-toggle="tab">{{ tab_font }}</a></li>
+                  </ul>
+                  <div class="tab-content">
+                    <div class="tab-pane active" id="tab-setting-icon-image">
+                      <div class="el-group">
+                      {% for language in languages %}
+                        <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                        <div class="el-item">
+                          <a href="" id="thumb-setting-icon-image{{ language.language_id }}" data-toggle="image" class="img-thumbnail"><img src="{{ (thumb_setting_icon_image[language.language_id] is defined)?thumb_setting_icon_image[language.language_id]:placeholder_image }}" alt="" title="" data-placeholder="{{ placeholder_image }}" /></a><input type="hidden" name="setting[icon_image][{{ language.language_id }}]" value="{{ (setting['icon_image'][language.language_id] is defined)?setting['icon_image'][language.language_id]:'' }}" id="input-setting-icon-image{{ language.language_id }}" />
+                        </div>
+                      {% endfor %}
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="tab-setting-icon-svg">
+                      <div class="el-group">
+                      {% for language in languages %}
+                        <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                        <div class="el-item">
+                          <a href="" id="thumb-setting-icon-svg{{ language.language_id }}" data-toggle="svg" class="img-thumbnail"><img width="100" height="100" src="{{ (thumb_setting_icon_svg[language.language_id] is defined)?thumb_setting_icon_svg[language.language_id]:placeholder_svg }}" alt="" title="" data-placeholder="{{ placeholder_svg }}" /></a><input type="hidden" name="setting[icon_svg][{{ language.language_id }}]" value="{{ (setting['icon_svg'][language.language_id] is defined)?setting['icon_svg'][language.language_id]:'' }}" id="input-setting-icon-svg{{ language.language_id }}" />
+                        </div>
+                      {% endfor %}
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="tab-setting-icon-font">
+                      <div class="el-group">
+                      {% for language in languages %}
+                        <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                        <div class="el-item">
+                          <a href="" id="thumb-setting-icon-font{{ language.language_id }}" data-toggle="font" class="img-thumbnail icon-thumb"><i class="{{ (setting['icon_font'][language.language_id] is not empty)?setting['icon_font'][language.language_id]:placeholder_font }}" data-placeholder="{{ placeholder_font }}"></i></a><input type="hidden" name="setting[icon_font][{{ language.language_id }}]" value="{{ (setting['icon_font'][language.language_id] is defined)?setting['icon_font'][language.language_id]:'' }}" id="input-setting-icon-font{{ language.language_id }}" />
+                        </div>
+                      {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="image-meta-tab-content tab-content">
+                <div class="tab-image active tab-pane">
+                  <!--image icon width-->
+                  <div class="form-group">
+                    <label class="col-xs-3 control-label" for="input-setting-icon-width">{{ entry_width }}</label>
+                    <div class="col-xs-9">
+                      <input name="setting[icon_width]" value="{{ setting['icon_width'] }}" placeholder="{{ entry_width }}" class="form-control" id="input-setting-icon-width" />
+                    </div>
+                  </div>
+                  <!--image icon height-->
+                  <div class="form-group">
+                    <label class="col-xs-3 control-label" for="input-setting-icon-height">{{ entry_height }}</label>
+                    <div class="col-xs-9">
+                      <input name="setting[icon_height]" value="{{ setting['icon_height'] }}" placeholder="{{ entry_height }}" class="form-control" id="input-setting-icon-height" />
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-font tab-pane">
+                  <!--icon size-->
+                  <div class="form-group">
+                    <label class="col-xs-3 control-label" for="input-setting-icon-size">{{ entry_font_size }}</label>
+                    <div class="col-xs-9">
+                      <input name="setting[icon_size]" value="{{ setting['icon_size'] }}" placeholder="{{ entry_font_size }}" class="form-control" id="input-setting-icon-size" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      {# data #}
+      <div class="tab-pane" id="tab-mz-data">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_type }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% for type in list_values %} 
+                    {% if (setting['value_type'] == type['code']) %} 
+                    <input type="radio" name="setting[value_type]" value="{{ type['code'] }}" id="input-setting-value-type-{{ type['code'] }}" checked>
+                    <label for="input-setting-value-type-{{ type['code'] }}" >{{ type['text'] }}</label>
+                    {% else %} 
+                    <input type="radio" name="setting[value_type]" value="{{ type['code'] }}" id="input-setting-value-type-{{ type['code'] }}">
+                    <label for="input-setting-value-type-{{ type['code'] }}" >{{ type['text'] }}</label>
+                    {% endif %} 
+                  {% endfor %} 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel mz-panel-default mz-data html">
+          <div class="panel-heading">{{ text_html }}</div>
+          <div class="panel-body">
+            <ul class="nav nav-tabs tab-dynamic">
+              {% for language in languages %}
+              <li><a href="#tab-setting-value-html-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+              {% endfor %}
+            </ul>
+            <div class="tab-content">
+              {% for language in languages %}
+              <div class="tab-pane" id="tab-setting-value-html-language-{{ language.language_id }}">
+                <textarea name="setting[value_html][{{ language.language_id }}]" placeholder="{{ text_html }}" id="input-setting-value-html-language-{{ language.language_id }}" data-dialogsInBody="1" data-ckeditor="{{ code }}" class="form-control">{{ setting['value_html'][language.language_id] }}</textarea>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <div class="panel mz-panel-default mz-data module">
+          <div class="panel-heading">{{ text_module }}</div>
+          <div class="panel-body">
+            <select name="setting[value_module]" id="input-setting-value-module" class="form-control large">
+              <option value=""></option>
+              {% for extension in extensions %}
+              <optgroup label="{{ extension.name }}">
+              {% if not extension.module %}
+                {% if setting.value_module == extension.code %}
+                <option value="{{ extension.code }}" selected="">{{ extension.name }}</option>
+                {% else %}
+                <option value="{{ extension.code }}">{{ extension.name }}</option>
+                {% endif %}
+              {% else %}
+              {% for module in extension.module %}
+                {% if setting.value_module == module.code %}
+                <option value="{{ module.code }}" selected="">{{ module.name }}</option>
+                {% else %}
+                <option value="{{ module.code }}">{{ module.name }}</option>
+                {% endif %}
+              {% endfor %}
+              {% endif %}
+              </optgroup>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="panel mz-panel-default mz-data widget">
+          <div class="panel-heading">{{ text_widget }}</div>
+          <div class="panel-body">
+            <div class="input-group mz-widget">
+              <select name="setting[value_widget_code]" id="input-setting-value-widget" class="form-control">
+                <option value=""></option>
+                {% for widget in widgets %}
+                  {% if setting['value_widget_code'] == widget.code %}
+                  <option value="{{ widget.code }}" selected="">{{ widget.name }}</option>
+                  {% else %}
+                  <option value="{{ widget.code }}">{{ widget.name }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              <span class="input-group-btn">
+                <input type="hidden" name="setting[value_widget_data]" id="input-setting-value-widget-data" value="{{ setting['value_widget_data'] }}" />
+                {% if setting['value_widget_code'] %}
+                <button type="button" class="btn btn-info" data-toggle="mz-widget" data-code="{{ setting['value_widget_code'] }}" data-target="#input-setting-value-widget-data"><i class="fa fa-cog"></i></button>
+                {% else %}
+                <button type="button" class="btn btn-info disabled" data-toggle="mz-widget" data-code="{{ setting['value_widget_code'] }}" data-target="#input-setting-value-widget-data" disabled><i class="fa fa-cog"></i></button>
+                {% endif %}
+              </span>
+            </div>
+            {% if (err_setting.value_widget) %}<div class="text-danger">{{ err_setting.value_widget }}</div>{% endif %} 
+          </div>
+        </div>
+
+        {# <div class="panel mz-panel-default mz-data design">
+          <div class="panel-heading">{{ text_design }}</div>
+          <div class="panel-body">
+            <div class="input-group mz-design">
+              <select name="setting[value_design_code]" id="input-setting-value-design" class="form-control">
+                <option value=""></option>
+                {% for design in designs %}
+                  {% if setting['value_design_code'] == design.code %}
+                  <option value="{{ design.code }}" selected="">{{ design.name }}</option>
+                  {% else %}
+                  <option value="{{ design.code }}">{{ design.name }}</option>
+                  {% endif %}
+                {% endfor %}
+              </select>
+              <span class="input-group-btn">
+                <input type="hidden" name="setting[value_design_data]" id="input-setting-value-design-data" value="{{ setting['value_design_data'] }}" />
+                {% if setting['value_design_code'] %}
+                <button type="button" class="btn btn-info" data-toggle="mz-design" data-code="{{ setting['value_design_code'] }}" data-target="#input-setting-value-design-data"><i class="fa fa-cog"></i></button>
+                {% else %}
+                <button type="button" class="btn btn-info disabled" data-toggle="mz-design" data-code="{{ setting['value_design_code'] }}" data-target="#input-setting-value-design-data" disabled><i class="fa fa-cog"></i></button>
+                {% endif %}
+              </span>
+            </div>
+          </div>
+        </div> #}
+
+        <div class="panel mz-panel-default mz-data content_builder">
+          <div class="panel-heading">{{ text_content_builder }}</div>
+          <div class="panel-body">
+            <input class="form-control large" id="input-content-builder-name" placeholder="{{ text_content_builder }}" type="text" name="setting_content_builder_name" value="{{ setting_content_builder_name }}" >
+            <input id="input-setting-content-builder-id" type="hidden" name="setting[value_content_builder_id]" value="{{ setting.value_content_builder_id }}" >
+          </div>
+        </div>
+      </div>
+
+      {# Link #}
+      <div class="tab-pane" id="tab-mz-link">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            
+            {# customer #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-customer">{{ entry_customer }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% for customer_type in list_customer %} 
+                    {% if (customer == customer_type['id']) %} 
+                    <input type="radio" name="customer" value="{{ customer_type['id'] }}" id="input-customer-{{ customer_type['id'] }}" checked>
+                    <label for="input-customer-{{ customer_type['id'] }}" >{{ customer_type['name'] }}</label>
+                    {% else %} 
+                    <input type="radio" name="customer" value="{{ customer_type['id'] }}" id="input-customer-{{ customer_type['id'] }}">
+                    <label for="input-customer-{{ customer_type['id'] }}" >{{ customer_type['name'] }}</label>
+                    {% endif %} 
+                  {% endfor %} 
+                </div>
+              </div>
+            </div>
+
+            {# Customer group #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-customer-group">{{ entry_customer_group }}</label>
+              <div class="col-xs-9">
+                <select name="customer_group_id" id="input-customer-group" class="form-control">
+                  <option value="0">{{ text_all }}</option>
+                  {% for customer_group in customer_groups %} 
+                    {% if (customer_group_id == customer_group['customer_group_id']) %} 
+                    <option value="{{ customer_group['customer_group_id'] }}" selected="selected">{{ customer_group['name'] }}</option>
+                    {% else %} 
+                    <option value="{{ customer_group['customer_group_id'] }}">{{ customer_group['name'] }}</option>
+                    {% endif %} 
+                  {% endfor %} 
+                </select>
+              </div>
+            </div>
+
+            {# Timespan #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label"><span data-toggle="tooltip" title="{{ help_timespan }}">{{ entry_timespan }}</span></label>
+              <div class="col-xs-9">
+                <div class="row">
+                  <div class="col-xs-6">
+                    <div class="input-group datetime">
+                      <span class="input-group-addon">{{ text_from }}</span>
+                      <input type="text" name="date_start" value="{{ date_start }}" placeholder="{{ text_date_start }}" data-date-format="YYYY-MM-DD HH:mm" id="input-date-start" class="form-control" />
+                      <span class="input-group-btn"><button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button></span>
+                    </div>
+                  </div>
+                  <div class="col-xs-6">
+                    <div class="input-group datetime">
+                      <span class="input-group-addon">{{ text_to }}</span>
+                      <input type="text" name="date_end" value="{{ date_end }}" placeholder="{{ text_date_end }}" data-date-format="YYYY-MM-DD HH:mm" id="input-date-end" class="form-control" />
+                      <span class="input-group-btn"><button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {# stores #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_store }}</label>
+              <div class="col-xs-9">
+                <div class="well well-sm" style="height: 150px; overflow: auto;">
+                  {% for store in stores %}
+                  <div class="checkbox">
+                    <label>
+                      {% if store.store_id in data_store %}
+                      <input type="checkbox" name="data_store[]" value="{{ store.store_id }}" checked="checked" />
+                      {{ store.name }}
+                      {% else %}
+                      <input type="checkbox" name="data_store[]" value="{{ store.store_id }}" />
+                      {{ store.name }}
+                      {% endif %}
+                    </label>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      {# page #}
+      <div class="tab-pane" id="tab-mz-page">
+
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_page }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                {% for page_type in list_page %}
+                  {% if (page_type.id == page) %} 
+                  <input type="radio" name="page" value="{{ page_type.id }}" id="input-page-{{ page_type.id }}" checked>
+                  <label for="input-page-{{ page_type.id }}" >{{ page_type.name }}</label>
+                  {% else %} 
+                  <input type="radio" name="page" value="{{ page_type.id }}" id="input-page-{{ page_type.id }}" >
+                  <label for="input-page-{{ page_type.id }}">{{ page_type.name }}</label>
+                  {% endif %} 
+                {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+
+            <div class="form-group page product hide">
+              <label class="col-xs-3 control-label" for="input-filter-status">{{ entry_type }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (is_filter) %}
+                  <input type="radio" name="is_filter" value="0" id="input-filter-custom">
+                  <label for="input-filter-custom">{{ text_custom }}</label>
+                  <input type="radio" name="is_filter" value="1" id="input-filter-filter" checked>
+                  <label for="input-filter-filter" >{{ text_filter }}</label>
+                  {% else %}
+                  <input type="radio" name="is_filter" value="0" id="input-filter-custom" checked>
+                  <label for="input-filter-custom" >{{ text_custom }}</label>
+                  <input type="radio" name="is_filter" value="1" id="input-filter-filter" >
+                  <label for="input-filter-filter">{{ text_filter }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group page product type custom hide">
+              <label class="col-xs-3 control-label" for="input-product">{{ entry_product }}</label>
+              <div class="col-xs-9">
+                <input type="text" name="product" value="" placeholder="{{ entry_product }}" id="input-product" class="form-control"/>
+                <div id="data-product" class="well well-sm" style="height: 150px; overflow: auto;"> {% for data_product in data_products %}
+                  <div id="data-product{{ data_product.product_id }}"><i class="fa fa-minus-circle"></i> {{ data_product.name }}
+                    <input type="hidden" name="data_product[]" value="{{ data_product.product_id }}"/>
+                  </div>{% endfor %}
+                </div>
+                {% if (err_data_product is defined) %} 
+                  <div class="text-danger">{{ err_data_product }}</div>
+                {% endif %} 
+              </div>
+            </div>
+
+            <div class="form-group page product type filter category hide">
+              <label class="col-xs-3 control-label" for="input-category">{{ entry_category }}</label>
+              <div class="col-xs-9">
+                <input type="text" name="category" value="" placeholder="{{ entry_category }}" id="input-category" class="form-control"/>
+                <div id="data-category" class="well well-sm" style="height: 150px; overflow: auto;"> {% for data_category in data_categories %}
+                  <div id="data-category{{ data_category.category_id }}"><i class="fa fa-minus-circle"></i> {{ data_category.name }}
+                    <input type="hidden" name="data_category[]" value="{{ data_category.category_id }}"/>
+                  </div>{% endfor %}
+                </div>
+                {% if (err_data_category is defined) %} 
+                  <div class="text-danger">{{ err_data_category }}</div>
+                {% endif %}
+              </div>
+            </div>
+
+            <!--sub category-->
+            <div class="form-group page product type filter category hide">
+              <label class="col-xs-3 control-label" for="input-sub-category-status">{{ entry_sub_category }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (sub_category) %} 
+                  <input type="radio" name="sub_category" value="1" id="input-sub-category-enabled" checked>
+                  <label for="input-sub-category-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="sub_category" value="0" id="input-sub-category-disabled">
+                  <label for="input-sub-category-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="sub_category" value="1" id="input-sub-category-enabled" >
+                  <label for="input-sub-category-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="sub_category" value="0" id="input-sub-category-disabled" checked>
+                  <label for="input-sub-category-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group page product type filter manufacturer hide">
+              <label class="col-xs-3 control-label" for="input-manufacturer">{{ entry_manufacturer }}</label>
+              <div class="col-xs-9">
+                <input type="text" name="manufacturer" value="" placeholder="{{ entry_manufacturer }}" id="input-manufacturer" class="form-control"/>
+                <div id="data-manufacturer" class="well well-sm" style="height: 150px; overflow: auto;"> {% for data_manufacturer in data_manufacturers %}
+                    <div id="data-manufacturer{{ data_manufacturer.manufacturer_id }}"><i class="fa fa-minus-circle"></i> {{ data_manufacturer.name }}
+                      <input type="hidden" name="data_manufacturer[]" value="{{ data_manufacturer.manufacturer_id }}"/>
+                    </div>
+                  {% endfor %}</div>
+                {% if (err_data_manufacturer is defined) %} 
+                  <div class="text-danger">{{ err_data_manufacturer }}</div>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-group page product type filter hide">
+              <label class="col-xs-3 control-label" for="input-filter">{{ entry_filter }}</label>
+              <div class="col-xs-9">
+                <input type="text" name="filter" value="" placeholder="{{ entry_filter }}" id="input-filter" class="form-control"/>
+                <div id="data-filter" class="well well-sm" style="height: 150px; overflow: auto;"> {% for data_filter in data_filters %}
+                    <div id="data-filter{{ data_filter.filter_id }}"><i class="fa fa-minus-circle"></i> {{ data_filter.name }}
+                      <input type="hidden" name="data_filter[]" value="{{ data_filter.filter_id }}"/>
+                    </div>
+                  {% endfor %}</div>
+              </div>
+            </div>
+
+            <div class="form-group page product type filter hide">
+              <label class="col-xs-3 control-label" for="input-filter-special-status">{{ entry_special_only }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (filter_special) %} 
+                  <input type="radio" name="filter_special" value="1" id="input-filter-special-enabled" checked>
+                  <label for="input-filter-special-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="filter_special" value="0" id="input-filter-special-disabled">
+                  <label for="input-filter-special-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="filter_special" value="1" id="input-filter-special-enabled" >
+                  <label for="input-filter-special-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="filter_special" value="0" id="input-filter-special-disabled" checked>
+                  <label for="input-filter-special-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+
+            <!-- Price range-->
+            <div class="form-group page product type filter hide">
+              <label class="col-xs-3 control-label" for="input-filter-min-price"><span data-toggle="tooltip" title="{{ help_price }}">{{ entry_price }}</span></label>
+              <div class="col-xs-9">
+                <div class="row">
+                  <div class="col-xs-6">
+                    <input type="number" min="0" name="filter_price_min" value="{{ filter_price_min }}" placeholder="{{ text_min_price }}" id="input-filter-min-price" class="form-control large" />
+                  </div>
+                  <div class="col-xs-6">
+                    <input type="number" min="0" name="filter_price_max" value="{{ filter_price_max }}" placeholder="{{ text_max_price }}" id="input-filter-max-price" class="form-control large" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- quantity range-->
+            <div class="form-group page product type filter hide">
+              <label class="col-xs-3 control-label" for="input-filter-min-quantity"><span data-toggle="tooltip" title="{{ help_quantity }}">{{ entry_quantity }}</span></label>
+              <div class="col-xs-9">
+                <div class="row">
+                  <div class="col-xs-6">
+                    <input type="number" min="0" name="filter_quantity_min" value="{{ filter_quantity_min }}" placeholder="{{ text_min_quantity }}" id="input-filter-min-quantity" class="form-control large" />
+                  </div>
+                  <div class="col-xs-6">
+                    <input type="number" min="0" name="filter_quantity_max" value="{{ filter_quantity_max }}" placeholder="{{ text_max_quantity }}" id="input-filter-max-quantity" class="form-control large" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      {# design #}
+      <div class="tab-pane" id="tab-mz-design">
+
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_hook }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                {% for hook_type in list_hook %}
+                  {% if (hook_type.id == hook) %} 
+                  <input type="radio" name="hook" value="{{ hook_type.id }}" id="input-hook-{{ hook_type.id }}" checked>
+                  <label for="input-hook-{{ hook_type.id }}" >{{ hook_type.name }}</label>
+                  {% else %} 
+                  <input type="radio" name="hook" value="{{ hook_type.id }}" id="input-hook-{{ hook_type.id }}" >
+                  <label for="input-hook-{{ hook_type.id }}">{{ hook_type.name }}</label>
+                  {% endif %} 
+                {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="panel mz-panel-default hook popup hide">
+          <div class="panel-heading">{{ text_popup }}</div>
+          <div class="panel-body">
+
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-setting-popup-unique-id"><span data-toggle="tooltip" title="{{ help_unique_id }}">{{ entry_unique_id }}</span></label>
+              <div class="col-xs-9">
+                <input type="text" name="setting[popup_unique_id]" value="{{ setting['popup_unique_id'] }}" placeholder="{{ entry_unique_id }}" id="input-setting-popup-unique-id" class="form-control" />
+                {% if (err_setting['popup_unique_id'] is defined) %} 
+                  <div class="text-danger">{{ err_setting['popup_unique_id'] }}</div>
+                {% endif %} 
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_size }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% for popup_size in list_popup_size %} 
+                    {% if (setting['popup_size'] == popup_size['id']) %} 
+                    <input type="radio" name="setting[popup_size]" value="{{ popup_size['id'] }}" id="input-setting-popup-size-{{ popup_size['id'] }}" checked>
+                    <label for="input-setting-popup-size-{{ popup_size['id'] }}" >{{ popup_size['name'] }}</label>
+                    {% else %} 
+                    <input type="radio" name="setting[popup_size]" value="{{ popup_size['id'] }}" id="input-setting-popup-size-{{ popup_size['id'] }}">
+                    <label for="input-setting-popup-size-{{ popup_size['id'] }}" >{{ popup_size['name'] }}</label>
+                    {% endif %} 
+                  {% endfor %} 
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_close_button }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (setting['popup_close_button']) %} 
+                  <input type="radio" name="setting[popup_close_button]" value="1" id="input-setting-popup-close-button-enabled" checked>
+                  <label for="input-setting-popup-close-button-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="setting[popup_close_button]" value="0" id="input-setting-popup-close-button-disabled">
+                  <label for="input-setting-popup-close-button-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="setting[popup_close_button]" value="1" id="input-setting-popup-close-button-enabled" >
+                  <label for="input-setting-popup-close-button-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="setting[popup_close_button]" value="0" id="input-setting-popup-close-button-disabled" checked>
+                  <label for="input-setting-popup-close-button-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_do_not_show_again }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (setting['popup_do_not_show_again']) %} 
+                  <input type="radio" name="setting[popup_do_not_show_again]" value="1" id="input-setting-popup-do-not-show-again-enabled" checked>
+                  <label for="input-setting-popup-do-not-show-again-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="setting[popup_do_not_show_again]" value="0" id="input-setting-popup-do-not-show-again-disabled">
+                  <label for="input-setting-popup-do-not-show-again-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="setting[popup_do_not_show_again]" value="1" id="input-setting-popup-do-not-show-again-enabled" >
+                  <label for="input-setting-popup-do-not-show-again-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="setting[popup_do_not_show_again]" value="0" id="input-setting-popup-do-not-show-again-disabled" checked>
+                  <label for="input-setting-popup-do-not-show-again-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="panel mz-panel-default hook popup hide">
+          <div class="panel-heading">{{ text_auto_start }}</div>
+          <div class="panel-body">
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_status }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (setting['popup_auto_start_status']) %} 
+                  <input type="radio" name="setting[popup_auto_start_status]" value="1" id="input-setting-popup-auto-start-status-enabled" checked>
+                  <label for="input-setting-popup-auto-start-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="setting[popup_auto_start_status]" value="0" id="input-setting-popup-auto-start-status-disabled">
+                  <label for="input-setting-popup-auto-start-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="setting[popup_auto_start_status]" value="1" id="input-setting-popup-auto-start-status-enabled" >
+                  <label for="input-setting-popup-auto-start-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="setting[popup_auto_start_status]" value="0" id="input-setting-popup-auto-start-status-disabled" checked>
+                  <label for="input-setting-popup-auto-start-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-setting-popup-auto-start-delay"><span data-toggle="tooltip" title="{{ help_auto_start_delay }}">{{ entry_delay }}</span></label>
+              <div class="col-xs-9">
+                <input type="number" min="0" name="setting[popup_auto_start_delay]" value="{{ setting['popup_auto_start_delay'] }}" placeholder="{{ entry_auto_start_delay }}" id="input-setting-popup-auto-start-delay" class="form-control" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="panel mz-panel-default hook popup hide">
+          <div class="panel-heading">{{ text_auto_close }}</div>
+          <div class="panel-body">
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_status }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (setting['popup_auto_close_status']) %} 
+                  <input type="radio" name="setting[popup_auto_close_status]" value="1" id="input-setting-popup-auto-close-status-enabled" checked>
+                  <label for="input-setting-popup-auto-close-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="setting[popup_auto_close_status]" value="0" id="input-setting-popup-auto-close-status-disabled">
+                  <label for="input-setting-popup-auto-close-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="setting[popup_auto_close_status]" value="1" id="input-setting-popup-auto-close-status-enabled" >
+                  <label for="input-setting-popup-auto-close-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="setting[popup_auto_close_status]" value="0" id="input-setting-popup-auto-close-status-disabled" checked>
+                  <label for="input-setting-popup-auto-close-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-setting-popup-auto-close-delay"><span data-toggle="tooltip" title="{{ help_auto_close_delay }}">{{ entry_delay }}</span></label>
+              <div class="col-xs-9">
+                <input type="number" min="0" name="setting[popup_auto_close_delay]" value="{{ setting['popup_auto_close_delay'] }}" placeholder="{{ entry_auto_close_delay }}" id="input-setting-popup-auto-close-delay" class="form-control" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </form>
+</div>
+<script src="view/javascript/maza/ckeditor/ckeditor.js"></script>
+<script>
+$('.datetime').datetimepicker({
+	language: '{{ datepicker }}',
+	pickDate: true,
+	pickTime: true
+});
+</script>
+<script>
+// Data type
+$('input[name="setting[value_type]"]').on('change', function(){
+    var data = $(this).val();
+    
+    $('.mz-data').addClass('hide');
+
+    $('.mz-data.' + data).removeClass('hide');
+});
+
+$('input[name="setting[value_type]"]:checked').trigger('change');
+
+// product filter or custom
+$('input[name="is_filter"]').on('change', function(){
+    var is_filter = $(this).val();
+    var page = $('input[name="page"]').val();
+    console.log(page);
+    $('.page.type.' + page).addClass('hide');
+
+    if(is_filter === '1'){
+      $('.page.type.filter.' + page).removeClass('hide');
+    } else {
+      $('.page.type.custom.' + page).removeClass('hide');
+    }
+});
+
+// Page type
+$('input[name="page"]').on('change', function(){
+    var page = $(this).val();
+    
+    $('.page').addClass('hide');
+
+    $('.page.' + page).removeClass('hide');
+
+    $('.' + page + ' input[name="is_filter"]:checked').trigger('change');
+});
+
+$('input[name="page"]:checked').trigger('change');
+
+// hook
+$('input[name="hook"]').on('change', function(){
+    var hook = $(this).val();
+    
+    $('#tab-mz-design .hook').addClass('hide');
+
+    $('#tab-mz-design .hook.' + hook).removeClass('hide');
+});
+
+$('input[name="hook"]:checked').trigger('change');
+</script>
+<script>
+// Content
+$('input[name="setting_content_builder_name"]').autocomplete({
+    'source': function(request, response) {
+        $.ajax({
+            url: 'index.php?route=extension/maza/content_builder/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+            dataType: 'json',
+            success: function(json) {
+                response($.map(json, function(item) {
+                    return {
+                        label: item['name'],
+                        value: item['content_id']
+                    };
+                }));
+            }
+        });
+    },
+    'select': function(item) {
+        $(this).val(item['label']);
+        $('input[name="setting[value_content_builder_id]"]').val(item['value']);
+    }
+});
+</script>
+<script>
+// Category
+$('input[name=\'category\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=catalog/category/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['category_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'category\']').val('');
+
+    $('#data-category' + item['value']).remove();
+
+    $('#data-category').append('<div id="data-category' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="data_category[]" value="' + item['value'] + '" /></div>');
+  }
+});
+
+$('#data-category').delegate('.fa-minus-circle', 'click', function() {
+  $(this).parent().remove();
+});
+
+// Manufacturer
+$('input[name=\'manufacturer\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=catalog/manufacturer/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['manufacturer_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'manufacturer\']').val('');
+
+    $('#data-manufacturer' + item['value']).remove();
+
+    $('#data-manufacturer').append('<div id="data-manufacturer' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="data_manufacturer[]" value="' + item['value'] + '" /></div>');
+  }
+});
+
+$('#data-manufacturer').delegate('.fa-minus-circle', 'click', function() {
+  $(this).parent().remove();
+});
+
+// Filter
+$('input[name=\'filter\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=catalog/filter/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['filter_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter\']').val('');
+
+    $('#data-filter' + item['value']).remove();
+
+    $('#data-filter').append('<div id="data-filter' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="data_filter[]" value="' + item['value'] + '" /></div>');
+  }
+});
+
+$('#data-filter').delegate('.fa-minus-circle', 'click', function() {
+  $(this).parent().remove();
+});
+
+// Product
+$('input[name=\'product\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['product_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'product\']').val('');
+
+    $('#data-product' + item['value']).remove();
+
+    $('#data-product').append('<div id="data-product' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="data_product[]" value="' + item['value'] + '" /></div>');
+  }
+});
+
+$('#data-product').delegate('.fa-minus-circle', 'click', function() {
+  $(this).parent().remove();
+});
+</script>
+{{ mz_footer }}

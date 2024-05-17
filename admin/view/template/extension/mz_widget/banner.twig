@@ -1,0 +1,200 @@
+<!-- Form -->
+<form id="setting-widget-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#tab-widget-general" data-toggle="tab">{{ tab_general }}</a></li>
+    <li><a href="#tab-widget-banner" data-toggle="tab">{{ tab_banner }}</a></li>
+    <li><a href="#tab-widget-caption" data-toggle="tab">{{ tab_caption }}</a></li>
+    <li><a href="#tab-widget-effect" data-toggle="tab">{{ tab_effect }}</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="tab-widget-general" class="tab-pane active">
+      <!--widget status-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-widget-status">{{ entry_status }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (widget_status) %} 
+            <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" checked>
+            <label for="input-widget-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled">
+            <label for="input-widget-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" >
+            <label for="input-widget-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled" checked>
+            <label for="input-widget-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+
+      {#title#}
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-title">{{ entry_title }}</label>
+        <div class="col-xs-9">
+        {% for language in languages %} 
+          <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" widget_title="{{ language['name'] }}" /></span>
+            <input class="form-control" type="text" name="widget_title[{{ language['language_id'] }}]" value="{{ widget_title[language['language_id']] is defined?widget_title[language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+          </div>
+        {% endfor %} 
+        </div>
+      </div>
+        
+      {#alt#}
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-alt"><span data-toggle="tooltip" title="{{ help_alt }}">{{ entry_alt }}</span></label>
+        <div class="col-xs-9">
+        {% for language in languages %} 
+          <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" widget_alt="{{ language['name'] }}" /></span>
+            <input class="form-control" type="text" name="widget_alt[{{ language['language_id'] }}]" value="{{ widget_alt[language['language_id']] is defined?widget_alt[language['language_id']]:'' }}" placeholder="{{ entry_alt }}" >
+          </div>
+        {% endfor %} 
+        </div>
+      </div>
+
+      <!--URL-->
+      <div class="form-group required">
+        <label class="col-xs-3 control-label">{{ entry_url }}</label>
+        <div class="col-xs-9">
+          <div class="input-group">
+            <span class="input-group-addon">{{ link_info ? link_info.type : '<i class="fa fa-link"></i>' }}</span>	
+            <input type="text" value="{{ link_info ? link_info.title }}" class="form-control" placeholder="{{ text_link_select }}" readonly />
+            <input id="input-setting-widget-url" type="hidden" name="widget_url_link_code" value="{{ widget_url_link_code }}"  />
+            <div class="input-group-btn">
+              <button type="button" data-toggle="linkmanager" class="btn btn-primary"><i class="fa fa-pencil"></i></button>
+              <button type="button" data-toggle="linkmanager-delete" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--URL target-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-widget-url-target">{{ entry_url_target }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_url_target == '_self') %} 
+            <input type="radio" name="widget_url_target" value="_self" id="input-widget-url-target-self" checked>
+            <label for="input-widget-url-target-self" >{{ text_self }}</label>
+            <input type="radio" name="widget_url_target" value="_blank" id="input-widget-url-target-blank">
+            <label for="input-widget-url-target-blank">{{ text_blank }}</label>
+            {% else %} 
+            <input type="radio" name="widget_url_target" value="_self" id="input-widget-url-target-self" >
+            <label for="input-widget-url-target-self">{{ text_self }}</label>
+            <input type="radio" name="widget_url_target" value="_blank" id="input-widget-url-target-blank" checked>
+            <label for="input-widget-url-target-blank" >{{ text_blank }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="tab-widget-banner" class="tab-pane">
+      {#Banner#}
+      <div class="form-group">
+        <label class="col-xs-3 control-label" >{{ entry_image }}</label>
+        <div class="col-xs-9">
+          <div class="el-group">
+          {% for language in languages %}
+            <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+            <div class="el-item">
+              <a href="" id="thumb-setting-widget-banner-image{{ language.language_id }}" data-toggle="image" class="img-thumbnail"><img src="{{ (thumb_banner_image[language.language_id] is defined)?thumb_banner_image[language.language_id]:placeholder_image }}" alt="" title="" data-placeholder="{{ placeholder_image }}" /></a><input type="hidden" name="widget_banner_image[{{ language.language_id }}]" value="{{ (widget_banner_image[language.language_id] is defined)?widget_banner_image[language.language_id]:'' }}" id="input-setting-widget-banner-image{{ language.language_id }}" />
+            </div>
+          {% endfor %}
+          </div>
+        </div>
+      </div>
+          
+      <!--image banner width-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-widget-banner-width">{{ entry_width }}</label>
+        <div class="col-xs-9">
+          <input name="widget_banner_width" value="{{ widget_banner_width }}" placeholder="{{ entry_width }}" class="form-control" id="input-setting-widget-banner-width" />
+        </div>
+      </div>
+        
+      <!--image banner height-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-widget-banner-height">{{ entry_height }}</label>
+        <div class="col-xs-9">
+          <input name="widget_banner_height" value="{{ widget_banner_height }}" placeholder="{{ entry_height }}" class="form-control" id="input-setting-widget-banner-height" />
+        </div>
+      </div>
+        
+      <!--Responsive banner width-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label"><span data-toggle="tooltip" title="{{ help_responsive_width }}">{{ entry_responsive_width }}</span></label>
+        <div class="col-xs-9">
+          <div class="input-group">
+          {% for breakpoint, width in widget_banner_srcset %}
+            <span class="input-group-addon">{{ breakpoint|upper }}</span>
+            <input type="number" name="widget_banner_srcset[{{ breakpoint }}]" value="{{ width }}" id="input-setting-widget-responsive-width-{{ breakpoint }}" placeholder="0px" class="form-control" />
+          {% endfor %}
+          </div>
+        </div>
+      </div>
+           
+      <!--widget lazy-loading-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label">{{ entry_lazy_loading }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (widget_lazy_loading) %} 
+            <input type="radio" name="widget_lazy_loading" value="1" id="input-widget-lazy-loading-enabled" checked>
+            <label for="input-widget-lazy-loading-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_lazy_loading" value="0" id="input-widget-lazy-loading-disabled">
+            <label for="input-widget-lazy-loading-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_lazy_loading" value="1" id="input-widget-lazy-loading-enabled" >
+            <label for="input-widget-lazy-loading-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_lazy_loading" value="0" id="input-widget-lazy-loading-disabled" checked>
+            <label for="input-widget-lazy-loading-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+    </div>
+              
+    <!-- Caption -->
+    <div id="tab-widget-caption" class="tab-pane">
+      <div class="form-group">
+        <label class="col-xs-3 control-label" >{{ entry_caption }}</label>
+        <div class="col-xs-9">
+          <ul class="nav nav-tabs tab-dynamic" id="setting-widget-banner-caption">
+            {% for language in languages %}
+            <li><a href="#widget-banner-caption-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+            {% endfor %}
+          </ul>
+          <div class="tab-content">
+            {% for language in languages %}
+            <div class="tab-pane" id="widget-banner-caption-language-{{ language.language_id }}">
+              <textarea name="widget_banner_caption[{{ language.language_id }}]" placeholder="{{ entry_caption }}" id="input-widget-banner-caption{{ language.language_id }}" data-ckeditor="{{ code }}" class="form-control">{{ widget_banner_caption[language.language_id] ? widget_banner_caption[language.language_id] }}</textarea>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="tab-widget-effect" class="tab-pane">
+      <div class="row">
+        {% for effect in image_hover_effects %} 
+        <div class="mz-image-panel col-sm-3">
+          <label for="input-hover-effect-{{ effect['code'] }}" class="mz-image-panel-content hover-effect {{ effect['code'] }}">
+            <img src="view/image/maza/image_placeholder.png" />
+            {% if (effect['code'] == widget_banner_effect) %} 
+            <input type="radio" id="input-hover-effect-{{ effect['code'] }}" class="input-mz-image-select" name="widget_banner_effect" value="{{ effect['code'] }}" checked="" />
+            {% else %} 
+            <input type="radio" id="input-hover-effect-{{ effect['code'] }}" class="input-mz-image-select" name="widget_banner_effect" value="{{ effect['code'] }}" />
+            {% endif %} 
+            <div class="input-mz-image-select-overlay"><i class="fa fa-4x fa-check"></i></div>
+          </label>
+          <div class="mz-image-panel-footer clearfix">
+            <h5>{{ effect['name'] }}</h5>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</form>
+<link href="view/stylesheet/maza/hover_effects.css" rel="stylesheet" type="text/css" />
+<script src="view/javascript/maza/ckeditor/ckeditor.js"></script>

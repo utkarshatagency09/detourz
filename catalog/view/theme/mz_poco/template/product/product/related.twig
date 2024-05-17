@@ -1,0 +1,8 @@
+{% verbatim %}{% if products %}{% endverbatim %}
+<h3 class="module-title">{% verbatim %}{{ text_related }}{% endverbatim %}</h3>
+<div class="row">
+{% verbatim %}{% for product_key, product in products %}{% endverbatim %}
+{% include 'mz_poco/template/product/common/product.twig' %}
+{% verbatim %}{% endfor %}{% endverbatim %}
+</div>
+{% verbatim %}{% endif %}{% endverbatim %}

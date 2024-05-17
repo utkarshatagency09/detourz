@@ -1,0 +1,533 @@
+<div id="mz-filter-{{ module_class_id }}" class="card mz-filter">
+  {% if heading_title %}
+  <div data-bs-toggle="collapse" data-bs-target="#mz-filter-content-{{ module_class_id }}" class="card-header{{ collapsed == 1?' collapsed' }}">
+    <h3 class="module-title h4 m-0">{{ heading_title }}</h3>
+    {% if reset_all %}
+      <span data-mz-reset="all" data-bs-toggle="tooltip" title="{{ text_reset_all }}" class="mz-filter-reset d-none"><i class="fas fa-times"></i></span>
+    {% endif %}
+    <i class="fas fa-chevron-circle-down ms-auto" aria-hidden="true"></i>
+  </div>
+  {% endif %}
+  <div id="mz-filter-content-{{ module_class_id }}" class="{% if heading_title %}collapse{{ collapsed != 1?' show' }} {% endif %}mz-list-filter-group">
+  {% for key,filter in filters %} 
+    {% if (filter.type == 'price') %} {# price range #}
+    <div class="mz-filter-group {{ filter.type }}">
+      <div class="mz-filter-group-header {{ filter.collapse?'collapsed' }}" data-bs-toggle="collapse" data-bs-target="#mz-filter-panel-{{ module_class_id }}-{{ key }}">
+        {{ text_price }}
+        {% if reset_group %}
+          {% if filter['selected']['min'] != filter['min_price'] or filter['selected']['max'] != filter['max_price'] %}
+          <a data-mz-reset="price" data-bs-toggle="tooltip" title="{{ text_reset }}" class="mz-filter-reset"><i class="fas fa-times" aria-hidden="true"></i></a>
+          {% else %}
+          <a data-mz-reset="price" data-bs-toggle="tooltip" title="{{ text_reset }}" class="mz-filter-reset d-none"><i class="fas fa-times" aria-hidden="true"></i></a>
+          {% endif %}
+        {% endif %}
+        <i class="fas fa-angle-up ms-auto"></i>
+      </div>
+      <div id="mz-filter-panel-{{ module_class_id }}-{{ key }}" class="collapse {{ not filter.collapse?'show':'' }}" >
+        <div class="mz-filter-group-content">
+          <div data-role="rangeslider"></div>
+          <div class="d-flex align-items-center">
+            <input type="number" name="mz_fp[min]" class="form-control" value="{{ filter['selected']['min'] }}" min="{{ filter['min_price'] }}" max="{{ filter['max_price'] - 1 }}" placeholder="{{ text_min_price }}" aria-label="{{ text_min_price }}"/>
+            <span class="text-to flex-shrink-0 mx-2">{{ text_to }}</span>
+            <input type="number" name="mz_fp[max]" class="form-control" value="{{ filter['selected']['max'] }}" min="{{ filter['min_price'] + 1 }}" max="{{ filter['max_price'] }}" placeholder="{{ text_max_price }}" aria-label="{{ text_max_price }}"/>
+          </div>
+        </div>
+      </div>
+    </div>
+          
+    {% elseif (filter.type == 'sub_category' and filter.values) %} {# sub category #}
+    <div class="mz-filter-group {{ filter.type }} {{ (hide_zero_filter and not filter.status)?'d-none' }}">
+      <div class="mz-filter-group-header {{ filter.collapse?'collapsed' }}" data-bs-toggle="collapse" data-bs-target="#mz-filter-panel-{{ module_class_id }}-{{ key }}">
+        {{ text_sub_category }}
+        
+        {% if reset_group %}
+          {% set total_selected = 0 %}
+          {% for sub_category in filter.values %}{% if sub_category['selected'] %}{% set total_selected = total_selected + 1 %}{% endif %}{% endfor %}
+          <a data-mz-reset="check" title="{{ text_reset }}" data-bs-toggle="tooltip" class="mz-filter-reset{{ not total_selected?' d-none' }}"><i class="fas fa-times" aria-hidden="true"></i></a>
+          {% endif %}
+          <i class="fas fa-angle-up ms-auto"></i>
+      </div>
+        
+      <div id="mz-filter-panel-{{ module_class_id }}-{{ key }}" class="collapse {{ not filter.collapse?'show':'' }}" >
+        {% if filter['search'] %}
+        <div class="mz-filter-group-search"><i class="fas fa-search"></i> <input type="search" placeholder="{{ text_search }}" aria-label="{{ text_search }}"/></div>
+        {% endif %}
+        <div class="mz-filter-group-content {{ overflow }}">
+        {% for sub_category in filter.values %} 
+          <div class="mz-filter-value {{ filter['list_type'] }} {{ (hide_zero_filter and not sub_category.status)?'d-none' }}">
+            <div class="form-check">
+              {% if (sub_category['selected']) %} 
+              <input type="{{ filter.input_type }}" name="mz_fsc" value="{{ sub_category['category_id'] }}" id="mz-fsc-{{ module_class_id }}-{{ sub_category['category_id'] }}" class="form-check-input" checked>
+              {% else %} 
+              <input type="{{ filter.input_type }}" name="mz_fsc" value="{{ sub_category['category_id'] }}" id="mz-fsc-{{ module_class_id }}-{{ sub_category['category_id'] }}" class="form-check-input" {{ not sub_category['status']?'disabled' }}>
+              {% endif %}
+              <label for="mz-fsc-{{ module_class_id }}-{{ sub_category['category_id'] }}" class="form-check-label">
+                {% if (filter['list_type'] == 'image' or filter['list_type'] == 'both') %} 
+                <img width="{{ filter['image_width'] }}" height="{{ filter['image_height'] }}" src="{{ sub_category['image'] }}" title="{{ sub_category['name'] }}" alt="{{ sub_category['name'] }}" />
+                {% endif %} 
+                {% if (filter['list_type'] == 'text' or filter['list_type'] == 'both') %} 
+                  {{ sub_category['name'] }}
+                {% endif %}
+              </label>
+            </div>
+            {% if count_product and filter['list_type'] != 'image' %}
+              <span class="badge mz-product-total">{{ sub_category['total'] }}</span>
+            {% endif %}
+          </div>
+        {% endfor %}
+        {% if overflow == 'more' and ((filter['list_type'] == 'image' and filter.values|length >= 15) or (filter['list_type'] != 'image' and filter.values|length >= 7)) %}
+          <a class="mz-see-more btn-link" data-toggle="mz-seemore" data-show="{{ text_see_more }}" data-hide="{{ text_see_less }}" href="#">{{ text_see_more }}</a>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+        
+    {% elseif (filter.type == 'manufacturer' and filter.values) %} {# Manufacturer #}
+    <div class="mz-filter-group {{ filter.type }} {{ (hide_zero_filter and not filter.status)?'d-none' }}">
+      <div class="mz-filter-group-header {{ filter.collapse?'collapsed' }}" data-bs-toggle="collapse" data-bs-target="#mz-filter-panel-{{ module_class_id }}-{{ key }}">
+        {{ text_manufacturer }}
+        
+        {% if reset_group %}
+          {% set total_selected = 0 %}
+          {% for manufacturer in filter.values %}{% if manufacturer['selected'] %}{% set total_selected = total_selected + 1 %}{% endif %}{% endfor %}
+          <a data-mz-reset="check" data-bs-toggle="tooltip" title="{{ text_reset }}" class="mz-filter-reset{{ not total_selected?' d-none' }}"><i class="fas fa-times" aria-hidden="true"></i></a>
+        {% endif %}
+        <i class="fas fa-angle-up ms-auto"></i>
+      </div>
+        
+      <div id="mz-filter-panel-{{ module_class_id }}-{{ key }}" class="collapse {{ not filter.collapse?'show':'' }}" >
+        {% if filter['search'] %}
+        <div class="mz-filter-group-search"><i class="fas fa-search"></i> <input type="search" placeholder="{{ text_search }}" aria-label="{{ text_search }}"/></div>
+        {% endif %}
+        
+        <div class="mz-filter-group-content {{ overflow }}">
+        {% for manufacturer in filter.values %}<div class="mz-filter-value {{ filter['list_type'] }} {{ (hide_zero_filter and not manufacturer.status)?'d-none' }}">
+            <div class="form-check">
+              {% if (manufacturer['selected']) %} 
+              <input type="{{ filter.input_type }}" name="mz_fm" value="{{ manufacturer['manufacturer_id'] }}" id="mz-fm-{{ module_class_id }}-{{ manufacturer['manufacturer_id'] }}" class="form-check-input" checked>
+              {% else %} 
+              <input type="{{ filter.input_type }}" name="mz_fm" value="{{ manufacturer['manufacturer_id'] }}" id="mz-fm-{{ module_class_id }}-{{ manufacturer['manufacturer_id'] }}" class="form-check-input" {{ not manufacturer['status']?'disabled' }}>
+              {% endif %} 
+              <label for="mz-fm-{{ module_class_id }}-{{ manufacturer['manufacturer_id'] }}" class="form-check-label" {% if filter.list_type == 'image' %}title="{{ manufacturer['name'] }}" data-bs-toggle="tooltip"{% endif %}>
+                {% if (filter['list_type'] == 'image' or filter['list_type'] == 'both') %} 
+                <img width="{{ filter['image_width'] }}" height="{{ filter['image_height'] }}" src="{{ manufacturer['image'] }}" alt="{{ manufacturer['name'] }}" />
+                {% endif %} 
+                {% if (filter['list_type'] == 'text' or filter['list_type'] == 'both') %} 
+                  {{ manufacturer['name'] }}
+                {% endif %}
+              </label>
+            </div>
+            {% if count_product and filter['list_type'] != 'image' %}
+              <span class="badge mz-product-total">{{ manufacturer['total'] }}</span>
+            {% endif %}
+          </div>{% endfor %}
+        {% if overflow == 'more' and ((filter['list_type'] == 'image' and filter.values|length >= 15) or (filter['list_type'] != 'image' and filter.values|length >= 7)) %}
+          <a class="mz-see-more btn-link" data-toggle="mz-seemore" data-show="{{ text_see_more }}" data-hide="{{ text_see_less }}" href="#">{{ text_see_more }}</a>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+    {% elseif (filter.type == 'search') %} {# Search #}
+    <div class="mz-filter-group {{ filter.type }}">
+      <div class="mz-filter-group-header {{ filter.collapse?'collapsed' }}" data-bs-toggle="collapse" data-bs-target="#mz-filter-panel-{{ module_class_id }}-{{ key }}">
+        {{ text_search }}
+        
+        {% if reset_group %}
+          {% if filter['keyword'] %}
+          <a data-mz-reset="text" data-bs-toggle="tooltip" title="{{ text_reset }}" class="mz-filter-reset"><i class="fas fa-times" aria-hidden="true"></i></a>
+          {% else %}
+          <a data-mz-reset="text" data-bs-toggle="tooltip" title="{{ text_reset }}" class="mz-filter-reset d-none"><i class="fas fa-times" aria-hidden="true"></i></a>
+          {% endif %}
+        {% endif %}
+        <i class="fas fa-angle-up ms-auto"></i>
+      </div>
+      <div id="mz-filter-panel-{{ module_class_id }}-{{ key }}" class="collapse {{ not filter.collapse?'show':'' }}" >
+        <div class="mz-filter-group-content">
+          <input type="text" name="mz_fq" value="{{ filter['keyword'] }}" placeholder="{{ text_search_placeholder }}" aria-label="{{ text_search_placeholder }}" class="form-control" />
+        </div>
+      </div>
+    </div>
+    {% elseif (filter.type == 'availability') %} {# Availability #}
+    <div class="mz-filter-group {{ filter.type }}">
+      <div class="mz-filter-group-header {{ filter.collapse?'collapsed' }}" data-bs-toggle="collapse" data-bs-target="#mz-filter-panel-{{ module_class_id }}-{{ key }}">
+        {{ text_availability }}
+        
+        {% if reset_group %}
+          {% if filter.values['in_stock']['selected'] or filter.values['out_of_stock']['selected'] %}
+          <a data-mz-reset="check" data-bs-toggle="tooltip" title="{{ text_reset }}" class="mz-filter-reset"><i class="fas fa-times" aria-hidden="true"></i></a>
+          {% else %}
+          <a data-mz-reset="check" data-bs-toggle="tooltip" title="{{ text_reset }}" class="mz-filter-reset d-none"><i class="fas fa-times" aria-hidden="true"></i></a>
+          {% endif %}
+        {% endif %}
+        <i class="fas fa-angle-up ms-auto"></i>
+      </div>
+      <div id="mz-filter-panel-{{ module_class_id }}-{{ key }}" class="collapse {{ not filter.collapse?'show':'' }}" >
+        <div class="mz-filter-group-content">
+          <div class="mz-filter-value">
+            <div class="form-check">
+              {% if (filter.values['in_stock']['selected']) %} 
+              <input type="radio" value="1" name="mz_fs" id="mz-fs-in-stock-{{ module_class_id }}" class="form-check-input" checked>
+              {% else %} 
+              <input type="radio" value="1" name="mz_fs" id="mz-fs-in-stock-{{ module_class_id }}" class="form-check-input" {{ not filter.values['in_stock']['status']?'disabled' }}>
+              {% endif %} 
+              <label for="mz-fs-in-stock-{{ module_class_id }}" class="form-check-label">{{ text_in_stock }}</label>
+            </div>
+            {% if count_product %}
+              <span class="badge mz-product-total">{{ filter.values['in_stock']['total'] }}</span>
+            {% endif %}
+          </div>
+          <div class="mz-filter-value">
+            <div class="form-check">
+              {% if (filter.values['out_of_stock']['selected']) %} 
+              <input type="radio" value="0" name="mz_fs" id="mz-fs-stock-out-{{ module_class_id }}" class="form-check-input" checked>
+              {% else %} 
+              <input type="radio" value="0" name="mz_fs" id="mz-fs-stock-out-{{ module_class_id }}" class="form-check-input" {{ not filter.values['out_of_stock']['status']?'disabled' }}>
+              {% endif %}
+              <label for="mz-fs-stock-out-{{ module_class_id }}" class="form-check-label">{{ text_out_of_stock }}</label>
+            </div>
+            {% if count_product %}
+              <span class="badge mz-product-total">{{ filter.values['out_of_stock']['total'] }}</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% elseif (filter.type == 'stock_status' and filter.values) %} {# stock_status #}
+    <div class="mz-filter-group {{ filter.type }} {{ (hide_zero_filter and not filter.status)?'d-none' }}">
+      <div class="mz-filter-group-header {{ filter.collapse?'collapsed' }}" data-bs-toggle="collapse" data-bs-target="#mz-filter-panel-{{ module_class_id }}-{{ key }}">
+        {{ text_availability }}
+        
+        {% if reset_group %}
+          {% set total_selected = 0 %}
+          {% for stock_status in filter.values %}{% if stock_status.selected %}{% set total_selected = total_selected + 1 %}{% endif %}{% endfor %}
+          <a data-mz-reset="check" data-bs-toggle="tooltip" title="{{ text_reset }}" class="mz-filter-reset{{ not total_selected?' d-none' }}"><i class="fas fa-times" aria-hidden="true"></i></a>
+        {% endif %}
+        <i class="fas fa-angle-up ms-auto"></i>
+      </div>
+      <div id="mz-filter-panel-{{ module_class_id }}-{{ key }}" class="collapse {{ not filter.collapse?'show':'' }}" >
+        <div class="mz-filter-group-content {{ overflow }}">
+        	{% for stock_status in filter.values %}<div class="mz-filter-value {{ filter['list_type'] }} {{ (hide_zero_filter and not stock_status.status)?'d-none' }}">
+            <div class="form-check">
+              {% if (stock_status.selected) %} 
+              <input type="{{ filter.input_type }}" name="mz_fss" value="{{ stock_status.stock_status_id }}" id="mz-fss-{{ module_class_id }}-{{ stock_status.stock_status_id }}" class="form-check-input" checked>
+              {% else %} 
+              <input type="{{ filter.input_type }}" name="mz_fss" value="{{ stock_status.stock_status_id }}" id="mz-fss-{{ module_class_id }}-{{ stock_status.stock_status_id }}" class="form-check-input" {{ not stock_status['status']?'disabled' }}>
+              {% endif %} 
+              <label for="mz-fss-{{ module_class_id }}-{{ stock_status.stock_status_id }}" class="form-check-label">{{ stock_status.name }}</label>
+            </div>
+            <span class="badge mz-product-total">{{ stock_status.total }}</span>
+          </div>{% endfor %}
+					{% if overflow == 'more' and filter.values|length >= 7 %}
+					<a class="mz-see-more btn-link" data-toggle="mz-seemore" data-show="{{ text_see_more }}" data-hide="{{ text_see_less }}" href="#">{{ text_see_more }}</a>
+					{% endif %}
+        </div>
+      </div>
+    </div>
+    {% elseif (filter.type == 'rating') %} {# Rating #}
+    <div class="mz-filter-group {{ filter.type }}">
+      <div class="mz-filter-group-header {{ filter.collapse?'collapsed' }}" data-bs-toggle="collapse" data-bs-target="#mz-filter-panel-{{ module_class_id }}-{{ key }}">
+        {{ text_rating }}
+        
+        {% if reset_group %}
+          {% set total_selected = 0 %}
+          {% for rating in filter.values %}{% if rating.selected %}{% set total_selected = total_selected + 1 %}{% endif %}{% endfor %}
+          <a data-mz-reset="check" data-bs-toggle="tooltip" title="{{ text_reset }}" class="mz-filter-reset{{ not total_selected?' d-none' }}"><i class="fas fa-times" aria-hidden="true"></i></a>
+        {% endif %}
+        <i class="fas fa-angle-up ms-auto"></i>
+      </div>
+      <div id="mz-filter-panel-{{ module_class_id }}-{{ key }}" class="collapse {{ not filter.collapse?'show':'' }}" >
+        <div class="mz-filter-group-content">
+          {% for rating in filter.values %} 
+            <div class="mz-filter-value">
+              <div class="form-check">
+                {% if (rating.selected) %} 
+                <input type="radio" value="{{ rating.rating }}" id="mz-fr-{{ module_class_id }}-{{ rating.rating }}" name="mz_fr" class="form-check-input" checked>
+                {% else %} 
+                <input type="radio" value="{{ rating.rating }}" id="mz-fr-{{ module_class_id }}-{{ rating.rating }}" name="mz_fr" class="form-check-input" {{ not rating['status']?'disabled' }}>
+                {% endif %} 
+                <label for="mz-fr-{{ module_class_id }}-{{ rating.rating }}" class="form-check-label">
+                  <span class="rating">
+                    {% for i in range(1, 5) %}
+                      {% if rating.rating >= i %}
+                      <i class="fas fa-star"></i>
+                      {% else %}
+                      <i class="far fa-star"></i>
+                      {% endif %}
+                    {% endfor %}
+                  </span>
+                  {{ text_and_up }}
+                </label>
+              </div>
+              {% if count_product %}
+                <span class="badge mz-product-total">{{ rating['total'] }}</span>
+              {% endif %}
+            </div>
+          {% endfor %} 
+        </div>
+      </div>
+    </div>
+    {% elseif (filter.type == 'discount') %} {# Discount #}
+    <div class="mz-filter-group {{ filter.type }}">
+      <div class="mz-filter-group-header {{ filter.collapse?'collapsed' }}" data-bs-toggle="collapse" data-bs-target="#mz-filter-panel-{{ module_class_id }}-{{ key }}">
+        {{ text_discount }}
+        
+        {% if reset_group %}
+          {% set total_selected = 0 %}
+          {% for discount in filter.values %}{% if discount['selected'] %}{% set total_selected = total_selected + 1 %}{% endif %}{% endfor %}
+          <a data-mz-reset="check" data-bs-toggle="tooltip" title="{{ text_reset }}" class="mz-filter-reset{{ not total_selected?' d-none' }}"><i class="fas fa-times" aria-hidden="true"></i></a>
+        {% endif %}
+        <i class="fas fa-angle-up ms-auto"></i>
+      </div>
+      <div id="mz-filter-panel-{{ module_class_id }}-{{ key }}" class="collapse {{ not filter.collapse?'show':'' }}" >
+        <div class="mz-filter-group-content">
+          {% for discount in filter.values %} 
+            <div class="mz-filter-value">
+              <div class="form-check">
+                {% if (discount['selected']) %} 
+                <input type="radio" value="{{ discount['value'] }}" name="mz_fd" id="mz-fd-{{ module_class_id }}-{{ discount['value'] }}" class="form-check-input" checked>
+                {% else %} 
+                <input type="radio" value="{{ discount['value'] }}" name="mz_fd" id="mz-fd-{{ module_class_id }}-{{ discount['value'] }}" class="form-check-input" {{ not discount['status']?'disabled' }}>
+                {% endif %}
+                <label for="mz-fd-{{ module_class_id }}-{{ discount['value'] }}" class="form-check-label">{{ discount['name'] }}</label>
+              </div>
+              {% if count_product %}
+                <span class="badge mz-product-total">{{ discount['total'] }}</span>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% elseif (filter.type == 'filter') %} {# Filter #}
+    <div class="mz-filter-group {{ filter.type }} {{ (hide_zero_filter and not filter.status)?'d-none' }}">
+      <div class="mz-filter-group-header {{ filter.collapse?'collapsed' }}" data-bs-toggle="collapse" data-bs-target="#mz-filter-panel-{{ module_class_id }}-{{ key }}">
+        {{ filter['name'] }}
+        
+        {% if reset_group %}
+          {% set total_selected = 0 %}
+          {% for value in filter.values %}{% if value['selected'] %}{% set total_selected = total_selected + 1 %}{% endif %}{% endfor %}
+          <a data-mz-reset="check" data-bs-toggle="tooltip" title="{{ text_reset }}" class="mz-filter-reset{{ not total_selected?' d-none' }}"><i class="fas fa-times" aria-hidden="true"></i></a>
+        {% endif %}
+        <i class="fas fa-angle-up ms-auto"></i>
+      </div>
+      <div id="mz-filter-panel-{{ module_class_id }}-{{ key }}" class="collapse {{ not filter.collapse?'show':'' }}" >
+        {% if filter['search'] %}
+        <div class="mz-filter-group-search"><i class="fas fa-search"></i> <input type="search" placeholder="{{ text_search }}" aria-label="{{ text_search }}"/></div>
+        {% endif %}
+        <div class="mz-filter-group-content {{ overflow }}">
+          {% for value in filter.values %} 
+            <div class="mz-filter-value {{ (hide_zero_filter and not value.status)?'d-none' }}">
+              <div class="form-check">
+                {% if (value['selected']) %} 
+                <input type="checkbox" name="mz_ff" value="{{ value['filter_id'] }}" id="mz-ff-{{ module_class_id }}-{{ value['filter_id'] }}" class="form-check-input" checked>
+                {% else %} 
+                <input type="checkbox" name="mz_ff" value="{{ value['filter_id'] }}" id="mz-ff-{{ module_class_id }}-{{ value['filter_id'] }}" class="form-check-input" {{ not value['status']?'disabled' }}>
+                {% endif %} 
+                <label for="mz-ff-{{ module_class_id }}-{{ value['filter_id'] }}" class="form-check-label">{{ value['name'] }}</label>
+              </div>
+              {% if count_product %}
+                <span class="badge mz-product-total">{{ value['total'] }}</span>
+              {% endif %}
+            </div>
+          {% endfor %}
+          {% if overflow == 'more' and filter.values|length >= 7 %}
+            <a class="mz-see-more btn-link" data-toggle="mz-seemore" data-show="{{ text_see_more }}" data-hide="{{ text_see_less }}" href="#">{{ text_see_more }}</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% elseif (filter.type == 'custom') %} {# Custom filter #}
+    <div class="mz-filter-group {{ filter.type }} {{ (hide_zero_filter and not filter.status)?'d-none' }}">
+      <div class="mz-filter-group-header {{ filter.collapse?'collapsed' }}" data-bs-toggle="collapse" data-bs-target="#mz-filter-panel-{{ module_class_id }}-{{ key }}">
+        {{ filter['name'] }} 
+        {% if reset_group %}
+          {% set total_selected = 0 %}
+          {% for value in filter.values %}{% if value['selected'] %}{% set total_selected = total_selected + 1 %}{% endif %}{% endfor %}
+          <a data-mz-reset="check" data-bs-toggle="tooltip" title="{{ text_reset }}" class="mz-filter-reset{{ not total_selected?' d-none' }}"><i class="fas fa-times" aria-hidden="true"></i></a>
+        {% endif %}
+        <i class="fas fa-angle-up ms-auto"></i>
+      </div>
+      <div id="mz-filter-panel-{{ module_class_id }}-{{ key }}" data-custom-filter="{{ filter['filter_id'] }}" class="collapse {{ not filter.collapse?'show':'' }}" >
+        {% if filter['search'] %}
+        <div class="mz-filter-group-search"><i class="fas fa-search"></i> <input type="search" placeholder="{{ text_search }}"/></div>
+        {% endif %}
+        <div class="mz-filter-group-content {{ overflow }}">
+          {% for value in filter.values %}<div class="mz-filter-value {{ filter['list_type'] }} {{ filter['input_shape'] }} {{ (hide_zero_filter and not value.status)?'d-none' }}">
+            <div class="form-check">
+              {% if (value['selected']) %} 
+              <input type="{{ filter.input_type }}" name="mz_fc{{ filter['filter_id'] }}" value="{{ value['value_id'] }}" id="mz-fc-{{ module_class_id }}-{{ value['value_id'] }}" class="form-check-input" checked>
+              {% else %} 
+              <input type="{{ filter.input_type }}" name="mz_fc{{ filter['filter_id'] }}" value="{{ value['value_id'] }}" id="mz-fc-{{ module_class_id }}-{{ value['value_id'] }}" class="form-check-input" {{ (not value['status'])?'disabled' }}>
+              {% endif %}
+              <label for="mz-fc-{{ module_class_id }}-{{ value['value_id'] }}" class="form-check-label" {% if filter.list_type == 'image' %}title="{{ value['name'] }}" data-bs-toggle="tooltip"{% endif %}> 
+                {% if (filter['list_type'] == 'image' or filter['list_type'] == 'both') %} 
+                <img width="{{ filter['image_width'] }}" height="{{ filter['image_height'] }}" src="{{ value['image'] }}" alt="{{ value['name'] }}" />
+                {% endif %} 
+                {% if (filter['list_type'] == 'text' or filter['list_type'] == 'both') %} 
+                  {{ value['name'] }}
+                {% endif %}
+              </label>
+            </div>
+            {% if count_product and filter['list_type'] != 'image' and filter['input_shape'] != 'button' %}
+              <span class="badge mz-product-total">{{ value['total'] }}</span>
+            {% endif %}
+          </div>{% endfor %}
+         {% if overflow == 'more' and ((filter['list_type'] == 'image' and filter.values|length >= 15) or (filter['list_type'] != 'image' and filter.values|length >= 7)) %}
+          <a class="mz-see-more btn-link" data-toggle="mz-seemore" data-show="{{ text_see_more }}" data-hide="{{ text_see_less }}" href="#">{{ text_see_more }}</a>
+         {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endif %} 
+  {% endfor %}
+  </div>
+</div>
+<script>
+$(function(){
+    {% if collapsed > 1 %}
+    if(window.innerWidth < {{ collapsed - 1 }}){ // Collaped all panel in small device
+        $('#mz-filter-{{ module_class_id }} .collapse.show').collapse("hide");
+    }
+    {% endif %}
+
+    // hide refine search if sub category filter selected
+    if($('[name="mz_fsc"]:checked').length || $('[name="mz_fq"]').val()){
+      $('.content-refine-search').attr('style', 'display: none !important');
+    }
+    
+    // Filter
+    var paginationContainer = $('.content-pagination');
+    var productContainer = $('.content-products');
+    
+    $('#mz-filter-{{ module_class_id }}').mz_filter({
+        requestURL: "{{ requestURL }}&product_entry_id=" + $('.content-products').data('id') + "&pagination_entry_id=" + $('.content-pagination').data('id'),
+        searchEl: $('#mz-filter-{{ module_class_id }} .mz-filter-group-search input'),
+        ajax: {{ ajax?'true':'false' }},
+        delay: {{ delay?'true':'false' }},
+        hideZeroFilter: {{ hide_zero_filter?'true':'false' }},
+        search_in_description: {{ search_in_description?'true':'false' }},
+        countProduct: {{ count_product?'true':'false' }},
+        sortBy: '{{ sort_by }}',
+        onParamChange: function(param){
+            $(".content-limit,.content-sort-by").find('option').each(function(){
+                var url = $(this).attr('value');
+                $(this).attr('value', modifyURLQuery(url, $.extend({}, param, {page: null})));
+            });
+            var currency = $('#form-currency input[name="redirect"]');
+            currency.val(modifyURLQuery(currency.val(), $.extend({}, param, {mz_fp: null, page: null})));
+            
+            // Show or hide reset all button
+            if($('#mz-filter-{{ module_class_id }} .mz-filter-group [data-mz-reset]:not(.d-none)').length){
+                $('#mz-filter-{{ module_class_id }} [data-mz-reset="all"]').removeClass('d-none');
+            } else {
+                $('#mz-filter-{{ module_class_id }} [data-mz-reset="all"]').addClass('d-none');
+            }
+        },
+        onInputChange: function(e){
+            var filter_group = $(e.target).closest('.mz-filter-group');
+            
+            var is_input_selected = false;
+            
+            // Hide Reset for Checkbox or radio
+            if(filter_group.find('input[type="checkbox"]:checked,input[type="radio"]:checked').length){
+                is_input_selected = true;
+            }
+            
+            // Hide Reset for price
+            if($(e.target).filter('[name="mz_fp[min]"],[name="mz_fp[max]"]').length){
+                if($('#mz-filter-{{ module_class_id }} [name="mz_fp[min]"]').val() !== $('#mz-filter-{{ module_class_id }} [name="mz_fp[min]"]').attr('min') || $('#mz-filter-{{ module_class_id }} [name="mz_fp[max]"]').val() !== $('#mz-filter-{{ module_class_id }} [name="mz_fp[max]"]').attr('max')){
+                    is_input_selected = true;
+                }
+            }
+            
+            // Hide reset for text
+            if($(e.target).filter('[type="text"]').val()){
+                is_input_selected = true;
+            }
+            
+            // Hide or show reset buton
+            if(is_input_selected){
+                filter_group.find('[data-mz-reset]').removeClass('d-none');
+            } else {
+                filter_group.find('[data-mz-reset]').addClass('d-none');
+            }
+        },
+        onReset: function(type){
+            // Reset price
+            if(type === 'price' || type === 'all'){
+                price_slider.slider("values", [parseFloat(price_slider.slider("option", 'min')), parseFloat(price_slider.slider("option", 'max'))]);
+            }
+        },
+        onBeforeSend: function(){
+            productContainer.append('<div class="mz-filter-loader"><div class="loader-spinner"></div></div>');
+        },
+        onResult: function(json, mz_filter){
+            // Add result products to container
+            if(json['products']){
+                productContainer.find('[data-countdown]').countdown('destroy');
+                productContainer.html(json['products']);
+                pageLoad(productContainer);
+
+                productContainer.find('#button-continue').on('click', function(e){
+                  e.preventDefault();
+                  mz_filter.resetAll();
+                });
+                
+                $('#list-view.active').click();
+                $('#grid-view.active').click();
+            } else {
+                productContainer.html("<div class='col-xs-12 text-center'>{{ text_no_result }}</div>");
+            }
+
+            // Add pagination to container
+            if(json['pagination']){
+                paginationContainer.html(json['pagination']);
+            } else {
+                paginationContainer.empty();
+            }
+
+            // hide refine search if sub category filter selected
+            if(mz_filter.inputs.filter('[name="mz_fsc"]:checked').length || mz_filter.inputs.filter('[name="mz_fq"]').val()){
+              $('.content-refine-search').attr('style', 'display: none !important');
+            } else {
+              $('.content-refine-search').attr('style', '');
+            }
+        }
+    });
+    
+    // Price slider
+    var price_slider = $("#mz-filter-{{ module_class_id }} [data-role='rangeslider']").slider({
+        range: true,
+        min: parseFloat($('#mz-filter-{{ module_class_id }} [name="mz_fp[min]"]').attr('min')),
+        max: parseFloat($('#mz-filter-{{ module_class_id }} [name="mz_fp[max]"]').attr('max')),
+        values: [parseFloat($('#mz-filter-{{ module_class_id }} [name="mz_fp[min]"]').val()), parseFloat($('#mz-filter-{{ module_class_id }} [name="mz_fp[max]"]').val())],
+        slide: function( event, ui ) {
+            $('#mz-filter-{{ module_class_id }} [name="mz_fp[min]"]').val(ui.values[0]);
+            $('#mz-filter-{{ module_class_id }} [name="mz_fp[max]"]').val(ui.values[1]);
+        },
+        change: function( event, ui ) {
+            // Hide Reset for price
+            if($('#mz-filter-{{ module_class_id }} [name="mz_fp[min]"]').val() !== $('#mz-filter-{{ module_class_id }} [name="mz_fp[min]"]').attr('min') || $('#mz-filter-{{ module_class_id }} [name="mz_fp[max]"]').val() !== $('#mz-filter-{{ module_class_id }} [name="mz_fp[max]"]').attr('max')){
+                $('#mz-filter-{{ module_class_id }} [data-mz-reset="price"]').removeClass('d-none');
+            } else {
+                $('#mz-filter-{{ module_class_id }} [data-mz-reset="price"]').addClass('d-none');
+            }
+            
+            // Trigger filter change
+            $('#mz-filter-{{ module_class_id }}').change();
+        }
+    });
+    $('#mz-filter-{{ module_class_id }} [name="mz_fp[min]"]').change(function(){
+        price_slider.slider("values", 0, $(this).val());
+    });
+    $('#mz-filter-{{ module_class_id }} [name="mz_fp[max]"]').change(function(){
+        price_slider.slider("values", 1, $(this).val());
+    });
+    
+    // Show reset all button if filter is selected
+    if($('#mz-filter-{{ module_class_id }} [data-mz-reset]:not(.d-none)').length){
+        $('[data-mz-reset="all"]').removeClass('d-none');
+    }
+    
+});
+</script>

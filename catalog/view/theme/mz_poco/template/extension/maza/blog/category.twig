@@ -1,0 +1,16 @@
+{# 
+Here is a file location of category page component
+
+## category page specific component
+- extension/maza/blog/category/*
+
+## common component across the page including category page
+- extension/maza/blog/common/*
+
+#}
+{{ header }}
+{% if mz_component %}
+<script>$('body').prepend('{{ mz_component|e("js") }}');</script>
+{% endif %}
+<div id="article-category" class="content">{{ mz_content }}</div>
+{{ footer }}

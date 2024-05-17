@@ -1,0 +1,81 @@
+{% verbatim %}{% if images %}{% endverbatim %}
+{% if not carousel_status %}
+<div id="product-images{{ mz_suffix }}" class="row row-cols-xl-{{ column_xl }} row-cols-lg-{{ column_lg }} row-cols-md-{{ column_md }} row-cols-sm-{{ column_sm }} row-cols-{{ column_xs }} justify-content-center">
+  {% verbatim %}{% for image in images %}{% endverbatim %}<div class="col">
+  <a class="d-block gutter-bottom" class="mfp-image" href="{% verbatim %}{{ image.popup }}{% endverbatim %}" title="{% verbatim %}{{ heading_title|e }}{% endverbatim %}">
+    {% if lazy_loading %}<img class="img-fluid lazy-load loader-spinner" src="{{ transparent }}" data-src="{% verbatim %}{{ image.popup }}{% endverbatim %}" width="{{ width }}" height="{{ height }}" title="{% verbatim %}{{ heading_title|e }}{% endverbatim %}" alt="{% verbatim %}{{ heading_title|e }}{% endverbatim %}" />
+    {% else %}<img class="img-fluid" src="{% verbatim %}{{ image.popup }}{% endverbatim %}" width="{{ width }}" height="{{ height }}" title="{% verbatim %}{{ heading_title|e }}{% endverbatim %}" alt="{% verbatim %}{{ heading_title|e }}{% endverbatim %}" />
+    {% endif %}
+  </a>
+  </div>{% verbatim %}{% endfor %}{% endverbatim %}
+</div>
+{% else %}
+<div id="product-images{{ mz_suffix }}" class="swiper">
+  <div class="swiper-wrapper">
+    {% verbatim %}{% for image in images %}{% endverbatim %}<div class="swiper-slide">
+      <a class="mfp-image" href="{% verbatim %}{{ image.popup }}{% endverbatim %}" title="{% verbatim %}{{ heading_title|e }}{% endverbatim %}">
+        {% if lazy_loading %}<img class="img-fluid lazy-load loader-spinner" src="{{ transparent }}" data-src="{% verbatim %}{{ image.popup }}{% endverbatim %}" width="{{ width }}" height="{{ height }}" title="{% verbatim %}{{ heading_title|e }}{% endverbatim %}" alt="{% verbatim %}{{ heading_title|e }}{% endverbatim %}" />
+        {% else %}<img class="img-fluid" src="{% verbatim %}{{ image.popup }}{% endverbatim %}" width="{{ width }}" height="{{ height }}" title="{% verbatim %}{{ heading_title|e }}{% endverbatim %}" alt="{% verbatim %}{{ heading_title|e }}{% endverbatim %}" />
+        {% endif %}
+      </a>
+    </div>{% verbatim %}{% endfor %}{% endverbatim %}
+  </div>
+  {% if carousel_pagination %}
+  <div class="swiper-pagination"></div>
+  {% endif %}
+  <div class="swiper-pager">
+    <div class="carousel-control-prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span></div>
+    <div class="carousel-control-next"><span class="carousel-control-next-icon" aria-hidden="true"></span></div>
+  </div>
+</div>
+<script>$(function(){
+var swiper = new Swiper('#product-images{{ mz_suffix }}', {
+    {% if carousel_pagination %}
+    pagination: {
+      el: '#product-images{{ mz_suffix }} .swiper-pagination',
+      clickable: true,
+    },
+    {% else %}
+    pagination: false,
+    {% endif %}
+    navigation: {
+      nextEl: '#product-images{{ mz_suffix }} .carousel-control-next',
+      prevEl: '#product-images{{ mz_suffix }} .carousel-control-prev',
+    },
+    spaceBetween: {{ gutter_width }},
+    slidesPerView:  {{ column_xs }},
+    breakpoints: {
+      {{ breakpoint_sm }}: {
+        slidesPerView: {{ column_sm }}
+      },
+      {{ breakpoint_md }}: {
+        slidesPerView: {{ column_md }}
+      },
+      {{ breakpoint_lg }}: {
+        slidesPerView: {{ column_lg }}
+      },
+      {{ breakpoint_xl }}: {
+        slidesPerView: {{ column_xl }}
+      },
+    },
+  });
+  {% if lazy_loading %}
+  swiper.on('slideNextTransitionEnd', function(swiper){
+    $(swiper.slides[swiper.activeIndex]).find('img.lazy-load').each(function(){
+      if($(this).data("plugin_lazy")){
+          $(this).data("plugin_lazy").update();
+      }
+    });
+  });
+  {% endif %}
+});</script>
+{% endif %}
+<script>$(function(){
+  $('#product-images{{ mz_suffix }}').magnificPopup({
+    delegate: 'a',
+    gallery: {
+      enabled: true
+    },
+  });
+});</script>
+{% verbatim %}{% endif %}{% endverbatim %}

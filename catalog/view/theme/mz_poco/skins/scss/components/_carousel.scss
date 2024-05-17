@@ -1,0 +1,53 @@
+.carousel-indicators .active{
+    background-color: $secondary;
+}
+.carousel-img-indicators{
+    img{
+        opacity: 0.5;
+    }
+    .active{
+        outline: $border-width solid $border-color;
+        img{
+            opacity: 1;
+        }
+    }
+}
+.carousel-control-prev,.carousel-control-next{
+    background-color: rgba(0,0,0,0.5);
+    visibility: hidden;
+    width: 3em;
+    max-height: 8em;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 1;
+}
+
+.carousel-control-prev{
+    @include border-top-end-radius($border-radius);
+    @include border-bottom-end-radius($border-radius);
+}
+.carousel-control-next{
+    @include border-top-start-radius($border-radius);
+    @include border-bottom-start-radius($border-radius);
+}
+
+.carousel{
+    img.loader-spinner{
+        max-height: mz-spacer(160);
+        background-size: mz-spacer(80);
+    } 
+    .carousel-item img{
+        @include border-radius();
+    }
+    
+    &:hover{
+        .carousel-control-prev,.carousel-control-next{
+            visibility: visible;
+        }
+    }
+}
+
+/* Custom class */
+.no-border-radius .carousel-item img{
+    @include border-radius(0);
+}

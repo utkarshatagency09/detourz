@@ -1,0 +1,71 @@
+.newsletter{
+    &-input{
+        display: flex;
+        border-radius: $newsletter-radius;
+        overflow: hidden;
+        background: $white;
+        
+        & > .fa-envelope{
+            padding: 0 mz-spacer(18);
+            align-self: center;
+        }
+    }
+    &-email{
+        flex: 1 1 auto;
+        
+        input{
+            @include rtl-prop(padding, 0 $input-padding-x-lg * 0.6 0 0, 0 0 0 $input-padding-x-lg * 0.6);
+            border: none;
+            outline: 0;
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+        }
+    }
+    button{
+        padding: $newsletter-button-padding;
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        border-radius: 0;
+        
+        .icon{
+            line-height: inherit;
+        }
+        
+        &.both{
+            .icon{
+                @include rtl-prop(margin-right, map-get($spacers, 1));
+            }
+        }
+    }
+    
+    // Helper
+    &-bordered {
+        .newsletter-input{
+            border: $border-width solid $secondary;
+            border-radius: $newsletter-radius;
+        }
+    }
+}
+
+.footer{
+    .newsletter{
+        &-input{
+            background-color: $newsletter-bg-color;
+            color: $newsletter-text-color;
+            border: none !important;
+
+            &::before{
+                border: none;
+                color: inherit;
+            }
+        }
+        &-email{
+            input{
+                background-color: transparent;
+                color: inherit;
+            }
+        }
+    }
+}

@@ -1,0 +1,98 @@
+<!-- Form -->
+<form id="setting-content-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <!--content status-->
+  <div class="form-group">
+    <label class="col-sm-3 control-label" for="input-setting-content-status">{{ entry_status }}</label>
+    <div class="col-sm-9">
+      <div class="mz-switch-field">
+        {% if (content_status) %} 
+        <input type="radio" name="content_status" value="1" id="input-setting-content-status-enabled" checked>
+        <label for="input-setting-content-status-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="content_status" value="0" id="input-setting-content-status-disabled">
+        <label for="input-setting-content-status-disabled">{{ text_disabled }}</label>
+        {% else %} 
+        <input type="radio" name="content_status" value="1" id="input-setting-content-status-enabled" >
+        <label for="input-setting-content-status-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="content_status" value="0" id="input-setting-content-status-disabled" checked>
+        <label for="input-setting-content-status-disabled" >{{ text_disabled }}</label>
+        {% endif %} 
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-xs-3 control-label">{{ entry_author }}</label>
+    <div class="col-xs-9">
+      <div class="mz-switch-field">
+        {% if (content_author) %} 
+        <input type="radio" name="content_author" value="1" id="input-setting-content-author-enabled" checked>
+        <label for="input-setting-content-author-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="content_author" value="0" id="input-setting-content-author-disabled">
+        <label for="input-setting-content-author-disabled">{{ text_disabled }}</label>
+        {% else %}
+        <input type="radio" name="content_author" value="1" id="input-setting-content-author-enabled" >
+        <label for="input-setting-content-author-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="content_author" value="0" id="input-setting-content-author-disabled" checked>
+        <label for="input-setting-content-author-disabled" >{{ text_disabled }}</label>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-xs-3 control-label">{{ entry_timestamp }}</label>
+    <div class="col-xs-9">
+      <div class="mz-switch-field">
+        {% if (content_timestamp) %} 
+        <input type="radio" name="content_timestamp" value="1" id="input-setting-content-timestamp-enabled" checked>
+        <label for="input-setting-content-timestamp-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="content_timestamp" value="0" id="input-setting-content-timestamp-disabled">
+        <label for="input-setting-content-timestamp-disabled">{{ text_disabled }}</label>
+        {% else %}
+        <input type="radio" name="content_timestamp" value="1" id="input-setting-content-timestamp-enabled" >
+        <label for="input-setting-content-timestamp-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="content_timestamp" value="0" id="input-setting-content-timestamp-disabled" checked>
+        <label for="input-setting-content-timestamp-disabled" >{{ text_disabled }}</label>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-xs-3 control-label">{{ entry_viewed }}</label>
+    <div class="col-xs-9">
+      <div class="mz-switch-field">
+        {% if (content_viewed) %} 
+        <input type="radio" name="content_viewed" value="1" id="input-setting-content-viewed-enabled" checked>
+        <label for="input-setting-content-viewed-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="content_viewed" value="0" id="input-setting-content-viewed-disabled">
+        <label for="input-setting-content-viewed-disabled">{{ text_disabled }}</label>
+        {% else %}
+        <input type="radio" name="content_viewed" value="1" id="input-setting-content-viewed-enabled" >
+        <label for="input-setting-content-viewed-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="content_viewed" value="0" id="input-setting-content-viewed-disabled" checked>
+        <label for="input-setting-content-viewed-disabled" >{{ text_disabled }}</label>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-xs-3 control-label">{{ entry_comments }}</label>
+    <div class="col-xs-9">
+      <div class="mz-switch-field">
+        {% if (content_comments) %} 
+        <input type="radio" name="content_comments" value="1" id="input-setting-content-comments-enabled" checked>
+        <label for="input-setting-content-comments-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="content_comments" value="0" id="input-setting-content-comments-disabled">
+        <label for="input-setting-content-comments-disabled">{{ text_disabled }}</label>
+        {% else %}
+        <input type="radio" name="content_comments" value="1" id="input-setting-content-comments-enabled" >
+        <label for="input-setting-content-comments-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="content_comments" value="0" id="input-setting-content-comments-disabled" checked>
+        <label for="input-setting-content-comments-disabled" >{{ text_disabled }}</label>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</form>

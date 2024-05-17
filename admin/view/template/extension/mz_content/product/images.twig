@@ -1,0 +1,141 @@
+<!-- Form -->
+<form id="setting-content-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#tab-general" data-toggle="tab">{{ tab_general }}</a></li>
+    <li><a href="#tab-grid-size" data-toggle="tab">{{ tab_grid_size }}</a></li>
+    <li><a href="#tab-carousel" data-toggle="tab">{{ tab_carousel }}</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="tab-general" class="tab-pane active">
+      <div class="form-group">
+        <label class="col-sm-3 control-label">{{ entry_status }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_status) %} 
+            <input type="radio" name="content_status" value="1" id="input-setting-content-status-enabled" checked>
+            <label for="input-setting-content-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_status" value="0" id="input-setting-content-status-disabled">
+            <label for="input-setting-content-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_status" value="1" id="input-setting-content-status-enabled" >
+            <label for="input-setting-content-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_status" value="0" id="input-setting-content-status-disabled" checked>
+            <label for="input-setting-content-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label">{{ entry_lazy_loading }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_lazy_loading) %} 
+            <input type="radio" name="content_lazy_loading" value="1" id="input-setting-content-lazy-loading-enabled" checked>
+            <label for="input-setting-content-lazy-loading-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_lazy_loading" value="0" id="input-setting-content-lazy-loading-disabled">
+            <label for="input-setting-content-lazy-loading-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_lazy_loading" value="1" id="input-setting-content-lazy-loading-enabled" >
+            <label for="input-setting-content-lazy-loading-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_lazy_loading" value="0" id="input-setting-content-lazy-loading-disabled" checked>
+            <label for="input-setting-content-lazy-loading-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="tab-grid-size" class="tab-pane">
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-content-column-xl"><span data-toggle="tooltip" title="{{ help_column_xl }}">{{ entry_column_xl }}</span></label>
+        <div class="col-xs-5">
+          <div class="input-group">
+            <input type="range" name="content_column_xl" min="1" max="6" value="{{ content_column_xl }}" id="input-setting-content-column-xl" class="form-control" />
+            <span class="input-group-addon">{{ content_column_xl }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-content-column-lg"><span data-toggle="tooltip" title="{{ help_column_lg }}">{{ entry_column_lg }}</span></label>
+        <div class="col-xs-5">
+          <div class="input-group">
+            <input type="range" name="content_column_lg" min="1" max="6" value="{{ content_column_lg }}" id="input-setting-content-column-lg" class="form-control" />
+            <span class="input-group-addon">{{ content_column_lg }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-content-column-md"><span data-toggle="tooltip" title="{{ help_column_md }}">{{ entry_column_md }}</span></label>
+        <div class="col-xs-5">
+          <div class="input-group">
+            <input type="range" name="content_column_md" min="1" max="6" value="{{ content_column_md }}" id="input-setting-content-column-md" class="form-control" />
+            <span class="input-group-addon">{{ content_column_md }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-content-column-sm"><span data-toggle="tooltip" title="{{ help_column_sm }}">{{ entry_column_sm }}</span></label>
+        <div class="col-xs-5">
+          <div class="input-group">
+            <input type="range" name="content_column_sm" min="1" max="6" value="{{ content_column_sm }}" id="input-setting-content-column-sm" class="form-control" />
+            <span class="input-group-addon">{{ content_column_sm }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-content-column-xs"><span data-toggle="tooltip" title="{{ help_column_xs }}">{{ entry_column_xs }}</span></label>
+        <div class="col-xs-5">
+          <div class="input-group">
+            <input type="range" name="content_column_xs" min="1" max="6" value="{{ content_column_xs }}" id="input-setting-content-column-xs" class="form-control" />
+            <span class="input-group-addon">{{ content_column_xs }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="tab-carousel" class="tab-pane">
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_status }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (content_carousel_status) %} 
+            <input type="radio" name="content_carousel_status" value="1" id="input-setting-content-carousel-status-enabled" checked>
+            <label for="input-setting-content-carousel-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_carousel_status" value="0" id="input-setting-content-carousel-status-disabled">
+            <label for="input-setting-content-carousel-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_carousel_status" value="1" id="input-setting-content-carousel-status-enabled" >
+            <label for="input-setting-content-carousel-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_carousel_status" value="0" id="input-setting-content-carousel-status-disabled" checked>
+            <label for="input-setting-content-carousel-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_pagination }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (content_carousel_pagination) %} 
+            <input type="radio" name="content_carousel_pagination" value="1" id="input-setting-content-carousel-pagination-enabled" checked>
+            <label for="input-setting-content-carousel-pagination-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_carousel_pagination" value="0" id="input-setting-content-carousel-pagination-disabled">
+            <label for="input-setting-content-carousel-pagination-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_carousel_pagination" value="1" id="input-setting-content-carousel-pagination-enabled" >
+            <label for="input-setting-content-carousel-pagination-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_carousel_pagination" value="0" id="input-setting-content-carousel-pagination-disabled" checked>
+            <label for="input-setting-content-carousel-pagination-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  <script>
+    $('input[type="range"]').on('input change', function(){
+        $(this).siblings('.input-group-addon').text($(this).val());
+    });
+  </script>
+</form>

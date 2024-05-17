@@ -1,0 +1,18 @@
+$footer-bg-color: $black;
+$footer-text-color: #777777;
+
+$footer-headings-color: color-contrast($footer-bg-color);
+$footer-headings-margin-bottom: mz-spacer(22);
+$footer-headings-font-size: $h6-font-size;
+
+// Social
+$social-link-icon-margin: mz-spacer(6);
+$social-link-icon-padding: mz-spacer(13);
+$social-link-icon-size: 1.125em;
+
+// Newsletter
+$newsletter-button-padding: $btn-padding-y-lg mz-spacer(24);
+$newsletter-input-font-size: null;
+$newsletter-input-background: #fff;
+$newsletter-input-text-color: #aaaaaa;
+$newsletter-input-padding: mz-spacer(6);

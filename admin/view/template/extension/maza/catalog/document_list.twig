@@ -1,0 +1,163 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success alert-dismissible"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning alert-dismissible"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+    
+  <div class="panel-group mz-panel-action-bar">
+    <div class="panel panel-default">
+      <div class="panel-heading clearfix" data-toggle="collapse" data-target="#filter-mz-document">
+        <h4 class="panel-title pull-left">{{ text_filter }}</h4>
+        <span class="pull-right"><i class="fa fa-chevron-circle-down"></i></span>
+      </div>
+      <div id="filter-mz-document" class="panel-collapse collapse">
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-route">{{ entry_route }}</label>
+                <input type="text" name="filter_route" value="{{ filter_route }}" placeholder="product/special" id="input-route" class="form-control large" />
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <!--store-->
+              <div class="form-group">
+                <label class="control-label" for="input-store-id">{{ entry_store }}</label>
+                <select name="filter_store_id" id="input-store-id" class="form-control large">
+                  <option value=""></option>
+                  {% for store in stores %}
+                    {% if (filter_store_id != '' and filter_store_id == store.store_id) %} 
+                    <option value="{{ store.store_id }}" selected="">{{ store.name }}</option>
+                    {% else %} 
+                    <option value="{{ store.store_id }}">{{ store.name }}</option>
+                    {% endif %}
+                  {% endfor %} 
+                </select>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-status">{{ entry_status }}</label>
+                <select name="filter_status" id="input-status" class="form-control large">
+                  <option value=""></option>
+                  {% if (filter_status == '1') %} 
+                  <option value="1" selected="selected">{{ text_enabled }}</option>
+                  {% else %} 
+                  <option value="1">{{ text_enabled }}</option>
+                  {% endif %} 
+                  {% if (filter_status == '0') %} 
+                  <option value="0" selected="selected">{{ text_disabled }}</option>
+                  {% else %} 
+                  <option value="0">{{ text_disabled }}</option>
+                  {% endif %} 
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer text-right">
+          <button type="button" id="button-reset" class="btn btn-info"><i class="fa fa-times"></i> {{ button_reset }}</button>
+          <button type="button" id="button-filter" class="btn btn-primary"><i class="fa fa-filter"></i> {{ button_filter }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="panel mz-panel-default">
+    <div class="panel-body">
+      <form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form-mz-document">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+                <td class="text-left">{% if (sort == 'd.route') %} 
+                  <a href="{{ sort_route }}" class="{{ order|lower }}">{{ column_route }}</a>
+                  {% else %} 
+                  <a href="{{ sort_route }}">{{ column_route }}</a>
+                  {% endif %}</td>
+                <td class="text-center">{{ column_store }}</td>
+                <td class="text-center">{% if (sort == 'd.status') %} 
+                  <a href="{{ sort_status }}" class="{{ order|lower }}">{{ column_status }}</a>
+                  {% else %} 
+                  <a href="{{ sort_status }}">{{ column_status }}</a>
+                  {% endif %}</td>
+                <td class="text-right">{% if (sort == 'd.date_modified') %} 
+                  <a href="{{ sort_date_modified }}" class="{{ order|lower }}">{{ column_date_modified }}</a>
+                  {% else %} 
+                  <a href="{{ sort_date_modified }}">{{ column_date_modified }}</a>
+                  {% endif %}</td>
+                <td class="text-right">{{ column_action }}</td>
+              </tr>
+            </thead>
+            <tbody>
+              {% if (documents) %} 
+              {% for document in documents %} 
+              <tr>
+                <td class="text-center">{% if (document['document_id'] in selected) %} 
+                  <input type="checkbox" name="selected[]" value="{{ document['document_id'] }}" checked="checked" />
+                  {% else %} 
+                  <input type="checkbox" name="selected[]" value="{{ document['document_id'] }}" />
+                  {% endif %}</td>
+                <td class="text-left">{{ document['route'] }}</td>
+                <td class="text-center">{{ document['store'] }}</td>
+                {% if document['status'] %}<td class="text-center text-success">{{ text_enabled }}</td>
+                {% else %}<td class="text-center text-danger">{{ text_disabled }}</td>{% endif %}
+                <td class="text-right">{{ document['date_modified'] }}</td>
+                <td class="text-right">
+                  <a href="{{ document['edit'] }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                </td>
+              </tr>
+              {% endfor %} 
+              {% else %} 
+              <tr>
+                <td class="text-center" colspan="6">{{ text_no_results }}</td>
+              </tr>
+              {% endif %} 
+            </tbody>
+          </table>
+        </div>
+      </form>
+      <div class="row">
+        <div class="col-sm-6 text-left">{{ pagination }}</div>
+        <div class="col-sm-6 text-right">{{ results }}</div>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript">
+$('#button-filter').on('click', function() {
+	var url = '';
+
+	var filter_route = $('input[name=\'filter_route\']').val();
+
+	if (filter_route) {
+		url += '&filter_route=' + encodeURIComponent(filter_route);
+	}
+
+	var filter_status = $('select[name=\'filter_status\']').val();
+
+	if (filter_status !== '') {
+		url += '&filter_status=' + encodeURIComponent(filter_status);
+	}
+
+  var filter_store_id = $('select[name=\'filter_store_id\']').val();
+
+	if (filter_store_id !== '') {
+		url += '&filter_store_id=' + encodeURIComponent(filter_store_id);
+	}
+        
+	location = 'index.php?route=extension/maza/catalog/document{{ default_url }}' + url;
+});
+
+$('#button-reset').on('click', function(){
+  location = 'index.php?route=extension/maza/catalog/document{{ default_url }}';
+});
+</script>
+</div>
+{{ mz_footer }}

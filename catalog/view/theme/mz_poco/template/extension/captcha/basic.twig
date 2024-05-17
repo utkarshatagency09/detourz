@@ -1,0 +1,14 @@
+<fieldset class="captcha">
+  <div class="mb-3 required">
+  {% if route|slice(0, 9) == 'checkout/' %}
+    <label class="form-label" for="input-payment-captcha">{{ entry_captcha }}</label>
+    <input type="text" name="captcha" id="input-payment-captcha" class="form-control" autocomplete="off" />
+    <img src="index.php?route=extension/captcha/basic/captcha" alt="" />
+  {% else %}
+    <small class="form-text text-muted">{{ entry_captcha }}</small>
+    <input type="text" name="captcha" class="form-control {{ error_captcha?'is-invalid' }}" placeholder="{{ text_captcha }}" id="input-captcha" autocomplete="off" required>
+    <div class="invalid-feedback">{{ error_captcha }}</div>
+    <img src="index.php?route=extension/captcha/basic/captcha" alt="" />
+  {% endif %}
+  </div>
+</fieldset>

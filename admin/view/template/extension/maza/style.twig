@@ -1,0 +1,1641 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- Form -->
+  <form action="{{ action }}" class="form-horizontal" enctype="multipart/form-data" id="form-mz-style" method="post">
+    <div class="tab-content">
+        
+      <!--Layout-->
+      <div id="tab-mz-layout" class="tab-pane fade in active">
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_general }}</div>
+          <div class="panel-body">
+              
+            <!-- layout style -->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-layout-style">{{ entry_layout_style }}</label>
+              <div class="col-xs-9">
+                <select class="form-control" id="input-layout-style" name="style_layout_style" >
+                  {% if (style_layout_style == 'full') %} 
+                  <option value="full" selected="">{{ text_full_layout }}</option>
+                  <option value="box">{{ text_box_layout }}</option>
+                  {% else %} 
+                  <option value="full">{{ text_full_layout }}</option>
+                  <option value="box" selected="">{{ text_box_layout }}</option>
+                  {% endif %} 
+                </select>
+              </div>
+            </div>
+              
+            <!--page loader-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-page-loader-status">{{ entry_page_loader }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (style_page_loader_status) %} 
+                  <input type="radio" name="style_page_loader_status" value="1" id="input-page-loader-enabled" checked>
+                  <label for="input-page-loader-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="style_page_loader_status" value="0" id="input-page-loader-disabled">
+                  <label for="input-page-loader-disabled" >{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="style_page_loader_status" value="1" id="input-page-loader-enabled" >
+                  <label for="input-page-loader-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="style_page_loader_status" value="0" id="input-page-loader-disabled" checked>
+                  <label for="input-page-loader-disabled">{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+
+            <!--Back to top-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-back-to-top-status"><span data-toggle="tooltip" title="{{ help_back_to_top }}">{{ entry_back_to_top }}</span></label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (style_back_to_top_status) %} 
+                  <input type="radio" name="style_back_to_top_status" value="1" id="input-back-to-top-enabled" checked>
+                  <label for="input-back-to-top-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="style_back_to_top_status" value="0" id="input-back-to-top-disabled">
+                  <label for="input-back-to-top-disabled" >{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="style_back_to_top_status" value="1" id="input-back-to-top-enabled" >
+                  <label for="input-back-to-top-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="style_back_to_top_status" value="0" id="input-back-to-top-disabled" checked>
+                  <label for="input-back-to-top-disabled">{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label class="col-xs-3 control-label" ><span data-toggle="tooltip" title="{{ help_spinner }}">{{ entry_spinner }}</span></label>
+              <div class="col-xs-9">
+                <ul class="nav nav-tabs">
+                  <li class="active"><a href="#tab-loader-spinner-image" data-meta="image" data-toggle="tab">{{ tab_image }}</a></li>
+                  <li><a href="#tab-loader-spinner-svg" data-meta="image" data-toggle="tab">{{ tab_svg }}</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div class="tab-pane active" id="tab-loader-spinner-image">
+                    <div class="el-group">
+                    {% for language in languages %}
+                      <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                      <div class="el-item">
+                        <a href="" id="thumb-loader-spinner-image{{ language.language_id }}" data-toggle="image" class="img-thumbnail"><img src="{{ (thumb_loader_spinner_image[language.language_id] is defined)?thumb_loader_spinner_image[language.language_id]:placeholder_image }}" alt="" title="" data-placeholder="{{ placeholder_image }}" /></a><input type="hidden" name="style_loader_spinner_image[{{ language.language_id }}]" value="{{ (style_loader_spinner_image[language.language_id] is defined)?style_loader_spinner_image[language.language_id]:'' }}" id="input-loader-spinner-image{{ language.language_id }}" />
+                      </div>
+                    {% endfor %}
+                    </div>
+                  </div>
+                  <div class="tab-pane" id="tab-loader-spinner-svg">
+                    <div class="el-group">
+                    {% for language in languages %}
+                      <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                      <div class="el-item">
+                        <a href="" id="thumb-loader-spinner-svg{{ language.language_id }}" data-toggle="svg" class="img-thumbnail"><img width="100" height="100" src="{{ (thumb_loader_spinner_svg[language.language_id] is defined)?thumb_loader_spinner_svg[language.language_id]:placeholder_svg }}" alt="" title="" data-placeholder="{{ placeholder_svg }}" /></a><input type="hidden" name="style_loader_spinner_svg[{{ language.language_id }}]" value="{{ (style_loader_spinner_svg[language.language_id] is defined)?style_loader_spinner_svg[language.language_id]:'' }}" id="input-loader-spinner-svg{{ language.language_id }}" />
+                      </div>
+                    {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {# Device breakpoints #}
+        <div class="panel mz-panel-default">
+          <div class="panel-heading"><span data-toggle='tooltip' title='{{ help_breakpoints }}'>{{ text_breakpoints }} <i class='fa fa-question-circle'></i></span></div>
+          <div class="panel-body">
+            <div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ help_emulator }}</div>
+          {% for device, breakpoint in style_breakpoints %}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-breakpoint-{{ device }}"><span data-toggle='tooltip' title='{{ _context['help_breakpoint_' ~ device] }}'>{{ _context['entry_breakpoint_' ~ device] }}</span></label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-breakpoint-{{ device }}" type="number" min="0" name="style_breakpoints[{{ device }}]" value="{{ style_breakpoints[device] }}" placeholder='{{ _context['entry_breakpoint_' ~ device] }}' {{ device == 'xs'?'readonly' }} />
+              </div>
+            </div>
+          {% endfor %}
+          </div>
+        </div>
+          
+        {# container width #}
+        <div class="panel mz-panel-default">
+          <div class="panel-heading"><span data-toggle='tooltip' title='{{ help_container_width }}'>{{ text_container_width }} <i class='fa fa-question-circle'></i></span></div>
+          <div class="panel-body">
+          {% for device, container_width in style_container_width %}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-container-width-{{ device }}"><span data-toggle='tooltip' title='{{ _context['help_breakpoint_' ~ device] }}'>{{ _context['entry_breakpoint_' ~ device] }}</span></label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-container-width-{{ device }}" type="number" min="0" name="style_container_width[{{ device }}]" value="{{ style_container_width[device] }}" placeholder='{{ _context['entry_container_width_' ~ device] }}' />
+              </div>
+            </div>
+          {% endfor %}
+          </div>
+        </div>
+      </div>
+      
+      <!--Color-->
+      <div id="tab-mz-color" class="tab-pane fade">
+          
+        <!--Color palette-->
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <div class="row">
+              {% for color_palette in color_palettes %} 
+                {% set checked = color_palette['code'] == style_color_palette?'checked':'' %} 
+                <div class="col-xs-4">
+                  <div class="color-palette {{ checked }}">
+                    <label for="style-color-palette-{{ color_palette['code'] }}"><input type="radio" class="form-control" id="style-color-palette-{{ color_palette['code'] }}" name="style_color_palette" value="{{ color_palette['code'] }}" {{ checked }} /> {{ color_palette['name'] }}
+                    <table><tr>
+                      {% for color_type,color_code in color_palette['color'] %} 
+                        <td class="{{ color_palette['code'] }}-color-{{ color_type }}" style="background-color: {{ color_code }}"></td>
+                      {% endfor %} 
+                    </tr></table> </label>
+                  </div>
+                </div>
+              {% endfor %} 
+            </div>
+          </div>
+        </div>
+        
+        <!--Custom color palette-->
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_custom_color_palette }}</div>
+          <div class="panel-body">
+            <div class="alert alert-info">{{ help_custom_color }}</div>
+            {% for color_type in color_types %}
+            <div class="form-group col-xs-6">
+              <label class="col-xs-3 control-label" for="input-style-custom-color-{{ color_type }}">{{ color_type }}</label>
+              <div class="col-xs-9">
+                <div class="mz-colorpicker" data-color-badge=".custom-color-{{ color_type }}">
+                  <input class="form-control" id="input-style-custom-color-{{ color_type }}" type="text" name="style_color_custom[{{ color_type }}]" value="{{ style_color_custom[color_type] }}" placeholder="{{ help_hexadecimal_color }}" /> 
+                  <span class="mz-colorpicker-badge custom-color-{{ color_type }}"></span>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+          
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_setting }}</div>
+          <div class="panel-body">
+            <div class="form-group">
+              <label class="col-xs-3 control-label"><span data-toggle="tooltip" title="{{ help_min_contrast_ratio }}">{{ entry_min_contrast_ratio }}</span></label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                {% for value in list_min_contrast_ratio %} 
+                  {% if (style_min_contrast_ratio == value) %} 
+                  <input type="radio" name="style_min_contrast_ratio" value="{{ value }}" id="input-min-contrast-ratio-{{ value }}" checked>
+                  <label for="input-min-contrast-ratio-{{ value }}" >{{ value }}</label>
+                  {% else %} 
+                  <input type="radio" name="style_min_contrast_ratio" value="{{ value }}" id="input-min-contrast-ratio-{{ value }}">
+                  <label for="input-min-contrast-ratio-{{ value }}" >{{ value }}</label>
+                  {% endif %} 
+                {% endfor %} 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- body -->
+      <div id="tab-mz-body" class="tab-pane fade">
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_color }}</div>
+          <div class="panel-body">
+            {# Background color #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-body-bg">{{ entry_background }}</label>
+              <div class="col-xs-9">
+                <div class="mz-colorpicker">
+                  <input class="form-control" id="input-body-bg" type="text" name="style_body_bg" value="{{ style_body_bg }}" placeholder="{{ help_hexadecimal_color }}" /> 
+                  <span class="mz-colorpicker-badge"></span>
+                </div>
+              </div>
+            </div>
+                  
+            {# color #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-body-color">{{ entry_text }}</label>
+              <div class="col-xs-9">
+                <div class="mz-colorpicker">
+                  <input class="form-control" id="input-body-color" type="text" name="style_body_color" value="{{ style_body_color }}" placeholder="{{ help_hexadecimal_color }}" /> 
+                  <span class="mz-colorpicker-badge"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          
+        <!-- background -->
+        <div class="panel mz-panel-default">
+          <div class="panel-heading clearfix">
+            <span class="pull-left">{{ text_background }}</span>
+            <ul class="pull-right nav nav-tabs mz-nav-sandwich-tab">
+              {% set round = 0 %}
+              {% for layer_code,background_info in style_body_background %} 
+               <li class="{{ round == 0?'active':constant('null') }}"><a href="#tab-{{ layer_code }}" data-toggle="tab">{{ _context['text_layer_' ~ (round + 1)] }}</a></li>
+               {% set round = round + 1 %} 
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="panel-body tab-content">
+            {% set round = 0 %}
+            {% for layer_code,background_info in style_body_background %} 
+              <div id="tab-{{ layer_code }}" class="tab-pane fade {{ round == 0?'in active':constant('null') }}">
+                  
+                <!--Background status-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-body-background-status-{{ layer_code }}">{{ entry_status }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% for status in body_background_status %} 
+                        {% if (status['code'] == background_info['status']) %} 
+                        <input type="radio" name="style_body_background[{{ layer_code }}][status]" value="{{ status['code'] }}" id="input-body-background-status-{{ layer_code ~ '-' ~ status['code'] }}" checked="">
+                        <label class="mz-tab-toggle active" data-target="#tab-body-background-status-{{ layer_code ~ '-' ~ status['code'] }}" for="input-body-background-status-{{ layer_code ~ '-' ~ status['code'] }}" >{{ status['name'] }}</label>
+                        {% else %} 
+                        <input type="radio" name="style_body_background[{{ layer_code }}][status]" value="{{ status['code'] }}" id="input-body-background-status-{{ layer_code ~ '-' ~ status['code'] }}">
+                        <label class="mz-tab-toggle" data-target="#tab-body-background-status-{{ layer_code ~ '-' ~ status['code'] }}" for="input-body-background-status-{{ layer_code ~ '-' ~ status['code'] }}" >{{ status['name'] }}</label>
+                        {% endif %} 
+                      {% endfor %} 
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="tab-content">
+                  <div id='tab-body-background-status-{{ layer_code }}-none' class="tab-pane {{ background_info['status'] == 'none'?'active':constant('null') }}"></div>
+                  <div id='tab-body-background-status-{{ layer_code }}-image' class="tab-pane {{ background_info['status'] == 'image'?'active':constant('null') }}">
+                      <!--Background image-->
+                      <div class="form-group">
+                        <label class="col-xs-3 control-label" for="input-body-background-image-{{ layer_code }}">{{ entry_background_image }}</label>
+                        <div class="col-xs-9">
+                          <a href="" id="thumb-body-background-image-thumb-{{ layer_code }}" data-toggle="image" class="img-thumbnail">
+                            <img src="{{ background_info['thumb'] }}" alt="" title="" data-placeholder="{{ placeholder }}" />
+                          </a>
+                          <input type="hidden" name="style_body_background[{{ layer_code }}][image]" value="{{ background_info['image'] }}" id="input-body-background-image-{{ layer_code }}" />
+                        </div>
+                      </div>
+  
+                      <!--Image position-->
+                      <div class="form-group">
+                        <label class="col-xs-3 control-label" for="input-body-background-image-position-{{ layer_code }}">{{ entry_image_position }}</label>
+                        <div class="col-xs-9">
+                          <select class="form-control" name="style_body_background[{{ layer_code }}][image_position]" id="input-body-background-image-position-{{ layer_code }}">
+                            {% for position in background_image_positions %} 
+                              {% if (position['code'] == background_info['image_position']) %} 
+                              <option value="{{ position['code'] }}" selected="">{{ position['name'] }}</option>
+                              {% else %} 
+                              <option value="{{ position['code'] }}">{{ position['name'] }}</option>
+                              {% endif %} 
+                            {% endfor %} 
+                          </select>
+                        </div>
+                      </div>
+  
+                      <!--Image repeat-->
+                      <div class="form-group">
+                        <label class="col-xs-3 control-label" for="input-body-background-image-repeat-{{ layer_code }}">{{ entry_image_repeat }}</label>
+                        <div class="col-xs-9">
+                          <select class="form-control" name="style_body_background[{{ layer_code }}][image_repeat]" id="input-body-background-image-repeat-{{ layer_code }}">
+                            {% for repeat in background_image_repeats %} 
+                              {% if (repeat['code'] == background_info['image_repeat']) %} 
+                              <option value="{{ repeat['code'] }}" selected="">{{ repeat['name'] }}</option>
+                              {% else %} 
+                              <option value="{{ repeat['code'] }}">{{ repeat['name'] }}</option>
+                              {% endif %} 
+                            {% endfor %} 
+                          </select>
+                        </div>
+                      </div>
+  
+                      <!--Image attachment-->
+                      <div class="form-group">
+                        <label class="col-xs-3 control-label" for="input-body-background-image-attachment-{{ layer_code }}">{{ entry_image_attachment }}</label>
+                        <div class="col-xs-9">
+                          <select class="form-control" name="style_body_background[{{ layer_code }}][image_attachment]" id="input-body-background-image-attachment-{{ layer_code }}">
+                            {% for attachment in background_image_attachments %} 
+                              {% if (attachment['code'] == background_info['image_attachment']) %} 
+                              <option value="{{ attachment['code'] }}" selected="">{{ attachment['name'] }}</option>
+                              {% else %} 
+                              <option value="{{ attachment['code'] }}">{{ attachment['name'] }}</option>
+                              {% endif %} 
+                            {% endfor %} 
+                          </select>
+                        </div>
+                      </div>
+                  </div>
+                  <div id='tab-body-background-status-{{ layer_code }}-pattern' class="tab-pane {{ background_info['status'] == 'pattern'?'active':constant('null') }}">
+                    <!--overlay pattern-->
+                      <div class="form-group">
+                        <label class="col-xs-3 control-label" for="input-body-background-overlay-pattern-{{ layer_code }}">{{ entry_overlay_pattern }}</label>
+                        <div class="col-xs-9">
+                          <div class="mz-overlay-pattern">
+                            <div class="col-xs-4">
+                              <ul class="nav nav-tabs mz-nav-vertical-tube-tab">
+                                {% for pattern in overlay_patterns %} 
+                                  {% if (pattern['code'] == background_info['overlay_pattern']) %} 
+                                  <li class="active"><label href="#tab-body-background-pattern-{{ layer_code }}-{{ pattern['code'] }}" for="input-body-background-pattern-{{ layer_code }}-{{ pattern['code'] }}" data-toggle="input-tab"><input type="radio" id="input-body-background-pattern-{{ layer_code }}-{{ pattern['code'] }}" name="style_body_background[{{ layer_code }}][overlay_pattern]" value="{{ pattern['code'] }}" class="hide" checked="" /><img src="{{ pattern['image'] }}" /> {{ pattern['name'] }}</label></li>
+                                  {% else %} 
+                                  <li><label href="#tab-body-background-pattern-{{ layer_code }}-{{ pattern['code'] }}" for="input-body-background-pattern-{{ layer_code }}-{{ pattern['code'] }}" data-toggle="input-tab"><input type="radio" id="input-body-background-pattern-{{ layer_code }}-{{ pattern['code'] }}" name="style_body_background[{{ layer_code }}][overlay_pattern]" value="{{ pattern['code'] }}" class="hide" /><img src="{{ pattern['image'] }}" />{{ pattern['name'] }}</label></li>
+                                  {% endif %} 
+                                {% endfor %} 
+                              </ul>
+                            </div>
+                            <div class="col-xs-8">
+                              <div class="tab-content">
+                                {% for pattern in overlay_patterns %} 
+                                  {% if (pattern['code'] == background_info['overlay_pattern']) %} 
+                                  <div id="tab-body-background-pattern-{{ layer_code }}-{{ pattern['code'] }}" style="background-image: url({{ pattern['image'] }})" class="tab-pane fade in active"></div>
+                                  {% else %} 
+                                  <div id="tab-body-background-pattern-{{ layer_code }}-{{ pattern['code'] }}" style="background-image: url({{ pattern['image'] }})" class="tab-pane fade"></div>
+                                  {% endif %} 
+                                {% endfor %} 
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                
+              </div>
+            {% set round = round + 1 %} 
+            {% endfor %} 
+          </div>
+        </div>
+        
+      </div>
+          
+      <!-- global -->
+      <div id="tab-mz-global" class="tab-pane fade">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            {# Rounded #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-enable-rounded-status">{{ entry_rounded }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (style_enable_rounded) %} 
+                  <input type="radio" name="style_enable_rounded" value="1" id="input-enable-rounded-enabled" checked>
+                  <label for="input-enable-rounded-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="style_enable_rounded" value="0" id="input-enable-rounded-disabled">
+                  <label for="input-enable-rounded-disabled" >{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="style_enable_rounded" value="1" id="input-enable-rounded-enabled" >
+                  <label for="input-enable-rounded-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="style_enable_rounded" value="0" id="input-enable-rounded-disabled" checked>
+                  <label for="input-enable-rounded-disabled">{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            {# Shadows #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-enable-shadows-status">{{ entry_shadows }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (style_enable_shadows) %} 
+                  <input type="radio" name="style_enable_shadows" value="1" id="input-enable-shadows-enabled" checked>
+                  <label for="input-enable-shadows-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="style_enable_shadows" value="0" id="input-enable-shadows-disabled">
+                  <label for="input-enable-shadows-disabled" >{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="style_enable_shadows" value="1" id="input-enable-shadows-enabled" >
+                  <label for="input-enable-shadows-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="style_enable_shadows" value="0" id="input-enable-shadows-disabled" checked>
+                  <label for="input-enable-shadows-disabled">{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            {# Gradients #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-enable-gradients-status">{{ entry_gradients }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (style_enable_gradients) %} 
+                  <input type="radio" name="style_enable_gradients" value="1" id="input-enable-gradients-enabled" checked>
+                  <label for="input-enable-gradients-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="style_enable_gradients" value="0" id="input-enable-gradients-disabled">
+                  <label for="input-enable-gradients-disabled" >{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="style_enable_gradients" value="1" id="input-enable-gradients-enabled" >
+                  <label for="input-enable-gradients-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="style_enable_gradients" value="0" id="input-enable-gradients-disabled" checked>
+                  <label for="input-enable-gradients-disabled">{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+              
+            {# Spacer #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-spacer">{{ entry_spacer }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-spacer" type="text" name="style_spacer" value="{{ style_spacer }}" placeholder="1rem" />
+              </div>
+            </div>
+              
+            {# Horizontal line #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_hr }}</label>
+              <div class="col-xs-9">
+                <div class='input-group'>
+                  <div class='input-group-addon'>{{ text_size }}</div>
+                  <input class="form-control" id="input-hr-border-width" type="text" name="style_hr_border_width" value="{{ style_hr_border_width }}" placeholder="1px" />
+                  <div class='input-group-addon'>{{ text_color }}</div>
+                  <div class="mz-colorpicker">
+                    <input class="form-control" id="input-hr-border-color" type="text" name="style_hr_border_color" value="{{ style_hr_border_color }}" placeholder="{{ help_color_code }}" /> 
+                    <span class="mz-colorpicker-badge"></span>
+                  </div>
+                  <div class='input-group-addon'>{{ text_margin_y }}</div>
+                  <input class="form-control" id="input-hr-margin-y" type="text" name="style_hr_margin_y" value="{{ style_hr_margin_y }}" placeholder="1rem" />
+                </div>
+              </div>
+            </div>
+                
+            {# Print page size #}
+            {# <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-print-page-size">{{ entry_print_page_size }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-print-page-size" type="text" name="style_print_page_size" value="{{ style_print_page_size }}" placeholder="a3" />
+              </div>
+            </div> #}
+          </div>
+        </div>
+              
+        {# button #}
+        <div class='panel mz-panel-default'>
+          <div class="panel-heading">{{ text_button }}</div>
+          <div class='panel-body'>
+            {# Size #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_size }}</label>
+              <div class="col-xs-9">
+                <div class='input-group'>
+                  <div class='input-group-addon'>{{ text_padding_x }}</div>
+                  <input class="form-control" id="input-btn-padding-x" type="text" name="style_btn_padding_x" value="{{ style_btn_padding_x }}" placeholder="0.75rem" />
+                  <div class='input-group-addon'>{{ text_padding_y }}</div>
+                  <input class="form-control" id="input-btn-padding-y" type="text" name="style_btn_padding_y" value="{{ style_btn_padding_y }}" placeholder="0.375rem" />
+                  <div class='input-group-addon'>{{ text_line_height }}</div>
+                  <input class="form-control" id="input-btn-line-height" type="number" step="0.1" name="style_btn_line_height" value="{{ style_btn_line_height }}" placeholder="1.5" />
+                </div>
+              </div>
+            </div>
+                
+            {# Size sm #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_size_sm }}</label>
+              <div class="col-xs-9">
+                <div class='input-group'>
+                  <div class='input-group-addon'>{{ text_padding_x }}</div>
+                  <input class="form-control" id="input-btn-padding-x-sm" type="text" name="style_btn_padding_x_sm" value="{{ style_btn_padding_x_sm }}" placeholder="0.5rem" />
+                  <div class='input-group-addon'>{{ text_padding_y }}</div>
+                  <input class="form-control" id="input-btn-padding-y-sm" type="text" name="style_btn_padding_y_sm" value="{{ style_btn_padding_y_sm }}" placeholder="0.25rem" />
+                  <div class='input-group-addon'>{{ text_line_height }}</div>
+                  <input class="form-control" id="input-btn-line-height-sm" type="number" step="0.1" name="style_btn_line_height_sm" value="{{ style_btn_line_height_sm }}" placeholder="1.5" />
+                </div>
+              </div>
+            </div>
+                
+            {# Size lg #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_size_lg }}</label>
+              <div class="col-xs-9">
+                <div class='input-group'>
+                  <div class='input-group-addon'>{{ text_padding_x }}</div>
+                  <input class="form-control" id="input-btn-padding-x-lg" type="text" name="style_btn_padding_x_lg" value="{{ style_btn_padding_x_lg }}" placeholder="1rem" />
+                  <div class='input-group-addon'>{{ text_padding_y }}</div>
+                  <input class="form-control" id="input-btn-padding-y-lg" type="text" name="style_btn_padding_y_lg" value="{{ style_btn_padding_y_lg }}" placeholder="0.5rem" />
+                  <div class='input-group-addon'>{{ text_line_height }}</div>
+                  <input class="form-control" id="input-btn-line-height-lg" type="number" step="0.1" name="style_btn_line_height_lg" value="{{ style_btn_line_height_lg }}" placeholder="1.5" />
+                </div>
+              </div>
+            </div>
+               
+            {# Border width #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_border_width }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-btn-border-width" type="text" name="style_btn_border_width" value="{{ style_btn_border_width }}" placeholder="1px" />
+              </div>
+            </div>
+                
+            {# Border radius #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_border_radius }}</label>
+              <div class="col-xs-9">
+                <div class='input-group'>
+                  <div class='input-group-addon'>{{ text_default }}</div>
+                  <input class="form-control" id="input-btn-border-radius" type="text" name="style_btn_border_radius" value="{{ style_btn_border_radius }}" placeholder="0.25rem" />
+                  <div class='input-group-addon'>{{ text_sm }}</div>
+                  <input class="form-control" id="input-btn-border-radius-sm" type="text" name="style_btn_border_radius_sm" value="{{ style_btn_border_radius_sm }}" placeholder="0.2rem" />
+                  <div class='input-group-addon'>{{ text_lg }}</div>
+                  <input class="form-control" id="input-btn-border-radius-lg" type="text" name="style_btn_border_radius_lg" value="{{ style_btn_border_radius_lg }}" placeholder="0.3rem" />
+                </div>
+              </div>
+            </div>
+                
+            {# Block spacing Y #}
+            {# <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_btn_block }}</label>
+              <div class="col-xs-9">
+                <div class='input-group'>
+                  <div class='input-group-addon'>{{ text_spacing_y }}</div>
+                  <input class="form-control" id="input-btn-block-spacing-y" type="text" name="style_btn_block_spacing_y" value="{{ style_btn_block_spacing_y }}" placeholder="0.5rem" />
+                </div>
+              </div>
+            </div> #}
+          </div>
+        </div>
+                
+        {# Form #}
+        <div class='panel mz-panel-default'>
+          <div class="panel-heading">{{ text_form }}</div>
+          <div class='panel-body'>
+            {# label margin bottom #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-label-margin-bottom">{{ entry_label_margin_bottom }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-label-margin-bottom" type="text" name="style_label_margin_bottom" value="{{ style_label_margin_bottom }}" placeholder="0.5rem" />
+              </div>
+            </div>
+              
+            {# form group margin bottom #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-form-group-margin-bottom">{{ entry_form_group_margin_bottom }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-form-group-margin-bottom" type="text" name="style_form_group_margin_bottom" value="{{ style_form_group_margin_bottom }}" placeholder="1rem" />
+              </div>
+            </div>
+              
+            {# form text margin top #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-form-text-margin-top">{{ entry_form_text_margin_top }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-form-text-margin-top" type="text" name="style_form_text_margin_top" value="{{ style_form_text_margin_top }}" placeholder="0.25rem" />
+              </div>
+            </div>
+                
+            {# Input Size #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_input_size }}</label>
+              <div class="col-xs-9">
+                <div class='input-group'>
+                  <div class='input-group-addon'>{{ text_padding_x }}</div>
+                  <input class="form-control" id="input-input-padding-x" type="text" name="style_input_padding_x" value="{{ style_input_padding_x }}" placeholder="0.75rem" />
+                  <div class='input-group-addon'>{{ text_padding_y }}</div>
+                  <input class="form-control" id="input-input-padding-y" type="text" name="style_input_padding_y" value="{{ style_input_padding_y }}" placeholder="0.375rem" />
+                  <div class='input-group-addon'>{{ text_line_height }}</div>
+                  <input class="form-control" id="input-input-line-height" type="number" step="0.1" name="style_input_line_height" value="{{ style_input_line_height }}" placeholder="1.5" />
+                </div>
+              </div>
+            </div>
+                
+            {# Input Size sm #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_input_size_sm }}</label>
+              <div class="col-xs-9">
+                <div class='input-group'>
+                  <div class='input-group-addon'>{{ text_padding_x }}</div>
+                  <input class="form-control" id="input-input-padding-x-sm" type="text" name="style_input_padding_x_sm" value="{{ style_input_padding_x_sm }}" placeholder="0.5rem" />
+                  <div class='input-group-addon'>{{ text_padding_y }}</div>
+                  <input class="form-control" id="input-input-padding-y-sm" type="text" name="style_input_padding_y_sm" value="{{ style_input_padding_y_sm }}" placeholder="0.25rem" />
+                  <div class='input-group-addon'>{{ text_line_height }}</div>
+                  <input class="form-control" id="input-input-line-height-sm" type="number" step="0.1" name="style_input_line_height_sm" value="{{ style_input_line_height_sm }}" placeholder="1.5" />
+                </div>
+              </div>
+            </div>
+                
+            {# Input Size lg #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_input_size_lg }}</label>
+              <div class="col-xs-9">
+                <div class='input-group'>
+                  <div class='input-group-addon'>{{ text_padding_x }}</div>
+                  <input class="form-control" id="input-input-padding-x-lg" type="text" name="style_input_padding_x_lg" value="{{ style_input_padding_x_lg }}" placeholder="1rem" />
+                  <div class='input-group-addon'>{{ text_padding_y }}</div>
+                  <input class="form-control" id="input-input-padding-y-lg" type="text" name="style_input_padding_y_lg" value="{{ style_input_padding_y_lg }}" placeholder="0.5rem" />
+                  <div class='input-group-addon'>{{ text_line_height }}</div>
+                  <input class="form-control" id="input-input-line-height-lg" type="number" step="0.1" name="style_input_line_height_lg" value="{{ style_input_line_height_lg }}" placeholder="1.5" />
+                </div>
+              </div>
+            </div>
+               
+            {# Border #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_border }}</label>
+              <div class="col-xs-9">
+                <div class='input-group'>
+                  <div class='input-group-addon'>{{ text_width }}</div>
+                  <input class="form-control" id="input-input-border-width" type="text" name="style_input_border_width" value="{{ style_input_border_width }}" placeholder="1px" />
+                  <div class='input-group-addon'>{{ text_color }}</div>
+                  <div class="mz-colorpicker">
+                    <input class="form-control" id="input-input-border-color" type="text" name="style_input_border_color" value="{{ style_input_border_color }}" placeholder="{{ help_color_code }}" /> 
+                    <span class="mz-colorpicker-badge"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+                
+            {# Border radius #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_border_radius }}</label>
+              <div class="col-xs-9">
+                <div class='input-group'>
+                  <div class='input-group-addon'>{{ text_default }}</div>
+                  <input class="form-control" id="input-input-border-radius" type="text" name="style_input_border_radius" value="{{ style_input_border_radius }}" placeholder="0.25rem" />
+                  <div class='input-group-addon'>{{ text_sm }}</div>
+                  <input class="form-control" id="input-input-border-radius-sm" type="text" name="style_input_border_radius_sm" value="{{ style_input_border_radius_sm }}" placeholder="0.2rem" />
+                  <div class='input-group-addon'>{{ text_lg }}</div>
+                  <input class="form-control" id="input-input-border-radius-lg" type="text" name="style_input_border_radius_lg" value="{{ style_input_border_radius_lg }}" placeholder="0.3rem" />
+                </div>
+              </div>
+            </div>
+                
+            {# Input color #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_input_color }}</label>
+              <div class="col-xs-9">
+                <div class='input-group'>
+                  <div class='input-group-addon'>{{ text_background }}</div>
+                  <div class="mz-colorpicker">
+                    <input class="form-control" id="input-input-bg" type="text" name="style_input_bg" value="{{ style_input_bg }}" placeholder="{{ help_color_code }}" /> 
+                    <span class="mz-colorpicker-badge"></span>
+                  </div>
+                  <div class='input-group-addon'>{{ text_text }}</div>
+                  <div class="mz-colorpicker">
+                    <input class="form-control" id="input-input-color" type="text" name="style_input_color" value="{{ style_input_color }}" placeholder="{{ help_color_code }}" /> 
+                    <span class="mz-colorpicker-badge"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+                    
+            {# Input focus color #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_input_focus_color }}</label>
+              <div class="col-xs-9">
+                <div class='input-group'>
+                  <div class='input-group-addon'>{{ text_background }}</div>
+                  <div class="mz-colorpicker">
+                    <input class="form-control" id="input-input-focus-bg" type="text" name="style_input_focus_bg" value="{{ style_input_focus_bg }}" placeholder="{{ help_color_code }}" /> 
+                    <span class="mz-colorpicker-badge"></span>
+                  </div>
+                  <div class='input-group-addon'>{{ text_text }}</div>
+                  <div class="mz-colorpicker">
+                    <input class="form-control" id="input-input-focus-color" type="text" name="style_input_focus_color" value="{{ style_input_focus_color }}" placeholder="{{ help_color_code }}" /> 
+                    <span class="mz-colorpicker-badge"></span>
+                  </div>
+                  <div class='input-group-addon'>{{ text_border }}</div>
+                  <div class="mz-colorpicker">
+                    <input class="form-control" id="input-input-focus-border-color" type="text" name="style_input_focus_border_color" value="{{ style_input_focus_border_color }}" placeholder="{{ help_color_code }}" /> 
+                    <span class="mz-colorpicker-badge"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+                    
+            {# Input disabled background color #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_input_disabled_color }}</label>
+              <div class="col-xs-9">
+                <div class='input-group'>
+                  <div class='input-group-addon'>{{ text_background }}</div>
+                  <div class="mz-colorpicker">
+                    <input class="form-control" id="input-input-disabled-bg" type="text" name="style_input_disabled_bg" value="{{ style_input_disabled_bg }}" placeholder="{{ help_color_code }}" /> 
+                    <span class="mz-colorpicker-badge"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+                    
+            {# Input placeholder color #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_input_placeholder_color }}</label>
+              <div class="col-xs-9">
+                <div class='input-group'>
+                  <div class='input-group-addon'>{{ text_text }}</div>
+                  <div class="mz-colorpicker">
+                    <input class="form-control" id="input-input-placeholder-color" type="text" name="style_input_placeholder_color" value="{{ style_input_placeholder_color }}" placeholder="{{ help_color_code }}" /> 
+                    <span class="mz-colorpicker-badge"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+                
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_table }}</div>
+          <div class="panel-body">
+            {# cell padding #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_cell_padding }}</label>
+              <div class="col-xs-9">
+                <div class='input-group'>
+                  <div class='input-group-addon'>{{ text_default }}</div>
+                  <input class="form-control" id="input-table-cell-padding" type="text" name="style_table_cell_padding" value="{{ style_table_cell_padding }}" placeholder="0.75rem" />
+                  <div class='input-group-addon'>{{ text_sm }}</div>
+                  <input class="form-control" id="input-table-cell-padding-sm" type="text" name="style_table_cell_padding_sm" value="{{ style_table_cell_padding_sm }}" placeholder="0.3rem" />
+                </div>
+              </div>
+            </div>
+            
+            {# striped order #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_striped_order }}</label>
+              <div class="col-xs-9">
+                <select name='style_table_striped_order' class='form-control'>
+                  <option value=''></option>
+                  {% for number_order in list_number_order %}
+                    {% if number_order['code'] == style_table_striped_order %}
+                    <option value='{{ number_order['code'] }}' selected>{{ number_order['text'] }}</option>
+                    {% else %}
+                    <option value='{{ number_order['code'] }}'>{{ number_order['text'] }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!--Typography-->
+      <div id="tab-mz-typography" class="tab-pane fade">
+        
+        {# General #}
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_general }}</div>
+          <div class="panel-body">
+            {# Font family #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-font-family-base">{{ entry_font_family }}</label>
+              <div class="col-xs-4">
+                {% for language in languages %}
+                <div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                  <select class="form-control" id="input-font-family-base-{{ language.language_id }}" name="style_font_family_base[{{ language.language_id }}]" >
+                    <option value="">{{ text_default }}</option>
+                    {% for font_family in font_family_list %} 
+                      {% if (style_font_family_base[language.language_id] == font_family['font_id']) %} 
+                      <option value="{{ font_family['font_id'] }}" selected="">{{ font_family['name'] }}</option>
+                      {% else %} 
+                      <option value="{{ font_family['font_id'] }}">{{ font_family['name'] }}</option>
+                      {% endif %} 
+                    {% endfor %} 
+                  </select>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+                
+            {# Font size #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-font-size-base">{{ entry_font_size }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-font-size-base" type="text"  name="style_font_size_base" value="{{ style_font_size_base }}" placeholder="1rem" />
+              </div>
+            </div>
+            
+            {# Line height #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-line-height-base">{{ entry_line_height }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-line-height-base" type="number" min="0" step="0.05" name="style_line_height_base" value="{{ style_line_height_base }}" placeholder="1.5" />
+              </div>
+            </div>
+          </div>
+        </div>
+          
+        {# Element specific setting #}
+        <ul class="nav nav-tabs mz-panel-nav-tabs">
+          <li class="active"><a href="#tab-typography-heading" data-toggle="tab">{{ text_headings }}</a></li>
+          <li><a href="#tab-typography-paragraph" data-toggle="tab">{{ text_paragraph }}</a></li>
+          <li><a href="#tab-typography-link" data-toggle="tab">{{ text_link }}</a></li>
+          <li><a href="#tab-typography-mark" data-toggle="tab">{{ text_mark }}</a></li>
+        </ul>
+        <div class="panel mz-panel-default">
+          <div class="panel-body tab-content">
+            <div id="tab-typography-heading" class="tab-pane active">
+              {# Font size #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label" for="input-heading-font-size">{{ entry_font_size }}</label>
+                <div class="col-xs-9">
+                  <div class="input-group">
+                    {% for heading_size in range(1, 6) %}
+                    <div class="input-group-addon">{{ 'h' ~ heading_size }}</div>
+                    <input class="form-control" id="input-heading-font-size-{{ heading_size }}" type="text" min="0" name="style_h{{ heading_size }}_font_size" value="{{ _context['style_h' ~ heading_size ~ '_font_size'] }}" placeholder="#em" />
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+
+              {# Font family #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label" for="input-font-family-headings">{{ entry_font_family }}</label>
+                <div class="col-xs-4">
+                  {% for language in languages %}
+                  <div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                    <select class="form-control" id="input-font-family-headings-{{ language.language_id }}" name="style_headings_font_family[{{ language.language_id }}]" >
+                      <option value="">{{ text_default }}</option>
+                      {% for font_family in font_family_list %} 
+                        {% if (style_headings_font_family[language.language_id] == font_family['font_id']) %} 
+                        <option value="{{ font_family['font_id'] }}" selected="">{{ font_family['name'] }}</option>
+                        {% else %} 
+                        <option value="{{ font_family['font_id'] }}">{{ font_family['name'] }}</option>
+                        {% endif %} 
+                      {% endfor %} 
+                    </select>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+
+              {# Font weight #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label" for="input-headings-font-weight">{{ entry_font_weight }}</label>
+                <div class="col-xs-9">
+                  <select class="form-control" id="input-headings-font-weight" name="style_headings_font_weight" >
+                    <option value="">{{ text_default }}</option>
+                    {% for font_weight in font_weight_list %} 
+                      {% if (style_headings_font_weight == font_weight['code']) %} 
+                      <option value="{{ font_weight['code'] }}" selected="">{{ font_weight['name'] }}</option>
+                      {% else %} 
+                      <option value="{{ font_weight['code'] }}">{{ font_weight['name'] }}</option>
+                      {% endif %} 
+                    {% endfor %} 
+                  </select>
+                </div>
+              </div>
+
+              {# Line height #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label" for="input-headings-line-height">{{ entry_line_height }}</label>
+                <div class="col-xs-9">
+                  <input class="form-control" id="input-headings-line-height" type="number" step="0.1" name="style_headings_line_height" value="{{ style_headings_line_height }}" placeholder="1.2" />
+                </div>
+              </div>
+
+              {# margin bottom #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label" for="input-headings-margin-bottom">{{ entry_margin_bottom }}</label>
+                <div class="col-xs-9">
+                  <input class="form-control" id="input-headings-margin-bottom" type="text" name="style_headings_margin_bottom" value="{{ style_headings_margin_bottom }}" placeholder="spacer/2" />
+                </div>
+              </div>
+
+              {# Font color #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label" for="input-headings-color">{{ entry_font_color }}</label>
+                <div class="col-xs-9">
+                  <div class="mz-colorpicker">
+                    <input class="form-control" id="input-headings-color" type="text" name="style_headings_color" value="{{ style_headings_color }}" placeholder="{{ help_hexadecimal_color }}" /> 
+                    <span class="mz-colorpicker-badge"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="tab-typography-paragraph" class="tab-pane">
+              {# margin bottom #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label" for="input-paragraph-margin-bottom">{{ entry_margin_bottom }}</label>
+                <div class="col-xs-9">
+                  <input class="form-control" id="input-paragraph-margin-bottom" type="text" name="style_paragraph_margin_bottom" value="{{ style_paragraph_margin_bottom }}" placeholder="1rem" />
+                </div>
+              </div>
+            </div>
+            <div id="tab-typography-link" class="tab-pane">
+              {# Color #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label" for="input-link-color">{{ entry_color }}</label>
+                <div class="col-xs-9">
+                  <div class="mz-colorpicker">
+                    <input class="form-control" id="input-link-color" type="text" name="style_link_color" value="{{ style_link_color }}" placeholder="{{ help_hexadecimal_color }}" /> 
+                    <span class="mz-colorpicker-badge"></span>
+                  </div>
+                </div>
+              </div>
+                
+              {# Hover color #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label" for="input-link-hover-color">{{ entry_hover_color }}</label>
+                <div class="col-xs-9">
+                  <div class="mz-colorpicker">
+                    <input class="form-control" id="input-link-hover-color" type="text" name="style_link_hover_color" value="{{ style_link_hover_color }}" placeholder="{{ help_hexadecimal_color }}" /> 
+                    <span class="mz-colorpicker-badge"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="tab-typography-mark" class="tab-pane">
+              {# background #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_background }}</label>
+                <div class="col-xs-9">
+                  <div class="mz-colorpicker">
+                    <input class="form-control" id="input-mark-bg" type="text" name="style_mark_bg" value="{{ style_mark_bg }}" placeholder="{{ help_color_code }}" /> 
+                    <span class="mz-colorpicker-badge"></span>
+                  </div>
+                </div>
+              </div>
+              
+              {# padding #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_padding }}</label>
+                <div class="col-xs-9">
+                  <input class="form-control" id="input-mark-padding" type="text" name="style_mark_padding" value="{{ style_mark_padding }}" placeholder="0.2em" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          
+        <!-- Google font -->
+        <div class="panel mz-panel-default">
+          <div class="panel-heading clearfix">
+            <span class="pull-left">{{ text_google_font }}</span>
+            <ul class="pull-right nav nav-tabs mz-nav-sandwich-tab">
+              <li class="active"><a href="#tab-google-font-add" data-toggle="tab">{{ text_add }}</a></li>
+              <li><a href="#tab-google-font-list" data-toggle="tab">{{ text_list }}</a></li>
+            </ul>
+          </div>
+          <div class="panel-body tab-content">
+            <div id="tab-google-font-add" class="tab-pane active">
+              <div class="col-xs-6">
+                <!--Google Font name-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-google-font-name">{{ entry_font_name }}</label>
+                  <div class="col-xs-9">
+                    <input class="form-control large" id="input-google-font-name" type="text" name="" value="" placeholder="{{ entry_font_name }}" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <!--Google Font family-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-google-font-family">{{ entry_font_family }}</label>
+                  <div class="col-xs-9">
+                    <input class="form-control large" id="input-google-font-family" type="text" name="" value="" placeholder="{{ entry_font_family }}" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <!--Google Font url-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-google-font-url">{{ entry_font_url }}</label>
+                  <div class="col-xs-9">
+                    <input class="form-control large" id="input-google-font-url" type="text" name="" value="" placeholder="{{ entry_font_url }}" />
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-6">
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-google-parent-font">{{ entry_parent_font }}</label>
+                  <div class="col-xs-9">
+                    <select class="form-control large" id="input-google-parent-font" >
+                      <option value="0">{{ text_none }}</option>
+                      {% for font_family in font_family_list %} 
+                        <option value="{{ font_family['font_id'] }}">{{ font_family['name'] }}</option>
+                      {% endfor %} 
+                    </select>
+                  </div>
+                </div>
+                <button id="button-google-font-add" type="button" class="btn btn-primary pull-right">{{ button_add_font }}</button>
+              </div>
+            </div>
+            <div id="tab-google-font-list" class="tab-pane">
+              <table id="table-google-font-list" class="table table-bordered">
+                <thead>
+                  <tr><th>{{ entry_font_name }}</th><th>{{ entry_font_family }}</th><th>{{ entry_font_url }}</th><th>{{ entry_parent_font }}</th><th>{{ tab_action }}</th></tr>
+                </thead>
+                <tbody>
+                  {% for font in google_fonts %} 
+                    <tr id="row-google-font-{{ font['font_id'] }}">
+                        <td>{{ font['name'] }}</td>
+                        <td>{{ font['font_family'] }}</td>
+                        <td>{{ font['url'] }}</td>
+                        <td>{{ font['parent_font_info']?font['parent_font_info']['name']:' - ' }}</td>
+                        <td><button type="button" id="button-delete-google-font-{{ font['font_id'] }}" class="btn btn-danger btn-xs" onclick="deleteGoogleFont({{ font['font_id'] }})"><i class="fa fa-trash-o" aria-hidden="true"></i></button></td>
+                    </tr>
+                  {% endfor %} 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+                
+      <!--Components-->
+      <div id="tab-mz-components" class="tab-pane fade">
+        <div class='panel mz-panel-default'>
+          <div class="panel-heading">{{ text_general }}</div>
+          <div class='panel-body'>
+            {# Line height #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_line_height }}</label>
+              <div class="col-xs-9">
+                <div class='input-group'>
+                  <div class='input-group-addon'>{{ text_sm }}</div>
+                  <input class="form-control" id="input-line-height-sm" type="number" step="0.1" name="style_line_height_sm" value="{{ style_line_height_sm }}" placeholder="1.5" />
+                  <div class='input-group-addon'>{{ text_lg }}</div>
+                  <input class="form-control" id="input-line-height-lg" type="number" step="0.1" name="style_line_height_lg" value="{{ style_line_height_lg }}" placeholder="1.5" />
+                </div>
+              </div>
+            </div>
+                
+            {# Border #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_border }}</label>
+              <div class="col-xs-9">
+                <div class='input-group'>
+                  <div class='input-group-addon'>{{ text_width }}</div>
+                  <input class="form-control" id="input-border-width" type="text" name="style_border_width" value="{{ style_border_width }}" placeholder="1px" />
+                  <div class='input-group-addon'>{{ text_color }}</div>
+                  <div class="mz-colorpicker">
+                    <input class="form-control" id="input-border-color" type="text" name="style_border_color" value="{{ style_border_color }}" placeholder="{{ help_color_code }}" /> 
+                    <span class="mz-colorpicker-badge"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+                    
+            {# Border radius #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_border_radius }}</label>
+              <div class="col-xs-9">
+                <div class='input-group'>
+                  <div class='input-group-addon'>{{ text_default }}</div>
+                  <input class="form-control" id="input-border-radius" type="text" name="style_border_radius" value="{{ style_border_radius }}" placeholder="0.25rem" />
+                  <div class='input-group-addon'>{{ text_sm }}</div>
+                  <input class="form-control" id="input-border-radius-sm" type="text" name="style_border_radius_sm" value="{{ style_border_radius_sm }}" placeholder="0.2rem" />
+                  <div class='input-group-addon'>{{ text_lg }}</div>
+                  <input class="form-control" id="input-border-radius-lg" type="text" name="style_border_radius_lg" value="{{ style_border_radius_lg }}" placeholder="0.3rem" />
+                </div>
+              </div>
+            </div>
+                
+            {# component active color #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_active_color }}</label>
+              <div class="col-xs-9">
+                <div class='input-group'>
+                  <div class='input-group-addon'>{{ text_background }}</div>
+                  <div class="mz-colorpicker">
+                    <input class="form-control" id="input-component-active-bg" type="text" name="style_component_active_bg" value="{{ style_component_active_bg }}" placeholder="{{ help_color_code }}" /> 
+                    <span class="mz-colorpicker-badge"></span>
+                  </div>
+                  <div class='input-group-addon'>{{ text_text }}</div>
+                  <div class="mz-colorpicker">
+                    <input class="form-control" id="input-component-active-color" type="text" name="style_component_active_color" value="{{ style_component_active_color }}" placeholder="{{ help_color_code }}" /> 
+                    <span class="mz-colorpicker-badge"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+                    
+        <ul class="nav nav-tabs mz-panel-nav-tabs">
+          <li class="active"><a href="#tab-component-dropdown" data-toggle="tab">{{ text_dropdown }}</a></li>
+          <li><a href="#tab-component-pagination" data-toggle="tab">{{ text_b_pagination }}</a></li>
+          <li><a href="#tab-component-card" data-toggle="tab">{{ text_card }}</a></li>
+          <li><a href="#tab-component-modal" data-toggle="tab">{{ text_modal }}</a></li>
+          <li><a href="#tab-component-alert" data-toggle="tab">{{ text_alert }}</a></li>
+          <li><a href="#tab-component-breadcrumbs" data-toggle="tab">{{ text_breadcrumbs }}</a></li>
+        </ul>
+        <div class="panel mz-panel-default">
+          <div class="panel-body tab-content">
+            <div id="tab-component-dropdown" class="tab-pane active">
+              {# Dropdown #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_dropdown }}</label>
+                <div class="col-xs-9">
+                  <div class='input-group'>
+                    <div class='input-group-addon'>{{ text_min_width }}</div>
+                    <input class="form-control" id="input-dropdown-min-width" type="text" name="style_dropdown_min_width" value="{{ style_dropdown_min_width }}" placeholder="10rem" />
+                    <div class='input-group-addon'>{{ text_padding_y }}</div>
+                    <input class="form-control" id="input-dropdown-padding-y" type="text" name="style_dropdown_padding_y" value="{{ style_dropdown_padding_y }}" placeholder="0.5rem" />
+                    <div class='input-group-addon'>{{ text_spacer }}</div>
+                    <input class="form-control" id="input-dropdown-spacer" type="text" name="style_dropdown_spacer" value="{{ style_dropdown_spacer }}" placeholder="0.125rem" />
+                  </div>
+                </div>
+              </div>
+
+              {# Dropdown item #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_dropdown_item }}</label>
+                <div class="col-xs-9">
+                  <div class='input-group'>
+                    <div class='input-group-addon'>{{ text_padding_x }}</div>
+                    <input class="form-control" id="input-dropdown-item-padding-x" type="text" name="style_dropdown_item_padding_x" value="{{ style_dropdown_item_padding_x }}" placeholder="1.5rem" />
+                    <div class='input-group-addon'>{{ text_padding_y }}</div>
+                    <input class="form-control" id="input-dropdown-item-padding-y" type="text" name="style_dropdown_item_padding_y" value="{{ style_dropdown_item_padding_y }}" placeholder="0.25rem" />
+                  </div>
+                </div>
+              </div>
+
+              {# Border #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_border }}</label>
+                <div class="col-xs-9">
+                  <div class='input-group'>
+                    <div class='input-group-addon'>{{ text_width }}</div>
+                    <input class="form-control" id="input-dropdown-border-width" type="text" name="style_dropdown_border_width" value="{{ style_dropdown_border_width }}" placeholder="1px" />
+                    <div class='input-group-addon'>{{ text_radius }}</div>
+                    <input class="form-control" id="input-dropdown-border-radius" type="text" name="style_dropdown_border_radius" value="{{ style_dropdown_border_radius }}" placeholder="0.25rem" />
+                    <div class='input-group-addon'>{{ text_color }}</div>
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-dropdown-border-color" type="text" name="style_dropdown_border_color" value="{{ style_dropdown_border_color }}" placeholder="{{ help_color_code }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {# background bg color #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_dropdown_color }}</label>
+                <div class="col-xs-9">
+                  <div class='input-group'>
+                    <div class='input-group-addon'>{{ text_background }}</div>
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-dropdown-bg" type="text" name="style_dropdown_bg" value="{{ style_dropdown_bg }}" placeholder="{{ help_color_code }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                    <div class='input-group-addon'>{{ text_text }}</div>
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-dropdown-link-color" type="text" name="style_dropdown_link_color" value="{{ style_dropdown_link_color }}" placeholder="{{ help_color_code }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {# Link hover #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_link_hover }}</label>
+                <div class="col-xs-9">
+                  <div class='input-group'>
+                    <div class='input-group-addon'>{{ text_background }}</div>
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-dropdown-link-hover-bg" type="text" name="style_dropdown_link_hover_bg" value="{{ style_dropdown_link_hover_bg }}" placeholder="{{ help_color_code }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                    <div class='input-group-addon'>{{ text_text }}</div>
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-dropdown-link-hover-color" type="text" name="style_dropdown_link_hover_color" value="{{ style_dropdown_link_hover_color }}" placeholder="{{ help_color_code }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {# Link active #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_link_active }}</label>
+                <div class="col-xs-9">
+                  <div class='input-group'>
+                    <div class='input-group-addon'>{{ text_background }}</div>
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-dropdown-link-active-bg" type="text" name="style_dropdown_link_active_bg" value="{{ style_dropdown_link_active_bg }}" placeholder="{{ help_color_code }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                    <div class='input-group-addon'>{{ text_text }}</div>
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-dropdown-link-active-color" type="text" name="style_dropdown_link_active_color" value="{{ style_dropdown_link_active_color }}" placeholder="{{ help_color_code }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="tab-component-pagination" class="tab-pane">
+              {# size #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_size }}</label>
+                <div class="col-xs-9">
+                  <div class='input-group'>
+                    <div class='input-group-addon'>{{ text_padding_x }}</div>
+                    <input class="form-control" id="input-pagination-padding-x" type="text" name="style_pagination_padding_x" value="{{ style_pagination_padding_x }}" placeholder="0.75rem" />
+                    <div class='input-group-addon'>{{ text_padding_y }}</div>
+                    <input class="form-control" id="input-pagination-padding-y" type="text" name="style_pagination_padding_y" value="{{ style_pagination_padding_y }}" placeholder="0.5rem" />
+                  </div>
+                </div>
+              </div>
+
+              {# size sm #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_size_sm }}</label>
+                <div class="col-xs-9">
+                  <div class='input-group'>
+                    <div class='input-group-addon'>{{ text_padding_x }}</div>
+                    <input class="form-control" id="input-pagination-padding-x-sm" type="text" name="style_pagination_padding_x_sm" value="{{ style_pagination_padding_x_sm }}" placeholder="0.5rem" />
+                    <div class='input-group-addon'>{{ text_padding_y }}</div>
+                    <input class="form-control" id="input-pagination-padding-y-sm" type="text" name="style_pagination_padding_y_sm" value="{{ style_pagination_padding_y_sm }}" placeholder="0.25rem" />
+                  </div>
+                </div>
+              </div>
+
+              {# size lg #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_size_lg }}</label>
+                <div class="col-xs-9">
+                  <div class='input-group'>
+                    <div class='input-group-addon'>{{ text_padding_x }}</div>
+                    <input class="form-control" id="input-pagination-padding-x-lg" type="text" name="style_pagination_padding_x_lg" value="{{ style_pagination_padding_x_lg }}" placeholder="1.5rem" />
+                    <div class='input-group-addon'>{{ text_padding_y }}</div>
+                    <input class="form-control" id="input-pagination-padding-y-lg" type="text" name="style_pagination_padding_y_lg" value="{{ style_pagination_padding_y_lg }}" placeholder="0.75rem" />
+                  </div>
+                </div>
+              </div>
+
+              {# Line height #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_line_height }}</label>
+                <div class="col-xs-9">
+                  <input class="form-control" id="input-pagination-line-height" type="number" step="0.1" name="style_pagination_line_height" value="{{ style_pagination_line_height }}" placeholder="1.25" />
+                </div>
+              </div>
+
+              {# color #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_color }}</label>
+                <div class="col-xs-9">
+                  <div class='input-group'>
+                    <div class='input-group-addon'>{{ text_background }}</div>
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-pagination-bg" type="text" name="style_pagination_bg" value="{{ style_pagination_bg }}" placeholder="{{ help_color_code }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                    <div class='input-group-addon'>{{ text_text }}</div>
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-pagination-color" type="text" name="style_pagination_color" value="{{ style_pagination_color }}" placeholder="{{ help_color_code }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {# Border #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_border }}</label>
+                <div class="col-xs-9">
+                  <div class='input-group'>
+                    <div class='input-group-addon'>{{ text_width }}</div>
+                    <input class="form-control" id="input-pagination-border-width" type="text" name="style_pagination_border_width" value="{{ style_pagination_border_width }}" placeholder="1px" />
+                    <div class='input-group-addon'>{{ text_color }}</div>
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-pagination-border-color" type="text" name="style_pagination_border_color" value="{{ style_pagination_border_color }}" placeholder="{{ help_color_code }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {# hover color #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_hover_color }}</label>
+                <div class="col-xs-9">
+                  <div class='input-group'>
+                    <div class='input-group-addon'>{{ text_background }}</div>
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-pagination-hover-bg" type="text" name="style_pagination_hover_bg" value="{{ style_pagination_hover_bg }}" placeholder="{{ help_color_code }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                    <div class='input-group-addon'>{{ text_text }}</div>
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-pagination-hover-color" type="text" name="style_pagination_hover_color" value="{{ style_pagination_hover_color }}" placeholder="{{ help_color_code }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                    <div class='input-group-addon'>{{ text_border }}</div>
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-pagination-hover-border-color" type="text" name="style_pagination_hover_border_color" value="{{ style_pagination_hover_border_color }}" placeholder="{{ help_color_code }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {# active color #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_active_color }}</label>
+                <div class="col-xs-9">
+                  <div class='input-group'>
+                    <div class='input-group-addon'>{{ text_background }}</div>
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-pagination-active-bg" type="text" name="style_pagination_active_bg" value="{{ style_pagination_active_bg }}" placeholder="{{ help_color_code }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                    <div class='input-group-addon'>{{ text_text }}</div>
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-pagination-active-color" type="text" name="style_pagination_active_color" value="{{ style_pagination_active_color }}" placeholder="{{ help_color_code }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                    <div class='input-group-addon'>{{ text_border }}</div>
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-pagination-active-border-color" type="text" name="style_pagination_active_border_color" value="{{ style_pagination_active_border_color }}" placeholder="{{ help_color_code }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="tab-component-card" class="tab-pane">
+              {# spacer #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_spacer }}</label>
+                <div class="col-xs-9">
+                  <div class='input-group'>
+                    <div class='input-group-addon'>{{ text_spacer_x }}</div>
+                    <input class="form-control" id="input-card-spacer-x" type="text" name="style_card_spacer_x" value="{{ style_card_spacer_x }}" placeholder="1.25rem" />
+                    <div class='input-group-addon'>{{ text_spacer_y }}</div>
+                    <input class="form-control" id="input-card-spacer-y" type="text" name="style_card_spacer_y" value="{{ style_card_spacer_y }}" placeholder="0.75rem" />
+                  </div>
+                </div>
+              </div>
+
+              {# Border #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_border }}</label>
+                <div class="col-xs-9">
+                  <div class='input-group'>
+                    <div class='input-group-addon'>{{ text_width }}</div>
+                    <input class="form-control" id="input-card-border-width" type="text" name="style_card_border_width" value="{{ style_card_border_width }}" placeholder="1px" />
+                    <div class='input-group-addon'>{{ text_radius }}</div>
+                    <input class="form-control" id="input-card-border-radius" type="text" name="style_card_border_radius" value="{{ style_card_border_radius }}" placeholder="0.25rem" />
+                    <div class='input-group-addon'>{{ text_color }}</div>
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-card-border-color" type="text" name="style_card_border_color" value="{{ style_card_border_color }}" placeholder="{{ help_color_code }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="tab-component-modal" class="tab-pane">
+              {# size #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_size }}</label>
+                <div class="col-xs-9">
+                  <div class='input-group'>
+                    <div class='input-group-addon'>{{ text_xl }}</div>
+                    <input class="form-control" id="input-modal-xl" type="text" name="style_modal_xl" value="{{ style_modal_xl }}" placeholder="1140px" />
+                    <div class='input-group-addon'>{{ text_lg }}</div>
+                    <input class="form-control" id="input-modal-lg" type="text" name="style_modal_lg" value="{{ style_modal_lg }}" placeholder="800px" />
+                    <div class='input-group-addon'>{{ text_md }}</div>
+                    <input class="form-control" id="input-modal-md" type="text" name="style_modal_md" value="{{ style_modal_md }}" placeholder="500px" />
+                    <div class='input-group-addon'>{{ text_sm }}</div>
+                    <input class="form-control" id="input-modal-sm" type="text" name="style_modal_sm" value="{{ style_modal_sm }}" placeholder="300px" />
+                  </div>
+                </div>
+              </div>
+
+              {# backdrop #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_backdrop }}</label>
+                <div class="col-xs-9">
+                  <div class='input-group'>
+                    <div class='input-group-addon'>{{ text_background }}</div>
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-modal-backdrop-bg" type="text" name="style_modal_backdrop_bg" value="{{ style_modal_backdrop_bg }}" placeholder="{{ help_color_code }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                    <div class='input-group-addon'>{{ text_opacity }}</div>
+                    <input class="form-control" id="input-modal-backdrop-opacity" type="number" name="style_modal_backdrop_opacity" value="{{ style_modal_backdrop_opacity }}" placeholder="0.5" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="tab-component-alert" class="tab-pane">
+              {# size #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_size }}</label>
+                <div class="col-xs-9">
+                  <div class='input-group'>
+                    <div class='input-group-addon'>{{ text_padding_x }}</div>
+                    <input class="form-control" id="input-alert-padding-x" type="text" name="style_alert_padding_x" value="{{ style_alert_padding_x }}" placeholder="1.25rem" />
+                    <div class='input-group-addon'>{{ text_padding_y }}</div>
+                    <input class="form-control" id="input-alert-padding-y" type="text" name="style_alert_padding_y" value="{{ style_alert_padding_y }}" placeholder="0.75rem" />
+                  </div>
+                </div>
+              </div>
+
+              {# margin bottom #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label" for="input-alert-margin-bottom">{{ entry_margin_bottom }}</label>
+                <div class="col-xs-9">
+                  <input class="form-control" id="input-alert-margin-bottom" type="text" name="style_alert_margin_bottom" value="{{ style_alert_margin_bottom }}" placeholder="1rem" />
+                </div>
+              </div>
+
+              {# Border #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_border }}</label>
+                <div class="col-xs-9">
+                  <div class='input-group'>
+                    <div class='input-group-addon'>{{ text_width }}</div>
+                    <input class="form-control" id="input-alert-border-width" type="text" name="style_alert_border_width" value="{{ style_alert_border_width }}" placeholder="1px" />
+                    <div class='input-group-addon'>{{ text_radius }}</div>
+                    <input class="form-control" id="input-alert-border-radius" type="text" name="style_alert_border_radius" value="{{ style_alert_border_radius }}" placeholder="0.25rem" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="tab-component-breadcrumbs" class="tab-pane">
+              {# breadcrumb #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_breadcrumb }}</label>
+                <div class="col-xs-9">
+                  <div class='input-group'>
+                    <div class='input-group-addon'>{{ text_padding_x }}</div>
+                    <input class="form-control" id="input-breadcrumb-padding-x" type="text" name="style_breadcrumb_padding_x" value="{{ style_breadcrumb_padding_x }}" placeholder="1.25rem" />
+                    <div class='input-group-addon'>{{ text_padding_y }}</div>
+                    <input class="form-control" id="input-breadcrumb-padding-y" type="text" name="style_breadcrumb_padding_y" value="{{ style_breadcrumb_padding_y }}" placeholder="0.75rem" />
+                  </div>
+                </div>
+              </div>
+
+              {# breadcrumb item #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label" for="input-breadcrumb-item-padding">{{ entry_breadcrumb_item }}</label>
+                <div class="col-xs-9">
+                  <div class='input-group'>
+                    <div class='input-group-addon'>{{ text_padding }}</div>
+                    <input class="form-control" id="input-breadcrumb-item-padding" type="text" name="style_breadcrumb_item_padding" value="{{ style_breadcrumb_item_padding }}" placeholder="1rem" />
+                  </div>
+                </div>
+              </div>
+
+              {# margin bottom #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label" for="input-breadcrumb-margin-bottom">{{ entry_margin_bottom }}</label>
+                <div class="col-xs-9">
+                  <input class="form-control" id="input-breadcrumb-margin-bottom" type="text" name="style_breadcrumb_margin_bottom" value="{{ style_breadcrumb_margin_bottom }}" placeholder="1rem" />
+                </div>
+              </div>
+
+              {# divider #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label" for="input-breadcrumb-divider">{{ entry_divider }}</label>
+                <div class="col-xs-9">
+                  <input class="form-control" id="input-breadcrumb-divider" type="text" name="style_breadcrumb_divider" value="{{ style_breadcrumb_divider }}" placeholder="/" />
+                </div>
+              </div>
+
+              {# border radius #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label" for="input-breadcrumb-border-radius">{{ entry_border_radius }}</label>
+                <div class="col-xs-9">
+                  <input class="form-control" id="input-breadcrumb-border-radius" type="text" name="style_breadcrumb_border_radius" value="{{ style_breadcrumb_border_radius }}" placeholder="0.25rem" />
+                </div>
+              </div>
+
+              {# color #}
+              <div class="form-group">
+                <label class="col-xs-3 control-label">{{ entry_color }}</label>
+                <div class="col-xs-9">
+                  <div class='input-group'>
+                    <div class='input-group-addon'>{{ text_background }}</div>
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-breadcrumb-bg" type="text" name="style_breadcrumb_bg" value="{{ style_breadcrumb_bg }}" placeholder="{{ help_color_code }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                    <div class='input-group-addon'>{{ text_active }}</div>
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-breadcrumb-active-color" type="text" name="style_breadcrumb_active_color" value="{{ style_breadcrumb_active_color }}" placeholder="{{ help_color_code }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                    <div class='input-group-addon'>{{ text_divider }}</div>
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-breadcrumb-divider-color" type="text" name="style_breadcrumb_divider_color" value="{{ style_breadcrumb_divider_color }}" placeholder="{{ help_color_code }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </form>
+  <script>
+    // Highlight color palette
+    $('input[name="style_color_palette"]').change(function(e){
+        $('.color-palette').removeClass('checked');
+        $(e.target).parents('.color-palette').addClass('checked');
+    });
+      
+    // Add and delete google font
+    $('#button-google-font-add').on('click', function(){
+            var url = "index.php?route=extension/maza/asset/google_font&user_token={{ user_token }}&action=add";
+
+            var error = false;
+            $('#tab-google-font-add .error').remove();
+            var data = {};
+
+            var input_google_font_name =  $('#input-google-font-name').val();
+            if(input_google_font_name){
+                data['name'] = $('#input-google-font-name').val();
+            } else{
+                $('#input-google-font-name').after("<div class='error text-danger'>{{ error_required }}</div>");
+                error = true;
+            }
+
+            var input_google_font_family =  $('#input-google-font-family').val();
+            if(input_google_font_family){
+                data['font_family'] = $('#input-google-font-family').val();
+            } else{
+                $('#input-google-font-family').after("<div class='error text-danger'>{{ error_required }}</div>");
+                error = true;
+            }
+
+            var input_google_font_url =  $('#input-google-font-url').val();
+            if(input_google_font_url){
+                data['url'] = $('#input-google-font-url').val();
+            } else{
+                $('#input-google-font-url').after("<div class='error text-danger'>{{ error_required }}</div>");
+                error = true;
+            }
+            
+            data['parent_font_id'] = $('#input-google-parent-font').val();
+
+            if(error) return;
+            
+            $(this).button('loading');
+            
+            $.post(url, data, function(json){
+                $('#tab-google-font-add .alert').remove();
+
+                if(json['success']){
+                    $('#table-google-font-list tbody').append('<tr id="row-google-font-' + json['font_id'] + '"><td>'
+                            + data.name + '</td><td>' + data.font_family + '</td><td>' + data.url + '</td><td>' + $('#input-google-parent-font option:selected').text() + '</td><td>' +
+                            '<button type="button" id="button-delete-google-font-' + json['font_id'] + '" class="btn btn-danger btn-xs" onclick="deleteGoogleFont(' + json['font_id'] + ')"><i class="fa fa-trash-o" aria-hidden="true"></i></button>'
+                            + '</td></tr>');
+                    $('select[id^="input-font-family"]').append('<option value="' + json['font_id'] + '">' + data.name + '</option>');
+                    $('#tab-google-font-add').prepend('<div class="alert alert-success alert-dismissible"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                }
+                if(json['error']){
+                    $('#tab-google-font-add').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                }
+                
+                $('#button-google-font-add').button('reset');
+            }, 'json');
+    });
+    
+    // delete google font
+    function deleteGoogleFont(font_id){
+            var url = "index.php?route=extension/maza/asset/google_font&user_token={{ user_token }}&action=delete&font_id=" + font_id;
+            
+            $('#button-delete-google-font-' + font_id).html('<i class="fa fa-circle-o-notch fa-spin fa-fw"></i>');
+            
+            $.get(url, null, function(json){
+                $('#tab-google-font-list .alert').remove();
+
+                if(json['success']){
+                    $('#row-google-font-' + font_id).remove();
+                    $('#tab-google-font-list').prepend('<div class="alert alert-success alert-dismissible"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                }
+                if(json['error']){
+                    $('#tab-google-font-list').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                }
+                
+                $('#button-delete-google-font-' + font_id).html('<i class="fa fa-trash-o" aria-hidden="true"></i>');
+            }, 'json');
+    }
+  </script>
+</div>
+<form action="{{ import }}" enctype="multipart/form-data" method="post" id="form-import" style="display: none;"><input type="file" accept=".json" name="file" /></form>
+<script>
+$('#button-import').on('click', function(){
+    $('#form-import input[name=\'file\']').val('').trigger('click');
+    
+    if (typeof timer != 'undefined') {
+    	clearInterval(timer);
+    }
+
+    timer = setInterval(function() {
+        if ($('#form-import input[name=\'file\']').val() != '') {
+            clearInterval(timer);
+            $('#form-import').submit();
+        }
+    }, 500);
+    
+});
+</script>
+{{ mz_footer }}

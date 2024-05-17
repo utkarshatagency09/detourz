@@ -1,0 +1,139 @@
+{{ header }}
+<div id="maza-testimonial" class="container content">
+  <div class="row">{{ column_left }}
+    {% if column_left and column_right %}
+    {% set class = 'col-md-6' %}
+    {% elseif column_left or column_right %}
+    {% set class = 'col-md-9' %}
+    {% else %}
+    {% set class = 'col-md-12' %}
+    {% endif %}
+    <div id="content" class="testimonials {{ class }}">{{ content_top }}
+      <h1 class="page-title">{{ heading_title }}</h1>
+      {% if testimonials %}
+      <div class="row row-cols-xl-{{ column_xl }} row-cols-lg-{{ column_lg }} row-cols-md-{{ column_md }} row-cols-sm-{{ column_sm }} row-cols-{{ column_xs }}">
+        {% for testimonial in testimonials %}
+        <div class="col">
+          <div class="testimonial-thumb border p-4 text-center">
+            <div class="quote">{% if testimonial_quote_icon_font %}
+              <i class="icon {{ testimonial_quote_icon_font }}" {{ testimonial_quote_icon_size?'style="font-size: ' ~ testimonial_quote_icon_size/16 ~ 'rem"':'' }}></i>
+              {% elseif testimonial_quote_icon_svg %}
+              <div class="icon svg-icon" style="{{ testimonial_quote_icon_width?'width:' ~ testimonial_quote_icon_width/16 ~ 'rem;' }}{{ testimonial_quote_icon_height?'height:' ~ testimonial_quote_icon_height/16 ~ 'rem;' }}">{{ testimonial_quote_icon_svg }}</div>
+              {% elseif testimonial_quote_icon_image %}
+              <img class="icon" src="{{ testimonial_quote_icon_image }}"  />
+              {% endif %}
+            </div>
+            <p class="description">{{ testimonial.description }}</p>
+            {% if testimonial.rating is not null %}
+            <div class="rating">
+            {% for i in range(1, 5) %}
+              {% if testimonial.rating >= i %}
+              <i class="fas fa-star"></i>
+              {% else %}
+              <i class="far fa-star"></i>
+              {% endif %}
+            {% endfor %}
+            </div>
+            {% endif %}
+            <div class='author'>
+              {% if testimonial.thumb is not empty %}
+              <img class='author-image' src="{{ testimonial.thumb }}" alt="{{ testimonial.author }}" />
+              {% endif %}
+              <div class='author-info'>
+                <h4 class="author-name">{{ testimonial.author }}</h4>
+                {% if testimonial.extra is not empty %}
+                <span class="author-extra">{{ testimonial.extra }}</span>
+                {% endif %}
+              </div>
+            </div>
+            {% if testimonial.timestamp %}
+            <div class="timestamp">{{ testimonial.timestamp }}</div>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <div class="row">
+        <div class="col-sm-6 text-start">{{ pagination }}</div>
+        <div class="col-sm-6 text-end">{{ results }}</div>
+      </div>
+      {% endif %}
+      {% if not testimonials %}
+      <p>{{ text_empty }}</p>
+      <div class="buttons clearfix">
+        <div class="float-end"><a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a></div>
+      </div>
+      {% endif %}
+      {% if testimonial_form %}
+      <div id="form">
+        <h2>{{ text_form_title }}</h2>
+        <form action="{{ action }}#form" method="post" enctype="multipart/form-data">
+          <!-- Alert message -->
+          {% if (success is not empty) %} 
+            <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+          {% endif %} 
+          {% if (warning is not empty) %} 
+            <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="btn-close" data-bs-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+          {% endif %}
+            
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label class="form-label" for="input-name">{{ entry_name }}</label>
+              <input type="text" name="name" value="{{ form_name }}" class="form-control form-control-lg {{ invalid_name?' is-invalid' }}" id="input-name" placeholder="{{ entry_name }}" required>
+              <div class="invalid-feedback">{{ error_name }}</div>
+            </div>
+            {% if testimonial_email %}
+            <div class="col-sm-6">
+              <label class="form-label" for="input-email">{{ entry_email }}</label>
+              <input type="email" name="email" value="{{ form_email }}" class="form-control form-control-lg {{ invalid_email?'is-invalid' }}" id="input-email" aria-describedby="help-email" placeholder="{{ entry_email }}" {{ testimonial_email > 0?'required' }} />
+              <div class="invalid-feedback">{{ error_email }}</div>
+              <small id="help-email" class="form-text text-muted">{{ help_email }}</small>
+            </div>
+            {% endif %}
+            {% if testimonial_extra %}
+            <div class="col-sm-6">
+              <label class="form-label" for="input-extra">{{ entry_extra }}</label>
+              <input type="text" name="extra" value="{{ form_extra }}" class="form-control form-control-lg {{ invalid_extra?'is-invalid' }}" id="input-extra" placeholder="{{ entry_extra }}" {{ testimonial_extra > 0?'required' }}>
+              <div class="invalid-feedback">{{ error_extra }}</div>
+            </div>
+            {% endif %}
+            {% if testimonial_image %}
+            <div class="col-sm-6">
+              <label class="form-label" for="input-image">{{ entry_image }}</label>
+              <input type="file" name="image" class="form-control form-control-lg" id="input-image" aria-describedby="help-image" {{ testimonial_image > 0?'required' }}>
+              {% if invalid_image %}
+              <div class="invalid-feedback d-block">{{ invalid_image }}</div>
+              {% else %}
+              <small id="help-image" class="form-text text-muted">{{ help_image }}</small>
+              {% endif %}
+            </div>
+            {% endif %}
+          </div>
+          {% if testimonial_rating %}
+          <div class="mb-3">
+            <label class="form-label d-block" for="input-rating">{{ entry_rating }}</label>
+            <span class="start-form-check">
+              <input type="radio" id="input-rating-5" name="rating" value="5" /><label for="input-rating-5">5</label>
+              <input type="radio" id="input-rating-4" name="rating" value="4" checked="checked" /><label for="input-rating-4">4</label>
+              <input type="radio" id="input-rating-3" name="rating" value="3" /><label for="input-rating-3">3</label>
+              <input type="radio" id="input-rating-2" name="rating" value="2" /><label for="input-rating-2">2</label>
+              <input type="radio" id="input-rating-1" name="rating" value="1" /><label for="input-rating-1">1</label>
+              <input type="radio" id="input-rating-0" name="rating" value="0" class="star-cb-clear" /><label for="input-rating-0">0</label>
+            </span>
+            <div class="invalid-feedback {{ invalid_rating?'d-block' }}">{{ error_rating }}</div>
+          </div>
+          {% endif %}
+          <div class="mb-3">
+            <label class="form-label" for="input-description">{{ entry_description }}</label>
+            <textarea name="description" class="form-control form-control-lg {{ invalid_description?'is-invalid' }}" min="10" id="input-description" aria-describedby="help-description" placeholder="{{ entry_description }}" required>{{ form_description }}</textarea>
+            <small id="help-description" class="form-text {{ invalid_description?'invalid-feedback':'text-muted' }}">{{ help_description }}</small>
+          </div>
+          {{ captcha }}
+          <button type="submit" class="btn btn-lg btn-primary">{{ button_submit }}</button>
+        </form>
+      </div>
+      {% endif %}
+      {{ content_bottom }}</div>
+    {{ column_right }}</div>
+</div>
+{{ footer }} 

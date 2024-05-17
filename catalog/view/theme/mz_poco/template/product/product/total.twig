@@ -1,0 +1,10 @@
+{% verbatim %}
+{{ text_applicable_fee }}
+{% if logged and mz_has_address %}
+<a href="{{ mz_total_url }}" data-mz-toggle="ajaxpopover" data-bs-trigger="focus" data-bs-title="{{ text_applicable_fee_title }}" data-bs-placement="bottom" aria-haspopup="true" aria-expanded="false">{{ text_details }}</a>
+{% elseif not logged %}
+<a href onclick="event.preventDefault();" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-title="{{ text_applicable_fee_title }}" data-bs-content="{{ error_applicable_fee_login|format(mz_login)|escape }}" data-bs-placement="bottom" aria-haspopup="true" aria-expanded="false">{{ text_details }}</a>
+{% elseif not mz_has_address %}
+<a href onclick="event.preventDefault();" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-html="true" data-bs-title="{{ text_applicable_fee_title }}" data-bs-content="{{ error_applicable_fee_address|format(mz_address)|escape }}" data-bs-placement="bottom" aria-haspopup="true" aria-expanded="false">{{ text_details }}</a>
+{% endif %}
+{% endverbatim %}

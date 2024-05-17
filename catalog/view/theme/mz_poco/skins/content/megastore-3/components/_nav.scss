@@ -1,0 +1,71 @@
+.nav-tabs{
+    margin-bottom: $nav-tab-margin-bottom;
+    border-bottom: 0;
+    
+    .nav-link{
+        border: none;
+        font-size: $nav-tab-font-size;
+        font-weight: $headings-font-weight;
+        line-height: $nav-tab-line-height;
+        padding: $nav-tab-padding-y $nav-tab-padding-x;
+        
+        &.active, &.show, &:hover{
+            background-color: $nav-tab-hover-color;
+            color: color-contrast($nav-tab-hover-color);
+            @include border-radius();
+        }
+    }
+    
+    .nav-item{
+        margin-bottom: 0;
+        
+        &:not(:last-child) .nav-link{
+            @include rtl-prop(margin-right, mz-spacer(4));
+        }
+    }
+}
+
+.nav-pills{
+    &.custom-pills-left, &.custom-pills-right{
+        flex-direction: column;
+        padding-left: 0;
+        padding-right: 0;
+        
+        
+        .nav-link{
+            padding: mz-spacer(12) 0;
+    
+            &.active{
+                color: $secondary;
+                background-color: transparent;
+                font-weight: $headings-font-weight;
+            }
+        }
+    }
+    &.custom-pills-left{
+        @include rtl-prop(border-right, $border-width solid $border-color);
+
+        .nav-link{
+            @include rtl-prop(padding-right, $spacer);
+
+            &.active{
+                @include rtl-prop(border-right, $border-width solid $secondary);
+                @include rtl-prop(margin-right, -$border-width);
+                @include border-end-radius(0);
+            }
+        }
+    }
+    &.custom-pills-right{
+        @include rtl-prop(border-left, $border-width solid $border-color);
+
+        .nav-link{
+            @include rtl-prop(padding-left, $spacer);
+
+            &.active{
+                @include rtl-prop(border-left, $border-width solid $secondary);
+                @include rtl-prop(margin-left, -$border-width);
+                @include border-start-radius(0);
+            }
+        }
+    }
+}

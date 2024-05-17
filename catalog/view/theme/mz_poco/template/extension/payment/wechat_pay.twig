@@ -1,0 +1,9 @@
+<div class="buttons d-flex justify-content-between">
+	<a href="{{ mz_back }}" class="btn btn-lg btn-secondary flex-grow-1 me-3"><i class="fas fa-caret-left"></i> {{ button_edit }}</a>
+	<button type="button" id="button-confirm" data-loading-text="{{ text_loading }}" class="btn btn-lg btn-primary flex-grow-1">{{ button_confirm }} <i class="fas fa-caret-right"></i></button>
+</div>
+<script><!--
+  $('#button-confirm').bind('click', function() {
+    location.href = "{{ redirect }}";
+  });
+//--></script>

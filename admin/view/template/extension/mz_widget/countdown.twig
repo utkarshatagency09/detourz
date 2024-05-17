@@ -1,0 +1,113 @@
+<!-- Form -->
+<form id="setting-widget-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <!--widget status-->
+  <div class="form-group">
+    <label class="col-sm-3 control-label" for="input-setting-widget-status">{{ entry_status }}</label>
+    <div class="col-sm-9">
+      <div class="mz-switch-field">
+        {% if (widget_status) %} 
+        <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" checked>
+        <label for="input-widget-status-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled">
+        <label for="input-widget-status-disabled">{{ text_disabled }}</label>
+        {% else %} 
+        <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" >
+        <label for="input-widget-status-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled" checked>
+        <label for="input-widget-status-disabled" >{{ text_disabled }}</label>
+        {% endif %} 
+      </div>
+    </div>
+  </div>
+      
+  {#title#}
+  <div class="form-group">
+    <label class="col-xs-3 control-label" for="input-setting-widget-title">{{ entry_title }}</label>
+    <div class="col-xs-9">
+    {% for language in languages %} 
+      <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+        <input class="form-control" type="text" name="widget_title[{{ language['language_id'] }}]" value="{{ widget_title[language['language_id']] is defined?widget_title[language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+      </div>
+    {% endfor %} 
+    </div>
+  </div>
+  
+  <!--widget start time-->
+  <div class="form-group">
+    <label class="col-sm-3 control-label" for="input-setting-widget-time-start">{{ entry_timestart }}</label>
+    <div class="col-sm-4">
+      <div class="input-group datetime">
+        <input type="text" name="widget_timestart" value="{{ widget_timestart }}" placeholder="{{ entry_timestart }}" data-date-format="YYYY-MM-DD HH:mm" id="input-setting-widget-time-start" class="form-control" />
+        <span class="input-group-btn">
+        <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
+        </span></div>
+    </div>
+  </div>
+        
+  <!--widget end expire-->
+  <div class="form-group">
+    <label class="col-sm-3 control-label" for="input-setting-widget-time-end">{{ entry_timeend }}</label>
+    <div class="col-sm-4">
+      <div class="input-group datetime">
+        <input type="text" name="widget_timeend" value="{{ widget_timeend }}" placeholder="{{ entry_timeend }}" data-date-format="YYYY-MM-DD HH:mm" id="input-setting-widget-time-end" class="form-control" />
+        <span class="input-group-btn">
+        <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
+        </span></div>
+    </div>
+  </div>
+        
+  <!--widget format-->
+  <div class="form-group">
+    <label class="col-sm-3 control-label" for="input-setting-widget-format"><span data-toggle="tooltip" title='{{ help_format }}'>{{ entry_format }}</span></label>
+    <div class="col-sm-9">
+      <input type="text" name="widget_format" value="{{ widget_format }}" placeholder="{{ entry_format }}" id="input-setting-widget-format" class="form-control" />
+    </div>
+  </div>
+        
+  <!--widget compact-->
+  <div class="form-group">
+    <label class="col-sm-3 control-label" for="input-setting-widget-compact">{{ entry_compact }}</label>
+    <div class="col-sm-9">
+      <div class="mz-switch-field">
+        {% if (widget_compact) %} 
+        <input type="radio" name="widget_compact" value="1" id="input-widget-compact-enabled" checked>
+        <label for="input-widget-compact-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="widget_compact" value="0" id="input-widget-compact-disabled">
+        <label for="input-widget-compact-disabled">{{ text_disabled }}</label>
+        {% else %} 
+        <input type="radio" name="widget_compact" value="1" id="input-widget-compact-enabled" >
+        <label for="input-widget-compact-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="widget_compact" value="0" id="input-widget-compact-disabled" checked>
+        <label for="input-widget-compact-disabled" >{{ text_disabled }}</label>
+        {% endif %} 
+      </div>
+    </div>
+  </div>
+        
+  <!--widget direction-->
+  <div class="form-group">
+    <label class="col-sm-3 control-label">{{ entry_direction }}</label>
+    <div class="col-sm-9">
+      <div class="mz-switch-field">
+        {% if (widget_direction == 'horizontal') %} 
+        <input type="radio" name="widget_direction" value="horizontal" id="input-widget-direction-horizontal" checked>
+        <label for="input-widget-direction-horizontal" >{{ text_horizontal }}</label>
+        <input type="radio" name="widget_direction" value="vertical" id="input-widget-direction-vertical">
+        <label for="input-widget-direction-vertical">{{ text_vertical }}</label>
+        {% else %} 
+        <input type="radio" name="widget_direction" value="horizontal" id="input-widget-direction-horizontal" >
+        <label for="input-widget-direction-horizontal">{{ text_horizontal }}</label>
+        <input type="radio" name="widget_direction" value="vertical" id="input-widget-direction-vertical" checked>
+        <label for="input-widget-direction-vertical" >{{ text_vertical }}</label>
+        {% endif %} 
+      </div>
+    </div>
+  </div>
+</form>
+<script>
+$('.datetime').datetimepicker({
+        language: '{{ datepicker }}',
+        pickDate: true,
+        pickTime: true
+});
+</script>

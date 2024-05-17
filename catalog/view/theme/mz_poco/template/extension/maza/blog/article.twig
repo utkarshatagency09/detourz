@@ -1,0 +1,113 @@
+{# 
+Here is a file location of article page component
+
+## article page specific component
+- extension/maza/blog/article/*
+
+## common component across the page including article page
+- extension/maza/blog/common/*
+
+#}
+{{ header }}
+{% if mz_component %}
+<script>$('body').prepend('{{ mz_component|e("js") }}');</script>
+{% endif %}
+<div id="article-article" class="content">{{ mz_content }}</div>
+<script>
+$('#comment').on('click', '.pagination a', function(e) {
+    e.preventDefault();
+
+    $('#comment').fadeOut('slow');
+
+    $('#comment').load(this.href);
+
+    $('#comment').fadeIn('slow');
+});
+
+$('#comment').load('index.php?route=extension/maza/blog/article/comment&article_id={{ article_id }}');
+
+$('#comment').on('click', 'a.view-replies', function(e) {
+    e.preventDefault();
+
+    $(this).prepend('<div class="spinner-grow spinner-grow-sm" role="status"><span class="visually-hidden">Loading...</span></div>');
+    var _this = this;        
+    $.get(this.href, function(data, status){
+        $(_this).replaceWith(data);
+    });
+});
+
+$('#comment').on('click', 'a.reply', function(e) {
+    e.preventDefault();
+    
+    $('a.reply').text('{{ text_reply }}');
+    
+    if($(this).parents('.comment').find('#form-comment').length){
+        $('#form-comment [name="parent_comment_id"]').val(0);
+        $('.content-comment-form').append($('#form-comment')).css('display', 'block');
+        $('#form-comment').removeClass('reply-form');
+    } else {
+        $('#form-comment [name="parent_comment_id"]').val($(this).data('reply_to'));
+        $($(this).attr('href')).append($('#form-comment'));
+        $('#form-comment').addClass('reply-form');
+        $('.content-comment-form').css('display', 'none');
+        $(this).text('{{ text_cancel_reply }}');
+    }
+});
+
+$('#button-comment').on('click', function() {
+    $('.alert-dismissible').remove();
+        
+	$.ajax({
+		url: 'index.php?route=extension/maza/blog/article/write&article_id={{ article_id }}',
+		type: 'post',
+		dataType: 'json',
+		data: $("#form-comment").serialize(),
+		beforeSend: function() {
+			$('#button-comment').prepend('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>');
+		},
+		complete: function() {
+			$('#button-comment').children('.spinner-grow').remove();
+		},
+		success: function(json) {
+			if (json['error_name']) {
+			    $('input[name=\'name\']').addClass('is-invalid');
+			} else {
+                $('input[name=\'name\']').removeClass('is-invalid');
+            }
+                        
+            if (json['error_email']) {
+			    $('input[name=\'email\']').addClass('is-invalid');
+			} else {
+                $('input[name=\'email\']').removeClass('is-invalid');
+            }
+                        
+            if (json['error_text']) {
+			    $('textarea[name=\'text\']').addClass('is-invalid');
+			} else {
+                $('textarea[name=\'text\']').removeClass('is-invalid');
+            }
+                        
+            if (json['error_captcha']) {
+			    $('input[name=\'captcha\']').addClass('is-invalid');
+                $('input[name=\'captcha\']').next('.invalid-feedback').text(json['error_captcha']);
+			} else {
+                $('input[name=\'captcha\']').removeClass('is-invalid');
+            }
+
+			if (json['success']) {
+				$('#form-comment').prepend('<div class="alert alert-success alert-dismissible"><i class="fas fa-check-circle"></i> ' + json['success'] + '</div>');
+
+				$('input[name=\'name\']').val('');
+                $('input[name=\'email\']').val('');
+                $('input[name=\'website\']').val('');
+				$('textarea[name=\'text\']').val('');
+                                
+                if(!$('#form-comment').hasClass('reply-form')){
+                    $('#comment').load('index.php?route=extension/maza/blog/article/comment&article_id={{ article_id }}');
+                }
+			}
+		}
+	});
+});
+</script> 
+{{ footer }} 

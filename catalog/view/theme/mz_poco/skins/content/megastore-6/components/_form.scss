@@ -1,0 +1,65 @@
+// Star rating radio input
+$form-unchecked-star: '\2605';
+$form-unchecked-color: $gray-500;
+$form-checked-star: '\2605';
+$form-checked-color: $secondary;
+
+.start-form-check {
+    /* remove inline-block whitespace */
+    display: inline-flex;
+    font-size: 2em;
+    line-height: 1;
+ 
+    /* flip the order so we can use the + and ~ combinators */
+    unicode-bidi: bidi-override;
+    @include rtl-prop(direction, rtl, ltr);
+    @include rtl-prop(text-align, right, left);
+
+    & > input {
+        display: none;
+        
+        & + label {
+            /* only enough room for the star */
+            display: inline-block;
+            overflow: hidden;
+            text-indent: 9999px;
+            width: 1em;
+            margin: 0;
+            white-space: nowrap;
+            cursor: pointer;
+            
+            &:before {
+                display: inline-block;
+                text-indent: -9999px;
+                content: $form-unchecked-star;
+                color: $form-unchecked-color;
+            }
+        }
+        &:checked ~ label:before,
+            & + label:hover ~ label:before,
+            & + label:hover:before {
+            content: $form-checked-star;
+            color: $form-checked-color;
+        }
+    }
+
+    /* the hidden clearer */
+    & > .star-cb-clear + label {
+        text-indent: -9999px;
+        width: .5em;
+        @include rtl-prop(margin-left, -.5em);
+    }
+    & > .star-cb-clear + label:before {
+        width: .5em;
+    }
+
+    &:hover > input + label:before {
+        content: $form-unchecked-star;
+        color: $form-unchecked-color;
+    }
+    &:hover > input + label:hover ~ label:before,
+    &:hover > input + label:hover:before {
+        content: $form-checked-star;
+        color: $form-checked-color;
+    }
+}

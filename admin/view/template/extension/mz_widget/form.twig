@@ -1,0 +1,156 @@
+<!-- Form -->
+<form id="setting-widget-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#tab-widget-general" data-toggle="tab">{{ tab_general }}</a></li>
+    <li><a href="#tab-widget-layout" data-toggle="tab">{{ tab_layout }}</a></li>
+    <li><a href="#tab-widget-button" data-toggle="tab">{{ tab_button }}</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="tab-widget-general" class="tab-pane active">
+      <!--widget status-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-widget-status">{{ entry_status }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (widget_status) %} 
+            <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" checked>
+            <label for="input-widget-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled">
+            <label for="input-widget-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" >
+            <label for="input-widget-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled" checked>
+            <label for="input-widget-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+
+      <!--widget_form-->
+      <div class="form-group required">
+        <label class="col-xs-3 control-label" for="input-widget-form">{{ entry_form }}</label>
+        <div class="col-xs-9">
+          <input type="text" name="widget_form" value="{{ widget_form }}" placeholder="{{ entry_form }}" id="input-widget-form" class="form-control" />
+          <input type="hidden" name="widget_form_id" value="{{ widget_form_id }}" />
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-widget-layout" class="tab-pane">
+      <!--Title-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-title">{{ entry_title }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_title) %} 
+            <input type="radio" name="widget_title" value="1" id="input-widget-title-enabled" checked>
+            <label for="input-widget-title-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_title" value="0" id="input-widget-title-disabled">
+            <label for="input-widget-title-disabled">{{ text_disabled }}</label>
+            {% else %}
+            <input type="radio" name="widget_title" value="1" id="input-widget-title-enabled" >
+            <label for="input-widget-title-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_title" value="0" id="input-widget-title-disabled" checked>
+            <label for="input-widget-title-disabled" >{{ text_disabled }}</label>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!--label-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_label }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+          {% for label in list_label %} 
+            {% if (widget_label == label['code']) %} 
+            <input type="radio" name="widget_label" value="{{ label['code'] }}" id="input-widget-label-{{ label['code'] }}" checked>
+            <label for="input-widget-label-{{ label['code'] }}" >{{ label['text'] }}</label>
+            {% else %} 
+            <input type="radio" name="widget_label" value="{{ label['code'] }}" id="input-widget-label-{{ label['code'] }}">
+            <label for="input-widget-label-{{ label['code'] }}" >{{ label['text'] }}</label>
+            {% endif %} 
+          {% endfor %} 
+          </div>
+        </div>
+      </div>
+
+      <!--size-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_size }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+          {% for size in sizes %} 
+            {% if (widget_size == size.code) %} 
+            <input type="radio" name="widget_size" value="{{ size.code }}" id="input-widget-size-{{ size.code }}" checked>
+            <label for="input-widget-size-{{ size.code }}" >{{ size.text }}</label>
+            {% else %} 
+            <input type="radio" name="widget_size" value="{{ size.code }}" id="input-widget-size-{{ size.code }}">
+            <label for="input-widget-size-{{ size.code }}" >{{ size.text }}</label>
+            {% endif %} 
+          {% endfor %} 
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-widget-button" class="tab-pane">
+      {#Color#}
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-widget-color">{{ entry_color }}</label>
+        <div class="col-xs-9">
+          <select name="widget_color" id="input-setting-widget-color" class="form-control">
+            {% for color in colors %} 
+              {% if (widget_color == color['code']) %}
+              <option value="{{ color['code'] }}" selected="">{{ color['text'] }}</option>
+              {% else %} 
+              <option value="{{ color['code'] }}">{{ color['text'] }}</option>
+              {% endif %} 
+            {% endfor %} 
+          </select>
+        </div>
+      </div>
+
+      <!--Submit button align-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-submit-align">{{ entry_submit }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% for submit_align in list_submit_align %} 
+              {% if (widget_submit_align == submit_align.code) %} 
+              <input type="radio" name="widget_submit_align" value="{{ submit_align.code }}" id="input-widget-submit-align-{{ submit_align.code }}" checked>
+              <label for="input-widget-submit-align-{{ submit_align.code }}" >{{ submit_align.text }}</label>
+              {% else %} 
+              <input type="radio" name="widget_submit_align" value="{{ submit_align.code }}" id="input-widget-submit-align-{{ submit_align.code }}">
+              <label for="input-widget-submit-align-{{ submit_align.code }}" >{{ submit_align.text }}</label>
+              {% endif %} 
+            {% endfor %} 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<script type="text/javascript">
+$('#setting-widget-form input[name=\'widget_form\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=extension/maza/form/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['form_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('#setting-widget-form input[name=\'widget_form\']').val(item['label']);
+    $('#setting-widget-form input[name=\'widget_form_id\']').val(item['value']);
+  }
+});
+</script>

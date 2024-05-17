@@ -1,0 +1,31 @@
+{{ header }}
+<div id="error-not-found" class="container content pb-5">
+  {% if breadcrumbs %}
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      {% for breadcrumb in breadcrumbs|slice(0,-1) %}
+        <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+      {% endfor %}
+      <li class="breadcrumb-item active" aria-current="page">{{ breadcrumbs|last.text }}</li>
+    </ol>
+  </nav>
+  {% endif %}
+  <div class="row">{{ column_left }}
+    {% if column_left and column_right %}
+    {% set class = 'col-md-6' %}
+    {% elseif column_left or column_right %}
+    {% set class = 'col-md-9' %}
+    {% else %}
+    {% set class = 'col-md-12' %}
+    {% endif %}
+    <div id="content" class="{{ class }} text-center">{{ content_top }}
+      <i class="fas fa-6x my-5 text-warning fa-exclamation-triangle"></i>
+      <h1 class="page-title mb-3 h3">{{ heading_title }}</h1>
+      <p>{{ text_error }}</p>
+      <div class="buttons">
+        <a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a>
+      </div>
+      {{ content_bottom }}</div>
+    {{ column_right }}</div>
+</div>
+{{ footer }}

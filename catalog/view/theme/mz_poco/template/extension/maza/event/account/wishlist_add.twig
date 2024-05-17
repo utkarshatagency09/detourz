@@ -1,0 +1,30 @@
+<div class="toast m-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="10000">
+    {% if not logged %}{# Login required #}
+    <div class="toast-header text-bg-danger"> 
+        <span class="me-auto"><i class="fas fa-exclamation-triangle"></i> {{ text_login }}</span>
+        <button type="button" class="ms-2 mb-1 btn-close btn-close-danger-contrast" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+        <div class="d-flex mb-3 align-items-start">
+            <img src="{{ thumb }}" class="img-thumbnail me-2 flex-shrink-0" /> <p>{{ success }}</p>
+        </div>
+        <div class="row g-3">
+            <div class="col d-grid"><a class="btn btn-danger" href="{{ login }}">{{ text_login }} <i class="fas fa-long-arrow-alt-right rtl-swap"></i></a></div>
+            <div class="col d-grid"><a class="btn btn-secondary" href="{{ register }}">{{ text_register }} <i class="fas fa-long-arrow-alt-right rtl-swap"></i></a></div>
+        </div>
+    </div>
+    {% else %} {# Success #}
+    <div class="toast-header text-bg-primary">
+        <span class="me-auto"><i class="fas fa-heart"></i> {{ total }}</span>
+        <button type="button" class="ms-2 mb-1 btn-close btn-close-primary-contrast" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+        <div class="d-flex mb-3 align-items-start">
+            <img src="{{ thumb }}" class="img-thumbnail me-2 flex-shrink-0" /> <p>{{ success }}</p>
+        </div>
+        <div class="d-grid">
+            <a class="btn btn-secondary" href="{{ wishlist }}">{{ total }} <i class="fas fa-long-arrow-alt-right rtl-swap"></i></a>
+        </div>
+    </div>
+    {% endif %}
+</div>

@@ -1,0 +1,17 @@
+// Audio for product
+[data-mz-toggle="audio"] {
+    cursor: pointer;
+    
+    .icon-pause {
+        display: none;
+    }
+
+    &.state-playing {
+        .icon-pause {
+            display: inline;
+        }
+        .icon-play {
+            display: none;
+        }
+    }
+}

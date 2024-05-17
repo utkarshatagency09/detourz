@@ -1,0 +1,75 @@
+/* Facebook */
+.btn-facebook, .btn-facebook:hover, .btn-facebook:active, .btn-facebook:focus{
+    background-color: #1877F2;
+    color: #fff;
+}
+
+/* Google */
+.btn-google, .btn-google:hover, .btn-google:active, .btn-google:focus{
+    position: relative;
+    background-color: #4285F4;
+    color: #fff;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+}
+.btn-google::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background-image: url("image/btn_google_dark_normal_ios.svg");
+    background-size: 100%;
+    aspect-ratio: 1;
+}
+@supports (aspect-ratio: 1) {
+    .btn-google i {
+        display: none;
+    }
+}
+
+/* Apple */
+.btn-apple, .btn-apple:hover, .btn-apple:active, .btn-apple:focus{
+    background-color: black;
+    color: #fff;
+}
+
+/* Instagram */
+.btn-instagram, .btn-instagram:hover, .btn-instagram:active, .btn-instagram:focus{
+    color: #fff;
+    background: #f09433; 
+    background: linear-gradient(87.1deg, #FFD522 -10.92%, #F1000B 48.02%, #B900B3 106.81%); 
+}
+
+/* Twitter */
+.btn-twitter, .btn-twitter:hover, .btn-twitter:active, .btn-twitter:focus{
+    background-color: #1DA1F2;
+    color: white;
+}
+
+/* linkedin */
+.btn-linkedin, .btn-linkedin:hover, .btn-linkedin:active, .btn-linkedin:focus{
+    background-color: #0a66c2;
+    color: white;
+}
+
+/* paypal */
+.btn-paypal, .btn-paypal:hover, .btn-paypal:active, .btn-paypal:focus{
+    background-color: #fec33a;
+    color: black;
+}
+
+/* Amazon */
+.btn-amazon, .btn-amazon:hover, .btn-amazon:active, .btn-amazon:focus{
+    background-color: black;
+    color: white;
+}
+.btn-amazon i {
+    color: #FF9900;
+}
+
+/* discord */
+.btn-discord, .btn-discord:hover, .btn-discord:active, .btn-discord:focus{
+    background-color: #8999f7;
+    color: black;
+}

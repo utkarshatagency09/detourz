@@ -1,0 +1,107 @@
+.widget-search{
+    @include border-radius();
+    color: gray;
+}
+
+#search{
+    .search-input{
+        padding: $widget-search-inner-padding;
+    }
+    
+    // Search text imput
+    input[type='text']{
+        width: 100%;
+        height: 100%;
+        border: none;
+        outline: 0;
+        background-color: transparent;
+        color: inherit;
+        font-size: $widget-search-font-size;
+    }
+    
+    // category
+    .search-category{
+        flex: 0 0 auto;
+        order: 1;
+        max-width: 50%;
+        
+        .dropdown-toggle {
+            border: none;
+            background-color: transparent;
+            font-size: $widget-search-font-size;
+            font-weight: $font-weight-base;
+            color: inherit;
+            padding: rtl-value(0 mz-spacer(20) 0 mz-spacer(18), 0 mz-spacer(18) 0 mz-spacer(20));
+            @include rtl-prop(border-left, $border-width solid $border-color);
+            cursor: pointer;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-transform: inherit;
+            
+            &::after{
+                @extend %font-awesome;
+                display: inline;
+                content: $widget-search-dropdown-caret;
+                font-weight: 700;
+                border: none;
+                vertical-align: -.1em;
+                @include rtl-prop(margin-left, $widget-search-dropdown-caret-left);
+            }
+        }
+        
+        // Fix the overflow problem in rtl
+        .dropdown-item{
+            white-space: normal;
+            font-size: $widget-search-font-size;
+        }
+    }
+
+    .autocomplete{
+        min-width: 100%;
+        width: auto !important;
+    }
+    
+    // Search button
+    .search-button{
+        flex: 0 0 auto;
+        order: -1;
+        align-self: stretch;
+        overflow: hidden;
+        
+        button{
+            background-color: transparent;
+            border: none;
+            // outline: none !important;
+            height: 100%;
+            font-size: $widget-search-font-size;
+            color: inherit;
+            text-transform: uppercase;
+            padding: 0 $widget-search-button-padding-x;
+            
+            &.type-icon{
+                padding: 0 $widget-search-button-padding-x * 0.5;
+            }
+            
+            .fa {
+                line-height: inherit;
+            }
+        }
+    }
+    
+    // Products
+    .product-thumb{
+        color: $dropdown-link-color;
+
+        .image{
+            flex: 0 0 auto;
+        }
+        
+        &:hover{
+            background-color: $dropdown-link-hover-bg;
+            color: $dropdown-link-hover-color;
+        }
+    }
+}
+
