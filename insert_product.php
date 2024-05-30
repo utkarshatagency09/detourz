@@ -1,38 +1,121 @@
 <?php
-include '../config.php';
+include '../config.php';//opencart config for using constants(DIR_IMAGE)
+include 'config.php';//custom config variables
 include 'functions.php';
-
-$imageUrl = '//rentalcarmanagerdev.blob.core.windows.net/public/sandboxrcmdb406/economy_large.jpg';
-if(stripos($imageUrl,'https:')===false){
-    $imageUrl = 'https:'.$imageUrl;
+include 'get_products_rental_car_manager.php';
+/* echo '<pre>';
+print_r($product_list);
+echo '</pre>';exit; */
+//Fetch Last product id
+$sql = 'SELECT product_id FROM `oc_product` ORDER BY `oc_product`.`product_id` DESC LIMIT 0,1';
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$stmt->bind_result($product_id);
+while ($stmt->fetch()) {
+    $last_product_id = $product_id;
 }
-$image_name = basename($imageUrl);
-$localPath = DIR_IMAGE.'catalog/api/'.$image_name;
-$db_path = 'catalog/api/'.$image_name;
-$img_save = saveImage($imageUrl, $localPath);
-if($img_save!=1){
-    $db_path = 'catalog/api/car.png';
-}
+$products = array();
+$i=0;
+foreach($product_list as $product){
+    /* Fetch Image */
+    $imageUrl = $product['imageurl'];//'//rentalcarmanagerdev.blob.core.windows.net/public/sandboxrcmdb406/economy_large.jpg';
+    if(stripos($imageUrl,'https:')===false){
+        $imageUrl = 'https:'.$imageUrl;
+    }
+    $image_name = basename($imageUrl);
+    $localPath = DIR_IMAGE.'catalog/api/'.$image_name;
+    $image_db_path = 'catalog/api/'.$image_name;
+    $img_save = saveImage($imageUrl, $localPath);
+    if($img_save!=1){//default image
+        $image_db_path = 'catalog/api/car.png';
+    }
+    /* Fetch Image */
 
-$username = 'Default';
-$key = 'aP7zunLSug0DP5LVwQX4mTAANcEBAZG5mTAzQEALAJOocictt3rxxdBMMljv7cHBAGWcgvpExxqZLldnlPqnYsA6n3rP15vSer0Mn0jbZ2byH9vFFCgpjTgerYzFtp95hidmxYRjY5eNWGBDM5Q6gmZVelRf15SGb1r7uDf0RRzdf3ovCUuDmtp9ShqsMA2xsSUYyd61BaPvcGN4RMI7NmOhIxzCJb4hKyTubpLdGeaYOWfs5UWattBPs22UBnVN';
+    /* Fetch Category */
+    switch ($product['vehiclecategorytypeid']) {
+        case 1://Car
+            $category_id = 59;
+            break;
+
+        case 2://Sports Car
+            $category_id = 60;
+            break;
+                
+        case 3://4WD
+            $category_id = 61;
+            break;
+            
+        case 4://Luxury
+            $category_id = 62;
+            break;
+
+        case 5://Ute
+            $category_id = 63;
+            break;
+                
+        case 6://Van
+            $category_id = 64;
+            break;            
+        
+        default:
+            $category_id = 59;
+    }
+    /* Fetch Category */
+
+    /* Fetch Description */
+    $description = "";
+    if(!empty($product['description'])){
+        $description.="<div class='description'>".$product['description']."</div>";
+    }
+    if(!empty($product['vehicledescription1'])){
+        $description.="<div class='vehicledescription1'>".$product['vehicledescription1']."</div>";
+    }
+    if(!empty($product['vehicledescription2'])){
+        $description.="<div class='vehicledescription2'>".$product['vehicledescription2']."</div>";
+    }
+    if(!empty($product['vehicledescription3'])){
+        $description.="<div class='vehicledescription3'>".$product['vehicledescription3']."</div>";
+    }
+    if(!empty($product['vehicledescriptionurl'])){
+        $description.="<div class='vehicledescriptionurl'>For more info <a href='".$product['vehicledescriptionurl']."' target='_blank'>Click here</a></div>";
+    }
+    /* Fetch Description */
+
+    $products[$i]['product_id'] = $last_product_id;
+    $products[$i]['model'] = $last_product_id."-".$product['id'];
+    $products[$i]['name'] = addslashes($product['vehiclecategoryname']);
+    $products[$i]['image'] = $image_db_path;
+    $products[$i]['category_id'] = $category_id;
+    $products[$i]['language_id'] = 1;
+    $products[$i]['description'] = addslashes($description);
+    $products[$i]['description_fr'] = addslashes($description);
+    $products[$i]['price'] = 0.00;
+    $products[$i]['quantity'] = 1;
+    $products[$i]['status'] = 1;
+
+    $last_product_id++;
+    $i++;
+}
+/* echo '<pre>';
+print_r($products);
+echo '</pre>';
+exit;
+ */
+/* 
 $products = array(
                 array(
-                    'product_id' => 77,
+                    'product_id' => 84,
                     'model' => "product model 3",
-                    'name' => addslashes("y"),
-                    'image' => $db_path,
+                    'name' => addslashes("yyyyyy"),
+                    'image' => $image_db_path,
                     'category_id' => 20,
                     'language_id' => 1,
                     'description' => 'eng description',
                     'description_fr' => 'french description',
                     'price' => '100.00',
                     'quantity' => 1,
-                    'status' => 1,
-                    'length' => '1.00',
-                    'height' => '2.00',
-                    'width' => '3.00'
-                )/* ,
+                    'status' => 1
+                ),
                 array(
                     'product_id' => 63,
                     'model' => "product model 2",
@@ -44,18 +127,18 @@ $products = array(
                     'length' => '1.00',
                     'height' => '2.00',
                     'width' => '3.00s'
-                ) */
-            );
+                )
+            ); */
             
 $postData = [
-    'username' => $username,
+    'username' => $opencart_username,
     'key'      => $key,
     'products'      => $products,
 ];
 
 $ch = curl_init();
 
-curl_setopt($ch, CURLOPT_URL, "http://localhost/opencart3/index.php?route=api/exchange/add_products");
+curl_setopt($ch, CURLOPT_URL, HTTPS_SERVER."index.php?route=api/exchange/add_products");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
