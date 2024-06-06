@@ -148,7 +148,9 @@ class ModelApiExchangeCommon extends Model{
      * @param $data
      */
     function updateSeoUrl($data){
-        $this->db->query("UPDATE `" . DB_PREFIX . "seo_url` SET `keyword`='$data->keyword' WHERE `query`='$data->query'");
+        $this->db->query("UPDATE `" . DB_PREFIX . "seo_url` SET `keyword`='$data->keyword' WHERE `query`='$data->query' AND language_id = ".$data->language_id);
+
+        $this->db->query("UPDATE `" . DB_PREFIX . "seo_url` SET `keyword`='$data->keyword_fr' WHERE `query`='$data->query' AND language_id = 3");
     }
 
     /**

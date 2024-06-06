@@ -199,8 +199,8 @@ class ModelApiExchangeProducts extends Model {
      * @param $data
      */
     function addProduct($data){
-        $this->db->query("INSERT INTO `" . DB_PREFIX . "product` (product_id, model, image, status, length, width, height, price, quantity, date_added, date_modified) 
-        VALUES('$data->product_id', '$data->model', '$data->image', '$data->status', '$data->length', '$data->width', '$data->height','$data->price','$data->quantity', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
+        $this->db->query("INSERT INTO `" . DB_PREFIX . "product` (product_id, model, image, status, api_name, jucy_product_id, price, quantity, date_added, date_modified) 
+        VALUES('$data->product_id', '$data->model', '$data->image', '$data->status', '$data->api_name', '$data->jucy_product_id', '$data->price','$data->quantity', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)");
     }
 
     /**
@@ -209,7 +209,7 @@ class ModelApiExchangeProducts extends Model {
      */
     function updateProduct($data){
         $this->db->query("UPDATE `" . DB_PREFIX . "product` 
-        SET `image`='$data->image', `status`='$data->status', `length`='$data->length', `height`='$data->height', `width`='$data->width' WHERE `product_id`='$data->product_id'");
+        SET `image`='$data->image', `status`='$data->status', `price`='$data->price',`quantity`='$data->quantity', `date_modified`=CURRENT_TIMESTAMP WHERE `product_id`='$data->product_id'");
     }
 
     /**
@@ -278,7 +278,10 @@ class ModelApiExchangeProducts extends Model {
      */
     function updateProductDescription($data){
         $this->db->query("UPDATE `" . DB_PREFIX . "product_description` 
-        SET `name`='$data->name', `meta_title`='$data->name' WHERE `product_id`='$data->product_id'");
+        SET `name`='$data->name', `meta_title`='$data->name', `description`='$data->description'  WHERE `product_id`='$data->product_id' AND language_id = ".$data->language_id);
+
+        $this->db->query("UPDATE `" . DB_PREFIX . "product_description` 
+        SET `name`='$data->name', `meta_title`='$data->name', `description`='$data->description_fr'  WHERE `product_id`='$data->product_id' AND language_id = 3");
     }
 
     /**

@@ -93,9 +93,8 @@ class ControllerApiExchangeAddProducts extends Controller {
                             'keyword' => $keyword,
                             'keyword_fr' => $keyword_fr,
                             'status' => $product->status,
-                            'length' => $product->length,
-                            'height' => $product->height,
-                            'width' => $product->width,
+                            'api_name' => $product->api_name,
+                            'jucy_product_id' => $product->jucy_product_id,
                             'store_id' => 0,
                         );
                         $data = json_encode($arr);
@@ -118,7 +117,7 @@ class ControllerApiExchangeAddProducts extends Controller {
                     }//End Main Loop
 
                     $json['success'] = sprintf($this->language->get('success'));
-                }else $json['successss'] = sprintf($this->language->get('error'));
+                }else $json['success'] = sprintf($this->language->get('error'));
 
                 $this->model_api_exchange_common->deleteCacheFiles(getcwd().'/system/storage/cache',
                     '[^cache.ocfilter*]');
