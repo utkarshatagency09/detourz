@@ -1,6 +1,6 @@
 <?php
 include '../config.php';
-include 'functions.php';
+include 'functions.php'; 
 
 $imageUrl = '//rentalcarmanagerdev.blob.core.windows.net/public/sandboxrcmdb406/economy_large.jpg';
 if(stripos($imageUrl,'https:')===false){
