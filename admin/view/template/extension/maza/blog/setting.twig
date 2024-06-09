@@ -1,0 +1,353 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- Form -->
+  <form action="{{ action }}" class="form-horizontal" enctype="multipart/form-data" id="form-mz-setting" method="post">
+    <div class="tab-content">
+      <div id="tab-mz-setting" class="tab-pane active">
+        {# Home page #}  
+        {# <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_home_page }}</div>
+          <div class="panel-body">
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-blog-home-meta-title">{{ entry_meta_title }}</label>
+              <div class="col-xs-9">
+                <input type="text" name="blog_home_meta_title" value="{{ blog_home_meta_title }}" placeholder="{{ entry_meta_title }}" id="input-blog-home-meta-title" class="form-control large" />
+                {% if err_home_meta_title %}
+                <div class="text-danger">{{ err_home_meta_title }}</div>
+                {% endif %} </div>
+            </div>
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-blog-home-meta-description">{{ entry_meta_description }}</label>
+              <div class="col-xs-9">
+                <textarea name="blog_home_meta_description" rows="5" placeholder="{{ entry_meta_description }}" id="input-blog-home-meta-description" class="form-control large">{{ blog_home_meta_description }}</textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-blog-home-meta-keyword">{{ entry_meta_keyword }}</label>
+              <div class="col-xs-9">
+                <textarea name="blog_home_meta_keyword" rows="5" placeholder="{{ entry_meta_keyword }}" id="input-blog-home-meta-keyword" class="form-control large">{{ blog_home_meta_keyword }}</textarea>
+              </div>
+            </div>
+          </div>
+        </div> #}
+          
+        {# Article listing #}
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_article_listing }}</div>
+          <div class="panel-body">
+              
+            {#Article limit per page#}
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-article-grid-limit">{{ entry_article_grid_limit }}</label>
+              <div class="col-xs-9">
+                <input type="number" name="blog_article_grid_limit" value="{{ blog_article_grid_limit }}" placeholder="{{ entry_article_grid_limit }}" id="input-article-grid-limit" class="form-control" />
+                {% if err_article_grid_limit %}
+                <div class="text-danger">{{ err_article_grid_limit }}</div>
+                {% endif %}
+              </div>
+            </div>
+              
+            {#Article grid image size#}
+            <div class="form-group required">
+              <label class="col-xs-3 control-label">{{ entry_article_image_size }}</label>
+              <div class="col-xs-9">
+                <input type="number" name="blog_article_grid_image_width" value="{{ blog_article_grid_image_width }}" placeholder="{{ text_width }}" id="input-article-grid-image-width" class="form-control small" />
+                <input type="number" name="blog_article_grid_image_height" value="{{ blog_article_grid_image_height }}" placeholder="{{ text_height }}" id="input-article-grid-image-height" class="form-control small" />
+                {% if err_article_grid_image_size %}
+                <div class="text-danger">{{ err_article_grid_image_size }}</div>
+                {% endif %}
+              </div>
+            </div>
+              
+            <!--Responsive image width-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label"><span data-toggle="tooltip" title="{{ help_responsive_width }}">{{ entry_responsive_width }}</span></label>
+              <div class="col-xs-9">
+                <div class="input-group">
+                {% for breakpoint, srcset_width in blog_article_grid_image_srcset %}
+                  <span class="input-group-addon">{{ breakpoint|upper }}</span>
+                  <input type="number" name="blog_article_grid_image_srcset[{{ breakpoint }}]" value="{{ srcset_width }}" id="input-article-grid-image-srcset-{{ breakpoint }}" placeholder="0px" class="form-control" />
+                {% endfor %}
+                </div>
+              </div>
+            </div>
+              
+            {#Article image lazy loading#}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" >{{ entry_article_image_lazy_loading }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (blog_article_grid_image_lazy_loading) %} 
+                  <input type="radio" name="blog_article_grid_image_lazy_loading" value="1" id="input-article-grid-image-lazy-loading-enabled" checked>
+                  <label for="input-article-grid-image-lazy-loading-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="blog_article_grid_image_lazy_loading" value="0" id="input-article-grid-image-lazy-loading-disabled">
+                  <label for="input-article-grid-image-lazy-loading-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="blog_article_grid_image_lazy_loading" value="1" id="input-article-grid-image-lazy-loading-enabled" >
+                  <label for="input-article-grid-image-lazy-loading-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="blog_article_grid_image_lazy_loading" value="0" id="input-article-grid-image-lazy-loading-disabled" checked>
+                  <label for="input-article-grid-image-lazy-loading-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            {#Article image additional#}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" >{{ entry_article_additional_image }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (blog_article_grid_additional_image) %} 
+                  <input type="radio" name="blog_article_grid_additional_image" value="1" id="input-article-grid-additional-image-enabled" checked>
+                  <label for="input-article-grid-additional-image-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="blog_article_grid_additional_image" value="0" id="input-article-grid-additional-image-disabled">
+                  <label for="input-article-grid-additional-image-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="blog_article_grid_additional_image" value="1" id="input-article-grid-additional-image-enabled" >
+                  <label for="input-article-grid-additional-image-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="blog_article_grid_additional_image" value="0" id="input-article-grid-additional-image-disabled" checked>
+                  <label for="input-article-grid-additional-image-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+               
+            {#Article description_limit #}
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-article-grid-description-limit">{{ entry_article_description_limit }}</label>
+              <div class="col-xs-9">
+                <input type="number" name="blog_article_grid_description_limit" value="{{ blog_article_grid_description_limit }}" placeholder="{{ entry_article_description_limit }}" id="input-article-grid-description-limit" class="form-control" />
+                {% if err_article_grid_description_limit %}
+                <div class="text-danger">{{ err_article_grid_description_limit }}</div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+          
+        {# Category page #}
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_category_page }}</div>
+          <div class="panel-body">
+            {#Category image size#}
+            <div class="form-group required">
+              <label class="col-xs-3 control-label">{{ entry_category_image_size }}</label>
+              <div class="col-xs-9">
+                <input type="number" name="blog_category_image_width" value="{{ blog_category_image_width }}" placeholder="{{ text_width }}" id="input-category-image-width" class="form-control small" />
+                <input type="number" name="blog_category_image_height" value="{{ blog_category_image_height }}" placeholder="{{ text_height }}" id="input-category-image-height" class="form-control small" />
+                {% if err_category_image_size %}
+                <div class="text-danger">{{ err_category_image_size }}</div>
+                {% endif %}
+              </div>
+            </div>
+              
+            {#refine image size#}
+            <div class="form-group required">
+              <label class="col-xs-3 control-label">{{ entry_refine_image_size }}</label>
+              <div class="col-xs-9">
+                <input type="number" name="blog_category_refine_image_width" value="{{ blog_category_refine_image_width }}" placeholder="{{ text_width }}" id="input-category-refine-image-width" class="form-control small" />
+                <input type="number" name="blog_category_refine_image_height" value="{{ blog_category_refine_image_height }}" placeholder="{{ text_height }}" id="input-category-refine-image-height" class="form-control small" />
+                {% if err_category_refine_image_width %}
+                <div class="text-danger">{{ err_category_refine_image_width }}</div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {# Author page #}
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_author_page }}</div>
+          <div class="panel-body">
+            {#Author image size#}
+            <div class="form-group required">
+              <label class="col-xs-3 control-label">{{ entry_author_image_size }}</label>
+              <div class="col-xs-9">
+                <input type="number" name="blog_author_image_width" value="{{ blog_author_image_width }}" placeholder="{{ text_width }}" id="input-author-image-width" class="form-control small" />
+                <input type="number" name="blog_author_image_height" value="{{ blog_author_image_height }}" placeholder="{{ text_height }}" id="input-author-image-height" class="form-control small" />
+                {% if err_author_image_size %}
+                <div class="text-danger">{{ err_author_image_size }}</div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+          
+        {# Article page #}
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_article_page }}</div>
+          <div class="panel-body">
+            {#Article image size#}
+            <div class="form-group required">
+              <label class="col-xs-3 control-label">{{ entry_article_image_size }}</label>
+              <div class="col-xs-9">
+                <input type="number" name="blog_article_image_width" value="{{ blog_article_image_width }}" placeholder="{{ text_width }}" id="input-article-image-width" class="form-control small" />
+                <input type="number" name="blog_article_image_height" value="{{ blog_article_image_height }}" placeholder="{{ text_height }}" id="input-article-image-height" class="form-control small" />
+                {% if err_article_image_size %}
+                <div class="text-danger">{{ err_article_image_size }}</div>
+                {% endif %}
+              </div>
+            </div>
+              
+            <!--Responsive image width-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label"><span data-toggle="tooltip" title="{{ help_responsive_width }}">{{ entry_responsive_width }}</span></label>
+              <div class="col-xs-9">
+                <div class="input-group">
+                {% for breakpoint, srcset_width in blog_article_image_srcset %}
+                  <span class="input-group-addon">{{ breakpoint|upper }}</span>
+                  <input type="number" name="blog_article_image_srcset[{{ breakpoint }}]" value="{{ srcset_width }}" id="input-article-image-srcset-{{ breakpoint }}" placeholder="0px" class="form-control" />
+                {% endfor %}
+                </div>
+              </div>
+            </div>
+            
+            {#Author image size#}
+            <div class="form-group required">
+              <label class="col-xs-3 control-label">{{ entry_author_image_size }}</label>
+              <div class="col-xs-9">
+                <input type="number" name="blog_article_author_thumb_width" value="{{ blog_article_author_thumb_width }}" placeholder="{{ text_width }}" id="input-article-author-image-width" class="form-control small" />
+                <input type="number" name="blog_article_author_thumb_height" value="{{ blog_article_author_thumb_height }}" placeholder="{{ text_height }}" id="input-article-author-image-height" class="form-control small" />
+                {% if err_article_author_thumb_size %}
+                <div class="text-danger">{{ err_article_author_thumb_size }}</div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+          
+        {# Comment #}
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_comment }}</div>
+          <div class="panel-body">
+            {# comment status #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" >{{ entry_comment_status }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (blog_comment_status) %} 
+                  <input type="radio" name="blog_comment_status" value="1" id="input-comment-status-enabled" checked>
+                  <label for="input-comment-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="blog_comment_status" value="0" id="input-comment-status-disabled">
+                  <label for="input-comment-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="blog_comment_status" value="1" id="input-comment-status-enabled" >
+                  <label for="input-comment-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="blog_comment_status" value="0" id="input-comment-status-disabled" checked>
+                  <label for="input-comment-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            {# allow guest comment status #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" >{{ entry_allow_guest_comment }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (blog_allow_guest_comment) %} 
+                  <input type="radio" name="blog_allow_guest_comment" value="1" id="input-allow-guest-comment-enabled" checked>
+                  <label for="input-allow-guest-comment-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="blog_allow_guest_comment" value="0" id="input-allow-guest-comment-disabled">
+                  <label for="input-allow-guest-comment-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="blog_allow_guest_comment" value="1" id="input-allow-guest-comment-enabled" >
+                  <label for="input-allow-guest-comment-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="blog_allow_guest_comment" value="0" id="input-allow-guest-comment-disabled" checked>
+                  <label for="input-allow-guest-comment-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            {# comment require approval #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" >{{ entry_require_approval }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (blog_comment_require_approval < 0) %} 
+                  <input type="radio" name="blog_comment_require_approval" value="1" id="input-comment-require-approval-enabled">
+                  <label for="input-comment-require-approval-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="blog_comment_require_approval" value="0" id="input-comment-require-approval-disabled">
+                  <label for="input-comment-require-approval-disabled">{{ text_disabled }}</label>
+                  <input type="radio" name="blog_comment_require_approval" value="-1" id="input-comment-require-approval-guest" checked>
+                  <label for="input-comment-require-approval-enabled" >{{ text_for_guest }}</label>
+                  {% elseif (blog_comment_require_approval) %} 
+                  <input type="radio" name="blog_comment_require_approval" value="1" id="input-comment-require-approval-enabled" checked>
+                  <label for="input-comment-require-approval-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="blog_comment_require_approval" value="0" id="input-comment-require-approval-disabled">
+                  <label for="input-comment-require-approval-disabled">{{ text_disabled }}</label>
+                  <input type="radio" name="blog_comment_require_approval" value="-1" id="input-comment-require-approval-guest">
+                  <label for="input-comment-require-approval-enabled" >{{ text_for_guest }}</label>
+                  {% else %} 
+                  <input type="radio" name="blog_comment_require_approval" value="1" id="input-comment-require-approval-enabled" >
+                  <label for="input-comment-require-approval-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="blog_comment_require_approval" value="0" id="input-comment-require-approval-disabled" checked>
+                  <label for="input-comment-require-approval-disabled" >{{ text_disabled }}</label>
+                  <input type="radio" name="blog_comment_require_approval" value="-1" id="input-comment-require-approval-guest">
+                  <label for="input-comment-require-approval-enabled" >{{ text_for_guest }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+                
+            {# comment form captcha status #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" >{{ entry_comment_form_captcha }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (blog_comment_form_captcha) %} 
+                  <input type="radio" name="blog_comment_form_captcha" value="1" id="input-comment-form-captcha-enabled" checked>
+                  <label for="input-comment-form-captcha-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="blog_comment_form_captcha" value="0" id="input-comment-form-captcha-disabled">
+                  <label for="input-comment-form-captcha-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="blog_comment_form_captcha" value="1" id="input-comment-form-captcha-enabled" >
+                  <label for="input-comment-form-captcha-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="blog_comment_form_captcha" value="0" id="input-comment-form-captcha-disabled" checked>
+                  <label for="input-comment-form-captcha-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+<script>
+$('input[type="range"]').on('input change', function(){
+    $(this).siblings('.input-group-addon').text($(this).val());
+});
+</script>
+<form action="{{ import }}" enctype="multipart/form-data" method="post" id="form-import" style="display: none;"><input type="file" accept=".json" name="file" /></form>
+<script>
+$('#button-import').on('click', function(){
+    $('#form-import input[name=\'file\']').val('').trigger('click');
+    
+    if (typeof timer != 'undefined') {
+    	clearInterval(timer);
+    }
+
+    timer = setInterval(function() {
+        if ($('#form-import input[name=\'file\']').val() != '') {
+            clearInterval(timer);
+            $('#form-import').submit();
+        }
+    }, 500);
+    
+});
+</script>
+</div>
+{{ mz_footer }}

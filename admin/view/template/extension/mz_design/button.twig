@@ -1,0 +1,248 @@
+<!-- Form -->
+<form id="setting-design-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#design-button-general" data-toggle="tab">{{ tab_general }}</a></li>
+    <li><a href="#design-button-button" data-toggle="tab">{{ tab_button }}</a></li>
+    <li><a href="#design-button-design" data-toggle="tab">{{ tab_design }}</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="design-button-general" class="active tab-pane">
+      <!--design status-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-design-status">{{ entry_status }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (design_status) %} 
+            <input type="radio" name="design_status" value="1" id="input-design-status-enabled" checked>
+            <label for="input-design-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="design_status" value="0" id="input-design-status-disabled">
+            <label for="input-design-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="design_status" value="1" id="input-design-status-enabled" >
+            <label for="input-design-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="design_status" value="0" id="input-design-status-disabled" checked>
+            <label for="input-design-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+        
+      <!--URL-->
+      <div class="form-group required">
+        <label class="col-xs-3 control-label">{{ entry_url }}</label>
+        <div class="col-xs-9">
+          <div class="input-group">
+            <span class="input-group-addon">{{ link_info ? link_info.type : '<i class="fa fa-link"></i>' }}</span>
+            <input type="text" value="{{ link_info ? link_info.title }}" class="form-control" placeholder="{{ text_link_select }}" readonly />
+            <input id="input-design-url-link-code" type="hidden" name="design_url_link_code" value="{{ design_url_link_code }}"  />
+            <div class="input-group-btn">
+              <button type="button" data-toggle="linkmanager" class="btn btn-primary"><i class="fa fa-pencil"></i></button>
+              <button type="button" data-toggle="linkmanager-delete" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--URL target-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-design-url-target">{{ entry_url_target }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (design_url_target == '_self') %} 
+            <input type="radio" name="design_url_target" value="_self" id="input-design-url-target-self" checked>
+            <label for="input-design-url-target-self" >{{ text_self }}</label>
+            <input type="radio" name="design_url_target" value="_blank" id="input-design-url-target-blank">
+            <label for="input-design-url-target-blank">{{ text_blank }}</label>
+            {% else %} 
+            <input type="radio" name="design_url_target" value="_self" id="input-design-url-target-self" >
+            <label for="input-design-url-target-self">{{ text_self }}</label>
+            <input type="radio" name="design_url_target" value="_blank" id="input-design-url-target-blank" checked>
+            <label for="input-design-url-target-blank" >{{ text_blank }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="design-button-button" class="tab-pane">
+      {#name#}
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-design-name">{{ entry_name }}</label>
+        <div class="col-xs-9">
+        {% for language in languages %} 
+          <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+            <input class="form-control" type="text" name="design_name[{{ language['language_id'] }}]" value="{{ design_name[language['language_id']] is defined?design_name[language['language_id']]:'' }}" placeholder="{{ entry_name }}" >
+          </div>
+        {% endfor %} 
+        </div>
+      </div>
+    
+      {#Icon#}
+      <div class="input-image-widget">
+        <div class="form-group">
+          <label class="col-xs-3 control-label" >{{ entry_icon }}</label>
+          <div class="col-xs-9">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#tab-design-icon-image" data-meta="image" data-toggle="tab">{{ tab_image }}</a></li>
+              <li><a href="#tab-design-icon-svg" data-meta="image" data-toggle="tab">{{ tab_svg }}</a></li>
+              <li><a href="#tab-design-icon-font" data-meta="font" data-toggle="tab">{{ tab_font }}</a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="tab-design-icon-image">
+                <div class="el-group">
+                {% for language in languages %}
+                  <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                  <div class="el-item">
+                    <a href="" id="thumb-setting-design-icon-image{{ language.language_id }}" data-toggle="image" class="img-thumbnail"><img src="{{ (thumb_icon_image[language.language_id] is defined)?thumb_icon_image[language.language_id]:placeholder_image }}" alt="" title="" data-placeholder="{{ placeholder_image }}" /></a><input type="hidden" name="design_icon_image[{{ language.language_id }}]" value="{{ (design_icon_image[language.language_id] is defined)?design_icon_image[language.language_id]:'' }}" id="input-setting-design-icon-image{{ language.language_id }}" />
+                  </div>
+                {% endfor %}
+                </div>
+              </div>
+              <div class="tab-pane" id="tab-design-icon-svg">
+                <div class="el-group">
+                {% for language in languages %}
+                  <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                  <div class="el-item">
+                    <a href="" id="thumb-setting-design-icon-svg{{ language.language_id }}" data-toggle="svg" class="img-thumbnail"><img width="100" height="100" src="{{ (thumb_icon_svg[language.language_id] is defined)?thumb_icon_svg[language.language_id]:placeholder_svg }}" alt="" title="" data-placeholder="{{ placeholder_svg }}" /></a><input type="hidden" name="design_icon_svg[{{ language.language_id }}]" value="{{ (design_icon_svg[language.language_id] is defined)?design_icon_svg[language.language_id]:'' }}" id="input-setting-design-icon-svg{{ language.language_id }}" />
+                  </div>
+                {% endfor %}
+                </div>
+              </div>
+              <div class="tab-pane" id="tab-design-icon-font">
+                <div class="el-group">
+                {% for language in languages %}
+                  <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                  <div class="el-item">
+                    <a href="" id="thumb-setting-design-icon-font{{ language.language_id }}" data-toggle="font" class="img-thumbnail icon-thumb"><i class="{{ (design_icon_font[language.language_id] is not empty)?design_icon_font[language.language_id]:placeholder_font }}" data-placeholder="{{ placeholder_font }}"></i></a><input type="hidden" name="design_icon_font[{{ language.language_id }}]" value="{{ (design_icon_font[language.language_id] is defined)?design_icon_font[language.language_id]:'' }}" id="input-setting-design-icon-font{{ language.language_id }}" />
+                  </div>
+                {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="image-meta-tab-content tab-content">
+          <div class="tab-image active tab-pane">
+            <!--image icon width-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-setting-design-icon-width">{{ entry_icon_width }}</label>
+              <div class="col-xs-9">
+                <input type="number" name="design_icon_width" value="{{ design_icon_width }}" placeholder="{{ entry_icon_width }}" class="form-control" id="input-setting-design-icon-width" />
+              </div>
+            </div>
+            <!--image icon height-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-setting-design-icon-height">{{ entry_icon_height }}</label>
+              <div class="col-xs-9">
+                <input type="number" name="design_icon_height" value="{{ design_icon_height }}" placeholder="{{ entry_icon_height }}" class="form-control" id="input-setting-design-icon-height" />
+              </div>
+            </div>
+          </div>
+          <div class="tab-font tab-pane">
+            <!--icon size-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-setting-design-icon-size">{{ entry_icon_size }}</label>
+              <div class="col-xs-9">
+                <input type="number" name="design_icon_size" value="{{ design_icon_size }}" placeholder="{{ entry_icon_size }}" class="form-control" id="input-setting-design-icon-size" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- icon position-->
+        <div class="form-group">
+          <label class="col-xs-3 control-label">{{ entry_icon_position }}</label>
+          <div class="col-xs-9">
+            <div class="mz-switch-field">
+              {% for position in list_icon_position %} 
+                {% if (position['id'] == design_icon_position) %} 
+                <input type="radio" name="design_icon_position" value="{{ position['id'] }}" id="input-design-icon-position-{{ position['id'] }}" checked>
+                <label for="input-design-icon-position-{{ position['id'] }}" >{{ position['name'] }}</label>
+                {% else %} 
+                <input type="radio" name="design_icon_position" value="{{ position['id'] }}" id="input-design-icon-position-{{ position['id'] }}" >
+                <label for="input-design-icon-position-{{ position['id'] }}">{{ position['name'] }}</label>
+                {% endif %} 
+              {% endfor %} 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="design-button-design" class="tab-pane">
+      {#Color#}
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-design-color">{{ entry_color }}</label>
+        <div class="col-xs-9">
+          <select name="design_color" id="input-setting-design-color" class="form-control">
+            {% for color in colors %} 
+              {% if (design_color == color['code']) %}
+              <option value="{{ color['code'] }}" selected="">{{ color['text'] }}</option>
+              {% else %} 
+              <option value="{{ color['code'] }}">{{ color['text'] }}</option>
+              {% endif %} 
+            {% endfor %} 
+          </select>
+        </div>
+      </div>
+          
+      <!--design outline-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-design-outline">{{ entry_outline }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (design_outline) %} 
+            <input type="radio" name="design_outline" value="1" id="input-design-outline-enabled" checked>
+            <label for="input-design-outline-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="design_outline" value="0" id="input-design-outline-disabled">
+            <label for="input-design-outline-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="design_outline" value="1" id="input-design-outline-enabled" >
+            <label for="input-design-outline-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="design_outline" value="0" id="input-design-outline-disabled" checked>
+            <label for="input-design-outline-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      {#Button size#}
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_size }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% for size in button_sizes %} 
+              {% if (design_size == size['code']) %} 
+              <input type="radio" name="design_size" value="{{ size['code'] }}" id="input-setting-design-size-{{ size['code'] }}" checked>
+              <label for="input-setting-design-size-{{ size['code'] }}" >{{ size['text'] }}</label>
+              {% else %} 
+              <input type="radio" name="design_size" value="{{ size['code'] }}" id="input-setting-design-size-{{ size['code'] }}">
+              <label for="input-setting-design-size-{{ size['code'] }}" >{{ size['text'] }}</label>
+              {% endif %} 
+            {% endfor %} 
+          </div>
+        </div>
+      </div>
+          
+      <!--design width-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label">{{ entry_width }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (design_width == 'inline') %} 
+            <input type="radio" name="design_width" value="inline" id="input-design-width-inline" checked>
+            <label for="input-design-width-inline" >{{ text_wrap_content }}</label>
+            <input type="radio" name="design_width" value="block" id="input-design-width-block">
+            <label for="input-design-width-block">{{ text_match_parent }}</label>
+            {% else %} 
+            <input type="radio" name="design_width" value="inline" id="input-design-width-inline" >
+            <label for="input-design-width-inline">{{ text_wrap_content }}</label>
+            <input type="radio" name="design_width" value="block" id="input-design-width-block" checked>
+            <label for="input-design-width-block" >{{ text_match_parent }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+    </div>
+  </div>
+</form>

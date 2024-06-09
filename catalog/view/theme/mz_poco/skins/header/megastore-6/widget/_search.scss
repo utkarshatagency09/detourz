@@ -1,0 +1,124 @@
+.search-wrapper{
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+    & > * {
+        flex: 1 1 auto;
+    }
+}
+
+.widget-search{
+    @include border-radius();
+    color: gray;
+    border: $border-width solid $border-color;
+}
+#search{
+    
+    // Search text imput
+    input[type='text']{
+        width: 100%;
+        height: 100%;
+        border: none;
+        outline: 0;
+        background-color: transparent;
+        color: inherit;
+        font-size: $widget-search-font-size;
+        padding: $widget-search-inner-padding;
+
+        &::placeholder{
+            color: inherit;
+        }
+    }
+    
+    // category
+    .search-category{
+        flex: 0 0 auto;
+        max-width: 50%;
+        
+        .dropdown-toggle {
+            background-color: transparent;
+            font-size: $widget-search-font-size;
+            font-weight: $font-weight-base;
+            color: inherit;
+            padding: $widget-search-inner-padding;
+            border: none;
+            @include rtl-prop(border-right, $border-width solid $border-color);
+            cursor: pointer;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-transform: inherit;
+            
+            &::after{
+                @extend %font-awesome;
+                display: inline;
+                content: $widget-search-dropdown-caret;
+                font-weight: 700;
+                border: none;
+                vertical-align: -.1em;
+                @include rtl-prop(margin-left, $widget-search-dropdown-caret-left);
+            }
+        }
+        
+        // Fix the overflow problem in rtl
+        .dropdown-item{
+            white-space: normal;
+            font-size: $widget-search-font-size;
+        }
+    }
+
+    .autocomplete{
+        min-width: 100%;
+        width: auto !important;
+    }
+    
+    // Search button
+    .search-button{
+        flex: 0 0 auto;
+        align-self: stretch;
+        overflow: hidden;
+        
+        button{
+            background-color: transparent;
+            border: none;
+            // outline: none !important;
+            height: 100%;
+            font-size: $widget-search-font-size;
+            color: inherit;
+            text-transform: uppercase;
+            padding: 0 $widget-search-button-padding-x;
+            
+            
+            .fa {
+                line-height: inherit;
+            }
+        }
+    }
+    
+    // Products
+    .product-thumb{
+        color: $dropdown-link-color;
+
+        .image{
+            flex: 0 0 auto;
+        }
+        
+        &:hover{
+            background-color: $dropdown-link-hover-bg;
+            color: $dropdown-link-hover-color;
+        }
+    }
+}
+
+#main-navigation {
+    .widget-search{
+        border: none;
+    }
+
+    .dropdown-toggle {
+        border-color: currentColor !important;
+    }
+}
+

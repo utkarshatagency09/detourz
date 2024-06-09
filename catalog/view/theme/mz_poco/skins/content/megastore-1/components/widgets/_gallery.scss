@@ -1,0 +1,39 @@
+.widget-gallery{
+    .widget-title {
+        text-align: center;
+    }
+}
+
+.gallery{
+    &-container {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    &-item {
+        flex-shrink: 0;
+        display: inline-flex;
+        text-decoration: none !important;
+        color: inherit !important;
+        overflow: hidden;
+
+        img {
+            transition: transform .3s;
+            background-color: $light;
+        }
+
+        &:hover {
+            img {
+                transform: scale(1.1);
+            }
+        }
+    }
+    &-gutters{
+        margin: -#{map-get($spacers, 2)};
+
+        .gallery-item{
+            margin: map-get($spacers, 2);
+            @include border-radius();
+        }
+    }
+}

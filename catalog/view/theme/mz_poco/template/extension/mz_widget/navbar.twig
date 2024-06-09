@@ -1,0 +1,28 @@
+<nav class="navbar {{ expand?:'no-expand' }} {{ hoverable?'hoverable' }} navbar-{{ text_color }} bg-{{ bg_color }} {{ orientation }}">
+  {% if brand_title or brand_icon_font or brand_icon_svg or brand_icon_image %}
+  <div class="navbar-brand-wrap d-flex align-items-center">
+
+    <a class="navbar-brand {{ collapse?'collapsed' }}" {% if brand_url %}href="{{ brand_url.href }}" {{ brand_url.attr }}{% else %} data-bs-toggle="collapse" href="#widget-navbar-{{ mz_suffix }}" aria-controls="widget-navbar-{{ mz_suffix }}"{% endif %}>
+      {% if brand_icon_font %}
+      <i class="brand-icon {{ brand_icon_font }}" {{ brand_icon_size?'style="font-size: ' ~ brand_icon_size ~ 'px"':'' }}></i>
+      {% elseif brand_icon_svg %}
+      <div class="brand-icon svg-icon" style="{{ brand_icon_width?'width:' ~ brand_icon_width ~ 'px;' }}{{ brand_icon_height?'height:' ~ brand_icon_height ~ 'px;' }}">{{ brand_icon_svg }}</div>
+      {% elseif brand_icon_image %}
+      <img class="brand-icon" src="{{ brand_icon_image?:'1em' }}" width="{{ brand_icon_width?:'1em' }}" height="{{ brand_icon_height }}" />
+      {% endif %}
+      {{ brand_title }}
+    </a>
+
+    {% if collapsible or brand_url %}
+    <button class="navbar-toggler {{ collapse?'collapsed' }} ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#widget-navbar-{{ mz_suffix }}" aria-controls="widget-navbar-{{ mz_suffix }}" aria-expanded="false" aria-label="Toggle navigation"><i class="{{ mz_config.get('html_navbar_toggler_icon') }}"></i></button>
+    {% endif %}
+  </div>
+  {% else %}{% set collapsible = false %}{% endif %}
+  <div class="collapse navbar-collapse {{ not collapsible or not collapse?'show' }} align-items-stretch align-self-stretch" id="widget-navbar-{{ mz_suffix }}">
+    {% if brand_title or brand_icon_font or brand_icon_svg or brand_icon_image %}
+    <ul class="navbar-nav ms-auto {{ orientation }}">{{ menu }}</ul>
+    {% else %}
+    <ul class="navbar-nav {{ orientation }}">{{ menu }}</ul>
+    {% endif %}
+  </div>
+</nav>

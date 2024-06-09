@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<modification>
+    <name>Maza hooks</name>
+    <code>maza_hooks</code>
+    <version>1.0</version>
+    <author>TemplateMaza.com</author>
+    <link>https://pocotheme.com//</link>
+    <!-- in oc4 -->
+    <file path="catalog/controller/product/{category,manufacturer,search,special}.php">
+        <operation>
+            <search trim="true"><![CDATA[$data['sorts'] = array();]]></search>
+            <add position="before"><![CDATA[
+                    // Add extra meta data to product list
+                    $this->mz_hook->fetch('catalog_product_data_list', [$results, &$data['products']]);
+            ]]></add>
+        </operation>
+    </file>
+    <!-- in oc4 -->
+    <file path="catalog/controller/extension/module/{bestseller,special,latest}.php">
+        <operation>
+            <search trim="true"><![CDATA[$this->load->view(]]></search>
+            <add position="before"><![CDATA[
+                    // Add extra meta data to product list
+                    $this->mz_hook->fetch('catalog_product_data_list', [$results, &$data['products']]);
+                    $this->mz_hook->fetch('catalog_products_view', [&$data, $setting]);
+            ]]></add>
+        </operation>
+    </file>
+    <!-- in oc4 -->
+    <file path="catalog/controller/product/product.php">
+        <operation>
+            <search trim="true"><![CDATA[$data['tags'] = array();]]></search>
+            <add position="before"><![CDATA[
+                    // Add extra meta data to product list
+                    $this->mz_hook->fetch('catalog_product_data_list', [$results, &$data['products']]);
+            ]]></add>
+        </operation>
+    </file>
+</modification>

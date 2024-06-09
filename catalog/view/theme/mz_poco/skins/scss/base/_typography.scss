@@ -1,0 +1,156 @@
+/* Font awesome icon */
+%font-awesome{
+    @include fa-icon();
+}
+
+/* text */
+p{
+    &:last-child{
+        margin-bottom: 0;
+    }
+}
+
+.text-hr{
+    overflow: hidden;
+    text-align: center;
+    color: $hr-color;
+    
+    &:before,
+    &:after {
+        background-color: $hr-color;
+        content: "";
+        display: inline-block;
+        height: $hr-height;
+        position: relative;
+        vertical-align: middle;
+        width: 50%;
+    }
+    
+    &:before {
+        right: 0.5em;
+        margin-left: -50%;
+    }
+
+    &:after {
+        left: 0.5em;
+        margin-right: -50%;
+    }
+}
+
+// Collapsble text
+.text-collapsed{
+    position: relative;
+    overflow: hidden;
+
+    &.expand{
+        overflow: auto;
+    }
+    
+    .block-toggle{
+        text-align: center;
+        
+        &:empty{
+            display: none;
+        }
+    }
+
+    .text-toggle {
+        text-decoration: none;
+        --bs-link-hover-color: var(--bs-badge-color);
+        // --bs-badge-padding-x: .4em;
+        // --bs-badge-padding-y: .25em;
+    }
+    
+    &:not(.expand){
+        .block-toggle{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+            background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
+            background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 );
+        }
+    }
+    
+    &.expand{
+        p + .block-toggle{
+            margin-top: -$paragraph-margin-bottom;
+        }
+    }
+}
+
+// Multiline ellipsis of text
+.text-ellipsis-2{ // Two line ellipsis
+    overflow: hidden;
+    max-height: 2em * $line-height-base;
+}
+table .text-ellipsis-2{
+    vertical-align: top;
+}
+
+// Utilitis
+.center-title{
+    .widget, .content, .module, .design{
+        &-title{
+            text-align: center;
+        }
+    }
+}
+@each $index, $size in $spacers{
+    .title-mb-#{$index}{
+        .widget, .content, .module, .design{
+            &-title{
+                margin-bottom: $size !important;
+            }
+        }
+    }
+}
+.font-size{
+    &-lg{
+        font-size: $font-size-lg;
+    }
+    &-sm{
+        font-size: $font-size-sm;
+    }
+}
+.font-family-base { // @deprecated. use css variable after bs5
+    font-family: $font-family-base;
+}
+.headings-font-family { // @deprecated. use css variable after bs5
+    font-family: $headings-font-family;
+}
+
+// HTML widget
+.widget-html{
+    h1,h2,h3,h4,h5,h6{
+        &:only-child{
+            margin-bottom: 0;
+        }
+    }
+}
+
+// Small headings for small screen
+h1,.h1{
+    @include breakpoint-font-size($h1-font-size);
+}
+h2,.h2{
+    @include breakpoint-font-size($h2-font-size);
+}
+h3,.h3{
+    @include breakpoint-font-size($h3-font-size);
+}
+h4,.h4{
+    @include breakpoint-font-size($h4-font-size);
+}
+h5,.h5{
+    @include breakpoint-font-size($h5-font-size);
+}
+
+// Text inverse color
+@each $color, $value in $theme-colors {
+    .text-#{$color}-inverse {
+        color: color-contrast($value);
+    }
+}

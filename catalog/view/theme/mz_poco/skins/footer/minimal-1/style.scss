@@ -1,0 +1,33 @@
+@import "skins/footer/minimal-1/variables";
+@import "skins/footer/minimal-1/components/social";
+@import "skins/footer/minimal-1/components/newsletter";
+
+.footer{
+    color: $footer-text-color;
+
+    h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6{
+        color: $footer-headings-color;
+    }
+    
+    .design, .module, .widget{
+        &-title{
+            font-size: $footer-headings-font-size;
+            font-weight: 600;
+            margin-bottom: $footer-headings-margin-bottom;
+        }
+    }
+    .design-menu, .widget-contact_us{
+        margin-bottom: 0;
+    }
+    .design-menu{
+        .design-title{
+            margin-bottom: $footer-headings-margin-bottom - $design-nav-link-padding-y;
+            font-size: $footer-headings-font-size;
+        }
+    }
+    .widget-contact_us{
+        .widget-title{
+            margin-bottom: $footer-headings-margin-bottom - $design-nav-link-padding-y;
+        }
+    }
+}

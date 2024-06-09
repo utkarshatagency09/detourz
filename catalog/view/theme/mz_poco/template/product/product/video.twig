@@ -1,0 +1,96 @@
+{% verbatim %}{% if mz_videos %}{% endverbatim %}
+{% if not carousel_status %}
+<div id="productvideo{{ mz_suffix }}" class="row row-cols-xl-{{ column_xl }} row-cols-lg-{{ column_lg }} row-cols-md-{{ column_md }} row-cols-sm-{{ column_sm }} row-cols-{{ column_xs }} justify-content-center text-center">
+{% verbatim %}{% for video in mz_videos %}{% endverbatim %}<div class="gutter-bottom col">
+  {% verbatim %}{% if video.thumb16x9 %}
+  <a class="thumbnail mfp-iframe fa-center-icon fas fa-play-circle" href="{{ video.href }}" title="{{ video.title }}"><img class="img-fluid" src="{{ video.thumb16x9 }}" alt="{{ heading_title }}" /></a>
+  {% else %}
+  <div class="ratio ratio-16x9">
+    <iframe src="{{ video.href }}" allowfullscreen></iframe>
+  </div>
+  {% endif %}{% endverbatim %}
+  {% verbatim %}{% if video.title %}<h3 class="mb-0 mt-2 h6">{{ video.title }}</h3>{% endif %}{% endverbatim %}
+</div>{% verbatim %}{% endfor %}{% endverbatim %}
+</div>
+{% else %}
+<div id="productvideo{{ mz_suffix }}" class="swiper text-center text-uppercase">
+  <div class="swiper-wrapper">
+    {% verbatim %}{% for video in mz_videos %}{% endverbatim %}
+    <div class="swiper-slide">
+      {% verbatim %}{% if video.thumb16x9 %}
+      <a class="thumbnail d-block mfp-iframe fa-center-icon fas fa-play-circle" href="{{ video.href }}" title="{{ video.title }}"><img class="w-100" src="{{ video.thumb16x9 }}" alt="{{ heading_title }}" /></a>
+      {% else %}
+      <div class="ratio ratio-16x9">
+        <iframe src="{{ video.href }}" allowfullscreen></iframe>
+      </div>
+      {% endif %}{% endverbatim %}
+      {% verbatim %}{% if video.title %}<h3 class="mb-0 mt-2 h6">{{ video.title }}</h3>{% endif %}{% endverbatim %}
+    </div>{% verbatim %}{% endfor %}{% endverbatim %}
+  </div>
+  {% if carousel_pagination %}
+  <div class="swiper-pagination mt-2"></div>
+  {% endif %}
+  <div class="swiper-pager">
+    <div class="carousel-control-prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span></div>
+    <div class="carousel-control-next"><span class="carousel-control-next-icon" aria-hidden="true"></span></div>
+  </div>
+</div>
+<script>$(function(){
+new Swiper('#productvideo{{ mz_suffix }}', {
+  spaceBetween: {{ gutter_width }},
+  centerInsufficientSlides: true,
+  {% if carousel_pagination %}
+  pagination: {
+    el: '#productvideo{{ mz_suffix }} .swiper-pagination',
+    clickable: true,
+  },
+  {% else %}
+  pagination: false,
+  {% endif %}
+  navigation: {
+    nextEl: '#productvideo{{ mz_suffix }} .carousel-control-next',
+    prevEl: '#productvideo{{ mz_suffix }} .carousel-control-prev',
+  },
+  slidesPerView:  {{ column_xs }},
+  breakpoints: {
+    {{ breakpoint_sm }}: {
+      slidesPerView: {{ column_sm }}
+    },
+    {{ breakpoint_md }}: {
+      slidesPerView: {{ column_md }}
+    },
+    {{ breakpoint_lg }}: {
+      slidesPerView: {{ column_lg }}
+    },
+    {{ breakpoint_xl }}: {
+      slidesPerView: {{ column_xl }}
+    },
+  },
+});
+});</script>
+{% endif %}
+<script>
+$(function(){
+  $('#productvideo{{ mz_suffix }}').magnificPopup({
+    delegate: 'a',
+    gallery: {
+      enabled: true
+    },
+    iframe: {
+        patterns: {
+            youtube: {
+                index: 'youtube.com/',
+                id: function (url) { return url },
+                src: '%id%'
+            },
+            vimeo: {
+                index: 'vimeo.com/',
+                id: function (url) { return url },
+                src: '%id%'
+            }
+        }
+    }
+  });
+});
+</script>
+{% verbatim %}{% endif %}{% endverbatim %}

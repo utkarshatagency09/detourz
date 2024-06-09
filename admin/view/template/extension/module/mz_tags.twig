@@ -1,0 +1,601 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- Form -->
+  <form action="{{ action }}" class="form-horizontal" enctype="multipart/form-data" id="form-mz-tags" method="post">
+    <div class="tab-content">
+        
+      <!--General-->
+      <div id="tab-mz-general" class="tab-pane fade in active">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <!--module name-->
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-name">{{ entry_module_name }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-name" placeholder="{{ entry_module_name }}" type="text" name="name" value="{{ name }}" >
+                {% if (err_name is defined) %} 
+                <div class="text-danger">{{ err_name }}</div>
+                {% endif %} 
+              </div>
+            </div>
+            
+            <!--status-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-status">{{ entry_status }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (status) %} 
+                  <input type="radio" name="status" value="1" id="input-status-enabled" checked>
+                  <label for="input-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="status" value="0" id="input-status-disabled">
+                  <label for="input-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="status" value="1" id="input-status-enabled" >
+                  <label for="input-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="status" value="0" id="input-status-disabled" checked>
+                  <label for="input-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+            
+            <!--module title-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-title">{{ entry_title }}</label>
+              <div class="col-xs-9">
+              {% for language in languages %} 
+                <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                  <input class="form-control" type="text" name="title[{{ language['language_id'] }}]" value="{{ title[language['language_id']] is defined?title[language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+                </div>
+              {% endfor %} 
+              </div>
+            </div>
+              
+            {# tags source #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-tags-source">{{ entry_tags_source }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                {% for source in list_tags_source %}
+                  {% if (source.id == tags_source) %} 
+                  <input type="radio" name="tags_source" value="{{ source.id }}" id="input-tags-source-{{ source.id }}" checked>
+                  <label for="input-tags-source-{{ source.id }}" >{{ source.name }}</label>
+                  {% else %} 
+                  <input type="radio" name="tags_source" value="{{ source.id }}" id="input-tags-source-{{ source.id }}" >
+                  <label for="input-tags-source-{{ source.id }}">{{ source.name }}</label>
+                  {% endif %} 
+                {% endfor %}
+                </div>
+              </div>
+            </div>
+                
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-tag-color">{{ entry_color }}</label>
+              <div class="col-xs-9">
+                <select name="tag_color" id="input-tag-color" class="form-control">
+                  <option value="default">{{ text_default }}</option>
+                  {% for color in colors %} 
+                    {% if (tag_color == color['code']) %}
+                    <option value="{{ color['code'] }}" selected="">{{ color['text'] }}</option>
+                    {% else %} 
+                    <option value="{{ color['code'] }}">{{ color['text'] }}</option>
+                    {% endif %} 
+                  {% endfor %} 
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div> <!-- // General -->
+      
+      {#Product#}
+      <div id="tab-mz-product" class="tab-pane fade">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            {# tags type #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_tags_type }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                {% for type in list_tags_type %}
+                  {% if (type.id == product_tags_type) %} 
+                  <input type="radio" name="product_tags_type" value="{{ type.id }}" id="input-product-tags-type-{{ type.id }}" checked>
+                  <label for="input-product-tags-type-{{ type.id }}" >{{ type.name }}</label>
+                  {% else %} 
+                  <input type="radio" name="product_tags_type" value="{{ type.id }}" id="input-product-tags-type-{{ type.id }}" >
+                  <label for="input-product-tags-type-{{ type.id }}">{{ type.name }}</label>
+                  {% endif %} 
+                {% endfor %}
+                </div>
+              </div>
+            </div>
+                
+            <div id="product-tags-type-content" class="tab-content">
+              {#featured tags#}
+              <div id="product-tab-type-featured" class="tab-pane">
+                <!-- featured tags-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-product-featured-tags"><span data-toggle="tooltip" title="{{ help_feature_tags }}">{{ entry_tags }}</span></label>
+                  <div class="col-xs-9">
+                    {% for language in languages %} 
+                      <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                        <textarea name="product_featured_tags[{{ language['language_id'] }}]" placeholder="{{ entry_tags }}" class="form-control" >{{ product_featured_tags[language['language_id']] is defined?product_featured_tags[language['language_id']]:'' }}</textarea>
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+                    
+              {#Filter tags#}
+              <div id="product-tab-type-filter" class="tab-pane">
+                <!--auto filter-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-filter-product-auto-filter"><span data-toggle="tooltip" title="{{ help_auto_filter }}">{{ entry_auto_filter }}</span></label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (product_filter_auto_filter) %} 
+                      <input type="radio" name="product_filter_auto_filter" value="1" id="input-filter-product-auto-filter-enabled" checked>
+                      <label for="input-filter-product-auto-filter-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="product_filter_auto_filter" value="0" id="input-filter-product-auto-filter-disabled">
+                      <label for="input-filter-product-auto-filter-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="product_filter_auto_filter" value="1" id="input-filter-product-auto-filter-enabled" >
+                      <label for="input-filter-product-auto-filter-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="product_filter_auto_filter" value="0" id="input-filter-product-auto-filter-disabled" checked>
+                      <label for="input-filter-product-auto-filter-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                    
+                {#Filter category#}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-product-category"><span data-toggle="tooltip" title="{{ help_category }}">{{ entry_category }}</span></label>
+                  <div class="col-xs-9">
+                    <input type="text" name="product_category" value="" placeholder="{{ entry_category }}" id="input-product-category" class="form-control" />
+                    <div id="filter-product-category" class="well well-sm" style="height: 150px; overflow: auto;"> {% for category in product_categories %}
+                      <div id="filter-product-category{{ category.category_id }}"><i class="fa fa-minus-circle"></i> {{ category.name }}
+                        <input type="hidden" name="product_filter_category[]" value="{{ category.category_id }}" />
+                      </div>
+                      {% endfor %}</div>
+                  </div>
+                </div>
+                  
+                <!--filter sub category-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_sub_category }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (product_filter_sub_category) %} 
+                      <input type="radio" name="product_filter_sub_category" value="1" id="input-filter-product-sub-category-include" checked>
+                      <label for="input-filter-product-sub-category-include" >{{ text_include }}</label>
+                      <input type="radio" name="product_filter_sub_category" value="0" id="input-filter-product-sub-category-exclude">
+                      <label for="input-filter-product-sub-category-exclude">{{ text_exclude }}</label>
+                      {% else %} 
+                      <input type="radio" name="product_filter_sub_category" value="1" id="input-filter-product-sub-category-include" >
+                      <label for="input-filter-product-sub-category-include">{{ text_include }}</label>
+                      <input type="radio" name="product_filter_sub_category" value="0" id="input-filter-product-sub-category-exclude" checked>
+                      <label for="input-filter-product-sub-category-exclude" >{{ text_exclude }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                    
+                <!-- filter manufacturer-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-filter-product-manufacturer"><span data-toggle="tooltip" title="{{ help_manufacturer }}">{{ entry_manufacturer }}</span></label>
+                  <div class="col-xs-9">
+                    <input type="text" name="product_filter_manufacturer_input" value="" placeholder="{{ entry_manufacturer }}"  id="input-filter-product-manufacturer" class="form-control" />
+                    <div id="filter-product-manufacturer" class="well well-sm" style="height: 150px; overflow: auto;">
+                      {% for manufacturer in product_manufacturers %} 
+                      <div id="filter-product-manufacturer-{{ manufacturer.manufacturer_id }}"><i class="fa fa-minus-circle"></i> {{ manufacturer.name }} 
+                        <input type="hidden" name="product_filter_manufacturer[]" value="{{ manufacturer.manufacturer_id }}" />
+                      </div>
+                      {% endfor %} 
+                    </div>
+                  </div>
+                </div>
+
+                {#Filter Filter#}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-filter-product"><span data-toggle="tooltip" title="{{ help_filter }}">{{ entry_filter }}</span></label>
+                  <div class="col-xs-9">
+                    <input type="text" name="product_filter" value="" placeholder="{{ entry_filter }}" id="input-filter-product" class="form-control" />
+                    <div id="filter-product-filter" class="well well-sm" style="height: 150px; overflow: auto;"> {% for filter in product_filters %}
+                      <div id="filter-product-filter{{ filter.filter_id }}"><i class="fa fa-minus-circle"></i> {{ filter.name }}
+                        <input type="hidden" name="product_filter_filter[]" value="{{ filter.filter_id }}" />
+                      </div>
+                      {% endfor %}</div>
+                  </div>
+                </div>
+                  
+                {#Filter Tags limit#}
+                <div class="form-group required">
+                  <label class="col-xs-3 control-label" for="input-filter-product-limit">{{ entry_limit }}</label>
+                  <div class="col-xs-9">
+                    <input class="form-control" id="input-filter-product-limit" placeholder="{{ entry_limit }}" type="number" min="1" name="product_filter_limit" value="{{ product_filter_limit }}" >
+                    {% if (err_product_filter_limit is defined) %} 
+                    <div class="text-danger">{{ err_product_filter_limit }}</div>
+                    {% endif %} 
+                  </div>
+                </div>
+                  
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {#Blog#}
+      <div id="tab-mz-blog" class="tab-pane fade">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            {# tags type #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_tags_type }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                {% for type in list_tags_type %}
+                  {% if (type.id == blog_tags_type) %} 
+                  <input type="radio" name="blog_tags_type" value="{{ type.id }}" id="input-blog-tags-type-{{ type.id }}" checked>
+                  <label for="input-blog-tags-type-{{ type.id }}" >{{ type.name }}</label>
+                  {% else %} 
+                  <input type="radio" name="blog_tags_type" value="{{ type.id }}" id="input-blog-tags-type-{{ type.id }}" >
+                  <label for="input-blog-tags-type-{{ type.id }}">{{ type.name }}</label>
+                  {% endif %} 
+                {% endfor %}
+                </div>
+              </div>
+            </div>
+                
+            <div id="blog-tags-type-content" class="tab-content">
+              {#featured tags#}
+              <div id="blog-tab-type-featured" class="tab-pane">
+                <!-- featured tags-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-blog-featured-tags"><span data-toggle="tooltip" title="{{ help_feature_tags }}">{{ entry_tags }}</span></label>
+                  <div class="col-xs-9">
+                    {% for language in languages %} 
+                    <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                      <textarea name="blog_featured_tags[{{ language['language_id'] }}]" placeholder="{{ entry_tags }}" class="form-control" >{{ blog_featured_tags[language['language_id']] is defined?blog_featured_tags[language['language_id']]:'' }}</textarea>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+                    
+              {#Filter tags#}
+              <div id="blog-tab-type-filter" class="tab-pane">
+                <!--auto filter-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-filter-blog-auto-filter"><span data-toggle="tooltip" title="{{ help_auto_filter }}">{{ entry_auto_filter }}</span></label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (blog_filter_auto_filter) %} 
+                      <input type="radio" name="blog_filter_auto_filter" value="1" id="input-filter-blog-auto-filter-enabled" checked>
+                      <label for="input-filter-blog-auto-filter-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="blog_filter_auto_filter" value="0" id="input-filter-blog-auto-filter-disabled">
+                      <label for="input-filter-blog-auto-filter-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="blog_filter_auto_filter" value="1" id="input-filter-blog-auto-filter-enabled" >
+                      <label for="input-filter-blog-auto-filter-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="blog_filter_auto_filter" value="0" id="input-filter-blog-auto-filter-disabled" checked>
+                      <label for="input-filter-blog-auto-filter-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                    
+                {#Filter category#}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-blog-category"><span data-toggle="tooltip" title="{{ help_category }}">{{ entry_category }}</span></label>
+                  <div class="col-xs-9">
+                    <input type="text" name="blog_category" value="" placeholder="{{ entry_category }}" id="input-blog-category" class="form-control" />
+                    <div id="filter-blog-category" class="well well-sm" style="height: 150px; overflow: auto;"> {% for category in blog_categories %}
+                      <div id="filter-blog-category{{ category.category_id }}"><i class="fa fa-minus-circle"></i> {{ category.name }}
+                        <input type="hidden" name="blog_filter_category[]" value="{{ category.category_id }}" />
+                      </div>
+                      {% endfor %}</div>
+                  </div>
+                </div>
+                  
+                <!--filter sub category-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_sub_category }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (blog_filter_sub_category) %} 
+                      <input type="radio" name="blog_filter_sub_category" value="1" id="input-filter-blog-sub-category-include" checked>
+                      <label for="input-filter-blog-sub-category-include" >{{ text_include }}</label>
+                      <input type="radio" name="blog_filter_sub_category" value="0" id="input-filter-blog-sub-category-exclude">
+                      <label for="input-filter-blog-sub-category-exclude">{{ text_exclude }}</label>
+                      {% else %} 
+                      <input type="radio" name="blog_filter_sub_category" value="1" id="input-filter-blog-sub-category-include" >
+                      <label for="input-filter-blog-sub-category-include">{{ text_include }}</label>
+                      <input type="radio" name="blog_filter_sub_category" value="0" id="input-filter-blog-sub-category-exclude" checked>
+                      <label for="input-filter-blog-sub-category-exclude" >{{ text_exclude }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                    
+                <!-- filter author-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-filter-blog-author"><span data-toggle="tooltip" title="{{ help_author }}">{{ entry_author }}</span></label>
+                  <div class="col-xs-9">
+                    <input type="text" name="blog_filter_author_input" value="" placeholder="{{ entry_author }}"  id="input-filter-blog-author" class="form-control" />
+                    <div id="filter-blog-author" class="well well-sm" style="height: 150px; overflow: auto;">
+                      {% for author in blog_authors %} 
+                      <div id="filter-blog-author-{{ author.author_id }}"><i class="fa fa-minus-circle"></i> {{ author.name }} 
+                        <input type="hidden" name="blog_filter_author[]" value="{{ author.author_id }}" />
+                      </div>
+                      {% endfor %} 
+                    </div>
+                  </div>
+                </div>
+
+                {#Filter Filter#}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-filter-blog"><span data-toggle="tooltip" title="{{ help_filter }}">{{ entry_filter }}</span></label>
+                  <div class="col-xs-9">
+                    <input type="text" name="blog_filter" value="" placeholder="{{ entry_filter }}" id="input-filter-blog" class="form-control" />
+                    <div id="filter-blog-filter" class="well well-sm" style="height: 150px; overflow: auto;"> {% for filter in blog_filters %}
+                      <div id="filter-blog-filter{{ filter.filter_id }}"><i class="fa fa-minus-circle"></i> {{ filter.name }}
+                        <input type="hidden" name="blog_filter_filter[]" value="{{ filter.filter_id }}" />
+                      </div>
+                      {% endfor %}</div>
+                  </div>
+                </div>
+                  
+                {#Filter Tags limit#}
+                <div class="form-group required">
+                  <label class="col-xs-3 control-label" for="input-filter-blog-limit">{{ entry_limit }}</label>
+                  <div class="col-xs-9">
+                    <input class="form-control" id="input-filter-blog-limit" placeholder="{{ entry_limit }}" type="number" min="1" name="blog_filter_limit" value="{{ blog_filter_limit }}" >
+                    {% if (err_blog_filter_limit is defined) %} 
+                    <div class="text-danger">{{ err_blog_filter_limit }}</div>
+                    {% endif %} 
+                  </div>
+                </div>
+                  
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<script>
+{# tags type #}
+$('input[name="product_tags_type"]').on('change', function(){
+    var tags_type = $(this).val();
+
+    $('#product-tags-type-content').children('.tab-pane.active').removeClass('active');
+    
+    if(tags_type == 'featured'){
+        $('#product-tab-type-featured').addClass('active');
+    } else {
+        $('#product-tab-type-filter').addClass('active');
+    }
+});
+$('input[name="product_tags_type"]:checked').change();
+
+$('input[name="blog_tags_type"]').on('change', function(){
+    var tags_type = $(this).val();
+
+    $('#blog-tags-type-content').children('.tab-pane.active').removeClass('active');
+    
+    if(tags_type == 'featured'){
+        $('#blog-tab-type-featured').addClass('active');
+    } else {
+        $('#blog-tab-type-filter').addClass('active');
+    }
+});
+$('input[name="blog_tags_type"]:checked').change();
+
+// Manufaturer
+$('input[name=\'product_filter_manufacturer_input\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/manufacturer/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['manufacturer_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'product_filter_manufacturer_input\']').val('');
+
+		$('#filter-product-manufacturer-' + item['value']).remove();
+
+		$('#filter-product-manufacturer').append('<div id="filter-product-manufacturer' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="product_filter_manufacturer[]" value="' + item['value'] + '" /></div>');
+	}
+});
+$('#filter-product-manufacturer').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+
+// Author
+$('input[name=\'blog_filter_author_input\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=extension/maza/blog/author/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['author_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'blog_filter_author_input\']').val('');
+
+		$('#filter-blog-author-' + item['value']).remove();
+
+		$('#filter-blog-author').append('<div id="filter-blog-author' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="blog_filter_author[]" value="' + item['value'] + '" /></div>');
+	}
+});
+$('#filter-blog-author').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+
+// Category
+$('input[name=\'product_category\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/category/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['category_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'product_category\']').val('');
+
+		$('#filter-product-category' + item['value']).remove();
+
+		$('#filter-product-category').append('<div id="filter-product-category' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="product_filter_category[]" value="' + item['value'] + '" /></div>');
+	}
+});
+$('#filter-product-category').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+
+$('input[name=\'blog_category\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=extension/maza/blog/category/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['category_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'blog_category\']').val('');
+
+		$('#filter-blog-category' + item['value']).remove();
+
+		$('#filter-blog-category').append('<div id="filter-blog-category' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="blog_filter_category[]" value="' + item['value'] + '" /></div>');
+	}
+});
+$('#filter-blog-category').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+
+// Filter
+$('input[name=\'product_filter\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/filter/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['filter_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'product_filter\']').val('');
+
+		$('#filter-product-filter' + item['value']).remove();
+
+		$('#filter-product-filter').append('<div id="filter-product-filter' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="product_filter_filter[]" value="' + item['value'] + '" /></div>');
+	}
+});
+$('#filter-product-filter').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+
+$('input[name=\'blog_filter\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/filter/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['filter_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'blog_filter\']').val('');
+
+		$('#filter-blog-filter' + item['value']).remove();
+
+		$('#filter-blog-filter').append('<div id="filter-blog-filter' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="blog_filter_filter[]" value="' + item['value'] + '" /></div>');
+	}
+});
+$('#filter-blog-filter').delegate('.fa-minus-circle', 'click', function() {
+	$(this).parent().remove();
+});
+</script>
+<form action="{{ import }}" enctype="multipart/form-data" method="post" id="form-import" style="display: none;"><input type="file" accept=".json" name="file" /></form>
+<script>
+$('#button-import').on('click', function(){
+    $('#form-import input[name=\'file\']').val('').trigger('click');
+    
+    if (typeof timer != 'undefined') {
+    	clearInterval(timer);
+    }
+
+    timer = setInterval(function() {
+        if ($('#form-import input[name=\'file\']').val() != '') {
+            clearInterval(timer);
+            $('#form-import').submit();
+        }
+    }, 500);
+    
+});
+{#Confirm before delete module#}
+$('#button-delete').on('click', function(){
+    if(confirm("{{ text_confirm }}")){
+        return true;
+    } else {
+        return false;
+    }
+});
+</script>
+{{ mz_footer }}

@@ -1,0 +1,57 @@
+.entry-design{
+    a{
+        text-decoration: none;
+    }
+}
+.module-title{
+    padding-bottom: mz-spacer(6);
+    margin-bottom: $module-title-margin-bottom;
+    font-size: $module-title-font-size;
+    @include breakpoint-font-size($module-title-font-size);
+    text-transform: uppercase;
+    border-bottom: 2px solid $border-color;
+}
+.widget, .design{
+    &-title{
+        margin-bottom: $spacer;
+    }
+}
+
+.rating{
+    .fas, .far{
+        color: $product-rating-color;
+        transform: rtl-value(none, scaleX(-1));
+    }
+    .far{
+        color: $gray-500;
+    }
+}
+
+.btn{
+    text-transform: uppercase;
+}
+
+// fancy border bottom on header
+.fancy-title{
+    position: relative;
+    border-bottom: $border-width solid $border-color;
+    padding-bottom: 1.6875 * $spacer;
+    text-align: center;
+
+    &::after{
+        content: "";
+        position: absolute;
+        width: .5em;
+        height: .5em;
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%, 50%) rotate(45deg);
+        border-bottom: $border-width solid $border-color;
+        border-right: $border-width solid $border-color;
+        background-color: $body-bg;
+    }
+}
+
+.headings-font-family { 
+    font-family: $headings-font-family; 
+}

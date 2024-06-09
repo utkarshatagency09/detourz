@@ -1,0 +1,94 @@
+<!-- Form -->
+<form id="setting-content-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <!--content status-->
+  <div class="form-group">
+    <label class="col-xs-3 control-label" for="input-setting-content-status">{{ entry_status }}</label>
+    <div class="col-xs-9">
+      <div class="mz-switch-field">
+        {% if (content_status) %} 
+        <input type="radio" name="content_status" value="1" id="input-content-status-enabled" checked>
+        <label for="input-content-status-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="content_status" value="0" id="input-content-status-disabled">
+        <label for="input-content-status-disabled">{{ text_disabled }}</label>
+        {% else %} 
+        <input type="radio" name="content_status" value="1" id="input-content-status-enabled" >
+        <label for="input-content-status-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="content_status" value="0" id="input-content-status-disabled" checked>
+        <label for="input-content-status-disabled" >{{ text_disabled }}</label>
+        {% endif %} 
+      </div>
+    </div>
+  </div>
+      
+  {#content_placeholder#}
+  <div class="form-group">
+    <label class="col-xs-3 control-label" for="input-content-placeholder">{{ entry_placeholder }}</label>
+    <div class="col-xs-9">
+    {% for language in languages %} 
+      <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+        <input class="form-control" type="text" name="content_placeholder[{{ language['language_id'] }}]" value="{{ content_placeholder[language['language_id']] is defined?content_placeholder[language['language_id']]:'' }}" placeholder="{{ entry_placeholder }}" >
+      </div>
+    {% endfor %} 
+    </div>
+  </div>
+      
+  {#category status#}
+  <div class="form-group">
+    <label class="col-xs-3 control-label" for="input-content-category-status">{{ entry_category }}</label>
+    <div class="col-xs-9">
+      <div class="mz-switch-field">
+        {% if (content_category) %} 
+        <input type="radio" name="content_category" value="1" id="input-content-category-status-enabled" checked>
+        <label for="input-content-category-status-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="content_category" value="0" id="input-content-category-status-disabled">
+        <label for="input-content-category-status-disabled">{{ text_disabled }}</label>
+        {% else %} 
+        <input type="radio" name="content_category" value="1" id="input-content-category-status-enabled" >
+        <label for="input-content-category-status-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="content_category" value="0" id="input-content-category-status-disabled" checked>
+        <label for="input-content-category-status-disabled" >{{ text_disabled }}</label>
+        {% endif %} 
+      </div>
+    </div>
+  </div>
+      
+  {#description status#}
+  <div class="form-group">
+    <label class="col-xs-3 control-label" for="input-content-description-status">{{ entry_description }}</label>
+    <div class="col-xs-9">
+      <div class="mz-switch-field">
+        {% if (content_description) %} 
+        <input type="radio" name="content_description" value="1" id="input-content-description-status-enabled" checked>
+        <label for="input-content-description-status-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="content_description" value="0" id="input-content-description-status-disabled">
+        <label for="input-content-description-status-disabled">{{ text_disabled }}</label>
+        {% else %} 
+        <input type="radio" name="content_description" value="1" id="input-content-description-status-enabled" >
+        <label for="input-content-description-status-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="content_description" value="0" id="input-content-description-status-disabled" checked>
+        <label for="input-content-description-status-disabled" >{{ text_disabled }}</label>
+        {% endif %} 
+      </div>
+    </div>
+  </div>
+      
+  {# sub category status#}
+  <div class="form-group">
+    <label class="col-xs-3 control-label" for="input-content-sub-category-status">{{ entry_sub_category }}</label>
+    <div class="col-xs-9">
+      <div class="mz-switch-field">
+        {% if (content_sub_category) %} 
+        <input type="radio" name="content_sub_category" value="1" id="input-content-sub-category-status-enabled" checked>
+        <label for="input-content-sub-category-status-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="content_sub_category" value="0" id="input-content-sub-category-status-disabled">
+        <label for="input-content-sub-category-status-disabled">{{ text_disabled }}</label>
+        {% else %} 
+        <input type="radio" name="content_sub_category" value="1" id="input-content-sub-category-status-enabled" >
+        <label for="input-content-sub-category-status-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="content_sub_category" value="0" id="input-content-sub-category-status-disabled" checked>
+        <label for="input-content-sub-category-status-disabled" >{{ text_disabled }}</label>
+        {% endif %} 
+      </div>
+    </div>
+  </div>
+</form>

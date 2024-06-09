@@ -1,0 +1,32 @@
+.social-connect{
+    .menu-items {
+        margin-left: -$social-link-icon-margin;
+        margin-right: -$social-link-icon-margin;
+    }
+    a.nav-link{
+        color: color-contrast($footer-bg-color);
+        padding: 0 !important;
+        margin: $social-link-icon-margin;
+        
+        .icon{
+            padding: $social-link-icon-padding !important;
+            border-radius: mz-spacer(100);
+            background-color: $footer-bg-color;
+            width: 1em;
+            height: 1em;
+            box-sizing: content-box;
+            text-align: center;
+        }
+        
+        &:hover .icon{
+            color: color-contrast($primary);
+            background-color: $primary;
+        }
+    }
+}
+
+.footer .social-connect{
+    a.nav-link{
+        color: $footer-text-color;
+    }
+}

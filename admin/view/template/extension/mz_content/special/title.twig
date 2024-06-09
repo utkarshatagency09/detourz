@@ -1,0 +1,38 @@
+<!-- Form -->
+<form id="setting-content-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <!--content status-->
+  <div class="form-group">
+    <label class="col-sm-3 control-label" for="input-setting-content-status">{{ entry_status }}</label>
+    <div class="col-sm-9">
+      <div class="mz-switch-field">
+        {% if (content_status) %} 
+        <input type="radio" name="content_status" value="1" id="input-setting-content-status-enabled" checked>
+        <label for="input-setting-content-status-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="content_status" value="0" id="input-setting-content-status-disabled">
+        <label for="input-setting-content-status-disabled">{{ text_disabled }}</label>
+        {% else %} 
+        <input type="radio" name="content_status" value="1" id="input-setting-content-status-enabled" >
+        <label for="input-setting-content-status-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="content_status" value="0" id="input-setting-content-status-disabled" checked>
+        <label for="input-setting-content-status-disabled" >{{ text_disabled }}</label>
+        {% endif %} 
+      </div>
+    </div>
+  </div>
+      
+  <!--content size-->
+  <div class="form-group">
+    <label class="col-sm-3 control-label" for="input-setting-content-size">{{ entry_size }}</label>
+    <div class="col-sm-9">
+      <select name="content_size" id="input-setting-content-size" class="form-control">
+      {% for h in range(1, 6) %}
+        {% if 'h'~h == content_size %}
+        <option value="h{{ h }}" selected="selected">{{ 'H' ~ h }}</option>
+        {% else %}
+        <option value="h{{ h }}">{{ 'H' ~ h }}</option>
+        {% endif %}
+      {% endfor %}
+      </select>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,17 @@
+<script src="//www.google.com/recaptcha/api.js" ></script>
+<fieldset {% if route|slice(0, 9) == 'checkout/' %}class="mt-3"{% endif %}>
+  <legend>{{ text_captcha }}</legend>
+  <div class="mb-3 required">{% if route|slice(0, 9) == 'checkout/' %}
+    <label class="form-label" for="input-payment-captcha">{{ entry_captcha }}</label>
+    <div id="input-payment-captcha" class="g-recaptcha" data-sitekey="{{ site_key }}"></div>
+      {% if error_captcha %}
+      <div class="invalid-feedback d-block">{{ error_captcha }}</div>
+      {% endif %}
+    {% else %}
+      <div class="g-recaptcha" data-sitekey="{{ site_key }}"></div>
+      {% if error_captcha %}
+      <div class="invalid-feedback d-block">{{ error_captcha }}</div>
+      {% endif %}
+    {% endif %}
+  </div>
+</fieldset>

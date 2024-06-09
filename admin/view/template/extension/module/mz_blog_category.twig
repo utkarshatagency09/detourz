@@ -1,0 +1,117 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- Form -->
+  <form action="{{ action }}" class="form-horizontal" enctype="multipart/form-data" id="form-mz-blog-category" method="post">
+    <div class="tab-content">
+        
+      <!--General-->
+      <div id="tab-general" class="tab-pane fade in active">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <!--module name-->
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-name">{{ entry_module_name }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-name" placeholder="{{ entry_module_name }}" type="text" name="name" value="{{ name }}" >
+                {% if (err_name is defined) %} 
+                <div class="text-danger">{{ err_name }}</div>
+                {% endif %} 
+              </div>
+            </div>
+            
+            <!--status-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-status">{{ entry_status }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (status) %} 
+                  <input type="radio" name="status" value="1" id="input-status-enabled" checked>
+                  <label for="input-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="status" value="0" id="input-status-disabled">
+                  <label for="input-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="status" value="1" id="input-status-enabled" >
+                  <label for="input-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="status" value="0" id="input-status-disabled" checked>
+                  <label for="input-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+            
+            <!--module title-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-title">{{ entry_title }}</label>
+              <div class="col-xs-9">
+              {% for language in languages %} 
+                <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                  <input class="form-control" type="text" name="title[{{ language['language_id'] }}]" value="{{ title[language['language_id']] is defined?title[language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+                </div>
+              {% endfor %} 
+              </div>
+            </div>
+              
+            <!--article count-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_article_count }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (article_count) %} 
+                  <input type="radio" name="article_count" value="1" id="input-article-count-enabled" checked>
+                  <label for="input-article-count-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="article_count" value="0" id="input-article-count-disabled">
+                  <label for="input-article-count-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="article_count" value="1" id="input-article-count-enabled" >
+                  <label for="input-article-count-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="article_count" value="0" id="input-article-count-disabled" checked>
+                  <label for="input-article-count-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div> <!-- // General -->
+    </div>
+  </form>
+</div>
+<form action="{{ import }}" enctype="multipart/form-data" method="post" id="form-import" style="display: none;"><input type="file" accept=".json" name="file" /></form>
+<script>
+$('#button-import').on('click', function(){
+    $('#form-import input[name=\'file\']').val('').trigger('click');
+    
+    if (typeof timer != 'undefined') {
+    	clearInterval(timer);
+    }
+
+    timer = setInterval(function() {
+        if ($('#form-import input[name=\'file\']').val() != '') {
+            clearInterval(timer);
+            $('#form-import').submit();
+        }
+    }, 500);
+    
+});
+{#Confirm before delete module#}
+$('#button-delete').on('click', function(){
+    if(confirm("{{ text_confirm }}")){
+        return true;
+    } else {
+        return false;
+    }
+});
+</script>
+{{ mz_footer }}

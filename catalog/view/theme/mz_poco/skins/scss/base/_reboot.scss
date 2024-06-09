@@ -1,0 +1,65 @@
+*{
+    min-height: 0;
+    min-width: 0;
+}
+
+:root{
+    @if $mz_body_background {
+        background: $mz_body_background;
+    }
+
+    @include media-breakpoint-down(xl){
+        font-size: 90%; // 1rem = 14.4px
+    }
+
+    @include media-breakpoint-down(lg){
+        font-size: 80%; // 1rem = 12.8px
+    }
+
+    @include media-breakpoint-down(md){
+        font-size: 70%; // 1rem = 11.2px
+    }
+
+    @include media-breakpoint-down(sm){
+        font-size: 60%; // 1rem = 9.6px
+    }
+}
+
+body {
+    @include media-breakpoint-down(xl){
+        font-size: $font-size-base * 1.111111111111111; // 1rem = 14.4px
+    }
+
+    @include media-breakpoint-down(lg){
+        font-size: $font-size-base * 1.25; // 1rem = 12.8px
+    }
+
+    @include media-breakpoint-down(md){
+        font-size: $font-size-base * 1.428571428571429; // 1rem = 11.2px
+    }
+
+    @include media-breakpoint-down(sm){
+        font-size: $font-size-base * 1.666666666666667; // 1rem = 9.6px
+    }
+
+    @if $mz_box_layout { // apply box layout to body
+        max-width: map-get($grid-breakpoints, 'xl');
+        margin: auto;
+        box-shadow: $box-shadow;
+    }
+}
+
+legend{
+    // font-weight: 600;
+    margin-bottom: mz-spacer(8);
+}
+
+a{
+    &:hover{
+        outline: none !important;
+    }
+}
+
+*[data-toggle]{
+    cursor: pointer;
+}

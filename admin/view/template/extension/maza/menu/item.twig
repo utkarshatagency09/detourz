@@ -1,0 +1,728 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- Form -->
+  <form action="{{ action }}" class="form-horizontal" enctype="multipart/form-data" id="form-menu-item" method="post">
+    <div class="row">
+      <div class="col-xs-8">
+        <div class="tab-content">
+          {#General#}
+          <div class="tab-pane active" id="tab-mz-general">
+            <div class="panel mz-panel-default">
+              <div class="panel-heading">{{ text_general }}</div>
+              <div class="panel-body">
+                {# Item name #}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-name">{{ entry_name }}</label>
+                  <div class="col-xs-9">
+                    <input class="form-control large" id="input-name" placeholder="{{ entry_name }}" type="text" name="name" value="{{ name }}" >
+                    {% if (err_name is not empty) %} 
+                    <div class="text-danger">{{ err_name }}</div>
+                    {% endif %} 
+                  </div>
+                </div>
+
+                {# Item status #}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-status">{{ entry_status }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (status) %} 
+                      <input type="radio" name="status" value="1" id="input-status-enabled" checked>
+                      <label for="input-status-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="status" value="0" id="input-status-disabled">
+                      <label for="input-status-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="status" value="1" id="input-status-enabled" >
+                      <label for="input-status-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="status" value="0" id="input-status-disabled" checked>
+                      <label for="input-status-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+
+                {#parent item#}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-parent-item-id">{{ entry_parent_item }}</label>
+                  <div class="col-xs-9">
+                    <select name="parent_item_id" id="input-parent-item-id" class="form-control large">
+                    <option value="0" >{{ '-- ' ~ text_none ~ ' --' }}</option>
+                    {% for menu_item in parent_items %}
+                      {% if (menu_item.item_id != menu_item_id) %} 
+                        {% if (menu_item.item_id == parent_item_id) %} 
+                        <option value="{{ menu_item.item_id }}" selected="selected" >{{ menu_item.path }}</option>
+                        {% else %} 
+                        <option value="{{ menu_item.item_id}}" >{{ menu_item.path }}</option>
+                        {% endif %} 
+                      {% endif %} 
+                    {% endfor %}
+                    </select>
+                  </div>
+                </div>
+
+                {# Item sort order #}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-sort-order">{{ entry_sort_order }}</label>
+                  <div class="col-xs-9">
+                    <input class="form-control large" id="input-sort-order" placeholder="{{ entry_sort_order }}" type="number" name="sort_order" value="{{ sort_order }}" >
+                    {% if (err_sort_order is defined) %} 
+                    <div class="text-danger">{{ err_sort_order }}</div>
+                    {% endif %} 
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel mz-panel-default">
+              <div class="panel-heading">{{ text_link }}</div>
+              <div class="panel-body">
+                {# customer #}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-customer">{{ entry_customer }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% for customer_type in list_customer %} 
+                        {% if (customer == customer_type['id']) %} 
+                        <input type="radio" name="customer" value="{{ customer_type['id'] }}" id="input-customer-{{ customer_type['id'] }}" checked>
+                        <label for="input-customer-{{ customer_type['id'] }}" >{{ customer_type['name'] }}</label>
+                        {% else %} 
+                        <input type="radio" name="customer" value="{{ customer_type['id'] }}" id="input-customer-{{ customer_type['id'] }}">
+                        <label for="input-customer-{{ customer_type['id'] }}" >{{ customer_type['name'] }}</label>
+                        {% endif %} 
+                      {% endfor %} 
+                    </div>
+                  </div>
+                </div>
+
+                {# Customer group #}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-customer-group">{{ entry_customer_group }}</label>
+                  <div class="col-xs-9">
+                    <select name="customer_group_id" id="input-customer-group" class="form-control large">
+                      <option value="0">{{ text_all }}</option>
+                      {% for customer_group in customer_groups %} 
+                        {% if (customer_group_id == customer_group['customer_group_id']) %} 
+                        <option value="{{ customer_group['customer_group_id'] }}" selected="selected">{{ customer_group['name'] }}</option>
+                        {% else %} 
+                        <option value="{{ customer_group['customer_group_id'] }}">{{ customer_group['name'] }}</option>
+                        {% endif %} 
+                      {% endfor %} 
+                    </select>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+                    
+          {#Type#}
+          <div class="tab-pane" id="tab-mz-type">
+            <div class="panel mz-panel-default">
+              <div class="panel-body">
+                {# Item type #}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-item-type">{{ entry_item_type }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                    {% for menu_type in list_menu_type %}
+                      {% if (menu_type.id == type) %} 
+                      <input type="radio" name="type" value="{{ menu_type.id }}" id="input-menu-type-{{ menu_type.id }}" checked>
+                      <label for="input-menu-type-{{ menu_type.id }}" >{{ menu_type.name }}</label>
+                      {% else %} 
+                      <input type="radio" name="type" value="{{ menu_type.id }}" id="input-menu-type-{{ menu_type.id }}" >
+                      <label for="input-menu-type-{{ menu_type.id }}">{{ menu_type.name }}</label>
+                      {% endif %} 
+                    {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {#Menu type content#}
+            <div id="menu-type-tab-content" class="tab-content">
+              {#Category content#}
+              <div id="tab-menu-type-category" class="panel mz-panel-default tab-pane mz-type type-category">
+                <div class="panel-heading">{{ text_category }}</div>
+                <div class="panel-body">
+
+                  {# category top #}
+                  <div class="form-group">
+                    <label class="col-xs-3 control-label" for="input-category-top">{{ entry_category_top }}</label>
+                    <div class="col-xs-9">
+                      <input type="text" name="setting[category_top_name]" value="{{ setting.category_top_name }}" placeholder="{{ entry_category_top }}" id="input-category-top" class="form-control large" />
+                      <input type="hidden" name="setting[category_top_id]" value="{{ setting.category_top_id }}" />
+                    </div>
+                  </div>
+
+                  <!--Category column-->
+                  <div class="form-group">
+                    <label class="col-xs-3 control-label">{{ entry_sub_category }}</label>
+                    <div class="col-xs-9">
+                      <div class="mz-switch-field">
+                        {% if (setting.category_column) %} 
+                        <input type="radio" name="setting[category_column]" value="1" id="input-setting-category-column-enabled" checked>
+                        <label for="input-setting-category-column-enabled" >{{ text_column }}</label>
+                        <input type="radio" name="setting[category_column]" value="0" id="input-setting-category-column-disabled">
+                        <label for="input-setting-category-column-disabled">{{ text_dropdown }}</label>
+                        {% else %}
+                        <input type="radio" name="setting[category_column]" value="1" id="input-setting-category-column-enabled" >
+                        <label for="input-setting-category-column-enabled">{{ text_column }}</label>
+                        <input type="radio" name="setting[category_column]" value="0" id="input-setting-category-column-disabled" checked>
+                        <label for="input-setting-category-column-disabled" >{{ text_dropdown }}</label>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+
+                  {# sub category depth #}
+                  <div id="category-depth" class="form-group">
+                    <label class="col-xs-3 control-label" for="input-category-depth"><span data-toggle="tooltip" title="{{ help_depth }}">{{ entry_depth }}</span></label>
+                    <div class="col-xs-9">
+                      <input class="form-control large" id="input-category-depth" placeholder="{{ entry_depth }}" type="text" name="setting[category_depth]" value="{{ setting.category_depth }}" >
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {# System content#}
+              <div id="tab-menu-type-system" class="panel mz-panel-default tab-pane mz-type type-system">
+                <div class="panel-heading">{{ text_system }}</div>
+                <div class="panel-body">
+                  {# Item #}
+                  <div class="form-group">
+                    <div class="col-xs-12">
+                      <select name="setting[system_item]" class="form-control large" id="input-system-item">
+                        {% for system_item in list_system_items %}
+                          {% if (system_item.id == setting.system_item) %}
+                          <option value="{{ system_item.id }}" selected="selected">{{ system_item.name }}</option>
+                          {% else %}
+                          <option value="{{ system_item.id }}">{{ system_item.name }}</option>
+                          {% endif %}
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {# link #}
+              <div id="tab-menu-type-link" class="panel mz-panel-default tab-pane mz-type type-link type-content type-menu">
+                <div class="panel-heading">{{ text_link }}</div>
+                <div class="panel-body">
+                  <!--URL-->
+                  <div class="form-group">
+                    <label class="col-xs-3 control-label">{{ text_link }}</label>
+                    <div class="col-xs-9">
+                      <div class="input-group">
+                        <span class="input-group-addon">{{ link_info ? link_info.type : '<i class="fa fa-link"></i>' }}</span>	
+                        <input type="text" value="{{ link_info ? link_info.title }}" class="form-control" placeholder="{{ text_link_select }}" readonly />
+                        <input id="input-item-link-url" type="hidden" name="setting[link_code]" value="{{ setting.link_code }}"  />
+                        <div class="input-group-btn">
+                          <button type="button" data-toggle="linkmanager" class="btn btn-primary"><i class="fa fa-pencil"></i></button>
+                          <button type="button" data-toggle="linkmanager-delete" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-xs-3 control-label">{{ entry_url_target }}</label>
+                    <div class="col-xs-9">
+                      <div class="mz-switch-field">
+                        {% if (setting.link_url_target == '_blank') %}
+                        <input type="radio" name="setting[link_url_target]" value="_self" id="input-link-url-target-self">
+                        <label for="input-link-url-target-self">{{ text_same_tab }}</label>
+                        <input type="radio" name="setting[link_url_target]" value="_blank" id="input-link-url-target-blank" checked>
+                        <label for="input-link-url-target-blank" >{{ text_new_tab }}</label>
+                        {% else %}
+                        <input type="radio" name="setting[link_url_target]" value="_self" id="input-link-url-target-self" checked>
+                        <label for="input-link-url-target-self" >{{ text_same_tab }}</label>
+                        <input type="radio" name="setting[link_url_target]" value="_blank" id="input-link-url-target-blank">
+                        <label for="input-link-url-target-blank">{{ text_new_tab }}</label>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                            
+              {# Menu #}
+              <div id="tab-menu-type-menu" class="panel mz-panel-default tab-pane mz-type type-menu">
+                <div class="panel-heading">{{ text_menu }}</div>
+                <div class="panel-body">
+                  <div class="form-group">
+                    <label class="col-xs-3 control-label" for="input-menu-name">{{ entry_menu }}</label>
+                    <div class="col-xs-9">
+                      <input class="form-control large" id="input-menu-name" placeholder="{{ entry_menu }}" type="text" name="setting[menu_name]" value="{{ setting.menu_name }}" >
+                      <input id="input-menu-id" type="hidden" name="setting[menu_id]" value="{{ setting.menu_id }}" >
+                      {% if (err_setting.menu is not empty) %} 
+                      <div class="text-danger">{{ err_setting.menu }}</div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {# Content #}
+              <div id="tab-menu-type-content" class="panel mz-panel-default tab-pane mz-type type-content">
+                <div class="panel-heading">{{ text_content }}</div>
+                <div class="panel-body">
+                  {# Content #}
+                  <div class="form-group">
+                    <label class="col-xs-3 control-label" for="input-content-name"><span data-toggle="tooltip" title="{{ help_content }}">{{ entry_content }}</span></label>
+                    <div class="col-xs-9">
+                      <input class="form-control large" id="input-content-name" placeholder="{{ entry_content }}" type="text" name="setting[content_name]" value="{{ setting.content_name }}" >
+                      <input id="input-content-id" type="hidden" name="setting[content_id]" value="{{ setting.content_id }}" >
+                      {% if (err_setting.content is not empty) %} 
+                      <div class="text-danger">{{ err_setting.content }}</div>
+                      {% endif %}
+                    </div>
+                  </div>
+
+                  {# Sub menu width #}
+                  <div class="form-group">
+                    <label class="col-xs-3 control-label" for="input-content-width"><span data-toggle="tooltip" title="{{ help_content_width }}">{{ entry_width }}</span></label>
+                    <div class="col-xs-9">
+                      <input class="form-control large" id="input-content-width" placeholder="{{ entry_width }}" type="number" name="setting[content_width]" value="{{ setting.content_width }}" >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+                    
+          {#Data#}
+          <div class="tab-pane" id="tab-mz-data">
+            <div class="panel mz-panel-default">
+              <div class="panel-heading">{{ text_general }}</div>
+              <div class="panel-body">
+                {# Item title #}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-title"><span data-toggle="tooltip" title="{{ help_item_title }}">{{ entry_title }}</span></label>
+                  <div class="col-xs-9">
+                  {% for language in languages %} 
+                    <div class="input-group"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                      <input class="form-control" type="text" name="setting[title][{{ language['language_id'] }}]" value="{{ setting.title[language['language_id']] is defined?setting.title[language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+                      {#{% if (err_setting.title[language['language_id']] is not empty) %} 
+                      <div class="text-danger">{{ err_setting.title[language['language_id']] }}</div>
+                      {% endif %}#}
+                    </div>
+                  {% endfor %} 
+                  </div>
+                </div>
+
+                {# Item description #}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-description">{{ entry_description }}</label>
+                  <div class="col-xs-9">
+                  {% for language in languages %} 
+                    <div class="input-group"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                      <input class="form-control" type="text" name="setting[description][{{ language['language_id'] }}]" value="{{ setting.description[language['language_id']] is defined?setting.description[language['language_id']]:'' }}" placeholder="{{ entry_description }}" >
+                    </div>
+                  {% endfor %} 
+                  </div>
+                </div>
+              </div>
+            </div>
+                  
+            {#icon#}
+            <div class="panel mz-panel-default">
+              <div class="panel-heading">{{ text_icon }}</div>
+              <div class="panel-body input-image-widget">
+                {# icon #}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-icon-image">{{ entry_icon }}</label>
+                  <div class="col-xs-9">
+                    <ul class="nav nav-tabs">
+                      <li class="active"><a href="#tab-icon-image" data-meta="image" data-toggle="tab">{{ tab_image }}</a></li>
+                      <li><a href="#tab-icon-svg" data-meta="image" data-toggle="tab">{{ tab_svg }}</a></li>
+                      <li><a href="#tab-icon-font" data-meta="font" data-toggle="tab">{{ tab_font }}</a></li>
+                    </ul>
+                    <div class="tab-content">
+                      <div class="tab-pane active" id="tab-icon-image">
+                        <div class="el-group">
+                        {% for language in languages %}
+                          <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                          <div class="el-item">
+                            <a href="" id="thumb-icon-image{{ language.language_id }}" data-toggle="image" class="img-thumbnail"><img src="{{ (thumb_icon_image[language.language_id] is not empty)?thumb_icon_image[language.language_id]:placeholder_image }}" alt="" title="" data-placeholder="{{ placeholder_image }}" /></a><input type="hidden" name="setting[icon_image][{{ language.language_id }}]" value="{{ (setting.icon_image[language.language_id] is defined)?setting.icon_image[language.language_id]:'' }}" id="input-icon-image{{ language.language_id }}" />
+                          </div>
+                        {% endfor %}
+                        </div>
+                      </div>
+                      <div class="tab-pane" id="tab-icon-svg">
+                        <div class="el-group">
+                        {% for language in languages %}
+                          <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                          <div class="el-item">
+                            <a href="" id="thumb-icon-svg{{ language.language_id }}" data-toggle="svg" class="img-thumbnail"><img width="100" height="100" src="{{ (thumb_icon_svg[language.language_id] is not empty)?thumb_icon_svg[language.language_id]:placeholder_svg }}" alt="" title="" data-placeholder="{{ placeholder_svg }}" /></a> <input type="hidden" name="setting[icon_svg][{{ language.language_id }}]" value="{{ (setting.icon_svg[language.language_id] is defined)?setting.icon_svg[language.language_id]:'' }}" id="input-icon-svg{{ language.language_id }}" />
+                          </div>
+                        {% endfor %}
+                        </div>
+                      </div>
+                      <div class="tab-pane" id="tab-icon-font">
+                        <div class="el-group">
+                        {% for language in languages %}
+                          <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                          <div class="el-item">
+                            <a href="" id="thumb-icon-font{{ language.language_id }}" data-toggle="font" class="img-thumbnail icon-thumb"><i class="{{ (setting.icon_font[language.language_id] is not empty)?setting.icon_font[language.language_id]:placeholder_font }}" data-placeholder="{{ placeholder_font }}"></i></a> <input type="hidden" name="setting[icon_font][{{ language.language_id }}]" value="{{ (setting.icon_font[language.language_id] is defined)?setting.icon_font[language.language_id]:'' }}" id="input-icon-font{{ language.language_id }}" />
+                          </div>
+                        {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="image-meta-tab-content tab-content">
+                  <div class="tab-image active tab-pane">
+                    <!--icon width-->
+                    <div class="form-group">
+                      <label class="col-xs-3 control-label" for="input-icon-width">{{ entry_icon_width }}</label>
+                      <div class="col-xs-9">
+                        <input name="setting[icon_width]" value="{{ setting.icon_width }}" placeholder="{{ entry_icon_width }}" class="form-control large" id="input-icon-width" />
+                      </div>
+                    </div>
+
+                    <!--icon height-->
+                    <div class="form-group">
+                      <label class="col-xs-3 control-label" for="input-icon-height">{{ entry_icon_height }}</label>
+                      <div class="col-xs-9">
+                        <input name="setting[icon_height]" value="{{ setting.icon_height }}" placeholder="{{ entry_icon_height }}" class="form-control large" id="input-icon-height" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-font tab-pane">
+                    <!--icon size-->
+                    <div class="form-group">
+                      <label class="col-xs-3 control-label" for="input-icon-size">{{ entry_icon_size }}</label>
+                      <div class="col-xs-9">
+                        <input name="setting[icon_size]" value="{{ setting.icon_size }}" placeholder="{{ entry_icon_size }}" class="form-control large" id="input-icon-size" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+                    
+          {#Meta#}
+          <div class="tab-pane" id="tab-mz-meta">
+            {#Label#}
+            <div class="panel mz-panel-default">
+              <div class="panel-heading">{{ text_label }}</div>
+              <div class="panel-body">
+                {# Item label #}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-label">{{ entry_label }}</label>
+                  <div class="col-xs-9">
+                    {% for language in languages %} 
+                      <div class="input-group"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                        <input class="form-control" type="text" name="setting[label][{{ language['language_id'] }}]" value="{{ setting.label[language['language_id']] is defined?setting.label[language['language_id']]:'' }}" placeholder="{{ entry_label }}" >
+                      </div>
+                    {% endfor %} 
+                  </div>
+                </div>
+
+                {# Item label text color #}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-label-text-color">{{ entry_label_text_color }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-colorpicker">
+                      <input class="form-control large" id="input-label-text-color" placeholder="{{ entry_label_text_color }}" type="text" name="setting[label_text_color]" value="{{ setting.label_text_color }}" >
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                  </div>
+                </div>
+
+                {# Item label background color #}
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-label-background-color">{{ entry_label_background_color }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-colorpicker">
+                      <input class="form-control large" id="input-label-background-color" placeholder="{{ entry_label_background_color }}" type="text" name="setting[label_background_color]" value="{{ setting.label_background_color }}" >
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          
+          {#Sub menu#}
+          <div class="tab-pane" id="tab-mz-sub-menu">
+            {#Sub menu background#}
+            <div class="panel mz-panel-default">
+              <div class="panel-heading clearfix">
+                <h3 class="panel-title pull-left">{{ text_sub_menu_background }}</h3>
+                <ul class="nav nav-tabs mz-nav-sandwich-tab pull-right">
+                  {% set round = 0 %}
+                   {% for layer_code,background_info in setting.sub_menu_background %} 
+                    <li class="{{ round == 0?'active':constant('null') }}"><a href="#tab-{{ layer_code }}" data-toggle="tab">{{ _context['text_layer_' ~ (round + 1)] }}</a></li>
+                    {% set round = round + 1 %} 
+                   {% endfor %}
+                </ul>
+              </div>
+              <div class="panel-body tab-content">
+                {% set round = 0 %}
+                {% for layer_code,background_info in setting.sub_menu_background %} 
+                  <div id="tab-{{ layer_code }}" class="tab-pane fade {{ round == 0?'in active':constant('null') }}">
+
+                    <!--Background status-->
+                    <div class="form-group">
+                      <label class="col-xs-3 control-label" for="input-sub-menu-background-status-{{ layer_code }}">{{ entry_status }}</label>
+                      <div class="col-xs-9">
+                        <div class="mz-switch-field">
+                          {% for status in list_background_status %} 
+                            {% if (status['code'] == background_info['status']) %} 
+                            <input type="radio" name="setting[sub_menu_background][{{ layer_code }}][status]" value="{{ status['code'] }}" id="input-sub-menu-background-status-{{ layer_code ~ '-' ~ status['code'] }}" checked="">
+                            <label class="mz-tab-toggle active" data-target="#tab-sub-menu-background-status-{{ layer_code ~ '-' ~ status['code'] }}" for="input-sub-menu-background-status-{{ layer_code ~ '-' ~ status['code'] }}" >{{ status['name'] }}</label>
+                            {% else %} 
+                            <input type="radio" name="setting[sub_menu_background][{{ layer_code }}][status]" value="{{ status['code'] }}" id="input-sub-menu-background-status-{{ layer_code ~ '-' ~ status['code'] }}">
+                            <label class="mz-tab-toggle" data-target="#tab-sub-menu-background-status-{{ layer_code ~ '-' ~ status['code'] }}" for="input-sub-menu-background-status-{{ layer_code ~ '-' ~ status['code'] }}" >{{ status['name'] }}</label>
+                            {% endif %} 
+                          {% endfor %} 
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="tab-content">
+                      <div id='tab-sub-menu-background-status-{{ layer_code }}-none' class="tab-pane {{ background_info['status'] == 'none'?'active':constant('null') }}"></div>
+                      <div id='tab-sub-menu-background-status-{{ layer_code }}-image' class="tab-pane {{ background_info['status'] == 'image'?'active':constant('null') }}">
+                          <!--Background image-->
+                          <div class="form-group">
+                            <label class="col-xs-3 control-label" for="input-sub-menu-background-image-{{ layer_code }}">{{ entry_background_image }}</label>
+                            <div class="col-xs-9">
+                              <a href="" id="thumb-body-background-image-thumb-{{ layer_code }}" data-toggle="image" class="img-thumbnail">
+                                <img src="{{ background_info['thumb'] }}" alt="" title="" data-placeholder="{{ placeholder }}" />
+                              </a>
+                              <input type="hidden" name="setting[sub_menu_background][{{ layer_code }}][image]" value="{{ background_info['image'] }}" id="input-sub-menu-background-image-{{ layer_code }}" />
+                            </div>
+                          </div>
+
+                          <!--Image position-->
+                          <div class="form-group">
+                            <label class="col-xs-3 control-label" for="input-sub-menu-background-image-position-{{ layer_code }}">{{ entry_image_position }}</label>
+                            <div class="col-xs-9">
+                              <select class="form-control" name="setting[sub_menu_background][{{ layer_code }}][image_position]" id="input-sub-menu-background-image-position-{{ layer_code }}">
+                                {% for position in background_image_positions %} 
+                                  {% if (position['code'] == background_info['image_position']) %} 
+                                  <option value="{{ position['code'] }}" selected="">{{ position['name'] }}</option>
+                                  {% else %} 
+                                  <option value="{{ position['code'] }}">{{ position['name'] }}</option>
+                                  {% endif %} 
+                                {% endfor %} 
+                              </select>
+                            </div>
+                          </div>
+
+                          <!--Image repeat-->
+                          <div class="form-group">
+                            <label class="col-xs-3 control-label" for="input-sub-menu-background-image-repeat-{{ layer_code }}">{{ entry_image_repeat }}</label>
+                            <div class="col-xs-9">
+                              <select class="form-control" name="setting[sub_menu_background][{{ layer_code }}][image_repeat]" id="input-sub-menu-background-image-repeat-{{ layer_code }}">
+                                {% for repeat in background_image_repeats %} 
+                                  {% if (repeat['code'] == background_info['image_repeat']) %} 
+                                  <option value="{{ repeat['code'] }}" selected="">{{ repeat['name'] }}</option>
+                                  {% else %} 
+                                  <option value="{{ repeat['code'] }}">{{ repeat['name'] }}</option>
+                                  {% endif %} 
+                                {% endfor %} 
+                              </select>
+                            </div>
+                          </div>
+
+                          <!--Image attachment-->
+                          <div class="form-group">
+                            <label class="col-xs-3 control-label" for="input-sub-menu-background-image-attachment-{{ layer_code }}">{{ entry_image_attachment }}</label>
+                            <div class="col-xs-9">
+                              <select class="form-control" name="setting[sub_menu_background][{{ layer_code }}][image_attachment]" id="input-sub-menu-background-image-attachment-{{ layer_code }}">
+                                {% for attachment in background_image_attachments %} 
+                                  {% if (attachment['code'] == background_info['image_attachment']) %} 
+                                  <option value="{{ attachment['code'] }}" selected="">{{ attachment['name'] }}</option>
+                                  {% else %} 
+                                  <option value="{{ attachment['code'] }}">{{ attachment['name'] }}</option>
+                                  {% endif %} 
+                                {% endfor %} 
+                              </select>
+                            </div>
+                          </div>
+                      </div>
+                      <div id='tab-sub-menu-background-status-{{ layer_code }}-pattern' class="tab-pane {{ background_info['status'] == 'pattern'?'active':constant('null') }}">
+                        <!--overlay pattern-->
+                          <div class="form-group">
+                            <label class="col-xs-3 control-label" for="input-sub-menu-background-overlay-pattern">{{ entry_overlay_pattern }}</label>
+                            <div class="col-xs-9">
+                              <div class="mz-overlay-pattern">
+                                <div class="col-xs-4">
+                                  <ul class="nav nav-tabs mz-nav-vertical-tube-tab">
+                                    {% for pattern in overlay_patterns %} 
+                                      {% if (pattern['code'] == background_info['overlay_pattern']) %} 
+                                      <li class="active"><label href="#tab-background-pattern-{{ pattern['code'] }}" for="input-background-pattern-{{ pattern['code'] }}" data-toggle="input-tab"><input id="input-background-pattern-{{ pattern['code'] }}" type="radio" name="setting[sub_menu_background][{{ layer_code }}][overlay_pattern]" value="{{ pattern['code'] }}" class="hide" checked="" /><img src="{{ pattern['image'] }}" /> {{ pattern['name'] }}</label></li>
+                                      {% else %} 
+                                      <li><label href="#tab-background-pattern-{{ pattern['code'] }}" for="input-background-pattern-{{ pattern['code'] }}" data-toggle="input-tab"><input id="input-background-pattern-{{ pattern['code'] }}" type="radio" name="setting[sub_menu_background][{{ layer_code }}][overlay_pattern]" value="{{ pattern['code'] }}" class="hide" /><img src="{{ pattern['image'] }}" />{{ pattern['name'] }}</label></li>
+                                      {% endif %} 
+                                    {% endfor %} 
+                                  </ul>
+                                </div>
+                                <div class="col-xs-8">
+                                  <div class="tab-content">
+                                    {% for pattern in overlay_patterns %} 
+                                      {% if (pattern['code'] == background_info['overlay_pattern']) %} 
+                                      <div id="tab-background-pattern-{{ pattern['code'] }}" style="background-image: url({{ pattern['image'] }})" class="tab-pane fade in active"></div>
+                                      {% else %} 
+                                      <div id="tab-background-pattern-{{ pattern['code'] }}" style="background-image: url({{ pattern['image'] }})" class="tab-pane fade"></div>
+                                      {% endif %} 
+                                    {% endfor %} 
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+
+                  </div>
+                {% set round = round + 1 %} 
+                {% endfor %} 
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      <div class="col-xs-4" style="padding-right: 30px">
+        <ul class="list-group">
+          {% for item_index, item in menu_items %}
+            {% if item.item_id == menu_item_id %}
+            <li class="list-group-item active">
+              <a href="{{ add_item ~ '&menu_item_id=' ~ item.item_id }}">{% for i in range(0, item.level) %}&nbsp;&nbsp;{% endfor %}{{ ((item.level > 0)?'|- ') ~ item.name }}</a>
+              <a href="{{ duplicate_item ~ '&menu_item_id=' ~ item.item_id }}" class="badge" data-toggle="tooltip" title="{{ button_duplicate }}" ><i class="fa fa-copy"></i></a>
+              <a href="{{ delete_item ~ '&menu_item_id=' ~ item.item_id }}" class="badge confirm" data-confirm="{{ text_confirm }}" data-toggle="tooltip" title="{{ button_delete }}"><i class="fa fa-trash"></i></a>
+            </li>
+            {% else %}
+            <li class="list-group-item">
+              <a href="{{ add_item ~ '&menu_item_id=' ~ item.item_id }}">{% for i in range(0, item.level) %}&nbsp;&nbsp;{% endfor %}{{ ((item.level > 0)?'|- ') ~ item.name }}</a>
+              <a href="{{ duplicate_item ~ '&menu_item_id=' ~ item.item_id }}" class="badge" data-toggle="tooltip" title="{{ button_duplicate }}" ><i class="fa fa-copy"></i></a>
+              <a href="{{ delete_item ~ '&menu_item_id=' ~ item.item_id }}" class="badge confirm" data-confirm="{{ text_confirm }}" data-toggle="tooltip" title="{{ button_delete }}"><i class="fa fa-trash"></i></a>
+            </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+        {% if menu_item_id %}
+        <a href="{{ add_item }}" class="btn btn-primary btn-block">{{ text_add_item }}</a>
+        {% endif %}
+      </div>
+    </div>
+  </form>
+</div>
+<script>
+{# menu type #}
+$('input[name="type"]').on('change', function(){
+    var menu_type = $(this).val();
+
+    $('.mz-type').removeClass('active');
+
+    $('.mz-type.type-' + menu_type).addClass('active');
+});
+
+$('.mz-type.type-{{ type }}').addClass('active');
+
+{# category type #}
+{# $('input[name="setting[category_type]"]').on('change', function(){
+    var category_type = $(this).val();
+
+    $('#category-type-tab-content').children('.tab-pane.active').removeClass('active');
+
+    $('#tab-category-type-' + category_type).addClass('active');
+});
+
+$('#tab-category-type-{{ setting.category_type }}').addClass('active'); #}
+
+$('[name="setting[category_column]"]').on('change', function(){
+  if($(this).val() == 1){
+    $('#category-depth').addClass('hide');
+  } else {
+    $('#category-depth').removeClass('hide');
+  }
+});
+$('[name="setting[category_column]"]:checked').trigger('change');
+
+// Menu
+$('#input-menu-name').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=extension/maza/menu/autocomplete&user_token={{ user_token }}&skip_menu_id={{ menu_id }}&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['menu_id']
+          };
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $(this).val(item['label']);
+    $('#input-menu-id').val(item['value']);
+  }
+});
+
+// Top category
+$('input[name="setting[category_top_name]"]').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/category/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['category_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name="setting[category_top_name]"]').val(item['label']);
+		$('input[name="setting[category_top_id]"]').val(item['value']);
+	}
+});
+
+// Content
+$('#input-content-name').autocomplete({
+        'source': function(request, response) {
+                $.ajax({
+                        url: 'index.php?route=extension/maza/content_builder/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+                        dataType: 'json',
+                        success: function(json) {
+                                response($.map(json, function(item) {
+                                        return {
+                                                label: item['name'],
+                                                value: item['content_id']
+                                        };
+                                }));
+                        }
+                });
+        },
+        'select': function(item) {
+                $(this).val(item['label']);
+                $('#input-content-id').val(item['value']);
+        }
+});
+</script>
+{{ mz_footer }}

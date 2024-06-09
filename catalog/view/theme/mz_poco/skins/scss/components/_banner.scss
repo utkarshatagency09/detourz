@@ -1,0 +1,44 @@
+.widget-banner{
+    a{
+        display: block;
+    }
+    img{
+        width: 100%;
+        height: auto;
+    }
+    .loader-spinner{
+        background-size: mz-spacer(80);
+        max-height: mz-spacer(160);
+    }
+    .hover-effect,img{
+        @include border-radius();
+    }
+}
+
+/* Caption */
+.overlay-caption{
+    position: absolute;
+    padding: $grid-gutter-width/2;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    top: 0px;
+    overflow: hidden;
+    
+    *{
+        height: auto;
+    }
+}
+
+/* parallax */
+.parallax{
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-left: -$grid-gutter-width/2;
+    margin-right: -$grid-gutter-width/2;
+}
+.parallax-caption{
+    padding: $grid-gutter-width/2;
+}

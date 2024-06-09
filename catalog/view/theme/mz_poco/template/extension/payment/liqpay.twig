@@ -1,0 +1,8 @@
+<form action="{{ action }}" method="post">
+  <input type="hidden" name="operation_xml" value="{{ xml }}">
+  <input type="hidden" name="signature" value="{{ signature }}">
+  <div class="buttons d-flex justify-content-between">
+    <a href="{{ mz_back }}" class="btn btn-lg btn-secondary flex-grow-1 me-3"><i class="fas fa-caret-left"></i> {{ button_edit }}</a>
+    <input type="submit" value="{{ button_confirm }}" class="btn btn-lg btn-primary flex-grow-1" />
+  </div>
+</form>

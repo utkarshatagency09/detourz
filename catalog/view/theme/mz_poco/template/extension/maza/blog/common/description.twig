@@ -1,0 +1,3 @@
+{% verbatim %}{% if description %}{% endverbatim %}
+<div class="description text-collapsed" data-line="8" data-showtext="<i class='fas fa-angle-down'></i> {{ text_showmore }}" data-hidetext="<i class='fas fa-angle-up'></i> {{ text_showless }}">{% if limit %}{% verbatim %}{{ description|slice(0,{% endverbatim %}{{ limit }}{% verbatim %}) }}{% endverbatim %}{% else %}{% verbatim %}{{ description }}{% endverbatim %}{% endif %}</div>
+{% verbatim %}{% endif %}{% endverbatim %}

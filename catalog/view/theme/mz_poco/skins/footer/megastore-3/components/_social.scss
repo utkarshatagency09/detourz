@@ -1,0 +1,37 @@
+.social-connect{
+    .menu-items {
+        margin-left: -$social-link-icon-margin;
+        margin-right: -$social-link-icon-margin;
+    }
+    a.nav-link{
+        color: color-contrast($social-icon-color, $gray-600);
+        font-size: $font-size-base;
+        padding: 0 !important;
+        margin: $social-link-icon-margin;
+        
+        .icon{
+            padding: $social-link-icon-padding !important;
+            border-radius: mz-spacer(100);
+            background-color: $social-icon-color;
+            width: 1em;
+            height: 1em;
+            box-sizing: content-box;
+            text-align: center;
+        }
+        
+        &:hover .icon{
+            color: color-contrast($social-icon-hover-color, $gray-600);
+            background-color: $social-icon-hover-color;
+        }
+    }
+    
+    &.small{
+        a.nav-link{
+            font-size: inherit;
+            
+            .icon{
+                padding: mz-spacer(10);
+            }
+        }
+    }
+}

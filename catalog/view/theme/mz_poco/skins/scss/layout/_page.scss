@@ -1,0 +1,94 @@
+.content, #content{
+    background-color: $white;
+}
+
+// Notification area
+#notification-box{
+    &-top, &-bottom{
+        position: fixed; 
+        z-index: $zindex-notification; 
+        @include rtl-prop(right, 0);
+    }
+    &-top{
+        top: 0;
+    }
+    &-bottom{
+        bottom: 0;
+    }
+}
+
+// Floating action
+.floating-action {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    bottom: 0;
+    @include rtl-prop(right, 0);
+    z-index: $zindex-fixed;
+
+    &-button {
+        line-height: 1;
+        box-sizing: content-box;
+        box-shadow: $box-shadow;
+        width: 1em;
+        height: 1em;
+        min-width: auto !important;
+        padding: $btn-padding-x;
+        margin-bottom: $spacer;
+    }
+}
+
+// Loader spinner
+img.loader-spinner, .loader-spinner:not(img)::after{
+    background-position: center;
+    background-size: mz-spacer(50);
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-image: url("#{$mz_spinner_url}");
+    @if not isFileType($mz_spinner_url, 'gif'){
+        animation: fa-spin 2s infinite linear;
+    }
+}
+@supports (-webkit-mask-image: url('')) or (mask-image: url()){
+    @if not isFileType($mz_spinner_url, 'gif'){
+        img.loader-spinner, .loader-spinner:not(img)::after{
+            background-color: $secondary;
+            background-image: none;
+            mask-image: url("#{$mz_spinner_url}");
+            mask-repeat: no-repeat;
+            mask-position: center;
+            mask-size: mz-spacer(50);
+        }
+    }
+}
+.loader-spinner:not(img){
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) !important;
+    width: mz-spacer(50);
+    height: mz-spacer(50);
+}
+.loader-spinner:not(img)::after{
+    display: block;
+    content: "";
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+}
+
+// Image Popup
+.mfp-wrap{
+    z-index: $zindex-modal + 1 !important;
+}
+.mfp-figure figure{
+    margin: 0;
+}
+.mfp-img{
+    @include border-radius();
+}
+
+// Space before footer in some pages
+[id^=account-].container, [id^=checkout-].container, [id^=information-].container {
+    padding-bottom: map-get($spacers, 5);
+}

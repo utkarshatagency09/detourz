@@ -1,0 +1,13 @@
+{% set uid = random() %}
+{% if currencies|length > 1 %}
+<div class="dropdown mx-2">
+  <div class="dropdown-toggle d-flex align-items-center" id="currency-dropdown-toggle{{ uid }}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% for currency in currencies %}
+  {% if currency.symbol_left and currency.code == code %} <strong>{{ currency.symbol_left }}</strong> <span class="d-none d-sm-inline ms-2">{{ currency.title }}</span>{% elseif currency.symbol_right and currency.code == code %} <span class="d-none d-sm-inline me-2">{{ currency.title }}</span> <strong>{{ currency.symbol_right }}</strong> {% endif %}
+  {% endfor %}</div>
+  <div class="dropdown-menu dropdown-menu-{{ position }}" aria-labelledby="currency-dropdown-toggle{{ uid }}">
+    {% for currency in currencies %}
+    <button class="currency-select dropdown-item" type="button" data-code="{{ currency.code }}">{{ currency.symbol_left ? currency.symbol_left : currency.symbol_right }} {{ currency.title }}</button>
+    {% endfor %}
+  </div>
+</div>
+{% endif %} 

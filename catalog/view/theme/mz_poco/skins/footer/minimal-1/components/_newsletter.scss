@@ -1,0 +1,65 @@
+.newsletter{
+    &-input{
+        @include border-radius();
+        overflow: hidden;
+        padding: $newsletter-input-padding;
+        color: $newsletter-input-text-color;
+        
+        & > .fa-envelope{
+            padding: mz-spacer(5) mz-spacer(18);
+            align-self: center;
+            display: none;
+        }
+    }
+    &-email{
+        flex: 1 1 auto;
+        
+        input{
+            border: none;
+            outline: 0;
+            width: 100%;
+            height: 100%;
+            background-color: $newsletter-input-background;
+            font-size: $newsletter-input-font-size;
+            text-align: center;
+            padding: $newsletter-email-padding;
+            text-transform: uppercase;
+        }
+    }
+    button{
+        padding: $newsletter-button-padding;
+        font-size: $newsletter-button-font-size;
+        font-family: $headings-font-family;
+        font-weight: 600;
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        text-transform: uppercase;
+        border-radius: 0;
+        border: none;
+        width: 100%;
+        
+        &:last-child{
+            @include border-end-radius($border-radius);
+        }
+        
+        .icon{
+            line-height: inherit;
+        }
+        
+        &.both{
+            .icon{
+                @include rtl-prop(margin-right, map-get($spacers, 1));
+            }
+        }
+    }
+
+    // Helper
+    &-bordered {
+        .newsletter-input{
+            border: $border-width solid $border-color;
+            @include border-radius();
+        }
+    }
+}
+

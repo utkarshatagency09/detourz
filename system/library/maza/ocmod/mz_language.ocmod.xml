@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<modification>
+    <name>Maza Language</name>
+    <code>maza_language</code>
+    <version>1.0</version>
+    <author>TemplateMaza.com</author>
+    <link>https://pocotheme.com/</link>
+    <file path="catalog/language/en-gb/information/sitemap.php">
+        <operation>
+            <search trim='true'><![CDATA[<?php]]></search>
+            <add position="after"><![CDATA[
+$_['text_page']     = 'Page';
+]]></add>
+        </operation>
+    </file>
+
+    <file path="catalog/language/en-gb/account/{edit,register}.php">
+        <operation>
+            <search trim='true'><![CDATA[<?php]]></search>
+            <add position="after"><![CDATA[
+$_['help_telephone']     = 'Enter valid phone number with country code!';
+]]></add>
+        </operation>
+    </file>
+</modification>

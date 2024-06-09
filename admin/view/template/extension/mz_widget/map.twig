@@ -1,0 +1,215 @@
+<!-- Form -->
+<form id="setting-widget-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <div class="alert alert-info alert-dismissible"><i class="fa fa-info-circle" aria-hidden="true"></i> {{ help_map }}
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+  </div>
+  {% if (warning is not empty) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#tab-widget-general" data-toggle="tab">{{ tab_general }}</a></li>
+    <li><a href="#tab-widget-layout" data-toggle="tab">{{ tab_layout }}</a></li>
+    <li><a href="#tab-widget-control" data-toggle="tab">{{ tab_control }}</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="tab-widget-general" class="tab-pane active">
+      <!--widget status-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-status">{{ entry_status }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_status) %} 
+            <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" checked>
+            <label for="input-widget-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled">
+            <label for="input-widget-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" >
+            <label for="input-widget-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled" checked>
+            <label for="input-widget-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+
+      {#title#}
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-widget-title">{{ entry_title }}</label>
+        <div class="col-xs-9">
+        {% for language in languages %} 
+          <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+            <input class="form-control" type="text" name="widget_title[{{ language['language_id'] }}]" value="{{ widget_title[language['language_id']] is defined?widget_title[language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+          </div>
+        {% endfor %} 
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-widget-latitude">{{ entry_latitude }}</label>
+        <div class="col-xs-9">
+          <input type="text" name="widget_latitude" value="{{ widget_latitude }}" placeholder="{{ entry_latitude }}" class="form-control" id="input-setting-widget-latitude" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-widget-longitude">{{ entry_longitude }}</label>
+        <div class="col-xs-9">
+          <input type="text" name="widget_longitude" value="{{ widget_longitude }}" placeholder="{{ entry_longitude }}" class="form-control" id="input-setting-widget-longitude" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-widget-zoom">{{ entry_zoom_level }}</label>
+        <div class="col-xs-9">
+          <input type="number" min="1" name="widget_zoom" value="{{ widget_zoom }}" placeholder="{{ entry_zoom }}" class="form-control" id="input-setting-widget-zoom" />
+        </div>
+      </div>
+    </div>
+    <div id="tab-widget-layout" class="tab-pane">
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-marker">{{ entry_marker }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_marker) %} 
+            <input type="radio" name="widget_marker" value="1" id="input-widget-marker-enabled" checked>
+            <label for="input-widget-marker-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_marker" value="0" id="input-widget-marker-disabled">
+            <label for="input-widget-marker-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_marker" value="1" id="input-widget-marker-enabled" >
+            <label for="input-widget-marker-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_marker" value="0" id="input-widget-marker-disabled" checked>
+            <label for="input-widget-marker-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-marker-icon">{{ entry_marker_icon }}</label>
+        <div class="col-xs-9">
+          <a href="" id="thumb-image" data-toggle="image" class="img-thumbnail"><img src="{{ thumb_marker_icon }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+          <input type="hidden" name="widget_marker_icon" value="{{ widget_marker_icon }}" id="input-widget-marker-icon" />
+        </div>
+      </div>
+        
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-widget-height"><span data-toggle="tooltip" title="{{ help_height }}">{{ entry_height }}</span></label>
+        <div class="col-xs-9">
+          <input type="number" min="10" name="widget_height" value="{{ widget_height }}" placeholder="{{ entry_height }}" class="form-control" id="input-setting-widget-height" />
+        </div>
+      </div>
+    </div>
+    <div id="tab-widget-control" class="tab-pane">
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-control-zoom">{{ entry_zoom }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_control_zoom) %} 
+            <input type="radio" name="widget_control_zoom" value="1" id="input-widget-control-zoom-enabled" checked>
+            <label for="input-widget-control-zoom-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_control_zoom" value="0" id="input-widget-control-zoom-disabled">
+            <label for="input-widget-control-zoom-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_control_zoom" value="1" id="input-widget-control-zoom-enabled" >
+            <label for="input-widget-control-zoom-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_control_zoom" value="0" id="input-widget-control-zoom-disabled" checked>
+            <label for="input-widget-control-zoom-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-control-maptype">{{ entry_maptype }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_control_maptype) %} 
+            <input type="radio" name="widget_control_maptype" value="1" id="input-widget-control-maptype-enabled" checked>
+            <label for="input-widget-control-maptype-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_control_maptype" value="0" id="input-widget-control-maptype-disabled">
+            <label for="input-widget-control-maptype-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_control_maptype" value="1" id="input-widget-control-maptype-enabled" >
+            <label for="input-widget-control-maptype-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_control_maptype" value="0" id="input-widget-control-maptype-disabled" checked>
+            <label for="input-widget-control-maptype-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-control-scale">{{ entry_scale }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_control_scale) %} 
+            <input type="radio" name="widget_control_scale" value="1" id="input-widget-control-scale-enabled" checked>
+            <label for="input-widget-control-scale-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_control_scale" value="0" id="input-widget-control-scale-disabled">
+            <label for="input-widget-control-scale-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_control_scale" value="1" id="input-widget-control-scale-enabled" >
+            <label for="input-widget-control-scale-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_control_scale" value="0" id="input-widget-control-scale-disabled" checked>
+            <label for="input-widget-control-scale-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-control-streetview">{{ entry_streetview }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_control_streetview) %} 
+            <input type="radio" name="widget_control_streetview" value="1" id="input-widget-control-streetview-enabled" checked>
+            <label for="input-widget-control-streetview-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_control_streetview" value="0" id="input-widget-control-streetview-disabled">
+            <label for="input-widget-control-streetview-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_control_streetview" value="1" id="input-widget-control-streetview-enabled" >
+            <label for="input-widget-control-streetview-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_control_streetview" value="0" id="input-widget-control-streetview-disabled" checked>
+            <label for="input-widget-control-streetview-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-control-rotate">{{ entry_rotate }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_control_rotate) %} 
+            <input type="radio" name="widget_control_rotate" value="1" id="input-widget-control-rotate-enabled" checked>
+            <label for="input-widget-control-rotate-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_control_rotate" value="0" id="input-widget-control-rotate-disabled">
+            <label for="input-widget-control-rotate-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_control_rotate" value="1" id="input-widget-control-rotate-enabled" >
+            <label for="input-widget-control-rotate-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_control_rotate" value="0" id="input-widget-control-rotate-disabled" checked>
+            <label for="input-widget-control-rotate-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-control-fullscreen">{{ entry_fullscreen }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_control_fullscreen) %} 
+            <input type="radio" name="widget_control_fullscreen" value="1" id="input-widget-control-fullscreen-enabled" checked>
+            <label for="input-widget-control-fullscreen-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_control_fullscreen" value="0" id="input-widget-control-fullscreen-disabled">
+            <label for="input-widget-control-fullscreen-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_control_fullscreen" value="1" id="input-widget-control-fullscreen-enabled" >
+            <label for="input-widget-control-fullscreen-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_control_fullscreen" value="0" id="input-widget-control-fullscreen-disabled" checked>
+            <label for="input-widget-control-fullscreen-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

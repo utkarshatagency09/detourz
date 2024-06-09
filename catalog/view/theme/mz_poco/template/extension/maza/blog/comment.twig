@@ -1,0 +1,25 @@
+{% if comments %}
+{% if page == 1 %}<ul class="list-unstyled {{ parent_id?'mt-3' }}">{% endif %}
+{% for comment in comments %}
+<li id="comment{{ comment.comment_id }}" class="comment">
+  <i class="fas thumb fa-user-circle"></i>
+  <div class="comment-body">
+    <h6 class="comment-author">{{ comment.author }}</h6>
+    <span class="comment-date"><i class="far fa-clock me-1"></i>{{ comment.date_added }}</span>
+    <p class="comment-text">
+    {% if comment.parent_author and parent_id != comment.parent_id %}<strong>@{{ comment.parent_author }}</strong>{% endif %} {{ comment.text }}
+    </p>
+    <a class="reply" data-reply_to="{{ comment.comment_id }}" href="#comment{{ comment.comment_id }} .comment-body">{{ text_reply }}</a>
+    {% if not parent_id and comment.reply_total %}
+    <a class="text-secondary view-replies" href="{{ comment.reply_href }}">{{ text_view_reply|format(comment.reply_total) }} <i class="fas fa-angle-down ms-1"></i></a>
+    {% endif %}
+  </div>
+</li>
+{% endfor %}
+{% if view_more %}
+<a class="text-secondary mt-1 view-replies" href="{{ view_more }}">{{ parent_id?(text_view_reply|format(view_more_total)):(text_view_comment|format(view_more_total)) }} <i class="fas fa-angle-down ms-1"></i></a>
+{% endif %}
+{% if page == 1 %}</ul>{% endif %}
+{% else %}
+<p>{{ text_no_comments }}</p>
+{% endif %} 

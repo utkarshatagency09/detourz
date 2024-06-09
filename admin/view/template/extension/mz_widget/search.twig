@@ -1,0 +1,165 @@
+<!-- Form -->
+<form id="setting-widget-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#tab-widget-general" data-toggle="tab">{{ tab_general }}</a></li>
+    <li><a href="#tab-widget-product" data-toggle="tab">{{ text_product }}</a></li>
+    <li><a href="#tab-widget-blog" data-toggle="tab">{{ text_blog }}</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="tab-widget-general" class="tab-pane active">
+      <div class="form-group">
+        <label class="col-sm-2 control-label">{{ entry_status }}</label>
+        <div class="col-sm-10">
+          <div class="mz-switch-field">
+            {% if (widget_status) %} 
+            <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" checked>
+            <label for="input-widget-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled">
+            <label for="input-widget-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" >
+            <label for="input-widget-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled" checked>
+            <label for="input-widget-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <div class="form-group">
+        <label class="col-sm-2 control-label">{{ entry_search_route }}</label>
+        <div class="col-sm-10">
+          <div class="mz-switch-field">
+            {% for search_route in list_search_route %} 
+              {% if (widget_search_route == search_route['id']) %} 
+              <input type="radio" name="widget_search_route" value="{{ search_route['id'] }}" id="input-widget-search-route-{{ search_route['id'] }}" checked>
+              <label for="input-widget-search-route-{{ search_route['id'] }}" >{{ search_route['name'] }}</label>
+              {% else %} 
+              <input type="radio" name="widget_search_route" value="{{ search_route['id'] }}" id="input-widget-search-route-{{ search_route['id'] }}">
+              <label for="input-widget-search-route-{{ search_route['id'] }}" >{{ search_route['name'] }}</label>
+              {% endif %} 
+            {% endfor %} 
+          </div>
+        </div>
+      </div>
+        
+      <div class="form-group">
+        <label class="col-sm-2 control-label">{{ entry_autocomplete_status }}</label>
+        <div class="col-sm-7">
+          <div class="mz-switch-field">
+          {% if (widget_autocomplete_status) %} 
+            <input type="radio" name="widget_autocomplete_status" value="1" id="input-widget-autocomplete-status-enabled" checked>
+            <label for="input-widget-autocomplete-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_autocomplete_status" value="0" id="input-widget-autocomplete-status-disabled">
+            <label for="input-widget-autocomplete-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_autocomplete_status" value="1" id="input-widget-autocomplete-status-enabled" >
+            <label for="input-widget-autocomplete-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_autocomplete_status" value="0" id="input-widget-autocomplete-status-disabled" checked>
+            <label for="input-widget-autocomplete-status-disabled" >{{ text_disabled }}</label>
+          {% endif %}
+          </div>
+        </div>
+      </div>
+          
+      <div class="form-group">
+        <label class="col-sm-2 control-label" for="input-widget-autocomplete-limit"><span data-toggle="tooltip" title="{{ help_autocomplete_limit }}">{{ entry_autocomplete_limit }}</span></label>
+        <div class="col-sm-10">
+          <input type="text" name="widget_autocomplete_limit" value="{{ widget_autocomplete_limit }}" placeholder="{{ entry_autocomplete_limit }}" id="input-widget-autocomplete-limit" class="form-control" />
+        </div>
+      </div>
+        
+      <div class="form-group">
+        <label class="col-sm-2 control-label">{{ entry_search_button_type }}</label>
+        <div class="col-sm-10">
+          <div class="mz-switch-field">
+            {% for search_button_type in list_search_button_type %} 
+              {% if (widget_search_button_type == search_button_type['id']) %} 
+              <input type="radio" name="widget_search_button_type" value="{{ search_button_type['id'] }}" id="input-widget-search-button-type-{{ search_button_type['id'] }}" checked>
+              <label for="input-widget-search-button-type-{{ search_button_type['id'] }}" >{{ search_button_type['name'] }}</label>
+              {% else %} 
+              <input type="radio" name="widget_search_button_type" value="{{ search_button_type['id'] }}" id="input-widget-search-button-type-{{ search_button_type['id'] }}">
+              <label for="input-widget-search-button-type-{{ search_button_type['id'] }}" >{{ search_button_type['name'] }}</label>
+              {% endif %} 
+            {% endfor %} 
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-widget-product" class="tab-pane">
+      <div class="form-group">
+        <label class="col-sm-2 control-label">{{ entry_category }}</label>
+        <div class="col-sm-10">
+          <div class="mz-switch-field">
+            {% if (widget_product_category_status) %} 
+            <input type="radio" name="widget_product_category_status" value="1" id="input-widget-product-category-status-enabled" checked>
+            <label for="input-widget-product-category-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_product_category_status" value="0" id="input-widget-product-category-status-disabled">
+            <label for="input-widget-product-category-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_product_category_status" value="1" id="input-widget-product-category-status-enabled" >
+            <label for="input-widget-product-category-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_product_category_status" value="0" id="input-widget-product-category-status-disabled" checked>
+            <label for="input-widget-product-category-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label" for="input-widget-product-category_depth">{{ entry_category_depth }}</label>
+        <div class="col-sm-10">
+          <input type="text" name="widget_product_category_depth" value="{{ widget_product_category_depth }}" placeholder="{{ entry_category_depth }}" id="input-widget-product-category_depth" class="form-control" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">{{ entry_placeholder }}</label>
+        <div class="col-sm-10">
+        {% for language in languages %} 
+          <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+            <input class="form-control" type="text" name="widget_product_placeholder[{{ language['language_id'] }}]" value="{{ widget_product_placeholder[language['language_id']] is defined?widget_product_placeholder[language['language_id']]:'' }}" placeholder="{{ entry_placeholder }}" >
+          </div>
+        {% endfor %} 
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-widget-blog" class="tab-pane">
+      <div class="form-group">
+        <label class="col-sm-2 control-label">{{ entry_category }}</label>
+        <div class="col-sm-10">
+          <div class="mz-switch-field">
+            {% if (widget_blog_category_status) %} 
+            <input type="radio" name="widget_blog_category_status" value="1" id="input-widget-blog-category-status-enabled" checked>
+            <label for="input-widget-blog-category-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_blog_category_status" value="0" id="input-widget-blog-category-status-disabled">
+            <label for="input-widget-blog-category-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_blog_category_status" value="1" id="input-widget-blog-category-status-enabled" >
+            <label for="input-widget-blog-category-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_blog_category_status" value="0" id="input-widget-blog-category-status-disabled" checked>
+            <label for="input-widget-blog-category-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label" for="input-widget-blog-category_depth">{{ entry_category_depth }}</label>
+        <div class="col-sm-10">
+          <input type="text" name="widget_blog_category_depth" value="{{ widget_blog_category_depth }}" placeholder="{{ entry_category_depth }}" id="input-widget-blog-category_depth" class="form-control" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">{{ entry_placeholder }}</label>
+        <div class="col-sm-10">
+        {% for language in languages %} 
+          <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+            <input class="form-control" type="text" name="widget_blog_placeholder[{{ language['language_id'] }}]" value="{{ widget_blog_placeholder[language['language_id']] is defined?widget_blog_placeholder[language['language_id']]:'' }}" placeholder="{{ entry_placeholder }}" >
+          </div>
+        {% endfor %} 
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

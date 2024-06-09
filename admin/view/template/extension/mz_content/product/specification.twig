@@ -1,0 +1,247 @@
+<!-- Form -->
+<form id="setting-content-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#tab-content-general" data-toggle="tab">{{ tab_general }}</a></li>
+    <li><a href="#tab-content-table" data-toggle="tab">{{ tab_table }}</a></li>
+    <li><a href="#tab-content-accordion" data-toggle="tab">{{ tab_accordion }}</a></li>
+    <li><a href="#tab-content-tab" data-toggle="tab">{{ tab_tab }}</a></li>
+    <li><a href="#tab-content-pill" data-toggle="tab">{{ tab_pill }}</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="tab-content-general" class="tab-pane active">
+      <!--content status-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-content-status">{{ entry_status }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_status) %} 
+            <input type="radio" name="content_status" value="1" id="input-setting-content-status-enabled" checked>
+            <label for="input-setting-content-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_status" value="0" id="input-setting-content-status-disabled">
+            <label for="input-setting-content-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_status" value="1" id="input-setting-content-status-enabled" >
+            <label for="input-setting-content-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_status" value="0" id="input-setting-content-status-disabled" checked>
+            <label for="input-setting-content-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-content-design">{{ entry_design }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+          {% for design in list_design %}
+            {% if (content_design == design.id) %} 
+            <input type="radio" name="content_design" value="{{ design['id'] }}" id="input-content-design-{{ design['id'] }}" checked>
+            <label for="input-content-design-{{ design['id'] }}" >{{ design['name'] }}</label>
+            {% else %} 
+            <input type="radio" name="content_design" value="{{ design['id'] }}" id="input-content-design-{{ design['id'] }}">
+            <label for="input-content-design-{{ design['id'] }}" >{{ design['name'] }}</label>
+            {% endif %}
+          {% endfor %} 
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div id="tab-content-table" class="tab-pane">
+      {#size#}
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-content-size">{{ entry_size }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+          {% for size in sizes %}
+            {% if (content_size == size.code) %} 
+            <input type="radio" name="content_size" value="{{ size['code'] }}" id="input-content-size-{{ size['code'] }}" checked>
+            <label for="input-content-size-{{ size['code'] }}" >{{ size['text'] }}</label>
+            {% else %} 
+            <input type="radio" name="content_size" value="{{ size['code'] }}" id="input-content-size-{{ size['code'] }}">
+            <label for="input-content-size-{{ size['code'] }}" >{{ size['text'] }}</label>
+            {% endif %}
+          {% endfor %} 
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label">{{ entry_head }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+          {% for style in head_styles %}
+            {% if (content_style_head == style.code) %} 
+            <input type="radio" name="content_style_head" value="{{ style['code'] }}" id="input-content-head-style-{{ style['code'] }}" checked>
+            <label for="input-content-head-style-{{ style['code'] }}" >{{ style['text'] }}</label>
+            {% else %} 
+            <input type="radio" name="content_style_head" value="{{ style['code'] }}" id="input-content-head-style-{{ style['code'] }}">
+            <label for="input-content-head-style-{{ style['code'] }}" >{{ style['text'] }}</label>
+            {% endif %}
+          {% endfor %} 
+          </div>
+        </div>
+      </div>
+
+      <!--style dark-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-content-style-dark"><span data-toggle="tooltip" title="{{ help_dark }}">{{ entry_dark }}</span></label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_style_dark) %} 
+            <input type="radio" name="content_style_dark" value="1" id="input-content-style-dark-enabled" checked>
+            <label for="input-content-style-dark-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_style_dark" value="0" id="input-content-style-dark-disabled">
+            <label for="input-content-style-dark-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_style_dark" value="1" id="input-content-style-dark-enabled" >
+            <label for="input-content-style-dark-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_style_dark" value="0" id="input-content-style-dark-disabled" checked>
+            <label for="input-content-style-dark-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <!--style striped-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-content-style-striped"><span data-toggle="tooltip" title="{{ help_striped }}">{{ entry_striped }}</span></label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_style_striped) %} 
+            <input type="radio" name="content_style_striped" value="1" id="input-content-style-striped-enabled" checked>
+            <label for="input-content-style-striped-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_style_striped" value="0" id="input-content-style-striped-disabled">
+            <label for="input-content-style-striped-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_style_striped" value="1" id="input-content-style-striped-enabled" >
+            <label for="input-content-style-striped-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_style_striped" value="0" id="input-content-style-striped-disabled" checked>
+            <label for="input-content-style-striped-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <!--style bordered-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-content-style-bordered"><span data-toggle="tooltip" title="{{ help_bordered }}">{{ entry_bordered }}</span></label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_style_bordered) %} 
+            <input type="radio" name="content_style_bordered" value="1" id="input-content-style-bordered-enabled" checked>
+            <label for="input-content-style-bordered-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_style_bordered" value="0" id="input-content-style-bordered-disabled">
+            <label for="input-content-style-bordered-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_style_bordered" value="1" id="input-content-style-bordered-enabled" >
+            <label for="input-content-style-bordered-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_style_bordered" value="0" id="input-content-style-bordered-disabled" checked>
+            <label for="input-content-style-bordered-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <!--style borderless-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-content-style-borderless"><span data-toggle="tooltip" title="{{ help_borderless }}">{{ entry_borderless }}</span></label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_style_borderless) %} 
+            <input type="radio" name="content_style_borderless" value="1" id="input-content-style-borderless-enabled" checked>
+            <label for="input-content-style-borderless-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_style_borderless" value="0" id="input-content-style-borderless-disabled">
+            <label for="input-content-style-borderless-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_style_borderless" value="1" id="input-content-style-borderless-enabled" >
+            <label for="input-content-style-borderless-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_style_borderless" value="0" id="input-content-style-borderless-disabled" checked>
+            <label for="input-content-style-borderless-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <!--style hover-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-content-style-hover"><span data-toggle="tooltip" title="{{ help_hover }}">{{ entry_hover }}</span></label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_style_hover) %} 
+            <input type="radio" name="content_style_hover" value="1" id="input-content-style-hover-enabled" checked>
+            <label for="input-content-style-hover-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_style_hover" value="0" id="input-content-style-hover-disabled">
+            <label for="input-content-style-hover-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_style_hover" value="1" id="input-content-style-hover-enabled" >
+            <label for="input-content-style-hover-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_style_hover" value="0" id="input-content-style-hover-disabled" checked>
+            <label for="input-content-style-hover-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="tab-content-accordion" class="tab-pane">
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-content-accordion-auto-close"><span data-toggle="tooltip" title="{{ help_auto_close }}">{{ entry_auto_close }}</span></label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_accordion_auto_close) %} 
+            <input type="radio" name="content_accordion_auto_close" value="1" id="input-content-accordion-auto-close-enabled" checked>
+            <label for="input-content-accordion-auto-close-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_accordion_auto_close" value="0" id="input-content-accordion-auto-close-disabled">
+            <label for="input-content-accordion-auto-close-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_accordion_auto_close" value="1" id="input-content-accordion-auto-close-enabled" >
+            <label for="input-content-accordion-auto-close-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_accordion_auto_close" value="0" id="input-content-accordion-auto-close-disabled" checked>
+            <label for="input-content-accordion-auto-close-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="tab-content-tab" class="tab-pane">
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-content-tab-fade-effect">{{ entry_fade_effect }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_tab_fade_effect) %} 
+            <input type="radio" name="content_tab_fade_effect" value="1" id="input-content-tab-fade-effect-enabled" checked>
+            <label for="input-content-tab-fade-effect-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_tab_fade_effect" value="0" id="input-content-tab-fade-effect-disabled">
+            <label for="input-content-tab-fade-effect-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_tab_fade_effect" value="1" id="input-content-tab-fade-effect-enabled" >
+            <label for="input-content-tab-fade-effect-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_tab_fade_effect" value="0" id="input-content-tab-fade-effect-disabled" checked>
+            <label for="input-content-tab-fade-effect-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="tab-content-pill" class="tab-pane">
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-content-pill-orientation">{{ entry_orientation }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_pill_orientation) %} 
+            <input type="radio" name="content_pill_orientation" value="1" id="input-content-pill-orientation-horizontal" checked>
+            <label for="input-content-pill-orientation-horizontal" >{{ text_horizontal }}</label>
+            <input type="radio" name="content_pill_orientation" value="0" id="input-content-pill-orientation-vertical">
+            <label for="input-content-pill-orientation-vertical">{{ text_vertical }}</label>
+            {% else %} 
+            <input type="radio" name="content_pill_orientation" value="1" id="input-content-pill-orientation-horizontal" >
+            <label for="input-content-pill-orientation-horizontal">{{ text_horizontal }}</label>
+            <input type="radio" name="content_pill_orientation" value="0" id="input-content-pill-orientation-vertical" checked>
+            <label for="input-content-pill-orientation-vertical" >{{ text_vertical }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,21 @@
+<div class="nav flex-column nav-pills custom-pills-left">
+  {% for category in categories %}
+    {% if category.category_id == category_id %}
+      {% if child_id %}
+      <a href="{{ category.href }}" class="nav-link active">{{ category.name }}</a>
+      {% else %}
+      <div class="nav-link active">{{ category.name }}</div>
+      {% endif %}
+      {% if category.children %}
+      {% for child in category.children %}
+      {% if child.category_id == child_id %}
+      <div class="nav-link active">&nbsp;&nbsp;&nbsp;- {{ child.name }}</div> 
+      {% else %} 
+      <a href="{{ child.href }}" class="nav-link">&nbsp;&nbsp;&nbsp;- {{ child.name }}</a>
+      {% endif %}
+      {% endfor %}
+      {% endif %}
+    {% else %} <a href="{{ category.href }}" class="nav-link">{{ category.name }}</a>
+    {% endif %}
+  {% endfor %}
+</div>

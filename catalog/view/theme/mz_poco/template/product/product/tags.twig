@@ -1,0 +1,8 @@
+{% verbatim %}{% if tags %}{% endverbatim %}
+<p><strong>{% verbatim %}{{ text_tags }}{% endverbatim %}</strong>
+{% verbatim %}{% for tag in tags %}{% endverbatim %}
+{% verbatim %}{% if tag.tag %}{% endverbatim %}
+<a class="badge text-bg-{{ color }} text-decoration-none" href="{% verbatim %}{{ tag.href }}{% endverbatim %}">{% verbatim %}{{ tag.tag }}{% endverbatim %}</a>
+{% verbatim %}{% endif %}{% endverbatim %}
+{% verbatim %}{% endfor %}{% endverbatim %}</p>
+{% verbatim %}{% endif %}{% endverbatim %}

@@ -1,0 +1,35 @@
+{% verbatim %}{% if review_status %}{% endverbatim %}
+<form id="form-review">
+  <div class="select-rating d-flex flex-wrap">
+    {% verbatim %}<div class="rating-group"><span class="rating">{{ rating|round }}/5</span><span class="total-review">{{ reviews }}</span></div>{% endverbatim %}
+    <span class="start-form-check">
+      <input type="radio" id="rating-5-{{ mz_suffix }}" name="rating" value="5" /><label for="rating-5-{{ mz_suffix }}">5</label>
+      <input type="radio" id="rating-4-{{ mz_suffix }}" name="rating" value="4" /><label for="rating-4-{{ mz_suffix }}">4</label>
+      <input type="radio" id="rating-3-{{ mz_suffix }}" name="rating" value="3" /><label for="rating-3-{{ mz_suffix }}">3</label>
+      <input type="radio" id="rating-2-{{ mz_suffix }}" name="rating" value="2" /><label for="rating-2-{{ mz_suffix }}">2</label>
+      <input type="radio" id="rating-1-{{ mz_suffix }}" name="rating" value="1" /><label for="rating-1-{{ mz_suffix }}">1</label>
+      <input type="radio" id="rating-0-{{ mz_suffix }}" name="rating" value="0" class="star-cb-clear" /><label for="rating-0-{{ mz_suffix }}">0</label>
+    </span>
+  </div>
+  <h5 class="content-title mb-3">{% verbatim %}{{ text_write }}{% endverbatim %}</h5>
+  {% verbatim %}{% if review_guest %}{% endverbatim %}
+  <div class="mb-3 required">
+{#    <label for="input-name">{% verbatim %}{{ entry_name }}{% endverbatim %}</label>#}
+    <input type="text" name="name" value="{% verbatim %}{{ customer_name }}{% endverbatim %}" placeholder="{% verbatim %}{{ entry_name }}{% endverbatim %}" aria-label="{% verbatim %}{{ entry_name }}{% endverbatim %}" id="input-name" class="form-control form-control-{{ size }}" />
+  </div>
+  <div class="mb-3 required">
+{#    <label for="input-review">{% verbatim %}{{ entry_review }}{% endverbatim %}</label>#}
+    <textarea name="text" rows="5" id="input-review" placeholder="{% verbatim %}{{ entry_review }}{% endverbatim %}" aria-label="{% verbatim %}{{ entry_review }}{% endverbatim %}" class="form-control form-control-{{ size }}"></textarea>
+{#    <div class="form-text text-muted">{% verbatim %}{{ text_note }}{% endverbatim %}</div>#}
+  </div>
+  {% verbatim %}{{ captcha }}{% endverbatim %}
+  <div class="buttons clearfix">
+    <div class="float-end">
+      <button type="button" id="button-review" data-loading-text="{% verbatim %}{{ text_loading }}{% endverbatim %}" class="btn btn-{{ size }} btn-{{ color }}">{% verbatim %}{{ button_write }}{% endverbatim %}</button>
+    </div>
+  </div>
+  {% verbatim %}{% else %}{% endverbatim %}
+  {% verbatim %}{{ text_login }}{% endverbatim %}
+  {% verbatim %}{% endif %}{% endverbatim %}
+</form>
+{% verbatim %}{% endif %}{% endverbatim %}

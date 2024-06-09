@@ -1,0 +1,19 @@
+// Skin config
+$active_header_code: 'megastore-1' !default;
+$active_footer_code: 'megastore-1' !default;
+$active_skin_code: 'megastore-1' !default;
+
+// Default
+$mz_body_background: null !default;
+
+// Swiper
+$swiper-pagination-color: $secondary !default;
+$swiper-control-color: $black !default;
+$swiper-pagination-bullet-size: mz-spacer(10) !default;
+
+// Font size base
+$breakpoint-font-sizes: (sm: 0.857) !default;
+
+// z-index
+$zindex-drawer: 9998 !default;
+$zindex-notification: 9999 !default;

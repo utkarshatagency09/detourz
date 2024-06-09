@@ -1,0 +1,37 @@
+{% if heading_title %}
+<h3 class="widget-title">{{ heading_title }}</h3>
+{% endif %}
+{% if thumb %}
+<a id="widget-video{{ mz_suffix }}" href="{{ video_url }}?autoplay=1">
+	<img src="{{ thumb }}" alt="{{ heading_title }}" class="img-fluid w-100" width="{{ width }}" height="{{ height }}" />
+	<div class="caption">
+		{{ image_caption }}
+		<i class="far fa-play-circle fa-5x"></i>
+	</div>
+</a>
+<script>
+$(function(){
+	$('#widget-video{{ mz_suffix }}').magnificPopup({
+		type: 'iframe',
+		iframe: {
+			patterns: {
+				youtube: {
+					index: 'youtube.com/',
+					id: function (url) { return url },
+					src: '%id%'
+				},
+				vimeo: {
+					index: 'vimeo.com/',
+					id: function (url) { return url },
+					src: '%id%'
+				}
+			}
+		}
+	});
+});
+</script>
+{% else %}
+<div class="ratio ratio-16x9">
+  <iframe src="{{ video_url }}" allowfullscreen></iframe>
+</div>
+{% endif %}

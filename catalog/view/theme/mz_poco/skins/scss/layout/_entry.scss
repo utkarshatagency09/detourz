@@ -1,0 +1,46 @@
+// Flex container
+.entry-section, .entry-component, .entry-col{
+    display: flex;
+    flex-direction: column;
+}
+.entry-col{
+    flex-direction: row;
+/*    & > .entry-row{
+        flex-basis: 100%;
+    }*/
+}
+
+// Flex items default
+.entry-content, .entry-module, .entry-widget, .entry-design, .entry-menu, .entry-row{
+    flex: 1 1 auto;
+}
+
+// In Column
+.entry-section, .entry-component{
+    & > .entry-row{
+        flex: 0 0 auto;
+    }
+}
+
+// In row
+.flex-row{
+    & > .entry-row{
+        flex: 1 1 auto;
+    }
+}
+
+// Full width module
+/*.module{
+    &-mz_product_listing, &-mz_article_listing, &-mz_brand, &-mz_testimonial, &-mz_slider, &-mz_category_wall{
+        width: 100%;
+    }
+}*/
+
+.entry-content:empty, .entry-widget:empty{
+    display: none !important;
+}
+
+// Entry in popup
+.modal-body > div[id^="entry"]{
+    margin-bottom: 0;
+}

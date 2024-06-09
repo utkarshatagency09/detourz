@@ -1,0 +1,23 @@
+{% verbatim %}{% if categories %}{% endverbatim %}
+{% if title %}
+<h4 class="h{{ title }}">{% verbatim %}{{ text_refine }}{% endverbatim %}</h4>
+{% endif %}
+<div class="row row-cols-xl-{{ column_xl }} row-cols-lg-{{ column_lg }} row-cols-md-{{ column_md }} row-cols-sm-{{ column_sm }} row-cols-{{ column_xs }}">
+{% verbatim %}{% for category in categories %}{% endverbatim %}
+  <a class="col mb-2 text-decoration-none" href="{% verbatim %}{{ category.href }}{% endverbatim %}">
+    {% if show_content != 'text' %}
+    <figure class="figure m-0 w-100">
+      {% verbatim %}{% if category.image %}{% endverbatim %}
+      <img class="figure-img img-fluid border rounded" src="{% verbatim %}{{ category.image }}{% endverbatim %}" alt="{% verbatim %}{{ category.name }}{% endverbatim %}" >
+      {% verbatim %}{% endif %}{% endverbatim %}
+      {% if show_content != 'image' %}
+      <figcaption class="figure-caption mb-2">{% verbatim %}{{ category.name }}{% endverbatim %}</figcaption>
+      {% endif %}
+    </figure>
+    {% else %}
+    {% verbatim %}{{ category.name }}{% endverbatim %}
+    {% endif %}
+  </a>
+{% verbatim %}{% endfor %}{% endverbatim %}
+</div>
+{% verbatim %}{% endif %}{% endverbatim %}

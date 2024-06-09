@@ -1,0 +1,41 @@
+<figure class="figure">
+{% if url %}
+
+  <a href="{{ url.href }}" {{ url.attr }} title="{{ alt|e }}" {% if url_target %}target="{{ url_target }}"{% endif %}>
+    {% if icon_font %}
+    <i title="{{ alt|e }}" class="figure-img img-fluid {{ icon_font }} {{ style_class }}" {{ icon_size?'style="font-size: ' ~ icon_size ~ 'px"':'' }}></i>
+    {% elseif icon_svg %}
+      {% if lazy_loading %}<img data-src="{{ icon_svg }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="{{ alt|e }}" width="{{ icon_width?:100 }}" height="{{ icon_height?:100 }}" class="figure-img img-fluid m-0 {{ style_class }} lazy-load loader-spinner" />
+      {% else %}<img src="{{ icon_svg }}" alt="{{ alt|e }}" width="{{ icon_width?:100 }}" height="{{ icon_height?:100 }}" class="figure-img img-fluid m-0 {{ style_class }}" />
+      {% endif %}
+    {% else %}
+      {% if lazy_loading %}<img data-src="{{ icon_image }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="{{ alt|e }}" width="{{ icon_width }}" height="{{ icon_height }}" class="figure-img img-fluid m-0 {{ style_class }} lazy-load loader-spinner" />
+      {% else %}<img src="{{ icon_image }}" alt="{{ alt|e }}" width="{{ icon_width }}" height="{{ icon_height }}" class="figure-img img-fluid m-0 {{ style_class }}" />
+      {% endif %}
+    {% endif %}
+  </a>
+
+  {% if caption %}
+  <figcaption class="figure-caption"><a href="{{ url.href }}" {{ url.attr }} title="{{ alt|e }}" {% if url_target %}target="{{ url_target }}"{% endif %}>{{ caption }}</a></figcaption>
+  {% endif %}
+
+{% else %}
+
+  {% if icon_font %}
+  <i title="{{ alt|e }}" class="figure-img img-fluid {{ icon_font }} {{ style_class }}" {{ icon_size?'style="font-size: ' ~ icon_size ~ 'px"':'' }}></i>
+  {% elseif icon_svg %}
+    {% if lazy_loading %}<img data-src="{{ icon_svg }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="{{ alt|e }}" width="{{ icon_width?:100 }}" height="{{ icon_height?:100 }}" class="figure-img img-fluid m-0 {{ style_class }} lazy-load loader-spinner" />
+    {% else %}<img src="{{ icon_svg }}" alt="{{ alt|e }}" width="{{ icon_width?:100 }}" height="{{ icon_height?:100 }}" class="figure-img img-fluid m-0 {{ style_class }}" />
+    {% endif %}
+  {% else %}
+    {% if lazy_loading %}<img data-src="{{ icon_image }}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="{{ alt|e }}" width="{{ icon_width }}" height="{{ icon_height }}" class="figure-img img-fluid m-0 {{ style_class }} lazy-load loader-spinner" />
+    {% else %}<img src="{{ icon_image }}" alt="{{ alt|e }}" width="{{ icon_width }}" height="{{ icon_height }}" class="figure-img img-fluid m-0 {{ style_class }}" />
+    {% endif %}
+  {% endif %}
+
+  {% if caption %}
+  <figcaption class="figure-caption">{{ caption }}</figcaption>
+  {% endif %}
+
+{% endif %}
+</figure>

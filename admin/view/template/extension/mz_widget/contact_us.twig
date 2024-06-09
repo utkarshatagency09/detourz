@@ -1,0 +1,612 @@
+<!-- Form -->
+<form id="setting-widget-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#tab-widget-general" data-toggle="tab">{{ tab_general }}</a></li>
+    <li><a href="#tab-widget-image" data-toggle="tab">{{ tab_image }}</a></li>
+    <li><a href="#tab-widget-address" data-toggle="tab">{{ tab_address }}</a></li>
+    <li><a href="#tab-widget-email" data-toggle="tab">{{ tab_email }}</a></li>
+    <li><a href="#tab-widget-telephone" data-toggle="tab">{{ tab_telephone }}</a></li>
+    <li><a href="#tab-widget-geocode" data-toggle="tab">{{ tab_geocode }}</a></li>
+    <li><a href="#tab-widget-fax" data-toggle="tab">{{ tab_fax }}</a></li>
+    <li><a href="#tab-widget-times" data-toggle="tab">{{ tab_times }}</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="tab-widget-general" class="tab-pane active">
+      <!--widget status-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-status">{{ entry_status }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_status) %} 
+            <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" checked>
+            <label for="input-widget-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled">
+            <label for="input-widget-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" >
+            <label for="input-widget-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled" checked>
+            <label for="input-widget-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+
+      {#title#}
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-widget-title">{{ entry_title }}</label>
+        <div class="col-xs-9">
+        {% for language in languages %} 
+          <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+            <input class="form-control" type="text" name="widget_title[{{ language['language_id'] }}]" value="{{ widget_title[language['language_id']] is defined?widget_title[language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+          </div>
+        {% endfor %} 
+        </div>
+      </div>
+        
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-widget-icon-width">{{ entry_icon_width }}</label>
+        <div class="col-xs-9">
+          <input type="number" name="widget_icon_width" value="{{ widget_icon_width }}" placeholder="{{ entry_icon_width }}" class="form-control" id="input-setting-widget-icon-width" />
+        </div>
+      </div>
+        
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-widget-icon-height">{{ entry_icon_height }}</label>
+        <div class="col-xs-9">
+          <input type="number" name="widget_icon_height" value="{{ widget_icon_height }}" placeholder="{{ entry_icon_height }}" class="form-control" id="input-setting-widget-icon-height" />
+        </div>
+      </div>
+    </div>
+        
+    {# status #}
+    <div id="tab-widget-image" class="tab-pane">
+      <!--widget image status-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_status }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_image_status) %} 
+            <input type="radio" name="widget_image_status" value="1" id="input-widget-image-status-enabled" checked>
+            <label for="input-widget-image-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_image_status" value="0" id="input-widget-image-status-disabled">
+            <label for="input-widget-image-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_image_status" value="1" id="input-widget-image-status-enabled" >
+            <label for="input-widget-image-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_image_status" value="0" id="input-widget-image-status-disabled" checked>
+            <label for="input-widget-image-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      {#image alt#}
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-widget-image-alt">{{ entry_alt }}</label>
+        <div class="col-xs-9">
+        {% for language in languages %} 
+          <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" alt="{{ language['name'] }}" /></span>
+            <input class="form-control" type="text" name="widget_image_alt[{{ language['language_id'] }}]" value="{{ widget_image_alt[language['language_id']] is defined?widget_image_alt[language['language_id']]:'' }}" placeholder="{{ entry_alt }}" >
+          </div>
+        {% endfor %} 
+        </div>
+      </div>
+          
+      {#Image#}
+      <div class="input-image-widget">
+        <div class="form-group">
+          <label class="col-xs-3 control-label" >{{ entry_image }}</label>
+          <div class="col-xs-9">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#tab-widget-image-image" data-meta="image" data-toggle="tab">{{ tab_image }}</a></li>
+              <li><a href="#tab-widget-image-svg" data-meta="image" data-toggle="tab">{{ tab_svg }}</a></li>
+              <li><a href="#tab-widget-image-font" data-meta="font" data-toggle="tab">{{ tab_font }}</a></li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="tab-widget-image-image">
+                <div class="el-group">
+                {% for language in languages %}
+                  <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                  <div class="el-item">
+                    <a href="" id="thumb-setting-widget-image-image{{ language.language_id }}" data-toggle="image" class="img-thumbnail"><img src="{{ (thumb_image_image[language.language_id] is defined)?thumb_image_image[language.language_id]:placeholder_image }}" alt="" title="" data-placeholder="{{ placeholder_image }}" /></a><input type="hidden" name="widget_image_image[{{ language.language_id }}]" value="{{ (widget_image_image[language.language_id] is defined)?widget_image_image[language.language_id]:'' }}" id="input-setting-widget-image-image{{ language.language_id }}" />
+                  </div>
+                {% endfor %}
+                </div>
+              </div>
+              <div class="tab-pane" id="tab-widget-image-svg">
+                <div class="el-group">
+                {% for language in languages %}
+                  <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                  <div class="el-item">
+                    <a href="" id="thumb-setting-widget-image-svg{{ language.language_id }}" data-toggle="svg" class="img-thumbnail"><img width="100" height="100" src="{{ (thumb_image_svg[language.language_id] is defined)?thumb_image_svg[language.language_id]:placeholder_svg }}" alt="" title="" data-placeholder="{{ placeholder_svg }}" /></a><input type="hidden" name="widget_image_svg[{{ language.language_id }}]" value="{{ (widget_image_svg[language.language_id] is defined)?widget_image_svg[language.language_id]:'' }}" id="input-setting-widget-image-svg{{ language.language_id }}" />
+                  </div>
+                {% endfor %}
+                </div>
+              </div>
+              <div class="tab-pane" id="tab-widget-image-font">
+                <div class="el-group">
+                {% for language in languages %}
+                  <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                  <div class="el-item">
+                    <a href="" id="thumb-setting-widget-image-font{{ language.language_id }}" data-toggle="font" class="img-thumbnail icon-thumb"><i class="{{ (widget_image_font[language.language_id] is not empty)?widget_image_font[language.language_id]:placeholder_font }}" data-placeholder="{{ placeholder_font }}"></i></a><input type="hidden" name="widget_image_font[{{ language.language_id }}]" value="{{ (widget_image_font[language.language_id] is defined)?widget_image_font[language.language_id]:'' }}" id="input-setting-widget-image-font{{ language.language_id }}" />
+                  </div>
+                {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="image-meta-tab-content tab-content">
+          <div class="tab-image active tab-pane">
+            <!--image image width-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-setting-widget-image-width">{{ entry_image_width }}</label>
+              <div class="col-xs-9">
+                <input type="number" name="widget_image_width" value="{{ widget_image_width }}" placeholder="{{ entry_image_width }}" class="form-control" id="input-setting-widget-image-width" />
+              </div>
+            </div>
+            <!--image image height-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-setting-widget-image-height">{{ entry_image_height }}</label>
+              <div class="col-xs-9">
+                <input type="number" name="widget_image_height" value="{{ widget_image_height }}" placeholder="{{ entry_image_height }}" class="form-control" id="input-setting-widget-image-height" />
+              </div>
+            </div>
+          </div>
+          <div class="tab-font tab-pane">
+            <!--image size-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-setting-widget-image-size">{{ entry_image_size }}</label>
+              <div class="col-xs-9">
+                <input type="number" name="widget_image_size" value="{{ widget_image_size }}" placeholder="{{ entry_image_size }}" class="form-control" id="input-setting-widget-image-size" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+          
+    {# Address #}
+    <div id="tab-widget-address" class="tab-pane">
+      <!--widget address status-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_status }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_address_status) %} 
+            <input type="radio" name="widget_address_status" value="1" id="input-widget-address-status-enabled" checked>
+            <label for="input-widget-address-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_address_status" value="0" id="input-widget-address-status-disabled">
+            <label for="input-widget-address-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_address_status" value="1" id="input-widget-address-status-enabled" >
+            <label for="input-widget-address-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_address_status" value="0" id="input-widget-address-status-disabled" checked>
+            <label for="input-widget-address-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-address-sort-order">{{ entry_sort_order }}</label>
+        <div class="col-xs-9">
+          <input type="text" name="widget_address_sort_order" value="{{ widget_address_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-widget-address-sort-order" class="form-control" />
+        </div>
+      </div>
+        
+      <div class="form-group">
+        <label class="col-xs-3 control-label" >{{ entry_icon }}</label>
+        <div class="col-xs-9">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-widget-address-icon-image" data-meta="image" data-toggle="tab">{{ tab_image }}</a></li>
+            <li><a href="#tab-widget-address-icon-svg" data-meta="image" data-toggle="tab">{{ tab_svg }}</a></li>
+            <li><a href="#tab-widget-address-icon-font" data-meta="font" data-toggle="tab">{{ tab_font }}</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-widget-address-icon-image">
+              <div class="el-group">
+              {% for language in languages %}
+                <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                <div class="el-item">
+                  <a href="" id="thumb-setting-widget-address-icon-image{{ language.language_id }}" data-toggle="image" class="img-thumbnail"><img src="{{ (thumb_address_icon_image[language.language_id] is defined)?thumb_address_icon_image[language.language_id]:placeholder_image }}" alt="" title="" data-placeholder="{{ placeholder_image }}" /></a><input type="hidden" name="widget_address_icon_image[{{ language.language_id }}]" value="{{ (widget_address_icon_image[language.language_id] is defined)?widget_address_icon_image[language.language_id]:'' }}" id="input-setting-widget-address-icon-image{{ language.language_id }}" />
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-widget-address-icon-svg">
+              <div class="el-group">
+              {% for language in languages %}
+                <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                <div class="el-item">
+                  <a href="" id="thumb-setting-widget-address-icon-svg{{ language.language_id }}" data-toggle="svg" class="img-thumbnail"><img width="100" height="100" src="{{ (thumb_address_icon_svg[language.language_id] is defined)?thumb_address_icon_svg[language.language_id]:placeholder_svg }}" alt="" title="" data-placeholder="{{ placeholder_svg }}" /></a><input type="hidden" name="widget_address_icon_svg[{{ language.language_id }}]" value="{{ (widget_address_icon_svg[language.language_id] is defined)?widget_address_icon_svg[language.language_id]:'' }}" id="input-setting-widget-address-icon-svg{{ language.language_id }}" />
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-widget-address-icon-font">
+              <div class="el-group">
+              {% for language in languages %}
+                <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                <div class="el-item">
+                  <a href="" id="thumb-setting-widget-address-icon-font{{ language.language_id }}" data-toggle="font" class="img-thumbnail icon-thumb"><i class="{{ (widget_address_icon_font[language.language_id] is not empty)?widget_address_icon_font[language.language_id]:placeholder_font }}" data-placeholder="{{ placeholder_font }}"></i></a><input type="hidden" name="widget_address_icon_font[{{ language.language_id }}]" value="{{ (widget_address_icon_font[language.language_id] is defined)?widget_address_icon_font[language.language_id]:'' }}" id="input-setting-widget-address-icon-font{{ language.language_id }}" />
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+              
+    {# Geocode #}
+    <div id="tab-widget-geocode" class="tab-pane">
+      <!--widget geocode status-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_status }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_geocode_status) %} 
+            <input type="radio" name="widget_geocode_status" value="1" id="input-widget-geocode-status-enabled" checked>
+            <label for="input-widget-geocode-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_geocode_status" value="0" id="input-widget-geocode-status-disabled">
+            <label for="input-widget-geocode-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_geocode_status" value="1" id="input-widget-geocode-status-enabled" >
+            <label for="input-widget-geocode-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_geocode_status" value="0" id="input-widget-geocode-status-disabled" checked>
+            <label for="input-widget-geocode-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-geocode-sort-order">{{ entry_sort_order }}</label>
+        <div class="col-xs-9">
+          <input type="text" name="widget_geocode_sort_order" value="{{ widget_geocode_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-widget-geocode-sort-order" class="form-control" />
+        </div>
+      </div>
+        
+      <div class="form-group">
+        <label class="col-xs-3 control-label" >{{ entry_icon }}</label>
+        <div class="col-xs-9">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-widget-geocode-icon-image" data-meta="image" data-toggle="tab">{{ tab_image }}</a></li>
+            <li><a href="#tab-widget-geocode-icon-svg" data-meta="image" data-toggle="tab">{{ tab_svg }}</a></li>
+            <li><a href="#tab-widget-geocode-icon-font" data-meta="font" data-toggle="tab">{{ tab_font }}</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-widget-geocode-icon-image">
+              <div class="el-group">
+              {% for language in languages %}
+                <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                <div class="el-item">
+                  <a href="" id="thumb-setting-widget-geocode-icon-image{{ language.language_id }}" data-toggle="image" class="img-thumbnail"><img src="{{ (thumb_geocode_icon_image[language.language_id] is defined)?thumb_geocode_icon_image[language.language_id]:placeholder_image }}" alt="" title="" data-placeholder="{{ placeholder_image }}" /></a><input type="hidden" name="widget_geocode_icon_image[{{ language.language_id }}]" value="{{ (widget_geocode_icon_image[language.language_id] is defined)?widget_geocode_icon_image[language.language_id]:'' }}" id="input-setting-widget-geocode-icon-image{{ language.language_id }}" />
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-widget-geocode-icon-svg">
+              <div class="el-group">
+              {% for language in languages %}
+                <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                <div class="el-item">
+                  <a href="" id="thumb-setting-widget-geocode-icon-svg{{ language.language_id }}" data-toggle="svg" class="img-thumbnail"><img width="100" height="100" src="{{ (thumb_geocode_icon_svg[language.language_id] is defined)?thumb_geocode_icon_svg[language.language_id]:placeholder_svg }}" alt="" title="" data-placeholder="{{ placeholder_svg }}" /></a><input type="hidden" name="widget_geocode_icon_svg[{{ language.language_id }}]" value="{{ (widget_geocode_icon_svg[language.language_id] is defined)?widget_geocode_icon_svg[language.language_id]:'' }}" id="input-setting-widget-geocode-icon-svg{{ language.language_id }}" />
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-widget-geocode-icon-font">
+              <div class="el-group">
+              {% for language in languages %}
+                <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                <div class="el-item">
+                  <a href="" id="thumb-setting-widget-geocode-icon-font{{ language.language_id }}" data-toggle="font" class="img-thumbnail icon-thumb"><i class="{{ (widget_geocode_icon_font[language.language_id] is not empty)?widget_geocode_icon_font[language.language_id]:placeholder_font }}" data-placeholder="{{ placeholder_font }}"></i></a><input type="hidden" name="widget_geocode_icon_font[{{ language.language_id }}]" value="{{ (widget_geocode_icon_font[language.language_id] is defined)?widget_geocode_icon_font[language.language_id]:'' }}" id="input-setting-widget-geocode-icon-font{{ language.language_id }}" />
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+              
+    {# Email #}
+    <div id="tab-widget-email" class="tab-pane">
+      <!--widget email status-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_status }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_email_status) %} 
+            <input type="radio" name="widget_email_status" value="1" id="input-widget-email-status-enabled" checked>
+            <label for="input-widget-email-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_email_status" value="0" id="input-widget-email-status-disabled">
+            <label for="input-widget-email-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_email_status" value="1" id="input-widget-email-status-enabled" >
+            <label for="input-widget-email-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_email_status" value="0" id="input-widget-email-status-disabled" checked>
+            <label for="input-widget-email-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-email-sort-order">{{ entry_sort_order }}</label>
+        <div class="col-xs-9">
+          <input type="text" name="widget_email_sort_order" value="{{ widget_email_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-widget-email-sort-order" class="form-control" />
+        </div>
+      </div>
+        
+      <div class="form-group">
+        <label class="col-xs-3 control-label" >{{ entry_icon }}</label>
+        <div class="col-xs-9">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-widget-email-icon-image" data-meta="image" data-toggle="tab">{{ tab_image }}</a></li>
+            <li><a href="#tab-widget-email-icon-svg" data-meta="image" data-toggle="tab">{{ tab_svg }}</a></li>
+            <li><a href="#tab-widget-email-icon-font" data-meta="font" data-toggle="tab">{{ tab_font }}</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-widget-email-icon-image">
+              <div class="el-group">
+              {% for language in languages %}
+                <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                <div class="el-item">
+                  <a href="" id="thumb-setting-widget-email-icon-image{{ language.language_id }}" data-toggle="image" class="img-thumbnail"><img src="{{ (thumb_email_icon_image[language.language_id] is defined)?thumb_email_icon_image[language.language_id]:placeholder_image }}" alt="" title="" data-placeholder="{{ placeholder_image }}" /></a><input type="hidden" name="widget_email_icon_image[{{ language.language_id }}]" value="{{ (widget_email_icon_image[language.language_id] is defined)?widget_email_icon_image[language.language_id]:'' }}" id="input-setting-widget-email-icon-image{{ language.language_id }}" />
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-widget-email-icon-svg">
+              <div class="el-group">
+              {% for language in languages %}
+                <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                <div class="el-item">
+                  <a href="" id="thumb-setting-widget-email-icon-svg{{ language.language_id }}" data-toggle="svg" class="img-thumbnail"><img width="100" height="100" src="{{ (thumb_email_icon_svg[language.language_id] is defined)?thumb_email_icon_svg[language.language_id]:placeholder_svg }}" alt="" title="" data-placeholder="{{ placeholder_svg }}" /></a><input type="hidden" name="widget_email_icon_svg[{{ language.language_id }}]" value="{{ (widget_email_icon_svg[language.language_id] is defined)?widget_email_icon_svg[language.language_id]:'' }}" id="input-setting-widget-email-icon-svg{{ language.language_id }}" />
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-widget-email-icon-font">
+              <div class="el-group">
+              {% for language in languages %}
+                <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                <div class="el-item">
+                  <a href="" id="thumb-setting-widget-email-icon-font{{ language.language_id }}" data-toggle="font" class="img-thumbnail icon-thumb"><i class="{{ (widget_email_icon_font[language.language_id] is not empty)?widget_email_icon_font[language.language_id]:placeholder_font }}" data-placeholder="{{ placeholder_font }}"></i></a><input type="hidden" name="widget_email_icon_font[{{ language.language_id }}]" value="{{ (widget_email_icon_font[language.language_id] is defined)?widget_email_icon_font[language.language_id]:'' }}" id="input-setting-widget-email-icon-font{{ language.language_id }}" />
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+              
+    {# Telephone #}
+    <div id="tab-widget-telephone" class="tab-pane">
+      <!--widget telephone status-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_status }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_telephone_status) %} 
+            <input type="radio" name="widget_telephone_status" value="1" id="input-widget-telephone-status-enabled" checked>
+            <label for="input-widget-telephone-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_telephone_status" value="0" id="input-widget-telephone-status-disabled">
+            <label for="input-widget-telephone-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_telephone_status" value="1" id="input-widget-telephone-status-enabled" >
+            <label for="input-widget-telephone-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_telephone_status" value="0" id="input-widget-telephone-status-disabled" checked>
+            <label for="input-widget-telephone-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-telephone-sort-order">{{ entry_sort_order }}</label>
+        <div class="col-xs-9">
+          <input type="text" name="widget_telephone_sort_order" value="{{ widget_telephone_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-widget-telephone-sort-order" class="form-control" />
+        </div>
+      </div>
+        
+      <div class="form-group">
+        <label class="col-xs-3 control-label" >{{ entry_icon }}</label>
+        <div class="col-xs-9">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-widget-telephone-icon-image" data-meta="image" data-toggle="tab">{{ tab_image }}</a></li>
+            <li><a href="#tab-widget-telephone-icon-svg" data-meta="image" data-toggle="tab">{{ tab_svg }}</a></li>
+            <li><a href="#tab-widget-telephone-icon-font" data-meta="font" data-toggle="tab">{{ tab_font }}</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-widget-telephone-icon-image">
+              <div class="el-group">
+              {% for language in languages %}
+                <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                <div class="el-item">
+                  <a href="" id="thumb-setting-widget-telephone-icon-image{{ language.language_id }}" data-toggle="image" class="img-thumbnail"><img src="{{ (thumb_telephone_icon_image[language.language_id] is defined)?thumb_telephone_icon_image[language.language_id]:placeholder_image }}" alt="" title="" data-placeholder="{{ placeholder_image }}" /></a><input type="hidden" name="widget_telephone_icon_image[{{ language.language_id }}]" value="{{ (widget_telephone_icon_image[language.language_id] is defined)?widget_telephone_icon_image[language.language_id]:'' }}" id="input-setting-widget-telephone-icon-image{{ language.language_id }}" />
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-widget-telephone-icon-svg">
+              <div class="el-group">
+              {% for language in languages %}
+                <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                <div class="el-item">
+                  <a href="" id="thumb-setting-widget-telephone-icon-svg{{ language.language_id }}" data-toggle="svg" class="img-thumbnail"><img width="100" height="100" src="{{ (thumb_telephone_icon_svg[language.language_id] is defined)?thumb_telephone_icon_svg[language.language_id]:placeholder_svg }}" alt="" title="" data-placeholder="{{ placeholder_svg }}" /></a><input type="hidden" name="widget_telephone_icon_svg[{{ language.language_id }}]" value="{{ (widget_telephone_icon_svg[language.language_id] is defined)?widget_telephone_icon_svg[language.language_id]:'' }}" id="input-setting-widget-telephone-icon-svg{{ language.language_id }}" />
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-widget-telephone-icon-font">
+              <div class="el-group">
+              {% for language in languages %}
+                <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                <div class="el-item">
+                  <a href="" id="thumb-setting-widget-telephone-icon-font{{ language.language_id }}" data-toggle="font" class="img-thumbnail icon-thumb"><i class="{{ (widget_telephone_icon_font[language.language_id] is not empty)?widget_telephone_icon_font[language.language_id]:placeholder_font }}" data-placeholder="{{ placeholder_font }}"></i></a><input type="hidden" name="widget_telephone_icon_font[{{ language.language_id }}]" value="{{ (widget_telephone_icon_font[language.language_id] is defined)?widget_telephone_icon_font[language.language_id]:'' }}" id="input-setting-widget-telephone-icon-font{{ language.language_id }}" />
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+              
+    {# Fax #}
+    <div id="tab-widget-fax" class="tab-pane">
+      <!--widget fax status-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_status }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_fax_status) %} 
+            <input type="radio" name="widget_fax_status" value="1" id="input-widget-fax-status-enabled" checked>
+            <label for="input-widget-fax-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_fax_status" value="0" id="input-widget-fax-status-disabled">
+            <label for="input-widget-fax-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_fax_status" value="1" id="input-widget-fax-status-enabled" >
+            <label for="input-widget-fax-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_fax_status" value="0" id="input-widget-fax-status-disabled" checked>
+            <label for="input-widget-fax-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-fax-sort-order">{{ entry_sort_order }}</label>
+        <div class="col-xs-9">
+          <input type="text" name="widget_fax_sort_order" value="{{ widget_fax_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-widget-fax-sort-order" class="form-control" />
+        </div>
+      </div>
+        
+      <div class="form-group">
+        <label class="col-xs-3 control-label" >{{ entry_icon }}</label>
+        <div class="col-xs-9">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-widget-fax-icon-image" data-meta="image" data-toggle="tab">{{ tab_image }}</a></li>
+            <li><a href="#tab-widget-fax-icon-svg" data-meta="image" data-toggle="tab">{{ tab_svg }}</a></li>
+            <li><a href="#tab-widget-fax-icon-font" data-meta="font" data-toggle="tab">{{ tab_font }}</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-widget-fax-icon-image">
+              <div class="el-group">
+              {% for language in languages %}
+                <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                <div class="el-item">
+                  <a href="" id="thumb-setting-widget-fax-icon-image{{ language.language_id }}" data-toggle="image" class="img-thumbnail"><img src="{{ (thumb_fax_icon_image[language.language_id] is defined)?thumb_fax_icon_image[language.language_id]:placeholder_image }}" alt="" title="" data-placeholder="{{ placeholder_image }}" /></a><input type="hidden" name="widget_fax_icon_image[{{ language.language_id }}]" value="{{ (widget_fax_icon_image[language.language_id] is defined)?widget_fax_icon_image[language.language_id]:'' }}" id="input-setting-widget-fax-icon-image{{ language.language_id }}" />
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-widget-fax-icon-svg">
+              <div class="el-group">
+              {% for language in languages %}
+                <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                <div class="el-item">
+                  <a href="" id="thumb-setting-widget-fax-icon-svg{{ language.language_id }}" data-toggle="svg" class="img-thumbnail"><img width="100" height="100" src="{{ (thumb_fax_icon_svg[language.language_id] is defined)?thumb_fax_icon_svg[language.language_id]:placeholder_svg }}" alt="" title="" data-placeholder="{{ placeholder_svg }}" /></a><input type="hidden" name="widget_fax_icon_svg[{{ language.language_id }}]" value="{{ (widget_fax_icon_svg[language.language_id] is defined)?widget_fax_icon_svg[language.language_id]:'' }}" id="input-setting-widget-fax-icon-svg{{ language.language_id }}" />
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-widget-fax-icon-font">
+              <div class="el-group">
+              {% for language in languages %}
+                <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                <div class="el-item">
+                  <a href="" id="thumb-setting-widget-fax-icon-font{{ language.language_id }}" data-toggle="font" class="img-thumbnail icon-thumb"><i class="{{ (widget_fax_icon_font[language.language_id] is not empty)?widget_fax_icon_font[language.language_id]:placeholder_font }}" data-placeholder="{{ placeholder_font }}"></i></a><input type="hidden" name="widget_fax_icon_font[{{ language.language_id }}]" value="{{ (widget_fax_icon_font[language.language_id] is defined)?widget_fax_icon_font[language.language_id]:'' }}" id="input-setting-widget-fax-icon-font{{ language.language_id }}" />
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+              
+    {# Times #}
+    <div id="tab-widget-times" class="tab-pane">
+      <!--widget times status-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_status }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_times_status) %} 
+            <input type="radio" name="widget_times_status" value="1" id="input-widget-times-status-enabled" checked>
+            <label for="input-widget-times-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_times_status" value="0" id="input-widget-times-status-disabled">
+            <label for="input-widget-times-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_times_status" value="1" id="input-widget-times-status-enabled" >
+            <label for="input-widget-times-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_times_status" value="0" id="input-widget-times-status-disabled" checked>
+            <label for="input-widget-times-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-times-sort-order">{{ entry_sort_order }}</label>
+        <div class="col-xs-9">
+          <input type="text" name="widget_times_sort_order" value="{{ widget_times_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-widget-times-sort-order" class="form-control" />
+        </div>
+      </div>
+        
+      <div class="form-group">
+        <label class="col-xs-3 control-label" >{{ entry_icon }}</label>
+        <div class="col-xs-9">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-widget-times-icon-image" data-meta="image" data-toggle="tab">{{ tab_image }}</a></li>
+            <li><a href="#tab-widget-times-icon-svg" data-meta="image" data-toggle="tab">{{ tab_svg }}</a></li>
+            <li><a href="#tab-widget-times-icon-font" data-meta="font" data-toggle="tab">{{ tab_font }}</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-widget-times-icon-image">
+              <div class="el-group">
+              {% for language in languages %}
+                <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                <div class="el-item">
+                  <a href="" id="thumb-setting-widget-times-icon-image{{ language.language_id }}" data-toggle="image" class="img-thumbnail"><img src="{{ (thumb_times_icon_image[language.language_id] is defined)?thumb_times_icon_image[language.language_id]:placeholder_image }}" alt="" title="" data-placeholder="{{ placeholder_image }}" /></a><input type="hidden" name="widget_times_icon_image[{{ language.language_id }}]" value="{{ (widget_times_icon_image[language.language_id] is defined)?widget_times_icon_image[language.language_id]:'' }}" id="input-setting-widget-times-icon-image{{ language.language_id }}" />
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-widget-times-icon-svg">
+              <div class="el-group">
+              {% for language in languages %}
+                <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                <div class="el-item">
+                  <a href="" id="thumb-setting-widget-times-icon-svg{{ language.language_id }}" data-toggle="svg" class="img-thumbnail"><img width="100" height="100" src="{{ (thumb_times_icon_svg[language.language_id] is defined)?thumb_times_icon_svg[language.language_id]:placeholder_svg }}" alt="" title="" data-placeholder="{{ placeholder_svg }}" /></a><input type="hidden" name="widget_times_icon_svg[{{ language.language_id }}]" value="{{ (widget_times_icon_svg[language.language_id] is defined)?widget_times_icon_svg[language.language_id]:'' }}" id="input-setting-widget-times-icon-svg{{ language.language_id }}" />
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-widget-times-icon-font">
+              <div class="el-group">
+              {% for language in languages %}
+                <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                <div class="el-item">
+                  <a href="" id="thumb-setting-widget-times-icon-font{{ language.language_id }}" data-toggle="font" class="img-thumbnail icon-thumb"><i class="{{ (widget_times_icon_font[language.language_id] is not empty)?widget_times_icon_font[language.language_id]:placeholder_font }}" data-placeholder="{{ placeholder_font }}"></i></a><input type="hidden" name="widget_times_icon_font[{{ language.language_id }}]" value="{{ (widget_times_icon_font[language.language_id] is defined)?widget_times_icon_font[language.language_id]:'' }}" id="input-setting-widget-times-icon-font{{ language.language_id }}" />
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+          
+  </div>
+  
+      
+</form>

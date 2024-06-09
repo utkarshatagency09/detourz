@@ -1,0 +1,46 @@
+<div class="newsletter">
+{% if title %}
+<h4 class="newsletter-title">{{ title }}</h4>
+{% endif %}
+{% if description %}
+<p class="newsletter-description">{{ description }}</p>
+{% endif %}
+<form method="post" class="ajax-form">
+  <div class="newsletter-input">
+    <i class="far fa-envelope"></i>
+    <div class="newsletter-email">
+      <input type="email" name="newsletter_email_id" placeholder="{{ input_placeholder }}" aria-label="{{ input_placeholder }}" class="d-none" />
+      <input type="email" name="newsletter_email" placeholder="{{ input_placeholder }}" aria-label="{{ input_placeholder }}" />
+      {% for channel_id in notification_channel %}
+      <input type="hidden" name="notification_channel[]" value="{{ channel_id }}" />
+      {% endfor %}
+    </div>
+    <button type="submit" formaction="{{ action_subscribe }}" data-loading="{{ text_loading }}" class="subscribe-button {{ subscribe_button_type }} btn btn-{{ mz_config.get('html_newsletter_button_color') }}" name="subscribe" aria-label="{{ text_subscribe }}">
+    {% if subscribe_button_type != 'text' %}
+      {% if subscribe_button_icon_font %}
+      <i title="{{ text_subscribe }}" class="icon {{ subscribe_button_icon_font }}" {{ button_icon_size?'style="font-size: ' ~ button_icon_size ~ 'px"':'' }}></i>
+      {% elseif subscribe_button_icon_svg %}
+      <div title="{{ text_subscribe }}" class="icon svg-icon" style="{{ button_icon_size?'width:' ~ button_icon_size ~ 'px;' }}{{ button_icon_size?'height:' ~ button_icon_size ~ 'px;' }}">{{ subscribe_button_icon_svg }}</div>
+      {% else %}
+      <img class="icon" title="{{ text_subscribe }}" alt="{{ text_subscribe }}" width="{{ subscribe_button_image_width }}" height="{{ subscribe_button_image_height }}" src="{{ subscribe_button_icon_image }}" />
+      {% endif %}
+    {% endif %}
+    {% if subscribe_button_type != 'icon' %}{{ text_subscribe }}{% endif %}
+    </button>
+    {% if unsubscribe_status %}
+    <button type="submit" formaction="{{ action_unsubscribe }}" data-loading="{{ text_loading }}" class="unsubscribe-button {{ unsubscribe_button_type }} btn btn-danger" name="unsubscribe" aria-label="{{ text_unsubscribe }}">
+    {% if unsubscribe_button_type != 'text' %}
+      {% if unsubscribe_button_icon_font %}
+      <i title="{{ text_unsubscribe }}" class="icon {{ unsubscribe_button_icon_font }}" {{ button_icon_size?'style="font-size: ' ~ button_icon_size ~ 'px"':'' }}></i>
+      {% elseif unsubscribe_button_icon_svg %}
+      <div title="{{ text_unsubscribe }}" class="icon svg-icon" style="{{ button_icon_size?'width:' ~ button_icon_size ~ 'px;' }}{{ button_icon_size?'height:' ~ button_icon_size ~ 'px;' }}">{{ unsubscribe_button_icon_svg }}</div>
+      {% else %}
+      <img class="icon" title="{{ text_unsubscribe }}" alt="{{ text_unsubscribe }}" width="{{ unsubscribe_button_image_width }}" height="{{ unsubscribe_button_image_height }}" src="{{ unsubscribe_button_icon_image }}" />
+      {% endif %}
+    {% endif %}
+    {% if unsubscribe_button_type != 'icon' %}{{ text_unsubscribe }}{% endif %}
+    </button>
+    {% endif %}
+  </div>
+</form>
+</div>

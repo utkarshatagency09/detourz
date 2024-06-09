@@ -1,0 +1,32 @@
+// Top header
+#top-header{
+    background-color: $top-header-bg-color;
+    color: $top-header-text-color;
+    font-size: $top-header-font-size;
+}
+
+// Main header
+#main-header{
+    .row{
+        align-items: center;
+    }
+    
+    *:not(.dropdown-menu) {
+        .design-menu{
+            margin-bottom: 0;
+
+            .vertical .nav-link{
+                padding: 0;
+                font-size: 0.875em;
+            }
+        }
+    }
+}
+
+// Custom class
+.shop-by-category{
+    a[data-bs-toggle="offcanvas"]{
+        font-size: 1.125em;
+        font-weight: $font-weight-bold;
+    }
+}

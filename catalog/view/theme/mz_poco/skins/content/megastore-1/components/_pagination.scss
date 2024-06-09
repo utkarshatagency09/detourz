@@ -1,0 +1,8 @@
+.pagination {
+    flex-wrap: wrap;
+    
+    .page-item {
+        margin-right: $pagination-margin-right;
+        margin-bottom: $pagination-margin-right;
+    }
+}

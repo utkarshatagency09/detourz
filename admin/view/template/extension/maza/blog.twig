@@ -1,0 +1,186 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <div class="container-fluid">
+    <div class="row">
+      {# Total article #}
+      <div class="col-xs-3">
+        <div class="tile tile-primary">
+          <div class="tile-heading"><span data-toggle="tooltip" title="{{ help_total_article }}">{{ text_total_article }}</span></div>
+          <div class="tile-body"><i class="fa fa-newspaper-o"></i>
+            <h2 class="pull-right">{{ total_article }}</h2>
+          </div>
+          <div class="tile-footer"><a href="{{ article }}">{{ text_view }}</a></div>
+        </div>
+      </div>
+        
+      {# Total comment #}
+      <div class="col-xs-3">
+        <div class="tile tile-primary">
+          <div class="tile-heading"><span data-toggle="tooltip" title="{{ help_total_comment }}">{{ text_total_comment }}</span></div>
+          <div class="tile-body"><i class="fa fa-comments"></i>
+            <h2 class="pull-right">{{ total_comment }}</h2>
+          </div>
+          <div class="tile-footer"><a href="{{ comment }}">{{ text_view }}</a></div>
+        </div>
+      </div>
+        
+      {# Total article viewed #}
+      <div class="col-xs-3">
+        <div class="tile tile-primary">
+          <div class="tile-heading"><span data-toggle="tooltip" title="{{ help_total_viewed }}">{{ text_total_viewed }}</span></div>
+          <div class="tile-body"><i class="fa fa-eye"></i>
+            <h2 class="pull-right">{{ total_viewed }}</h2>
+          </div>
+          <div class="tile-footer"><a href="{{ report }}">{{ text_view }}</a></div>
+        </div>
+      </div>
+        
+      {# Total author #}
+      <div class="col-xs-3">
+        <div class="tile tile-primary">
+          <div class="tile-heading">{{ text_total_author }}</div>
+          <div class="tile-body"><i class="fa fa-users"></i>
+            <h2 class="pull-right">{{ total_author }}</h2>
+          </div>
+          <div class="tile-footer"><a href="{{ author }}">{{ text_view }}</a></div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      {# Chart #}
+      <div class="col-xs-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="pull-right"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-calendar"></i> <i class="caret"></i></a>
+              <ul id="range" class="dropdown-menu dropdown-menu-right">
+                <li><a href="day">{{ text_day }}</a></li>
+                <li><a href="week">{{ text_week }}</a></li>
+                <li class="active"><a href="month">{{ text_month }}</a></li>
+                <li><a href="year">{{ text_year }}</a></li>
+              </ul>
+            </div>
+            <h3 class="panel-title"><i class="fa fa-bar-chart-o"></i> {{ text_analytics }}</h3>
+          </div>
+          <div class="panel-body">
+            <div id="chart-report" style="width: 100%; height: 260px;"></div>
+          </div>
+        </div>
+      </div>
+          
+      {# Latest article #}
+      <div class="col-xs-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-newspaper-o"></i> {{ text_latest_article }}</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <td>{{ column_name }}</td>
+                  <td>{{ column_author }}</td>
+                  <td>{{ column_date_added }}</td>
+                  <td class="text-right">{{ column_action }}</td>
+                </tr>
+              </thead>
+              <tbody>
+                {% if articles %}
+                {% for article in articles %}
+                <tr>
+                  <td>{{ article.name }}</td>
+                  <td>{{ article.author }}</td>
+                  <td>{{ article.date_added }}</td>
+                  <td class="text-right"><a href="{{ article.view }}" data-toggle="tooltip" title="{{ button_view }}" class="btn btn-info"><i class="fa fa-eye"></i></a></td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                  <td class="text-center" colspan="6">{{ text_no_results }}</td>
+                </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript" src="view/javascript/jquery/flot/jquery.flot.js"></script> 
+<script type="text/javascript" src="view/javascript/jquery/flot/jquery.flot.resize.min.js"></script>
+<script type="text/javascript"><!--
+$('#range a').on('click', function(e) {
+	e.preventDefault();
+	
+	$(this).parent().parent().find('li').removeClass('active');
+	
+	$(this).parent().addClass('active');
+	
+	$.ajax({
+		type: 'get',
+		url: 'index.php?route=extension/maza/blog/chart&user_token={{ user_token }}&range=' + $(this).attr('href'),
+		dataType: 'json',
+		success: function(json) {
+            if (typeof json['article'] == 'undefined') { return false; }
+			
+			var option = {	
+				shadowSize: 0,
+				colors: ['#9FD5F1', '#1065D2'],
+				bars: { 
+					show: true,
+					fill: true,
+					lineWidth: 1
+				},
+				grid: {
+					backgroundColor: '#FFFFFF',
+					hoverable: true
+				},
+				points: {
+					show: false
+				},
+				xaxis: {
+					show: true,
+            		ticks: json['xaxis']
+				}
+			}
+			
+			$.plot('#chart-report', [json['article'], json['comment']], option);	
+					
+			$('#chart-report').bind('plothover', function(event, pos, item) {
+				$('.tooltip').remove();
+			  
+				if (item) {
+					$('<div id="tooltip" class="tooltip top in"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + item.datapoint[1].toFixed(2) + '</div></div>').prependTo('body');
+					
+					$('#tooltip').css({
+						position: 'absolute',
+						left: item.pageX - ($('#tooltip').outerWidth() / 2),
+						top: item.pageY - $('#tooltip').outerHeight(),
+						pointer: 'cusror'
+					}).fadeIn('slow');	
+					
+					$('#chart-report').css('cursor', 'pointer');		
+			  	} else {
+					$('#chart-report').css('cursor', 'auto');
+				}
+			});
+		},
+        error: function(xhr, ajaxOptions, thrownError) {
+           alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+	});
+});
+
+$('#range .active a').trigger('click');
+//--></script> 
+</div>
+{{ mz_footer }}

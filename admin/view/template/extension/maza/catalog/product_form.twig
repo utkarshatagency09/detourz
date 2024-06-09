@@ -1,0 +1,238 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- form -->
+  <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-mz-product" class="form-horizontal">
+    <div class="tab-content">
+      <div class="tab-pane active" id="tab-mz-data">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="input-mz-featured">{{ entry_featured }}</label>
+              <div class="col-sm-10">
+                <select name="mz_featured" id="input-mz-featured" class="form-control large">
+                  {% if mz_featured %}
+                  <option value="1" selected="selected">{{ text_enabled }}</option>
+                  <option value="0">{{ text_disabled }}</option>
+                  {% else %}
+                  <option value="1">{{ text_enabled }}</option>
+                  <option value="0" selected="selected">{{ text_disabled }}</option>
+                  {% endif %}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+			<div class="tab-pane" id="tab-mz-video">
+				<div class="panel mz-panel-default">
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table id="video" class="table table-striped table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <td class="text-left"><span data-toggle="tooltip" title="{{ help_video }}">{{ column_url }}</span></td>
+                    <td class="text-center">{{ column_thumb }}</td>
+                    <td class="text-center">{{ column_title }}</td>
+                    <td class="text-right">{{ column_sort_order }}</td>
+                    <td></td>
+                  </tr>
+                </thead>
+                <tbody>
+                {% set video_row = 0 %}
+                {% for video in product_videos %}
+                <tr id="video-row{{ video_row }}">
+                  <td class="text-left"><input type="url" name="product_video[{{ video_row }}][url]" value="{{ video.url }}" placeholder="{{ column_url }}" class="form-control large" /></td>
+                  <td class="text-center"><a href="" id="thumb-video{{ video_row }}" data-toggle="image" class="img-thumbnail"><img src="{{ video.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}"/></a> <input type="hidden" name="product_video[{{ video_row }}][image]" value="{{ video.image }}" id="input-video{{ video_row }}"/></td>
+                  <td class="text-left">
+                    {% for language in languages %} 
+                    <div class="input-group"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                      <input class="form-control" type="text" name="product_video[{{ video_row }}][description][{{ language.language_id }}][title]" value="{{ video['description'][language.language_id]['title'] }}" placeholder="{{ column_title }}" >
+                    </div>
+                    {% endfor %} 
+                  </td>
+                  <td class="text-right"><input type="number" name="product_video[{{ video_row }}][sort_order]" value="{{ video.sort_order }}" placeholder="{{ column_sort_order }}" class="form-control large" /></td>
+                  <td class="text-left"><button type="button" onclick="$('#video-row{{ video_row }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+                </tr>
+                {% set video_row = video_row + 1 %}
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="4"></td>
+                    <td class="text-left"><button type="button" onclick="addVideo();" data-toggle="tooltip" title="{{ button_add }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+			</div>
+
+			<div class="tab-pane" id="tab-mz-audio">
+				<div class="panel mz-panel-default">
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table id="audio" class="table table-striped table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <td class="text-left">{{ column_url }}</td>
+                    <td class="text-center">{{ column_title }}</td>
+                    <td class="text-right">{{ column_sort_order }}</td>
+                    <td></td>
+                  </tr>
+                </thead>
+                <tbody>
+                {% set audio_row = 0 %}
+                {% for audio in product_audios %}
+                <tr id="audio-row{{ audio_row }}">
+                  <td class="text-left">
+                    <div class="input-group">
+                      <input type="url" name="product_audio[{{ audio_row }}][url]" value="{{ audio.url }}" placeholder="{{ column_url }}" class="form-control large" />
+                      <span class="input-group-btn">
+                        <button type="button" data-loading-text="{{ text_loading }}" data-toggle="tooltip" data-title="{{ button_upload }}" class="btn btn-primary button-upload"><i class="fa fa-upload"></i></button>
+                      </span>
+                    </div>
+                  </td>
+                  <td class="text-left">
+                    {% for language in languages %} 
+                    <div class="input-group"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                      <input class="form-control" type="text" name="product_audio[{{ audio_row }}][description][{{ language.language_id }}][title]" value="{{ audio['description'][language.language_id]['title'] }}" placeholder="{{ column_title }}" >
+                    </div>
+                    {% endfor %} 
+                  </td>
+                  <td class="text-right"><input type="number" name="product_audio[{{ audio_row }}][sort_order]" value="{{ audio.sort_order }}" placeholder="{{ column_sort_order }}" class="form-control large" /></td>
+                  <td class="text-left"><button type="button" onclick="$('#audio-row{{ audio_row }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+                </tr>
+                {% set audio_row = audio_row + 1 %}
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="3"></td>
+                    <td class="text-left"><button type="button" onclick="addAudio();" data-toggle="tooltip" title="{{ button_add }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+			</div>
+    </div>
+  </form>
+<script type="text/javascript">
+var video_row = {{ video_row }};
+
+function addVideo() {
+	html  = '<tr id="video-row' + video_row + '">';
+  html += '  <td class="text-left"><input type="url" name="product_video[' + video_row + '][url]" value="" placeholder="{{ column_url }}" class="form-control large" /></td>';
+  html += '  <td class="text-center"><a href="" id="thumb-video' + video_row + '" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a><input type="hidden" name="product_video[' + video_row + '][image]" value="" id="input-video' + video_row + '" /></td>';
+  html += '  <td class="text-left">';
+  {% for language in languages %} 
+    html += '  <div class="input-group"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>';
+    html += '     <input class="form-control" type="text" name="product_video[' + video_row + '][description][{{ language['language_id'] }}][title]" value="" placeholder="{{ column_title }}" >';
+    html += '  </div>';
+  {% endfor %}
+  html += '  </td>';
+	html += '  <td class="text-right"><input type="number" name="product_video[' + video_row + '][sort_order]" value="0" placeholder="{{ column_sort_order }}" class="form-control large" /></td>';
+	html += '  <td class="text-left"><button type="button" onclick="$(\'#video-row' + video_row + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+	html += '</tr>';
+
+	$('#video tbody').append(html);
+
+	video_row++;
+}
+</script>
+<script type="text/javascript">
+var audio_row = {{ audio_row }};
+
+function addAudio() {
+	html  = '<tr id="audio-row' + audio_row + '">';
+  html += '  <td class="text-left">';
+  html += '    <div class="input-group">';
+  html += '      <input type="url" name="product_audio[' + audio_row + '][url]" value="" placeholder="{{ column_url }}" class="form-control large" />';
+  html += '      <span class="input-group-btn">';
+  html += '        <button type="button" data-loading-text="{{ text_loading }}" data-toggle="tooltip" data-title="{{ button_upload }}" class="btn btn-primary button-upload"><i class="fa fa-upload"></i></button>';
+  html += '      </span>';
+  html += '    </div>';
+  html += '  </td>';
+  html += '  <td class="text-left">';
+  {% for language in languages %} 
+    html += '  <div class="input-group"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>';
+    html += '     <input class="form-control" type="text" name="product_audio[' + audio_row + '][description][{{ language['language_id'] }}][title]" value="" placeholder="{{ column_title }}" >';
+    html += '  </div>';
+  {% endfor %}
+  html += '  </td>';
+	html += '  <td class="text-right"><input type="number" name="product_audio[' + audio_row + '][sort_order]" value="0" placeholder="{{ column_sort_order }}" class="form-control large" /></td>';
+	html += '  <td class="text-left"><button type="button" onclick="$(\'#audio-row' + audio_row + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+	html += '</tr>';
+
+	$('#audio tbody').append(html);
+
+	audio_row++;
+}
+</script>
+<script type="text/javascript">
+$('#audio').on('click', '.button-upload', function() {
+	$('#form-upload').remove();
+
+	$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+
+	$('#form-upload input[name=\'file\']').trigger('click');
+
+	if (typeof timer != 'undefined') {
+    	clearInterval(timer);
+	}
+
+  var button = this;
+
+	timer = setInterval(function() {
+		if ($('#form-upload input[name=\'file\']').val() != '') {
+			clearInterval(timer);
+
+			$.ajax({
+				url: 'index.php?route=extension/maza/catalog/product/upload&user_token={{ user_token }}',
+				type: 'post',
+				dataType: 'json',
+				data: new FormData($('#form-upload')[0]),
+				cache: false,
+				contentType: false,
+				processData: false,
+				beforeSend: function() {
+					$(button).button('loading');
+				},
+				complete: function() {
+					$(button).button('reset');
+				},
+				success: function(json) {
+					if (json['error']) {
+						alert(json['error']);
+					}
+
+					if (json['success']) {
+						alert(json['success']);
+
+            $(button).closest('.input-group').find('[type="url"]').val(json['url']);
+					}
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		}
+	}, 500);
+});
+</script>
+</div>
+{{ mz_footer }}

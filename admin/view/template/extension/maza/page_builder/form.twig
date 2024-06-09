@@ -1,0 +1,173 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- form -->
+  <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-mz-page" class="form-horizontal">
+    <div class="tab-content">
+      <div class="tab-pane active" id="tab-mz-general">
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">
+            <ul class="nav nav-tabs tab-dynamic mz-nav-sandwich-tab">
+              {% for language in languages %}
+              <li><a href="#language{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="panel-body">
+            <div class="tab-content">
+              {% for language in languages %}
+              <div class="tab-pane" id="language{{ language.language_id }}">
+                <div class="form-group required">
+                  <label class="col-sm-2 control-label" for="input-name{{ language.language_id }}">{{ entry_name }}</label>
+                  <div class="col-sm-10">
+                    <input type="text" name="page_description[{{ language.language_id }}][name]" value="{{ page_description[language.language_id] ? page_description[language.language_id].name }}" placeholder="{{ entry_name }}" id="input-name{{ language.language_id }}" class="form-control large" />
+                    {% if err_name[language.language_id] is defined %}
+                    <div class="text-danger">{{ err_name[language.language_id] }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="form-group required">
+                  <label class="col-sm-2 control-label" for="input-meta-title{{ language.language_id }}">{{ entry_meta_title }}</label>
+                  <div class="col-sm-10">
+                    <input type="text" name="page_description[{{ language.language_id }}][meta_title]" value="{{ page_description[language.language_id] ? page_description[language.language_id].meta_title }}" placeholder="{{ entry_meta_title }}" id="input-meta-title{{ language.language_id }}" class="form-control large" />
+                    {% if err_meta_title[language.language_id] is defined %}
+                    <div class="text-danger">{{ err_meta_title[language.language_id] }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label" for="input-meta-description{{ language.language_id }}">{{ entry_meta_description }}</label>
+                  <div class="col-sm-10">
+                    <textarea name="page_description[{{ language.language_id }}][meta_description]" rows="5" placeholder="{{ entry_meta_description }}" id="input-meta-description{{ language.language_id }}" class="form-control large">{{ page_description[language.language_id] ? page_description[language.language_id].meta_description }}</textarea>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label" for="input-meta-keyword{{ language.language_id }}">{{ entry_meta_keyword }}</label>
+                  <div class="col-sm-10">
+                    <textarea name="page_description[{{ language.language_id }}][meta_keyword]" rows="5" placeholder="{{ entry_meta_keyword }}" id="input-meta-keyword{{ language.language_id }}" class="form-control large">{{ page_description[language.language_id] ? page_description[language.language_id].meta_keyword }}</textarea>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" id="tab-mz-data">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            {% if keyword is defined %} {# OC 2 #}
+            <div class="form-group">
+              <label class="col-sm-2 control-label">{{ entry_keyword }}</label>
+              <div class="col-sm-10">
+                <input type="text" name="keyword" value="{{ keyword }}" placeholder="{{ entry_keyword }}" id="input-keyword" class="form-control large" />
+                {% if (err_keyword) %} 
+                <div class="text-danger">{{ err_keyword }}</div>
+                {% endif %}
+              </div>
+            </div>
+            {% endif %}
+            <div class="form-group">
+              <label class="col-sm-2 control-label">{{ entry_store }}</label>
+              <div class="col-sm-10">
+                <div class="well well-sm" style="height: 150px; overflow: auto;">
+                  {% for store in stores %}
+                  <div class="checkbox">
+                    <label>
+                      {% if store.store_id in page_store %}
+                      <input type="checkbox" name="page_store[]" value="{{ store.store_id }}" checked="checked" />
+                      {{ store.name }}
+                      {% else %}
+                      <input type="checkbox" name="page_store[]" value="{{ store.store_id }}" />
+                      {{ store.name }}
+                      {% endif %}
+                    </label>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="input-override-skin">{{ entry_override_skin }}</label>
+              <div class="col-sm-10">
+                <select name="override_skin_id" id="input-override-skin" class="form-control">
+                  <option value="0"></option>
+                  {% for skin in skins %}
+                    {% if (override_skin_id == skin.skin_id) %} 
+                    <option value="{{ skin.skin_id }}" selected="">{{ skin.name }}</option>
+                    {% else %} 
+                    <option value="{{ skin.skin_id }}">{{ skin.name }}</option>
+                    {% endif %}
+                  {% endfor %} 
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+              <div class="col-sm-10">
+                <select name="status" id="input-status" class="form-control">
+                  {% if status %}
+                  <option value="1" selected="selected">{{ text_enabled }}</option>
+                  <option value="0">{{ text_disabled }}</option>
+                  {% else %}
+                  <option value="1">{{ text_enabled }}</option>
+                  <option value="0" selected="selected">{{ text_disabled }}</option>
+                  {% endif %}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% if page_seo_url is defined %}
+      <div class="tab-pane" id="tab-mz-seo">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ text_keyword }}</div>
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead>
+                  <tr>
+                    <td class="text-left">{{ entry_store }}</td>
+                    <td class="text-left">{{ entry_keyword }}</td>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for store in stores %}
+                <tr>
+                  <td class="text-left">{{ store.name }}</td>
+                  <td class="text-left">{% for language in languages %}
+                    <div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                      <input type="text" name="page_seo_url[{{ store.store_id }}][{{ language.language_id }}]" value="{% if page_seo_url[store.store_id][language.language_id] %}{{ page_seo_url[store.store_id][language.language_id] }}{% endif %}" placeholder="{{ entry_keyword }}" class="form-control large" /> <div class="input-group-btn"><button class="btn btn-default" type="button" onclick="$(this).parent().prev().val(mz_createSeoUrl($('#input-name{{ language.language_id }}').val()))"><i class="fa fa-gavel" aria-hidden="true"></i></button></div>
+                    </div>
+                    {% if err_keyword[store.store_id][language.language_id] is defined %}
+                    <div class="text-danger">{{ err_keyword[store.store_id][language.language_id] }}</div>
+                    {% endif %}
+                    {% endfor %}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </form>
+  <script type="text/javascript"><!--
+$('#language a:first').tab('show');
+//--></script>
+</div>
+{{ mz_footer }}

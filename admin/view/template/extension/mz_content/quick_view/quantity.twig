@@ -1,0 +1,39 @@
+<!-- Form -->
+<form id="setting-content-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <!--content status-->
+  <div class="form-group">
+    <label class="col-sm-3 control-label" for="input-setting-content-status">{{ entry_status }}</label>
+    <div class="col-sm-9">
+      <div class="mz-switch-field">
+        {% if (content_status) %} 
+        <input type="radio" name="content_status" value="1" id="input-setting-content-status-enabled" checked>
+        <label for="input-setting-content-status-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="content_status" value="0" id="input-setting-content-status-disabled">
+        <label for="input-setting-content-status-disabled">{{ text_disabled }}</label>
+        {% else %} 
+        <input type="radio" name="content_status" value="1" id="input-setting-content-status-enabled" >
+        <label for="input-setting-content-status-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="content_status" value="0" id="input-setting-content-status-disabled" checked>
+        <label for="input-setting-content-status-disabled" >{{ text_disabled }}</label>
+        {% endif %} 
+      </div>
+    </div>
+  </div>
+      
+  <div class="form-group">
+    <label class="col-xs-3 control-label">{{ entry_size }}</label>
+    <div class="col-xs-9">
+      <div class="mz-switch-field">
+        {% for size in button_sizes %} 
+          {% if (content_size == size['code']) %} 
+          <input type="radio" name="content_size" value="{{ size['code'] }}" id="input-setting-content-size-{{ size['code'] }}" checked>
+          <label for="input-setting-content-size-{{ size['code'] }}" >{{ size['text'] }}</label>
+          {% else %} 
+          <input type="radio" name="content_size" value="{{ size['code'] }}" id="input-setting-content-size-{{ size['code'] }}">
+          <label for="input-setting-content-size-{{ size['code'] }}" >{{ size['text'] }}</label>
+          {% endif %} 
+        {% endfor %} 
+      </div>
+    </div>
+  </div>
+</form>

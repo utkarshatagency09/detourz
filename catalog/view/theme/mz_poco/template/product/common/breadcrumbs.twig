@@ -1,0 +1,10 @@
+{% verbatim %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    {% for breadcrumb in breadcrumbs|slice(0,-1) %}
+      <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}" {{ 'fa-home' in breadcrumb.text?'aria-label="Home"' }}>{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+    <li class="breadcrumb-item active" aria-current="page">{{ breadcrumbs|last.text }}</li>
+  </ol>
+</nav>
+{% endverbatim %}

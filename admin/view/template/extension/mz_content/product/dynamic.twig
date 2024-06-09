@@ -1,0 +1,432 @@
+<!-- Form -->
+<form id="setting-content-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#tab-content-dynamic-general" data-toggle="tab">{{ tab_general }}</a></li>
+    <li><a href="#tab-content-dynamic-condition" data-toggle="tab">{{ tab_condition }}</a></li>
+    <li><a href="#tab-content-dynamic-link" data-toggle="tab">{{ tab_link }}</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="tab-content-dynamic-general" class="tab-pane active">
+      <!--content status-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label">{{ entry_status }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_status) %} 
+            <input type="radio" name="content_status" value="1" id="input-setting-content-dynamic-status-enabled" checked>
+            <label for="input-setting-content-dynamic-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_status" value="0" id="input-setting-content-dynamic-status-disabled">
+            <label for="input-setting-content-dynamic-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_status" value="1" id="input-setting-content-dynamic-status-enabled" >
+            <label for="input-setting-content-dynamic-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_status" value="0" id="input-setting-content-dynamic-status-disabled" checked>
+            <label for="input-setting-content-dynamic-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+      
+      <!--type-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_type }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+          {% for type in types %} 
+            {% if (content_type == type.code) %} 
+            <input type="radio" name="content_type" value="{{ type.code }}" id="input-content-type-{{ type.code }}" checked>
+            <label data-toggle="tab" href="#tab-setting-content-dynamic-type-{{ type.code }}" for="input-content-type-{{ type.code }}" >{{ type.text }}</label>
+            {% else %} 
+            <input type="radio" name="content_type" value="{{ type.code }}" id="input-content-type-{{ type.code }}">
+            <label data-toggle="tab" href="#tab-setting-content-dynamic-type-{{ type.code }}" for="input-content-type-{{ type.code }}" >{{ type.text }}</label>
+            {% endif %} 
+          {% endfor %} 
+          </div>
+        </div>
+      </div>
+      <div class="tab-content">
+        <div id="tab-setting-content-dynamic-type-content" class="tab-pane {{ content_type == 'content'?'active' }}">
+          <div class="form-group">
+            <label class="col-xs-3 control-label" for="input-setting-content-dynamic-type-content">{{ text_content }}</label>
+            <div class="col-xs-5">
+              <div class="input-group mz-content">
+                <select name="content_content" id="input-setting-content-dynamic-type-content" class="form-control">
+                  <option value=""></option>
+                  {% for content in contents %}
+                    {% if content_content == content.code %}
+                    <option value="{{ content.code }}" selected="">{{ content.name }}</option>
+                    {% else %}
+                    <option value="{{ content.code }}">{{ content.name }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+                <span class="input-group-btn">
+                  <input id="input-setting-content-dynamic-type-content-data" type="hidden" name="content_content_data" value="{{ content_content_data }}" />
+                  {% if content_content %}
+                  <button type="button" class="btn btn-info" data-toggle="mz-content" data-code="{{ content_content }}" data-target="#input-setting-content-dynamic-type-content-data"><i class="fa fa-cog"></i></button>
+                  {% else %}
+                  <button type="button" class="btn btn-info disabled" data-toggle="mz-content" data-code="{{ content_content }}" data-target="#input-setting-content-dynamic-type-content-data" disabled><i class="fa fa-cog"></i></button>
+                  {% endif %}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="tab-setting-content-dynamic-type-design" class="tab-pane {{ content_type == 'design'?'active' }}">
+          <div class="form-group">
+            <label class="col-xs-3 control-label" for="input-setting-content-dynamic-type-design">{{ text_design }}</label>
+            <div class="col-xs-5">
+              <div class="input-group mz-design">
+                <select name="content_design" id="input-setting-content-dynamic-type-design" class="form-control">
+                  <option value=""></option>
+                  {% for design in designs %}
+                    {% if content_design == design.code %}
+                    <option value="{{ design.code }}" selected="">{{ design.name }}</option>
+                    {% else %}
+                    <option value="{{ design.code }}">{{ design.name }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+                <span class="input-group-btn">
+                  <input id="input-setting-content-dynamic-type-design-data" type="hidden" name="content_design_data" value="{{ content_design_data }}" />
+                  {% if content_design %}
+                  <button type="button" class="btn btn-info" data-toggle="mz-design" data-code="{{ content_design }}" data-target="#input-setting-content-dynamic-type-design-data"><i class="fa fa-cog"></i></button>
+                  {% else %}
+                  <button type="button" class="btn btn-info disabled" data-toggle="mz-design" data-code="{{ content_design }}" data-target="#input-setting-content-dynamic-type-design-data" disabled><i class="fa fa-cog"></i></button>
+                  {% endif %}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="tab-setting-content-dynamic-type-widget" class="tab-pane {{ content_type == 'widget'?'active' }}">
+          <div class="form-group">
+            <label class="col-xs-3 control-label" for="input-setting-content-dynamic-type-widget">{{ text_widget }}</label>
+            <div class="col-xs-5">
+              <div class="input-group mz-widget">
+                <select name="content_widget" id="input-setting-content-dynamic-type-widget" class="form-control">
+                  <option value=""></option>
+                  {% for widget in widgets %}
+                    {% if content_widget == widget.code %}
+                    <option value="{{ widget.code }}" selected="">{{ widget.name }}</option>
+                    {% else %}
+                    <option value="{{ widget.code }}">{{ widget.name }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+                <span class="input-group-btn">
+                  <input id="input-setting-content-dynamic-type-widget-data" type="hidden" name="content_widget_data" value="{{ content_widget_data }}" />
+                  {% if content_widget %}
+                  <button type="button" class="btn btn-info" data-toggle="mz-widget" data-code="{{ content_widget }}" data-target="#input-setting-content-dynamic-type-widget-data"><i class="fa fa-cog"></i></button>
+                  {% else %}
+                  <button type="button" class="btn btn-info disabled" data-toggle="mz-widget" data-code="{{ content_widget }}" data-target="#input-setting-content-dynamic-type-widget-data" disabled><i class="fa fa-cog"></i></button>
+                  {% endif %}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="tab-setting-content-dynamic-type-module" class="tab-pane {{ content_type == 'module'?'active' }}">
+          <div class="form-group">
+            <label class="col-xs-3 control-label" for="input-setting-content-dynamic-type-module">{{ text_module }}</label>
+            <div class="col-xs-9">
+              <select name="content_module" id="input-setting-content-dynamic-type-module" class="form-control">
+                <option value=""></option>
+                {% for extension in extensions %}
+                <optgroup label="{{ extension.name }}">
+                {% if not extension.module %}
+                  {% if content_module == extension.code %}
+                  <option value="{{ extension.code }}" selected="">{{ extension.name }}</option>
+                  {% else %}
+                  <option value="{{ extension.code }}">{{ extension.name }}</option>
+                  {% endif %}
+                {% else %}
+                {% for module in extension.module %}
+                  {% if content_module == module.code %}
+                  <option value="{{ module.code }}" selected="">{{ module.name }}</option>
+                  {% else %}
+                  <option value="{{ module.code }}">{{ module.name }}</option>
+                  {% endif %}
+                {% endfor %}
+                {% endif %}
+                </optgroup>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+        <div id="tab-setting-content-dynamic-type-content_builder" class="tab-pane {{ content_type == 'content_builder'?'active' }}">
+          <div class="form-group">
+            <label class="col-xs-3 control-label" for="input-setting-content-dynamic-type-content-builder">{{ text_content_builder }}</label>
+            <div class="col-xs-9">
+              <input type="text" name="content_content_builder_name" value="{{ content_builder_name }}" placeholder="{{ text_content_builder }}" id="input-setting-content-dynamic-type-content-builder" class="form-control" />
+              <input id="input-setting-content-dynamic-type-content-builder-id" type="hidden" name="content_content_builder_id" value="{{ content_content_builder_id }}"  />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--content_opposite-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-content-opposite"><span data-toggle="tooltip" title="{{ help_opposite }}">{{ entry_opposite }}</span></label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (content_opposite) %} 
+            <input type="radio" name="content_opposite" value="1" id="input-content-opposite-enabled" checked>
+            <label for="input-content-opposite-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_opposite" value="0" id="input-content-opposite-disabled">
+            <label for="input-content-opposite-disabled">{{ text_disabled }}</label>
+            {% else %}
+            <input type="radio" name="content_opposite" value="1" id="input-content-opposite-enabled" >
+            <label for="input-content-opposite-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_opposite" value="0" id="input-content-opposite-disabled" checked>
+            <label for="input-content-opposite-disabled" >{{ text_disabled }}</label>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="tab-content-dynamic-condition" class="tab-pane">
+      <!-- Price range-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_price }}</label>
+        <div class="col-xs-9">
+          <div class="row">
+            <div class="col-xs-6">
+              <input type="number" name="content_condition_price_min" value="{{ content_condition_price_min }}" placeholder="{{ text_minimum }}" class="form-control large" />
+            </div>
+            <div class="col-xs-6">
+              <input type="number" name="content_condition_price_max" value="{{ content_condition_price_max }}" placeholder="{{ text_maximum }}" class="form-control large" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- quantity range-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_quantity }}</label>
+        <div class="col-xs-9">
+          <div class="row">
+            <div class="col-xs-6">
+              <input type="number" name="content_condition_quantity_min" value="{{ content_condition_quantity_min }}" placeholder="{{ text_minimum }}" class="form-control large" />
+            </div>
+            <div class="col-xs-6">
+              <input type="number" name="content_condition_quantity_max" value="{{ content_condition_quantity_max }}" placeholder="{{ text_maximum }}" class="form-control large" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- rating range-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_rating }}</label>
+        <div class="col-xs-9">
+          <div class="row">
+            <div class="col-xs-6">
+              <input type="number" name="content_condition_rating_min" value="{{ content_condition_rating_min }}" placeholder="{{ text_minimum }}" class="form-control large" />
+            </div>
+            <div class="col-xs-6">
+              <input type="number" name="content_condition_rating_max" value="{{ content_condition_rating_max }}" placeholder="{{ text_maximum }}" class="form-control large" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--stock_status-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-content-dynamic-condition-stock-status"><span data-toggle="tooltip" title="{{ help_stock_status }}">{{ entry_stock_status }}</span></label>
+        <div class="col-xs-9">
+          <select name="content_condition_stock_status" id="input-content-dynamic-condition-stock-status" class="form-control">
+            <option value=""></option>
+          {% for stock_status in stock_statuses %}
+            {% if (content_condition_stock_status == stock_status.stock_status_id) %} 
+            <option value="{{ stock_status.stock_status_id }}" selected="">{{ stock_status.name }}</option>
+            {% else %} 
+            <option value="{{ stock_status.stock_status_id }}">{{ stock_status.name }}</option>
+            {% endif %}
+          {% endfor %} 
+          </select>
+        </div>
+      </div>
+
+      <!--special-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-content-dynamic-condition-special">{{ entry_special }}</label>
+        <div class="col-xs-9">
+          <select name="content_condition_special" id="input-content-dynamic-condition-special" class="form-control">
+            <option value=""></option>
+            <option value="1" {% if content_condition_special == '1' %}selected="selected"{% endif %}>{{ text_available }}</option>
+            <option value="0" {% if content_condition_special == '0' %}selected="selected"{% endif %}>{{ text_not_available }}</option>
+          </select>
+        </div>
+      </div>
+
+      <!--reward-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-content-dynamic-condition-reward">{{ entry_reward }}</label>
+        <div class="col-xs-9">
+          <select name="content_condition_reward" id="input-content-dynamic-condition-reward" class="form-control">
+            <option value=""></option>
+            <option value="1" {% if content_condition_reward == '1' %}selected="selected"{% endif %}>{{ text_available }}</option>
+            <option value="0" {% if content_condition_reward == '0' %}selected="selected"{% endif %}>{{ text_not_available }}</option>
+          </select>
+        </div>
+      </div>
+      
+      <!--points-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-content-dynamic-condition-points">{{ entry_points }}</label>
+        <div class="col-xs-9">
+          <select name="content_condition_points" id="input-content-dynamic-condition-points" class="form-control">
+            <option value=""></option>
+            <option value="1" {% if content_condition_points == '1' %}selected="selected"{% endif %}>{{ text_available }}</option>
+            <option value="0" {% if content_condition_points == '0' %}selected="selected"{% endif %}>{{ text_not_available }}</option>
+          </select>
+        </div>
+      </div>
+
+      <!--option-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-content-dynamic-condition-option">{{ entry_option }}</label>
+        <div class="col-xs-9">
+          <select name="content_condition_option" id="input-content-dynamic-condition-option" class="form-control">
+            <option value=""></option>
+            <option value="1" {% if content_condition_option == '1' %}selected="selected"{% endif %}>{{ text_available }}</option>
+            <option value="0" {% if content_condition_option == '0' %}selected="selected"{% endif %}>{{ text_not_available }}</option>
+          </select>
+        </div>
+      </div>
+
+      <!--tax_class_id-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-content-dynamic-condition-tax-class-id">{{ entry_tax_class }}</label>
+        <div class="col-xs-9">
+          <select name="content_condition_tax_class_id" id="input-content-dynamic-condition-tax-class-id" class="form-control">
+            <option value=""></option>
+          {% for tax_class in tax_classes %}
+            {% if (content_condition_tax_class_id == tax_class.tax_class_id) %} 
+            <option value="{{ tax_class.tax_class_id }}" selected="">{{ tax_class.title }}</option>
+            {% else %} 
+            <option value="{{ tax_class.tax_class_id }}">{{ tax_class.title }}</option>
+            {% endif %}
+          {% endfor %} 
+          </select>
+        </div>
+      </div>
+
+      <!--Condition twig-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-content-condition-twig"><span data-toggle="tooltip" title="{{ help_condition }}">{{ entry_condition }}</span></label>
+        <div class="col-xs-9">
+          <input type="text" name="content_condition_twig" value="{{ content_condition_twig }}" placeholder="{{ entry_condition }}" id="input-content-condition-twig" class="form-control" />
+        </div>
+      </div>
+    </div>
+    <div id="tab-content-dynamic-link" class="tab-pane">
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-content-dynamic-condition-product">{{ entry_product }}</label>
+        <div class="col-xs-9">
+          <input type="text" name="content_condition_product_name" value="" placeholder="{{ entry_product }}" id="input-content-dynamic-condition-product" class="form-control"/>
+          <div id="data-content-dynamic-condition-product" class="well well-sm" style="height: 150px; overflow: auto;"> {% for data_product in data_products %}
+            <div id="data-content-dynamic-condition-product{{ data_product.product_id }}"><i class="fa fa-minus-circle"></i> {{ data_product.name }}
+              <input type="hidden" name="content_condition_product[]" value="{{ data_product.product_id }}"/>
+            </div>{% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-content-dynamic-condition-manufacturer">{{ entry_manufacturer }}</label>
+        <div class="col-xs-9">
+          <input type="text" name="content_condition_manufacturer_name" value="" placeholder="{{ entry_manufacturer }}" id="input-content-dynamic-condition-manufacturer" class="form-control"/>
+          <div id="data-content-dynamic-condition-manufacturer" class="well well-sm" style="height: 150px; overflow: auto;"> {% for data_manufacturer in data_manufacturers %}
+            <div id="data-content-dynamic-condition-manufacturer{{ data_manufacturer.manufacturer_id }}"><i class="fa fa-minus-circle"></i> {{ data_manufacturer.name }}
+              <input type="hidden" name="content_condition_manufacturer[]" value="{{ data_manufacturer.manufacturer_id }}"/>
+            </div>{% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+// Content builder
+$('#setting-content-form input[name="content_content_builder_name"]').autocomplete({
+    'source': function(request, response) {
+        $.ajax({
+            url: 'index.php?route=extension/maza/content_builder/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+            dataType: 'json',
+            success: function(json) {
+                response($.map(json, function(item) {
+                    return {
+                        label: item['name'],
+                        value: item['content_id']
+                    };
+                }));
+            }
+        });
+    },
+    'select': function(item) {
+        $('#setting-content-form input[name="content_content_builder_name"]').val(item['label']);
+        $('#setting-content-form input[name="content_content_builder_id"]').val(item['value']);
+    }
+});
+
+// Product
+$('input[name=\'content_condition_product_name\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['product_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'content_condition_product_name\']').val('');
+
+    $('#data-content-dynamic-condition-product' + item['value']).remove();
+
+    $('#data-content-dynamic-condition-product').append('<div id="data-content-dynamic-condition-product' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="content_condition_product[]" value="' + item['value'] + '" /></div>');
+  }
+});
+
+$('#data-content-dynamic-condition-product').delegate('.fa-minus-circle', 'click', function() {
+  $(this).parent().remove();
+});
+
+// manufacturer
+$('input[name=\'content_condition_manufacturer_name\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=catalog/manufacturer/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['manufacturer_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'content_condition_manufacturer_name\']').val('');
+
+    $('#data-content-dynamic-condition-manufacturer' + item['value']).remove();
+
+    $('#data-content-dynamic-condition-manufacturer').append('<div id="data-content-dynamic-condition-manufacturer' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="content_condition_manufacturer[]" value="' + item['value'] + '" /></div>');
+  }
+});
+
+$('#data-content-dynamic-condition-manufacturer').delegate('.fa-minus-circle', 'click', function() {
+  $(this).parent().remove();
+});
+</script>
+</form>

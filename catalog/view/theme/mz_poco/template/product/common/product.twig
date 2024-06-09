@@ -1,0 +1,175 @@
+<div class="col">
+  <div class="product-thumb">
+    <div class="product-thumb-top">
+      <div class="image">
+        {% verbatim %}{% if product.mz_images is empty %}{% endverbatim %}
+          <a href="{% verbatim %}{{ product.href }}{% endverbatim %}">
+            {% if lazy_loading %}
+            <img class="lazy-load" src="{{ transparent }}" data-src="{% verbatim %}{{ product.thumb }}{% endverbatim %}" {% verbatim %}{% if product.mz_srcset %}data-srcset="{{ product.mz_srcset }}"{% endif %}{% endverbatim %} {% if srcset_sizes %}data-sizes="{{ srcset_sizes }}"{% endif %} alt="{% verbatim %}{{ product.name|e }}{% endverbatim %}" title="{% verbatim %}{{ product.name|e }}{% endverbatim %}" />
+            {% else %}
+            <img src="{% verbatim %}{{ product.thumb }}{% endverbatim %}" {% verbatim %}{% if product.mz_srcset %}srcset="{{ product.mz_srcset }}"{% endif %}{% endverbatim %} {% if srcset_sizes %}sizes="{{ srcset_sizes }}"{% endif %} alt="{% verbatim %}{{ product.name|e }}{% endverbatim %}" title="{% verbatim %}{{ product.name|e }}{% endverbatim %}" />
+            {% endif %}
+          </a>
+        {% verbatim %}{% else %}{% endverbatim %}
+          <a id="mz-product-grid-image-{% verbatim %}{{ product.product_id }}{% endverbatim %}-{{ mz_suffix }}" class="carousel d-block slide" data-bs-ride="false" href="{% verbatim %}{{ product.href }}{% endverbatim %}">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                {% if lazy_loading %}
+                <img class="lazy-load" src="{{ transparent }}" data-src="{% verbatim %}{{ product.thumb }}{% endverbatim %}" {% verbatim %}{% if product.mz_srcset %}data-srcset="{{ product.mz_srcset }}"{% endif %}{% endverbatim %} {% if srcset_sizes %}data-sizes="{{ srcset_sizes }}"{% endif %} alt="{% verbatim %}{{ product.name|e }}{% endverbatim %}" title="{% verbatim %}{{ product.name|e }}{% endverbatim %}" />
+                {% else %}
+                <img src="{% verbatim %}{{ product.thumb }}{% endverbatim %}" {% verbatim %}{% if product.mz_srcset %}srcset="{{ product.mz_srcset }}"{% endif %}{% endverbatim %} {% if srcset_sizes %}sizes="{{ srcset_sizes }}"{% endif %} alt="{% verbatim %}{{ product.name|e }}{% endverbatim %}" title="{% verbatim %}{{ product.name|e }}{% endverbatim %}" />
+                {% endif %}
+              </div>
+              {% verbatim %}{% for image in product.mz_images %}{% endverbatim %}
+              <div class="carousel-item">
+                {% if lazy_loading %}
+                <img class="lazy-load" src="{{ transparent }}" data-src="{% verbatim %}{{ image.image }}{% endverbatim %}" {% verbatim %}{% if image.srcset %}data-srcset="{{ image.srcset }}"{% endif %}{% endverbatim %} {% if srcset_sizes %}data-sizes="{{ srcset_sizes }}"{% endif %} alt="{% verbatim %}{{ product.name|e }}{% endverbatim %}" title="{% verbatim %}{{ product.name|e }}{% endverbatim %}" />
+                {% else %}
+                <img src="{% verbatim %}{{ image.image }}{% endverbatim %}" {% verbatim %}{% if image.srcset %}srcset="{{ image.srcset }}"{% endif %}{% endverbatim %} {% if srcset_sizes %}sizes="{{ srcset_sizes }}"{% endif %} alt="{% verbatim %}{{ product.name|e }}{% endverbatim %}" title="{% verbatim %}{{ product.name|e }}{% endverbatim %}" />
+                {% endif %}
+              </div>
+              {% verbatim %}{% endfor %}{% endverbatim %}
+            </div>
+            <ul class="carousel-indicators">
+              <li data-bs-target="#mz-product-grid-image-{% verbatim %}{{ product.product_id }}{% endverbatim %}-{{ mz_suffix }}" data-bs-slide-to="0" class="active">
+                {% if lazy_loading %}
+                <img class="lazy-load img-thumbnail" src="{{ transparent }}" data-src="{% verbatim %}{{ product.thumb }}{% endverbatim %}" {% verbatim %}{% if product.mz_srcset %}data-srcset="{{ product.mz_srcset }}"{% endif %}{% endverbatim %} {% if srcset_sizes %}data-sizes="{{ srcset_sizes }}"{% endif %} alt="{% verbatim %}{{ product.name|e }}{% endverbatim %}"/>
+                {% else %}
+                <img class="img-thumbnail" src="{% verbatim %}{{ product.thumb }}{% endverbatim %}" {% verbatim %}{% if product.mz_srcset %}srcset="{{ product.mz_srcset }}"{% endif %}{% endverbatim %} {% if srcset_sizes %}sizes="{{ srcset_sizes }}"{% endif %} alt="{% verbatim %}{{ product.name|e }}{% endverbatim %}" />
+                {% endif %}
+              </li>
+              {% verbatim %}{% set slide_to = 1 %}{% endverbatim %}
+              {% verbatim %}{% for image in product.mz_images %}{% endverbatim %}
+              <li data-bs-target="#mz-product-grid-image-{% verbatim %}{{ product.product_id }}{% endverbatim %}-{{ mz_suffix }}" data-bs-slide-to="{% verbatim %}{{ slide_to }}{% endverbatim %}">
+                {% if lazy_loading %}
+                <img class="lazy-load img-thumbnail" src="{{ transparent }}" data-src="{% verbatim %}{{ image.image }}{% endverbatim %}" {% verbatim %}{% if image.srcset %}data-srcset="{{ image.srcset }}"{% endif %}{% endverbatim %} {% if srcset_sizes %}data-sizes="{{ srcset_sizes }}"{% endif %} alt="{% verbatim %}{{ product.name|e }}{% endverbatim %}"/>
+                {% else %}
+                <img class="img-thumbnail" src="{% verbatim %}{{ image.image }}{% endverbatim %}" {% verbatim %}{% if image.srcset %}srcset="{{ image.srcset }}"{% endif %}{% endverbatim %} {% if srcset_sizes %}sizes="{{ srcset_sizes }}"{% endif %} alt="{% verbatim %}{{ product.name|e }}{% endverbatim %}"/>
+                {% endif %}
+              </li>
+              {% verbatim %}{% set slide_to = slide_to + 1 %}{% endverbatim %}
+              {% verbatim %}{% endfor %}{% endverbatim %}
+            </ul>
+          </a>
+        {% verbatim %}{% endif %}{% endverbatim %}
+      </div>
+  
+      {% verbatim %}{% for position, labels in product.mz_labels %} {# Product label #}
+      <div class="product-label {{ position }}">{% for label in labels %}<div class="{{ label.class }}" style="{{ label.style }}">{{ label.text }}</div>{% endfor %}</div>
+      {% endfor %}{% endverbatim %}
+  
+      {% if (not mz_config.get('html_product_cart_in_caption') and cart_status) or (not mz_config.get('html_product_wishlist_in_caption') and wishlist_status) or (not mz_config.get('html_product_quick_view_in_caption') and quick_view_status) or (not mz_config.get('html_product_compare_in_caption') and compare_status) %}
+      <div class="product-action">
+        {% if not mz_config.get('html_product_cart_in_caption') and cart_status %}
+        {% verbatim %}<button class="btn btn-cart cart-{{ product.product_id }}" title="{{ button_cart }}" onclick="cart.add('{{ product.product_id }}');"><i class="fas fa-shopping-cart"></i> <span>{{ button_cart }}</span></button>{% endverbatim %}
+        {% endif %}
+        {% if not mz_config.get('html_product_wishlist_in_caption') and wishlist_status %}
+        {% verbatim %}<button class="btn btn-wishlist wishlist-{{ product.product_id }} {{ product.mz_wishlist?'wished' }}" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product.product_id }}', this);" data-wishlist="{{ product.mz_wishlist }}" ><i class="fas fa-heart"></i> <span>{{ button_wishlist }}</span></button>{% endverbatim %}
+        {% endif %}
+        {% if not mz_config.get('html_product_quick_view_in_caption') and quick_view_status %}
+        {% verbatim %}<button class="btn btn-quick-view quick-view-{{ product.product_id }}" title="{{ button_quick_view }}" onclick="mz_quick_view.show('{{ product.product_id }}');"><i class="fas fa-eye"></i></button>{% endverbatim %}
+        {% endif %}
+        {% if not mz_config.get('html_product_compare_in_caption') and compare_status %}
+        {% verbatim %}<button class="btn btn-compare compare-{{ product.product_id }} {{ product.mz_compare?'compared' }}" title="{{ button_compare }}" onclick="compare.add('{{ product.product_id }}', this);" data-compare="{{ product.mz_compare }}"><i class="fas fa-sync-alt"></i></button>{% endverbatim %}
+        {% endif %}
+      </div>
+      {% endif %}
+  
+      {% if not mz_config.get('html_product_deal_countdown_compact') and (special_countdown_status or special_sold_status) %}
+        {% verbatim %}{% if (product.mz_special_expire_at and {% endverbatim %}{{ special_countdown_status }}{% verbatim %}) or (product.mz_special_sold and {% endverbatim %}{{ special_sold_status }}{% verbatim %}) %}{% endverbatim %}
+          <div class="deal-status">
+            {% if special_sold_status %}
+            {% verbatim %}{% if product.mz_special_sold %}{% endverbatim %}
+            <div class="deal-claimed">
+              {% verbatim %}{% if product.mz_special_sold %}{% endverbatim %}
+              <span class="deal-claimed-info">{% verbatim %}{{ product.mz_special_sold_text }}{% endverbatim %}</span>
+              {% verbatim %}{% endif %}{% endverbatim %}
+              {% verbatim %}{% if product.mz_special_sold_perc %}{% endverbatim %}
+              <div class="progress"><div class="progress-bar bg-secondary" role="progressbar" style="width: {% verbatim %}{{ product.mz_special_sold_perc }}{% endverbatim %}%" aria-valuenow="{% verbatim %}{{ product.mz_special_sold_perc }}{% endverbatim %}" aria-valuemin="0" aria-valuemax="100"></div></div>
+              {% verbatim %}{% endif %}{% endverbatim %}
+            </div>
+            {% verbatim %}{% endif %}{% endverbatim %}{% endif %}
+            {% if special_countdown_status %}
+            {% verbatim %}{% if product.mz_special_expire_at %}{% endverbatim %}
+            <div class="deal-countdown" data-compact="0" data-countdown="{% verbatim %}{{ product.mz_special_expire_at }}{% endverbatim %}"></div>
+            {% verbatim %}{% endif %}{% endverbatim %}{% endif %}
+          </div>
+        {% verbatim %}{% endif %}{% endverbatim %}
+      {% endif %}
+    </div>
+    <div class="caption">
+      {% if manufacturer_status %}
+      {% verbatim %}{% if product.mz_manufacturer_href %}<a href="{{ product.mz_manufacturer_href }}" class="manufacturer">{{ product.mz_manufacturer }}</a>{% endif %}{% endverbatim %}
+      {% endif %}
+      {% verbatim %}<h4 class="title"><a class="text-ellipsis-2" href="{{ product.href }}" >{{ product.name }}</a></h4>{% endverbatim %}
+      {% if rating_status %}
+      {% verbatim %}{% if product.rating %}
+      <div class="rating">
+        {% for i in range(1, 5) %}
+          {% if product.rating >= i %}
+          <i class="fas fa-star"></i>
+          {% elseif (i - product.rating) < 1 %}
+          <i class="fas fa-star-half-alt"></i>
+          {% else %}
+          <i class="far fa-star"></i>
+          {% endif %}
+        {% endfor %}
+      </div>
+      {% endif %}{% endverbatim %}
+      {% endif %}
+      {% if mz_config.get('html_product_deal_countdown_compact') and (special_countdown_status or special_sold_status) %}
+        {% verbatim %}{% if (product.mz_special_expire_at and {% endverbatim %}{{ special_countdown_status }}{% verbatim %}) or (product.mz_special_sold and {% endverbatim %}{{ special_sold_status }}{% verbatim %}) %}{% endverbatim %}
+        <div class="deal-status">
+          {% if special_sold_status %}
+          {% verbatim %}{% if product.mz_special_sold_perc %}{% endverbatim %}
+          <div class="progress"><div class="progress-bar bg-secondary" role="progressbar" style="width: {% verbatim %}{{ product.mz_special_sold_perc }}{% endverbatim %}%" aria-valuenow="{% verbatim %}{{ product.mz_special_sold_perc }}{% endverbatim %}" aria-valuemin="0" aria-valuemax="100"></div></div>
+          {% verbatim %}{% endif %}{% endverbatim %}
+          {% endif %}
+          {% if special_countdown_status or special_sold_status %}
+          <div class="deal-info">
+          {% if special_sold_status %}
+          {% verbatim %}{% if product.mz_special_sold %}{% endverbatim %}
+          <span class="claimed">{% verbatim %}{{ product.mz_special_sold_text }}{% endverbatim %}</span>
+          {% verbatim %}{% endif %}{% endverbatim %}{% endif %}
+          {% if special_countdown_status %}
+          {% verbatim %}{% if product.mz_special_expire_at %}{% endverbatim %}
+          <span class="countdown"><span class="countdown-title">{{ text_endin }}</span> <span data-compact="1" data-countdown="{% verbatim %}{{ product.mz_special_expire_at }}{% endverbatim %}"></span></span>
+          {% verbatim %}{% endif %}{% endverbatim %}{% endif %}
+          </div>{% endif %}
+        </div>
+        {% verbatim %}{% endif %}{% endverbatim %}
+      {% endif %}
+      {% verbatim %}{% if product.price %}{% endverbatim %}
+      <div class="price">
+        {% verbatim %}{% if not product.special %}
+        <span class="price-new">{{ product.price }}</span>
+        {% else %}
+        <span class="price-new special">{{ product.special }}</span> <span class="price-old">{{ product.price }}</span>
+        {% endif %}{% endverbatim %}
+        {% if tax_status %}{% verbatim %}{% if product.tax %}
+        <span class="price-tax">{{ text_tax }} {{ product.tax }}</span>
+        {% endif %}{% endverbatim %}{% endif %}
+      </div>
+      {% verbatim %}{% endif %}{% endverbatim %}
+  
+      {% if (mz_config.get('html_product_cart_in_caption') and cart_status) or (mz_config.get('html_product_wishlist_in_caption') and wishlist_status) or (mz_config.get('html_product_quick_view_in_caption') and quick_view_status) or (mz_config.get('html_product_compare_in_caption') and compare_status) %}
+      <div class="product-action">
+        {% if mz_config.get('html_product_cart_in_caption') and cart_status %}
+        {% verbatim %}<button class="btn btn-cart cart-{{ product.product_id }}" title="{{ button_cart }}" onclick="cart.add('{{ product.product_id }}');"><i class="fas fa-shopping-cart"></i> <span>{{ button_cart }}</span></button>{% endverbatim %}
+        {% endif %}
+        {% if mz_config.get('html_product_wishlist_in_caption') and wishlist_status %}
+        {% verbatim %}<button class="btn btn-wishlist wishlist-{{ product.product_id }} {{ product.mz_wishlist?'wished' }}" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product.product_id }}', this);" data-wishlist="{{ product.mz_wishlist }}" ><i class="fas fa-heart"></i> <span>{{ button_wishlist }}</span></button>{% endverbatim %}
+        {% endif %}
+        {% if mz_config.get('html_product_quick_view_in_caption') and quick_view_status %}
+        {% verbatim %}<button class="btn btn-quick-view quick-view-{{ product.product_id }}" title="{{ button_quick_view }}" onclick="mz_quick_view.show('{{ product.product_id }}');"><i class="fas fa-eye"></i> <span>{{ button_quick_view }}</span></button>{% endverbatim %}
+        {% endif %}
+        {% if mz_config.get('html_product_compare_in_caption') and compare_status %}
+        {% verbatim %}<button class="btn btn-compare compare-{{ product.product_id }} {{ product.mz_compare?'compared' }}" title="{{ button_compare }}" onclick="compare.add('{{ product.product_id }}', this);" data-compare="{{ product.mz_compare }}"><i class="fas fa-sync-alt"></i> <span>{{ button_compare }}</span></button>{% endverbatim %}
+        {% endif %}
+      </div>
+      {% endif %}
+  
+      {% verbatim %}<p class="description text-collapsed" data-line="4" data-showtext="<i class='fas fa-angle-down'></i> {{ text_showmore }}" data-hidetext="<i class='fas fa-angle-up'></i> {{ text_showless }}">{{ product.description }}</p>{% endverbatim %}
+    </div>
+  </div>
+</div>

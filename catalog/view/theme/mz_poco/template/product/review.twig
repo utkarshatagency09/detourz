@@ -1,0 +1,28 @@
+{% if reviews %}
+<ul class="list-unstyled comments-list">
+{% for review in reviews %}
+<li class="media comment">
+  <i class="fas thumb fa-user-circle"></i>
+  <div class="media-body">
+    <h6 class="comment-author">{{ review.author }}</h6>
+    <span class="comment-rating rating">
+      {% for i in 1..5 %}
+        {% if review.rating >= i %}
+        <i class="fas fa-star"></i>
+        {% else %}
+        <i class="far fa-star"></i>
+        {% endif %}
+      {% endfor %}
+    </span>
+    <span class="comment-date"><i class="far fa-clock me-1"></i>{{ review.date_added }}</span>
+    <p class="comment-text">{{ review.text }}</p>
+  </div>
+</li>
+{% endfor %}
+</ul>
+{% if pagination %}
+<div class="text-center d-flex flex-column align-items-center">{{ pagination }}{{ results }}</div> 
+{% endif %}
+{% else %}
+<p>{{ text_no_reviews }}</p>
+{% endif %} 

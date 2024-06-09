@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<modification>
+    <name>Maza System</name>
+    <code>maza_system_core</code>
+    <version>1.0</version>
+    <author>TemplateMaza.com</author>
+    <link>https://pocotheme.com/</link>
+    
+    <file path="system/library/cart/tax.php">
+        <operation>
+                <search><![CDATA[function __construct(]]></search>
+                <add position="before"><![CDATA[
+        public function mz_getTaxRates(){
+            return $this->tax_rates;
+        }
+                ]]></add>
+        </operation>
+    </file>
+    
+    <!-- remove in opencart 4 -->
+    <file path="system/library/pagination.php">
+        <operation>
+            <search><![CDATA[<li><a href=]]></search>
+            <add position="replace"><![CDATA[<li class="page-item"><a class="page-link" href=]]></add>
+        </operation>
+        <operation>
+            <search><![CDATA[<li class="active"><span>' . $i . '</span></li>]]></search>
+            <add position="replace"><![CDATA[<li class="active page-item"><span class="page-link">' . $i . '</span></li>]]></add>
+        </operation>
+    </file>
+    
+    <file path="system/library/url.php">
+        <operation>
+            <search><![CDATA[return $url;]]></search>
+            <add position="before"><![CDATA[
+                if(!defined('DIR_CATALOG') && Maza\Registry::$registry && isset(maza\Registry::get('session')->data['user_id'])){
+                    if(isset(maza\Registry::get('request')->get['mz_theme_code'])){
+                        $url .= '&mz_theme_code=' . maza\Registry::get('request')->get['mz_theme_code'];
+                    }
+                    if(isset(maza\Registry::get('request')->get['mz_skin_id'])){
+                        $url .= '&mz_skin_id=' . maza\Registry::get('request')->get['mz_skin_id'];
+                    }
+                }
+            ]]></add>
+        </operation>
+    </file>
+    
+    <file path="system/library/template/twig.php">
+        <operation error="skip">
+            <search><![CDATA[Twig\Loader\ArrayLoader(]]></search>
+            <add position="after"><![CDATA[$loader = new \Twig\Loader\ChainLoader([$loader, new \Twig\Loader\FilesystemLoader(array(DIR_TEMPLATE))]);]]></add>
+        </operation>
+    </file>
+
+    <file path="system/library/image.php">
+        <operation>
+            <search><![CDATA[$scale = $scale_h;]]></search>
+            <add position="after" trim='true'><![CDATA[
+        } elseif ($default == 'c') {
+			$scale = max($scale_w, $scale_h);
+            ]]></add>
+        </operation>
+    </file>
+</modification>

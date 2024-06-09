@@ -1,0 +1,160 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  <div class="panel-group mz-panel-action-bar">
+    <div class="panel panel-default">
+      <div class="panel-heading clearfix" data-toggle="collapse" data-target="#filter-mz-comment">
+        <h4 class="panel-title pull-left">{{ text_filter }}</h4>
+        <span class="pull-right"><i class="fa fa-chevron-circle-down"></i></span>
+      </div>
+      <div id="filter-mz-comment" class="panel-collapse collapse">
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="control-label" for="input-article">{{ entry_article }}</label>
+                <input type="text" name="filter_article" value="{{ filter_article }}" placeholder="{{ entry_article }}" id="input-article" class="form-control large" />
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="input-author">{{ entry_author }}</label>
+                <input type="text" name="filter_author" value="{{ filter_author }}" placeholder="{{ entry_author }}" id="input-author" class="form-control large" />
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="control-label" for="input-date-added">{{ entry_date_added }}</label>
+                <div class="input-group date">
+                  <input type="text" name="filter_date_added" value="{{ filter_date_added }}" placeholder="{{ entry_date_added }}" data-date-format="YYYY-MM-DD" id="input-date-added" class="form-control large" />
+                  <span class="input-group-btn">
+                  <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                  </span></div>
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="input-status">{{ entry_status }}</label>
+                <select name="filter_status" class="form-control large" id="input-status">
+                  <option value=""></option>
+                  {% if filter_status == '1' %}
+                  <option value="1" selected="selected">{{ text_enabled }}</option>
+                  {% else %}
+                  <option value="1">{{ text_enabled }}</option>
+                  {% endif %}
+                  {% if filter_status == '0' %}
+                  <option value="0" selected="selected">{{ text_disabled }}</option>
+                  {% else %}
+                  <option value="0">{{ text_disabled }}</option>
+                  {% endif %}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer text-right"><button type="button" id="button-filter" class="btn btn-primary"><i class="fa fa-filter"></i> {{ button_filter }}</button></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <div class="panel mz-panel-default">
+    <div class="panel-body">
+      <form method="post" enctype="multipart/form-data" id="form-mz-comment">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+                <td class="text-left">{{ column_comment_id }}</td>
+                <td class="text-left">{% if sort == 'c.author' %} <a href="{{ sort_author }}" class="{{ order|lower }}">{{ column_author }}</a> {% else %} <a href="{{ sort_author }}">{{ column_author }}</a> {% endif %}</td>
+                <td class="text-left">{% if sort == 'ad.name' %} <a href="{{ sort_article }}" class="{{ order|lower }}">{{ column_article }}</a> {% else %} <a href="{{ sort_article }}">{{ column_article }}</a> {% endif %}</td>
+                <td class="text-left">{% if sort == 'c.status' %} <a href="{{ sort_status }}" class="{{ order|lower }}">{{ column_status }}</a> {% else %} <a href="{{ sort_status }}">{{ column_status }}</a> {% endif %}</td>
+                <td class="text-center">{{ column_reply_to }}</td>
+                <td class="text-left">{% if sort == 'c.date_added' %} <a href="{{ sort_date_added }}" class="{{ order|lower }}">{{ column_date_added }}</a> {% else %} <a href="{{ sort_date_added }}">{{ column_date_added }}</a> {% endif %}</td>
+                <td class="text-right">{{ column_action }}</td>
+              </tr>
+            </thead>
+            <tbody>
+
+            {% if comments %}
+            {% for comment in comments %}
+            <tr>
+              <td class="text-center">{% if comment.comment_id in selected %}
+                <input type="checkbox" name="selected[]" value="{{ comment.comment_id }}" checked="checked" />
+                {% else %}
+                <input type="checkbox" name="selected[]" value="{{ comment.comment_id }}" />
+                {% endif %}</td>
+              <td class="text-center">{{ comment.comment_id }}</td>
+              <td class="text-left">{{ comment.author }}</td>
+              <td class="text-left">{{ comment.name }}</td>
+              {% if comment.status %}
+              <td class="text-center bg-success"><i class="fa fa-check-circle text-success"></i></td>
+              {% else %}
+              <td class="text-center bg-warning"><i class="fa fa-times-circle text-warning"></i></td>
+              {% endif %}
+              <td class="text-center">{{ comment.reply_to }}</td>
+              <td class="text-left">{{ comment.date_added }}</td>
+              <td class="text-right"><a href="{{ comment.edit }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+              <td class="text-center" colspan="7">{{ text_no_results }}</td>
+            </tr>
+            {% endif %}
+              </tbody>
+
+          </table>
+        </div>
+      </form>
+      <div class="row">
+        <div class="col-sm-6 text-left">{{ pagination }}</div>
+        <div class="col-sm-6 text-right">{{ results }}</div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript"><!--
+  $('#button-filter').on('click', function() {
+	var url = 'index.php?route=extension/maza/blog/comment{{ default_url }}';
+
+	var filter_article = $('input[name=\'filter_article\']').val();
+	
+	if (filter_article) {
+		url += '&filter_article=' + encodeURIComponent(filter_article);
+	}
+	
+	var filter_author = $('input[name=\'filter_author\']').val();
+	
+	if (filter_author) {
+		url += '&filter_author=' + encodeURIComponent(filter_author);
+	}
+	
+	var filter_status = $('select[name=\'filter_status\']').val();
+	
+	if (filter_status !== '') {
+		url += '&filter_status=' + encodeURIComponent(filter_status); 
+	}		
+			
+	var filter_date_added = $('input[name=\'filter_date_added\']').val();
+	
+	if (filter_date_added) {
+		url += '&filter_date_added=' + encodeURIComponent(filter_date_added);
+	}
+        
+	location = url;
+});
+
+//--></script>
+<script type="text/javascript"><!--
+$('.date').datetimepicker({
+	language: '{{ datepicker }}',
+	pickTime: false
+});
+//--></script>
+</div>
+{{ mz_footer }}

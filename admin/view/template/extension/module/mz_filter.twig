@@ -1,0 +1,1074 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- Form -->
+  <form action="{{ action }}" class="form-horizontal" enctype="multipart/form-data" id="form-mz-filter" method="post">
+    <div class="tab-content">
+        
+      <!--General-->
+      <div id="tab-mz-general" class="tab-pane fade in active">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <!--module name-->
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-name">{{ entry_module_name }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-name" placeholder="{{ entry_module_name }}" type="text" name="name" value="{{ name }}" >
+                {% if (err_name is defined) %} 
+                <div class="text-danger">{{ err_name }}</div>
+                {% endif %} 
+              </div>
+            </div>
+            
+            <!--status-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-status">{{ entry_status }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (status) %} 
+                  <input type="radio" name="status" value="1" id="input-status-enabled" checked>
+                  <label for="input-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="status" value="0" id="input-status-disabled">
+                  <label for="input-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="status" value="1" id="input-status-enabled" >
+                  <label for="input-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="status" value="0" id="input-status-disabled" checked>
+                  <label for="input-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+            
+            <!--module title-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-title">{{ entry_title }}</label>
+              <div class="col-xs-9">
+              {% for language in languages %} 
+                <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                  <input class="form-control" type="text" name="title[{{ language['language_id'] }}]" value="{{ title[language['language_id']] is defined?title[language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+                </div>
+              {% endfor %} 
+              </div>
+            </div>
+            
+            <!--count product-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-count-product">{{ entry_count_product }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (count_product) %} 
+                  <input type="radio" name="count_product" value="1" id="input-count-product-enabled" checked>
+                  <label for="input-count-product-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="count_product" value="0" id="input-count-product-disabled">
+                  <label for="input-count-product-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="count_product" value="1" id="input-count-product-enabled" >
+                  <label for="input-count-product-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="count_product" value="0" id="input-count-product-disabled" checked>
+                  <label for="input-count-product-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+            
+            <!--Cache-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_cache }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (cache) %} 
+                  <input type="radio" name="cache" value="1" id="input-cache-enabled" checked>
+                  <label for="input-cache-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="cache" value="0" id="input-cache-disabled">
+                  <label for="input-cache-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="cache" value="1" id="input-cache-enabled" >
+                  <label for="input-cache-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="cache" value="0" id="input-cache-disabled" checked>
+                  <label for="input-cache-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+            <!--Delay-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label"><span data-toggle="tooltip" title="{{ help_delay }}">{{ entry_delay }}</span></label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-delay" placeholder="{{ entry_delay }}" type="number" name="delay" value="{{ delay }}" >
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div> <!-- // General -->
+      
+      <!--Filter-->
+      <div id="tab-mz-data" class="tab-pane fade">
+        <div class="panel mz-panel-vertical-nav">
+          <div class="panel-body clearfix">
+            <ul id="tab-mz-filter" class="nav nav-tabs mz-panel-nav-vertical-tabs col-xs-2">
+              <li class="active"><a href="#tab-mz-filter-price" data-toggle="tab">{{ entry_price }}</a></li>
+              <li><a href="#tab-mz-filter-sub-category" data-toggle="tab">{{ entry_sub_category }}</a></li>
+              <li><a href="#tab-mz-filter-manufacturer" data-toggle="tab">{{ entry_manufacturer }}</a></li>
+              <li><a href="#tab-mz-filter-search" data-toggle="tab">{{ entry_search }}</a></li>
+              <li><a href="#tab-mz-filter-availability" data-toggle="tab">{{ entry_availability }}</a></li>
+              <li><a href="#tab-mz-filter-discount" data-toggle="tab">{{ entry_discount }}</a></li>
+              <li><a href="#tab-mz-filter-rating" data-toggle="tab">{{ entry_rating }}</a></li>
+              <li><a href="#tab-mz-filter-filter" data-toggle="tab">{{ entry_filter }}</a></li>
+              <li><a href="#tab-mz-filter-custom" data-toggle="tab">{{ entry_custom }}</a></li>
+            </ul>
+            <div id="tab-mz-filter-content" class="tab-content col-xs-10">
+              <!--Price-->
+              <div id="tab-mz-filter-price" class="tab-pane fade in active">
+                <!--Status-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_status }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (filter['price']['status']) %} 
+                      <input type="radio" name="filter[price][status]" value="1" id="input-mz-filter-price-enabled" checked>
+                      <label for="input-mz-filter-price-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="filter[price][status]" value="0" id="input-mz-filter-price-disabled">
+                      <label for="input-mz-filter-price-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="filter[price][status]" value="1" id="input-mz-filter-price-enabled" >
+                      <label for="input-mz-filter-price-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="filter[price][status]" value="0" id="input-mz-filter-price-disabled" checked>
+                      <label for="input-mz-filter-price-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                <!--Filter title-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_title }}</label>
+                  <div class="col-xs-9">
+                  {% for language in languages %} 
+                    <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                      <input class="form-control" type="text" name="filter[price][title][{{ language['language_id'] }}]" value="{{ filter['price']['title'][language['language_id']] is defined?filter['price']['title'][language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+                    </div>
+                  {% endfor %} 
+                  </div>
+                </div>
+                <!--sort order-->
+                <div class="form-group required">
+                  <label class="col-xs-3 control-label" for="input-mz-filter-price-sort-order">{{ entry_sort_order }}</label>
+                  <div class="col-xs-9">
+                    <input class="form-control" id="input-mz-filter-price-sort-order" placeholder="{{ entry_sort_order }}" type="number" name="filter[price][sort_order]" value="{{ filter['price']['sort_order'] }}" >
+                  </div>
+                </div>
+                <!--collapse by default-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_collapse }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (filter['price']['collapse']) %} 
+                      <input type="radio" name="filter[price][collapse]" value="1" id="input-mz-filter-price-collapse-enabled" checked>
+                      <label for="input-mz-filter-price-collapse-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="filter[price][collapse]" value="0" id="input-mz-filter-price-collapse-disabled">
+                      <label for="input-mz-filter-price-collapse-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="filter[price][collapse]" value="1" id="input-mz-filter-price-collapse-enabled" >
+                      <label for="input-mz-filter-price-collapse-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="filter[price][collapse]" value="0" id="input-mz-filter-price-collapse-disabled" checked>
+                      <label for="input-mz-filter-price-collapse-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!--Sub category-->
+              <div id="tab-mz-filter-sub-category" class="tab-pane fade">
+                
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_status }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (filter['sub_category']['status']) %} 
+                      <input type="radio" name="filter[sub_category][status]" value="1" id="input-mz-filter-sub-category-enabled" checked>
+                      <label for="input-mz-filter-sub-category-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="filter[sub_category][status]" value="0" id="input-mz-filter-sub-category-disabled">
+                      <label for="input-mz-filter-sub-category-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="filter[sub_category][status]" value="1" id="input-mz-filter-sub-category-enabled" >
+                      <label for="input-mz-filter-sub-category-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="filter[sub_category][status]" value="0" id="input-mz-filter-sub-category-disabled" checked>
+                      <label for="input-mz-filter-sub-category-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_title }}</label>
+                  <div class="col-xs-9">
+                  {% for language in languages %} 
+                    <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                      <input class="form-control" type="text" name="filter[sub_category][title][{{ language['language_id'] }}]" value="{{ filter['sub_category']['title'][language['language_id']] is defined?filter['sub_category']['title'][language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+                    </div>
+                  {% endfor %} 
+                  </div>
+                </div>
+                
+                <div class="form-group required">
+                  <label class="col-xs-3 control-label" for="input-mz-filter-sub-category-sort-order">{{ entry_sort_order }}</label>
+                  <div class="col-xs-9">
+                    <input class="form-control" id="input-mz-filter-sub-category-sort-order" placeholder="{{ entry_sort_order }}" type="number" name="filter[sub_category][sort_order]" value="{{ filter['sub_category']['sort_order'] }}" >
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_collapse }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (filter['sub_category']['collapse']) %} 
+                      <input type="radio" name="filter[sub_category][collapse]" value="1" id="input-mz-filter-sub-category-collapse-enabled" checked>
+                      <label for="input-mz-filter-sub-category-collapse-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="filter[sub_category][collapse]" value="0" id="input-mz-filter-sub-category-collapse-disabled">
+                      <label for="input-mz-filter-sub-category-collapse-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="filter[sub_category][collapse]" value="1" id="input-mz-filter-sub-category-collapse-enabled" >
+                      <label for="input-mz-filter-sub-category-collapse-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="filter[sub_category][collapse]" value="0" id="input-mz-filter-sub-category-collapse-disabled" checked>
+                      <label for="input-mz-filter-sub-category-collapse-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-mz-filter-sub-category-input-type">{{ entry_input_type }}</label>
+                  <div class="col-xs-9">
+                    <select name="filter[sub_category][input_type]" id="input-mz-filter-sub-category-input-type" class="form-control">
+                      {% for input_type in input_types %} 
+                        {% if (input_type['code'] == filter['sub_category']['input_type']) %} 
+                        <option value="{{ input_type['code'] }}" selected="selected">{{ input_type['text'] }}</option>
+                        {% else %} 
+                        <option value="{{ input_type['code'] }}">{{ input_type['text'] }}</option>
+                        {% endif %} 
+                      {% endfor %} 
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="list-mz-filter-sub-category-list-type">{{ entry_list_type }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% for list_type in list_types %} 
+                        {% if (list_type['code'] == filter['sub_category']['list_type']) %} 
+                        <input type="radio" name="filter[sub_category][list_type]" value="{{ list_type['code'] }}" id="input-mz-filter-sub-category-list-type-{{ list_type['code'] }}" checked>
+                        <label for="input-mz-filter-sub-category-list-type-{{ list_type['code'] }}" >{{ list_type['text'] }}</label>
+                        {% else %} 
+                        <input type="radio" name="filter[sub_category][list_type]" value="{{ list_type['code'] }}" id="input-mz-filter-sub-category-list-type-{{ list_type['code'] }}">
+                        <label for="input-mz-filter-sub-category-list-type-{{ list_type['code'] }}" >{{ list_type['text'] }}</label>
+                        {% endif %} 
+                      {% endfor %} 
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-mz-filter-sub-category-image-width">{{ entry_image_width }}</label>
+                  <div class="col-xs-9">
+                    <input class="form-control" id="input-mz-filter-sub-category-image-width" placeholder="{{ entry_image_width }}" type="number" name="filter[sub_category][image_width]" value="{{ filter['sub_category']['image_width'] }}" >
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-mz-filter-sub-category-image-height">{{ entry_image_height }}</label>
+                  <div class="col-xs-9">
+                    <input class="form-control" id="input-mz-filter-sub-category-image-height" placeholder="{{ entry_image_height }}" type="number" name="filter[sub_category][image_height]" value="{{ filter['sub_category']['image_height'] }}" >
+                  </div>
+                </div>
+                  
+                <!-- show search-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="list-mz-filter-sub-category-list-type">{{ entry_show_search }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% for search_status in list_search_status %} 
+                        {% if (search_status['code'] == filter['sub_category']['search']) %} 
+                        <input type="radio" name="filter[sub_category][search]" value="{{ search_status['code'] }}" id="input-mz-filter-sub-category-list-type-{{ search_status['code'] }}" checked>
+                        <label for="input-mz-filter-sub-category-list-type-{{ search_status['code'] }}" >{{ search_status['text'] }}</label>
+                        {% else %} 
+                        <input type="radio" name="filter[sub_category][search]" value="{{ search_status['code'] }}" id="input-mz-filter-sub-category-list-type-{{ search_status['code'] }}">
+                        <label for="input-mz-filter-sub-category-list-type-{{ search_status['code'] }}" >{{ search_status['text'] }}</label>
+                        {% endif %} 
+                      {% endfor %} 
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!--Manufacturer-->
+              <div id="tab-mz-filter-manufacturer" class="tab-pane fade">
+                <!--Status-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_status }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (filter['manufacturer']['status']) %} 
+                      <input type="radio" name="filter[manufacturer][status]" value="1" id="input-mz-filter-manufacturer-enabled" checked>
+                      <label for="input-mz-filter-manufacturer-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="filter[manufacturer][status]" value="0" id="input-mz-filter-manufacturer-disabled">
+                      <label for="input-mz-filter-manufacturer-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="filter[manufacturer][status]" value="1" id="input-mz-filter-manufacturer-enabled" >
+                      <label for="input-mz-filter-manufacturer-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="filter[manufacturer][status]" value="0" id="input-mz-filter-manufacturer-disabled" checked>
+                      <label for="input-mz-filter-manufacturer-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                <!--Filter title-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_title }}</label>
+                  <div class="col-xs-9">
+                  {% for language in languages %} 
+                    <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                      <input class="form-control" type="text" name="filter[manufacturer][title][{{ language['language_id'] }}]" value="{{ filter['manufacturer']['title'][language['language_id']] is defined?filter['manufacturer']['title'][language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+                    </div>
+                  {% endfor %} 
+                  </div>
+                </div>
+                <!--sort order-->
+                <div class="form-group required">
+                  <label class="col-xs-3 control-label" for="input-mz-filter-manufacturer-sort-order">{{ entry_sort_order }}</label>
+                  <div class="col-xs-9">
+                    <input class="form-control" id="input-mz-filter-manufacturer-sort-order" placeholder="{{ entry_sort_order }}" type="number" name="filter[manufacturer][sort_order]" value="{{ filter['manufacturer']['sort_order'] }}" >
+                  </div>
+                </div>
+                <!--collapse-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_collapse }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (filter['manufacturer']['collapse']) %} 
+                      <input type="radio" name="filter[manufacturer][collapse]" value="1" id="input-mz-filter-manufacturer-collapse-enabled" checked>
+                      <label for="input-mz-filter-manufacturer-collapse-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="filter[manufacturer][collapse]" value="0" id="input-mz-filter-manufacturer-collapse-disabled">
+                      <label for="input-mz-filter-manufacturer-collapse-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="filter[manufacturer][collapse]" value="1" id="input-mz-filter-manufacturer-collapse-enabled" >
+                      <label for="input-mz-filter-manufacturer-collapse-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="filter[manufacturer][collapse]" value="0" id="input-mz-filter-manufacturer-collapse-disabled" checked>
+                      <label for="input-mz-filter-manufacturer-collapse-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                <!--Input types-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-mz-filter-manufacturer-input-type">{{ entry_input_type }}</label>
+                  <div class="col-xs-9">
+                    <select name="filter[manufacturer][input_type]" id="input-mz-filter-manufacturer-input-type" class="form-control">
+                      {% for input_type in input_types %} 
+                        {% if (input_type['code'] == filter['manufacturer']['input_type']) %} 
+                        <option value="{{ input_type['code'] }}" selected="selected">{{ input_type['text'] }}</option>
+                        {% else %} 
+                        <option value="{{ input_type['code'] }}">{{ input_type['text'] }}</option>
+                        {% endif %} 
+                      {% endfor %} 
+                    </select>
+                  </div>
+                </div>
+                <!--List types-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="list-mz-filter-manufacturer-list-type">{{ entry_list_type }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% for list_type in list_types %} 
+                        {% if (list_type['code'] == filter['manufacturer']['list_type']) %} 
+                        <input type="radio" name="filter[manufacturer][list_type]" value="{{ list_type['code'] }}" id="input-mz-filter-manufacturer-list-type-{{ list_type['code'] }}" checked>
+                        <label for="input-mz-filter-manufacturer-list-type-{{ list_type['code'] }}" >{{ list_type['text'] }}</label>
+                        {% else %} 
+                        <input type="radio" name="filter[manufacturer][list_type]" value="{{ list_type['code'] }}" id="input-mz-filter-manufacturer-list-type-{{ list_type['code'] }}">
+                        <label for="input-mz-filter-manufacturer-list-type-{{ list_type['code'] }}" >{{ list_type['text'] }}</label>
+                        {% endif %} 
+                      {% endfor %} 
+                    </div>
+                  </div>
+                </div>
+                <!-- show search-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="list-mz-filter-manufacturer-list-type">{{ entry_show_search }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% for search_status in list_search_status %} 
+                        {% if (search_status['code'] == filter['manufacturer']['search']) %} 
+                        <input type="radio" name="filter[manufacturer][search]" value="{{ search_status['code'] }}" id="input-mz-filter-manufacturer-list-type-{{ search_status['code'] }}" checked>
+                        <label for="input-mz-filter-manufacturer-list-type-{{ search_status['code'] }}" >{{ search_status['text'] }}</label>
+                        {% else %} 
+                        <input type="radio" name="filter[manufacturer][search]" value="{{ search_status['code'] }}" id="input-mz-filter-manufacturer-list-type-{{ search_status['code'] }}">
+                        <label for="input-mz-filter-manufacturer-list-type-{{ search_status['code'] }}" >{{ search_status['text'] }}</label>
+                        {% endif %} 
+                      {% endfor %} 
+                    </div>
+                  </div>
+                </div>
+                <!--Image width-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-mz-filter-manufacturer-image-width">{{ entry_image_width }}</label>
+                  <div class="col-xs-9">
+                    <input class="form-control" id="input-mz-filter-manufacturer-image-width" placeholder="{{ entry_image_width }}" type="number" name="filter[manufacturer][image_width]" value="{{ filter['manufacturer']['image_width'] }}" >
+                  </div>
+                </div>
+                
+                <!--Image height-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-mz-filter-manufacturer-image-height">{{ entry_image_height }}</label>
+                  <div class="col-xs-9">
+                    <input class="form-control" id="input-mz-filter-manufacturer-image-height" placeholder="{{ entry_image_height }}" type="number" name="filter[manufacturer][image_height]" value="{{ filter['manufacturer']['image_height'] }}" >
+                  </div>
+                </div>
+              </div>
+              
+              <!--Search-->
+              <div id="tab-mz-filter-search" class="tab-pane fade">
+                <!--Status-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_status }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (filter['search']['status']) %} 
+                      <input type="radio" name="filter[search][status]" value="1" id="input-mz-filter-search-enabled" checked>
+                      <label for="input-mz-filter-search-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="filter[search][status]" value="0" id="input-mz-filter-search-disabled">
+                      <label for="input-mz-filter-search-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="filter[search][status]" value="1" id="input-mz-filter-search-enabled" >
+                      <label for="input-mz-filter-search-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="filter[search][status]" value="0" id="input-mz-filter-search-disabled" checked>
+                      <label for="input-mz-filter-search-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                <!--Filter title-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_title }}</label>
+                  <div class="col-xs-9">
+                  {% for language in languages %} 
+                    <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                      <input class="form-control" type="text" name="filter[search][title][{{ language['language_id'] }}]" value="{{ filter['search']['title'][language['language_id']] is defined?filter['search']['title'][language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+                    </div>
+                  {% endfor %} 
+                  </div>
+                </div>
+                <!--Filter placeholder-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_placeholder }}</label>
+                  <div class="col-xs-9">
+                  {% for language in languages %} 
+                    <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" placeholder="{{ language['name'] }}" /></span>
+                      <input class="form-control" type="text" name="filter[search][placeholder][{{ language['language_id'] }}]" value="{{ filter['search']['placeholder'][language['language_id']] is defined?filter['search']['placeholder'][language['language_id']]:'' }}" placeholder="{{ entry_placeholder }}" >
+                    </div>
+                  {% endfor %} 
+                  </div>
+                </div>
+                <!-- description -->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_description }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (filter['search']['description']) %} 
+                      <input type="radio" name="filter[search][description]" value="1" id="input-mz-filter-search-description-enabled" checked>
+                      <label for="input-mz-filter-search-description-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="filter[search][description]" value="0" id="input-mz-filter-search-description-disabled">
+                      <label for="input-mz-filter-search-description-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="filter[search][description]" value="1" id="input-mz-filter-search-description-enabled" >
+                      <label for="input-mz-filter-search-description-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="filter[search][description]" value="0" id="input-mz-filter-search-description-disabled" checked>
+                      <label for="input-mz-filter-search-description-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                <!-- collapse -->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_collapse }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (filter['search']['collapse']) %} 
+                      <input type="radio" name="filter[search][collapse]" value="1" id="input-mz-filter-search-collapse-enabled" checked>
+                      <label for="input-mz-filter-search-collapse-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="filter[search][collapse]" value="0" id="input-mz-filter-search-collapse-disabled">
+                      <label for="input-mz-filter-search-collapse-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="filter[search][collapse]" value="1" id="input-mz-filter-search-collapse-enabled" >
+                      <label for="input-mz-filter-search-collapse-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="filter[search][collapse]" value="0" id="input-mz-filter-search-collapse-disabled" checked>
+                      <label for="input-mz-filter-search-collapse-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                <!--sort order-->
+                <div class="form-group required">
+                  <label class="col-xs-3 control-label" for="input-mz-filter-search-sort-order">{{ entry_sort_order }}</label>
+                  <div class="col-xs-9">
+                    <input class="form-control" id="input-mz-filter-search-sort-order" placeholder="{{ entry_sort_order }}" type="number" name="filter[search][sort_order]" value="{{ filter['search']['sort_order'] }}" >
+                  </div>
+                </div>
+              </div>
+              
+              <!--Stock status-->
+              <div id="tab-mz-filter-availability" class="tab-pane fade">
+                <!--Status-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_status }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (filter['availability']['status']) %} 
+                      <input type="radio" name="filter[availability][status]" value="1" id="input-mz-filter-availability-enabled" checked>
+                      <label for="input-mz-filter-availability-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="filter[availability][status]" value="0" id="input-mz-filter-availability-disabled">
+                      <label for="input-mz-filter-availability-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="filter[availability][status]" value="1" id="input-mz-filter-availability-enabled" >
+                      <label for="input-mz-filter-availability-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="filter[availability][status]" value="0" id="input-mz-filter-availability-disabled" checked>
+                      <label for="input-mz-filter-availability-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                <!--Filter title-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_title }}</label>
+                  <div class="col-xs-9">
+                  {% for language in languages %} 
+                    <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                      <input class="form-control" type="text" name="filter[availability][title][{{ language['language_id'] }}]" value="{{ filter['availability']['title'][language['language_id']] is defined?filter['availability']['title'][language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+                    </div>
+                  {% endfor %} 
+                  </div>
+                </div>
+                <!--sort order-->
+                <div class="form-group required">
+                  <label class="col-xs-3 control-label" for="input-mz-filter-availability-sort-order">{{ entry_sort_order }}</label>
+                  <div class="col-xs-9">
+                    <input class="form-control" id="input-mz-filter-availability-sort-order" placeholder="{{ entry_sort_order }}" type="number" name="filter[availability][sort_order]" value="{{ filter['availability']['sort_order'] }}" >
+                  </div>
+                </div>
+                <!-- collapse -->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_collapse }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (filter['availability']['collapse']) %} 
+                      <input type="radio" name="filter[availability][collapse]" value="1" id="input-mz-filter-availability-collapse-enabled" checked>
+                      <label for="input-mz-filter-availability-collapse-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="filter[availability][collapse]" value="0" id="input-mz-filter-availability-collapse-disabled">
+                      <label for="input-mz-filter-availability-collapse-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="filter[availability][collapse]" value="1" id="input-mz-filter-availability-collapse-enabled" >
+                      <label for="input-mz-filter-availability-collapse-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="filter[availability][collapse]" value="0" id="input-mz-filter-availability-collapse-disabled" checked>
+                      <label for="input-mz-filter-availability-collapse-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                <!-- stock_status -->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label"><span data-toggle="tooltip" title="{{ help_stock_status }}">{{ entry_stock_status }}</span></label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (filter['availability']['stock_status']) %} 
+                      <input type="radio" name="filter[availability][stock_status]" value="1" id="input-mz-filter-availability-stock-status-enabled" checked>
+                      <label for="input-mz-filter-availability-stock-status-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="filter[availability][stock_status]" value="0" id="input-mz-filter-availability-stock-status-disabled">
+                      <label for="input-mz-filter-availability-stock-status-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="filter[availability][stock_status]" value="1" id="input-mz-filter-availability-stock-status-enabled" >
+                      <label for="input-mz-filter-availability-stock-status-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="filter[availability][stock_status]" value="0" id="input-mz-filter-availability-stock-status-disabled" checked>
+                      <label for="input-mz-filter-availability-stock-status-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group stock_status">
+									<label class="col-xs-3 control-label">{{ entry_input_type }}</label>
+									<div class="col-xs-9">
+										<select name="filter[availability][input_type]" id="input-mz-filter-availability-input-type" class="form-control">
+											{% for input_type in input_types %} 
+												{% if (input_type['code'] == filter['availability']['input_type']) %} 
+												<option value="{{ input_type['code'] }}" selected="selected">{{ input_type['text'] }}</option>
+												{% else %} 
+												<option value="{{ input_type['code'] }}">{{ input_type['text'] }}</option>
+												{% endif %} 
+											{% endfor %} 
+										</select>
+									</div>
+								</div>
+              </div>
+              
+              <!--Discount-->
+              <div id="tab-mz-filter-discount" class="tab-pane fade">
+                <div class="alert alert-info"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ help_discount }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+                <!--Status-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_status }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (filter['discount']['status']) %} 
+                      <input type="radio" name="filter[discount][status]" value="1" id="input-mz-filter-discount-enabled" checked>
+                      <label for="input-mz-filter-discount-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="filter[discount][status]" value="0" id="input-mz-filter-discount-disabled">
+                      <label for="input-mz-filter-discount-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="filter[discount][status]" value="1" id="input-mz-filter-discount-enabled" >
+                      <label for="input-mz-filter-discount-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="filter[discount][status]" value="0" id="input-mz-filter-discount-disabled" checked>
+                      <label for="input-mz-filter-discount-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                <!--Filter title-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_title }}</label>
+                  <div class="col-xs-9">
+                  {% for language in languages %} 
+                    <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                      <input class="form-control" type="text" name="filter[discount][title][{{ language['language_id'] }}]" value="{{ filter['discount']['title'][language['language_id']] is defined?filter['discount']['title'][language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+                    </div>
+                  {% endfor %} 
+                  </div>
+                </div>
+                <!--sort order-->
+                <div class="form-group required">
+                  <label class="col-xs-3 control-label" for="input-mz-filter-discount-sort-order">{{ entry_sort_order }}</label>
+                  <div class="col-xs-9">
+                    <input class="form-control" id="input-mz-filter-discount-sort-order" placeholder="{{ entry_sort_order }}" type="number" name="filter[discount][sort_order]" value="{{ filter['discount']['sort_order'] }}" >
+                  </div>
+                </div>
+                <!-- collapse -->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_collapse }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (filter['discount']['collapse']) %} 
+                      <input type="radio" name="filter[discount][collapse]" value="1" id="input-mz-filter-discount-collapse-enabled" checked>
+                      <label for="input-mz-filter-discount-collapse-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="filter[discount][collapse]" value="0" id="input-mz-filter-discount-collapse-disabled">
+                      <label for="input-mz-filter-discount-collapse-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="filter[discount][collapse]" value="1" id="input-mz-filter-discount-collapse-enabled" >
+                      <label for="input-mz-filter-discount-collapse-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="filter[discount][collapse]" value="0" id="input-mz-filter-discount-collapse-disabled" checked>
+                      <label for="input-mz-filter-discount-collapse-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!--Rating-->
+              <div id="tab-mz-filter-rating" class="tab-pane fade">
+                <!--Status-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-mz-filter-rating-status">{{ entry_status }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (filter['rating']['status']) %} 
+                      <input type="radio" name="filter[rating][status]" value="1" id="input-mz-filter-rating-enabled" checked>
+                      <label for="input-mz-filter-rating-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="filter[rating][status]" value="0" id="input-mz-filter-rating-disabled">
+                      <label for="input-mz-filter-rating-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="filter[rating][status]" value="1" id="input-mz-filter-rating-enabled" >
+                      <label for="input-mz-filter-rating-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="filter[rating][status]" value="0" id="input-mz-filter-rating-disabled" checked>
+                      <label for="input-mz-filter-rating-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                <!--Filter title-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_title }}</label>
+                  <div class="col-xs-9">
+                  {% for language in languages %} 
+                    <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                      <input class="form-control" type="text" name="filter[rating][title][{{ language['language_id'] }}]" value="{{ filter['rating']['title'][language['language_id']] is defined?filter['rating']['title'][language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+                    </div>
+                  {% endfor %} 
+                  </div>
+                </div>
+                <!--sort order-->
+                <div class="form-group required">
+                  <label class="col-xs-3 control-label" for="input-mz-filter-rating-sort-order">{{ entry_sort_order }}</label>
+                  <div class="col-xs-9">
+                    <input class="form-control" id="input-mz-filter-rating-sort-order" placeholder="{{ entry_sort_order }}" type="number" name="filter[rating][sort_order]" value="{{ filter['rating']['sort_order'] }}" >
+                  </div>
+                </div>
+                <!--collapse-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_collapse }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (filter['rating']['collapse']) %} 
+                      <input type="radio" name="filter[rating][collapse]" value="1" id="input-mz-filter-rating-collapse-enabled" checked>
+                      <label for="input-mz-filter-rating-collapse-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="filter[rating][collapse]" value="0" id="input-mz-filter-rating-collapse-disabled">
+                      <label for="input-mz-filter-rating-collapse-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="filter[rating][collapse]" value="1" id="input-mz-filter-rating-collapse-enabled" >
+                      <label for="input-mz-filter-rating-collapse-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="filter[rating][collapse]" value="0" id="input-mz-filter-rating-collapse-disabled" checked>
+                      <label for="input-mz-filter-rating-collapse-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!--Filter-->
+              <div id="tab-mz-filter-filter" class="tab-pane fade">
+                <div class="alert alert-info"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ help_filter }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+                <!--Status-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-mz-filter-filter-status">{{ entry_status }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (filter['filter']['status']) %} 
+                      <input type="radio" name="filter[filter][status]" value="1" id="input-mz-filter-filter-enabled" checked>
+                      <label for="input-mz-filter-filter-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="filter[filter][status]" value="0" id="input-mz-filter-filter-disabled">
+                      <label for="input-mz-filter-filter-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="filter[filter][status]" value="1" id="input-mz-filter-filter-enabled" >
+                      <label for="input-mz-filter-filter-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="filter[filter][status]" value="0" id="input-mz-filter-filter-disabled" checked>
+                      <label for="input-mz-filter-filter-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- show search-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="list-mz-filter-filter-list-type">{{ entry_show_search }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% for search_status in list_search_status %} 
+                        {% if (search_status['code'] == filter['filter']['search']) %} 
+                        <input type="radio" name="filter[filter][search]" value="{{ search_status['code'] }}" id="input-mz-filter-filter-list-type-{{ search_status['code'] }}" checked>
+                        <label for="input-mz-filter-filter-list-type-{{ search_status['code'] }}" >{{ search_status['text'] }}</label>
+                        {% else %} 
+                        <input type="radio" name="filter[filter][search]" value="{{ search_status['code'] }}" id="input-mz-filter-filter-list-type-{{ search_status['code'] }}">
+                        <label for="input-mz-filter-filter-list-type-{{ search_status['code'] }}" >{{ search_status['text'] }}</label>
+                        {% endif %} 
+                      {% endfor %} 
+                    </div>
+                  </div>
+                </div>
+                
+                <!--Require category-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label"><span data-toggle="tooltip" title="{{ help_require_category }}">{{ entry_require_category }}</span></label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (filter['filter']['require_category']) %} 
+                      <input type="radio" name="filter[filter][require_category]" value="1" id="input-mz-filter-filter-require-category-enabled" checked>
+                      <label for="input-mz-filter-filter-require-category-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="filter[filter][require_category]" value="0" id="input-mz-filter-filter-require-category-disabled">
+                      <label for="input-mz-filter-filter-require-category-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="filter[filter][require_category]" value="1" id="input-mz-filter-filter-require-category-enabled" >
+                      <label for="input-mz-filter-filter-require-category-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="filter[filter][require_category]" value="0" id="input-mz-filter-filter-require-category-disabled" checked>
+                      <label for="input-mz-filter-filter-require-category-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                
+                <!--collapse by default-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label">{{ entry_collapse }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (filter['filter']['collapse']) %} 
+                      <input type="radio" name="filter[filter][collapse]" value="1" id="input-mz-filter-filter-collapse-enabled" checked>
+                      <label for="input-mz-filter-filter-collapse-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="filter[filter][collapse]" value="0" id="input-mz-filter-filter-collapse-disabled">
+                      <label for="input-mz-filter-filter-collapse-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="filter[filter][collapse]" value="1" id="input-mz-filter-filter-collapse-enabled" >
+                      <label for="input-mz-filter-filter-collapse-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="filter[filter][collapse]" value="0" id="input-mz-filter-filter-collapse-disabled" checked>
+                      <label for="input-mz-filter-filter-collapse-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!--Custom-->
+              <div id="tab-mz-filter-custom" class="tab-pane fade">
+                <div class="alert alert-info"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ help_custom }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+                <!--Status-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-mz-filter-custom-status">{{ entry_status }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (filter['custom']['status']) %} 
+                      <input type="radio" name="filter[custom][status]" value="1" id="input-mz-filter-custom-enabled" checked>
+                      <label for="input-mz-filter-custom-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="filter[custom][status]" value="0" id="input-mz-filter-custom-disabled">
+                      <label for="input-mz-filter-custom-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="filter[custom][status]" value="1" id="input-mz-filter-custom-enabled" >
+                      <label for="input-mz-filter-custom-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="filter[custom][status]" value="0" id="input-mz-filter-custom-disabled" checked>
+                      <label for="input-mz-filter-custom-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- show search-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="list-mz-filter-custom-list-type">{{ entry_show_search }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% for search_status in list_search_status %} 
+                        {% if (search_status['code'] == filter['custom']['search']) %} 
+                        <input type="radio" name="filter[custom][search]" value="{{ search_status['code'] }}" id="input-mz-filter-custom-list-type-{{ search_status['code'] }}" checked>
+                        <label for="input-mz-filter-custom-list-type-{{ search_status['code'] }}" >{{ search_status['text'] }}</label>
+                        {% else %} 
+                        <input type="radio" name="filter[custom][search]" value="{{ search_status['code'] }}" id="input-mz-filter-custom-list-type-{{ search_status['code'] }}">
+                        <label for="input-mz-filter-custom-list-type-{{ search_status['code'] }}" >{{ search_status['text'] }}</label>
+                        {% endif %} 
+                      {% endfor %} 
+                    </div>
+                  </div>
+                </div>
+                
+                <!--Require category-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label"><span data-toggle="tooltip" title="{{ help_require_category }}">{{ entry_require_category }}</span></label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% if (filter['custom']['require_category']) %} 
+                      <input type="radio" name="filter[custom][require_category]" value="1" id="input-mz-filter-custom-require-category-enabled" checked>
+                      <label for="input-mz-filter-custom-require-category-enabled" >{{ text_enabled }}</label>
+                      <input type="radio" name="filter[custom][require_category]" value="0" id="input-mz-filter-custom-require-category-disabled">
+                      <label for="input-mz-filter-custom-require-category-disabled">{{ text_disabled }}</label>
+                      {% else %} 
+                      <input type="radio" name="filter[custom][require_category]" value="1" id="input-mz-filter-custom-require-category-enabled" >
+                      <label for="input-mz-filter-custom-require-category-enabled">{{ text_enabled }}</label>
+                      <input type="radio" name="filter[custom][require_category]" value="0" id="input-mz-filter-custom-require-category-disabled" checked>
+                      <label for="input-mz-filter-custom-require-category-disabled" >{{ text_disabled }}</label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+              </div>
+                
+            </div>
+          </div>
+        </div>
+      </div> <!-- // Filter -->
+      
+      <!--Layout-->
+      <div id="tab-mz-layout" class="tab-pane fade">
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_general }}</div>
+          <div class="panel-body">
+            <!--collapse by default-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_collapse }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% for collapsed_type in list_collapsed %} 
+                    {% if (collapsed_type['code'] == collapsed) %} 
+                    <input type="radio" name="collapsed" value="{{ collapsed_type['code'] }}" id="input-collapsed-{{ collapsed_type['code'] }}" checked>
+                    <label for="input-collapsed-{{ collapsed_type['code'] }}" >{{ collapsed_type['text'] }}</label>
+                    {% else %} 
+                    <input type="radio" name="collapsed" value="{{ collapsed_type['code'] }}" id="input-collapsed-{{ collapsed_type['code'] }}">
+                    <label for="input-collapsed-{{ collapsed_type['code'] }}" >{{ collapsed_type['text'] }}</label>
+                    {% endif %} 
+                  {% endfor %} 
+                </div>
+              </div>
+            </div>
+            
+            <!--Ajax-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_ajax }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (ajax) %} 
+                  <input type="radio" name="ajax" value="1" id="input-ajax-enabled" checked>
+                  <label for="input-ajax-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="ajax" value="0" id="input-ajax-disabled">
+                  <label for="input-ajax-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="ajax" value="1" id="input-ajax-enabled" >
+                  <label for="input-ajax-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="ajax" value="0" id="input-ajax-disabled" checked>
+                  <label for="input-ajax-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+            
+            <!--Reset all-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_reset_all }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (reset_all) %} 
+                  <input type="radio" name="reset_all" value="1" id="input-reset-all-enabled" checked>
+                  <label for="input-reset-all-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="reset_all" value="0" id="input-reset-all-disabled">
+                  <label for="input-reset-all-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="reset_all" value="1" id="input-reset-all-enabled" >
+                  <label for="input-reset-all-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="reset_all" value="0" id="input-reset-all-disabled" checked>
+                  <label for="input-reset-all-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+            
+            <!--Reset per group-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_reset_group }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (reset_group) %} 
+                  <input type="radio" name="reset_group" value="1" id="input-reset-group-enabled" checked>
+                  <label for="input-reset-group-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="reset_group" value="0" id="input-reset-group-disabled">
+                  <label for="input-reset-group-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="reset_group" value="1" id="input-reset-group-enabled" >
+                  <label for="input-reset-group-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="reset_group" value="0" id="input-reset-group-disabled" checked>
+                  <label for="input-reset-group-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_filter_value }}</div>
+          <div class="panel-body">
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_overflow }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% for overflow_type in overflow_types %} 
+                    {% if (overflow_type['code'] == overflow) %} 
+                    <input type="radio" name="overflow" value="{{ overflow_type['code'] }}" id="input-overflow-{{ overflow_type['code'] }}" checked>
+                    <label for="input-overflow-{{ overflow_type['code'] }}" >{{ overflow_type['text'] }}</label>
+                    {% else %} 
+                    <input type="radio" name="overflow" value="{{ overflow_type['code'] }}" id="input-overflow-{{ overflow_type['code'] }}" >
+                    <label for="input-overflow-{{ overflow_type['code'] }}">{{ overflow_type['text'] }}</label>
+                    {% endif %} 
+                  {% endfor %} 
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_sort }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% for sort_type in list_sort %} 
+                    {% if (sort_type['code'] == sort_by) %} 
+                    <input type="radio" name="sort_by" value="{{ sort_type['code'] }}" id="input-sort-{{ sort_type['code'] }}" checked>
+                    <label for="input-sort-{{ sort_type['code'] }}" >{{ sort_type['text'] }}</label>
+                    {% else %} 
+                    <input type="radio" name="sort_by" value="{{ sort_type['code'] }}" id="input-sort-{{ sort_type['code'] }}" >
+                    <label for="input-sort-{{ sort_type['code'] }}">{{ sort_type['text'] }}</label>
+                    {% endif %} 
+                  {% endfor %} 
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label"><span data-toggle="tooltip" title="{{ help_hide_zero_filter }}">{{ entry_hide_zero_filter }}</span></label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (hide_zero_filter) %} 
+                  <input type="radio" name="hide_zero_filter" value="1" id="input-zero-filter-hide" checked>
+                  <label for="input-zero-filter-hide" >{{ text_hide }}</label>
+                  <input type="radio" name="hide_zero_filter" value="0" id="input-zero-filter-disabled">
+                  <label for="input-zero-filter-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="hide_zero_filter" value="1" id="input-zero-filter-hide" >
+                  <label for="input-zero-filter-hide">{{ text_hide }}</label>
+                  <input type="radio" name="hide_zero_filter" value="0" id="input-zero-filter-disabled" checked>
+                  <label for="input-zero-filter-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <form action="{{ import }}" enctype="multipart/form-data" method="post" id="form-import" style="display: none;"><input type="file" accept=".json" name="file" /></form>
+<script>
+$('input[name="filter[availability][stock_status]"]').on('change', function(){
+	if($(this).val() == 1){
+		$('.stock_status').removeClass('hide');
+	} else {
+    $('.stock_status').addClass('hide');
+  }
+});
+$('input[name="filter[availability][stock_status]"]:checked').trigger('change');
+
+$('#button-import').on('click', function(){
+    $('#form-import input[name=\'file\']').val('').trigger('click');
+    
+    if (typeof timer != 'undefined') {
+    	clearInterval(timer);
+    }
+
+    timer = setInterval(function() {
+        if ($('#form-import input[name=\'file\']').val() != '') {
+            clearInterval(timer);
+            $('#form-import').submit();
+        }
+    }, 500);
+    
+});
+{#Confirm before delete module#}
+$('#button-delete').on('click', function(){
+    if(confirm("{{ text_confirm }}")){
+        return true;
+    } else {
+        return false;
+    }
+});
+</script>
+</div>
+{{ mz_footer }}

@@ -1,0 +1,23 @@
+{# 
+Here is a file location of category component
+
+## Category specific component
+- catalog/view/theme/mz_poco/template/product/category/*
+
+## common component across the page including category
+- catalog/view/theme/mz_poco/template/product/common/*
+
+Do following to add custom twig code in category page
+Go to admin -> extension -> mazatheme -> layout builder -> category
+and use "HTML/Twig/PHP" widget to add your own twig code
+You can use variables from product/category controller
+
+#}
+{{ header }}
+
+{% if mz_component %}
+<script>$('body').prepend('{{ mz_component|e("js") }}');</script>
+{% endif %}
+
+<div id="product-category" class="content">{{ mz_content }}</div>
+{{ footer }}

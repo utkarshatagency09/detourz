@@ -1,0 +1,73 @@
+{# 
+Here is a file location of manufacturer component
+
+## manufacturer specific component
+- catalog/view/theme/mz_poco/template/product/manufacturer/*
+
+## common component across the page including manufacturer page
+- catalog/view/theme/mz_poco/template/product/common/*
+
+Do following to add custom twig code in manufacturer page
+Go to admin -> extension -> mazatheme -> layout builder -> manufacturer products
+and use "HTML/Twig/PHP" widget to add your own twig code
+You can use variables from product/manufacturer controller
+
+#}
+{{ header }}
+
+{% if mz_component %}
+<script>$('body').prepend('{{ mz_component|e("js") }}');</script>
+{% endif %}
+
+<div id="product-manufacturer" class="content">{{ mz_content }}</div>
+
+{% if oc_config.get('maza_notification_status') and oc_config.get('maza_notification_manufacturer') %}<script>
+$('[data-toggle-notifyme]').on('click', function(e) {
+    $(e.currentTarget).tooltip('hide');
+
+	if($(this).hasClass('subscribed')){
+		var action = 'unsubscribe';
+	} else {
+		var action = 'subscribe';
+	}
+    
+    $.ajax({
+		url: 'index.php?route=extension/maza/notification/' + action,
+		type: 'post',
+		data: 'manufacturer_id={{ manufacturer_id }}',
+		dataType: 'json',
+		beforeSend: function() {
+			$(e.currentTarget).prop('disabled', 1);
+		},
+		complete: function() {
+			$(e.currentTarget).prop('disabled', 0);
+		},
+		success: function(json) {
+			if (json['toast']) {
+				var toast =  $(json['toast']);
+								
+				$('#notification-box-top').append(toast);
+				toast.toast('show');
+								
+				// Dispose toast
+				toast.on('hidden.bs.toast', function(){ toast.remove(); });
+			}
+
+			if(json['success']) {
+				$(e.currentTarget).children('i').addClass('d-none');
+
+				if(action == 'subscribe'){
+					$(e.currentTarget).attr('data-original-title', '{{ button_notifyme_unsubscribe|e('js') }}').children('.far.fa-bell').removeClass('d-none');
+				} else {
+					$(e.currentTarget).attr('data-original-title', '{{ button_notifyme_subscribe|e('js') }}').children('.fa-bell-slash').removeClass('d-none');
+				}
+				$(e.currentTarget).toggleClass('subscribed');
+			}
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+});
+</script>{% endif %}
+{{ footer }}

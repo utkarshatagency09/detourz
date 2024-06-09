@@ -1,0 +1,39 @@
+%headings-font{
+    font-family: $headings-font-family;
+}
+
+%bottom-space{
+    margin-bottom: $grid-gutter-width * 0.5;
+}
+
+.content{
+    &-extra{
+        display: flex;
+        flex-wrap: wrap;
+        
+        .author{
+            font-weight: 600;
+            text-decoration: none;
+        }
+    }
+    &-image, &-share, &-description, &-tags, &-author, &-comment-form, &-comment-list{
+        @extend %bottom-space;
+    }
+}
+
+// Comments
+.comments-list{
+    li.media{
+        &:last-of-type{
+            margin-bottom: 0 !important;
+        }
+    }
+    
+    .reply-form{
+        margin-top: map-get($spacers, 2);
+    }
+    
+    .reply{
+        font-size: 0.857em;
+    }
+}

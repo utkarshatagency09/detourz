@@ -1,0 +1,5 @@
+@each $state, $value in $theme-colors {
+    .btn-close-#{$state}-contrast {
+        background-image: btnClose($value);
+    }
+}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<modification>
+    <name>Maza filter</name>
+    <code>maza_filter</code>
+    <version>1.0</version>
+    <author>TemplateMaza.com</author>
+    <link>https://pocotheme.com//</link>
+    <!--Catalog-->
+    <!-- remove this ocmod in opencart 4 -->
+    <file path="catalog/controller/product/special.php">
+        <operation>
+                <search><![CDATA[getProductSpecials(]]></search>
+                <add position="replace"><![CDATA[getProducts(]]></add>
+        </operation>
+        <operation>
+                <search><![CDATA[getTotalProductSpecials(]]></search>
+                <add position="replace"><![CDATA[getTotalProducts($filter_data]]></add>
+        </operation>
+    </file>
+    <file path="catalog/controller/product/{category,search,manufacturer,special}.php|catalog/controller/extension/maza/products.php">
+        <operation>
+                <search><![CDATA[getProducts(]]></search>
+                <add position="before" offset='2'><![CDATA[
+                // Flexi filter
+                $filter_data = $this->load->controller('extension/module/mz_filter/filter_data', $filter_data);
+                ]]></add>
+        </operation>
+        <operation>
+                <search><![CDATA[$url = '';]]></search>
+                <add position="after"><![CDATA[
+                // Flexi filter
+                $url .= $this->load->controller('extension/module/mz_filter/url', $url);
+                ]]></add>
+        </operation>
+    </file>
+</modification>

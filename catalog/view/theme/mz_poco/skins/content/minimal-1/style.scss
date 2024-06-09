@@ -1,0 +1,36 @@
+// Abstracts
+
+// Base
+@import "skins/content/minimal-1/base/typography";
+
+// Components
+@import "skins/content/minimal-1/components/nav";
+@import "skins/content/minimal-1/components/pagination";
+@import "skins/content/minimal-1/components/breadcrumb";
+@import "skins/content/minimal-1/components/products";
+@import "skins/content/minimal-1/components/articles";
+@import "skins/content/minimal-1/components/testimonial";
+@import "skins/content/minimal-1/components/form";
+@import "skins/content/minimal-1/components/product_label";
+
+// Design block
+@import "skins/content/minimal-1/components/designs/image";
+@import "skins/content/minimal-1/components/designs/menu";
+
+// Widgets
+@import "skins/content/minimal-1/components/widgets/countdown";
+@import "skins/content/minimal-1/components/widgets/contact_us";
+@import "skins/content/megastore-1/components/widgets/gallery";
+@import "skins/content/minimal-1/components/widgets/total";
+
+// Modules
+@import "skins/content/minimal-1/components/modules/tab-listing";
+@import "skins/content/minimal-1/components/modules/brand";
+@import "skins/content/minimal-1/components/modules/category-wall";
+@import "skins/content/minimal-1/components/modules/filter";
+
+// page
+@import "skins/content/minimal-1/page/category";
+@import "skins/content/minimal-1/page/product";
+@import "skins/content/minimal-1/page/article";
+@import "skins/content/megastore-1/page/checkout";

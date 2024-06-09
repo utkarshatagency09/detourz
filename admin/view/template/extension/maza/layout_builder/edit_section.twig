@@ -1,0 +1,588 @@
+<form id="edit-section-form" class="form-horizontal row">
+  <div class="tab-content">
+    <!--setting-->
+    <div id="tab-section-edit-setting" class="tab-pane active">
+      <div class="col-xs-12">
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#tab-edit-section-status" data-toggle="tab">{{ tab_status }}</a></li>
+          <li><a href="#tab-edit-section-layout" data-toggle="tab">{{ tab_layout }}</a></li>
+          <li><a href="#tab-edit-section-collapsible" data-toggle="tab">{{ tab_collapsible }}</a></li>
+        </ul>
+        <div class="tab-content">
+          <div id="tab-edit-section-status" class="tab-pane active">
+            <!--Status-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-edit-section-status">{{ entry_status }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (section_status) %} 
+                  <input type="radio" name="section_status" value="1" id="input-section-status-enabled" checked>
+                  <label for="input-section-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="section_status" value="0" id="input-section-status-disabled">
+                  <label for="input-section-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="section_status" value="1" id="input-section-status-enabled" >
+                  <label for="input-section-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="section_status" value="0" id="input-section-status-disabled" checked>
+                  <label for="input-section-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+            <!--Customer-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_customer }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% for type in status_customers %} 
+                    {% if (section_status_customer == type['code']) %} 
+                    <input type="radio" name="section_status_customer" value="{{ type['code'] }}" id="input-edit-section-status-customer-{{ type['code'] }}" checked>
+                    <label for="input-edit-section-status-customer-{{ type['code'] }}" >{{ type['name'] }}</label>
+                    {% else %} 
+                    <input type="radio" name="section_status_customer" value="{{ type['code'] }}" id="input-edit-section-status-customer-{{ type['code'] }}">
+                    <label for="input-edit-section-status-customer-{{ type['code'] }}" >{{ type['name'] }}</label>
+                    {% endif %} 
+                  {% endfor %} 
+                </div>
+              </div>
+            </div>
+            <!--Customer group-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-edit-section-status-customer-group">{{ entry_customer_group }}</label>
+              <div class="col-xs-9">
+                <select name="section_status_customer_group" id="input-edit-section-status-customer-group" class="form-control">
+                  <option value="0">{{ text_all }}</option>
+                  {% for customer_group in status_customer_groups %} 
+                    {% if (section_status_customer_group == customer_group['customer_group_id']) %} 
+                    <option value="{{ customer_group['customer_group_id'] }}" selected="selected">{{ customer_group['name'] }}</option>
+                    {% else %} 
+                    <option value="{{ customer_group['customer_group_id'] }}">{{ customer_group['name'] }}</option>
+                    {% endif %} 
+                  {% endfor %} 
+                </select>
+              </div>
+            </div>
+            <!-- status date timespan-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label"><span data-toggle="tooltip" title="{{ help_timespan }}">{{ entry_timespan }}</span></label>
+              <div class="col-xs-9">
+                <div class="row">
+                  <div class="col-xs-6">
+                    <div class="input-group datetime">
+                      <span class="input-group-addon">{{ text_from }}</span>
+                      <input type="text" name="section_status_date_start" value="{{ section_status_date_start }}" placeholder="{{ text_date_start }}" data-date-format="YYYY-MM-DD HH:mm" id="input-edit-section-status-date-start" class="form-control" />
+                      <span class="input-group-btn"><button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button></span>
+                    </div>
+                  </div>
+                  <div class="col-xs-6">
+                    <div class="input-group datetime">
+                      <span class="input-group-addon">{{ text_to }}</span>
+                      <input type="text" name="section_status_date_end" value="{{ section_status_date_end }}" placeholder="{{ text_date_end }}" data-date-format="YYYY-MM-DD HH:mm" id="input-edit-section-status-date-end" class="form-control" />
+                      <span class="input-group-btn"><button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+            
+          <div id="tab-edit-section-layout" class="tab-pane">
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_type }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% for type in section_types %} 
+                    {% if (section_type == type['code']) %} 
+                    <input type="radio" name="section_type" value="{{ type['code'] }}" id="input-edit-section-type-{{ type['code'] }}" checked>
+                    <label for="input-edit-section-type-{{ type['code'] }}" >{{ type['name'] }}</label>
+                    {% else %} 
+                    <input type="radio" name="section_type" value="{{ type['code'] }}" id="input-edit-section-type-{{ type['code'] }}">
+                    <label for="input-edit-section-type-{{ type['code'] }}" >{{ type['name'] }}</label>
+                    {% endif %} 
+                  {% endfor %} 
+                </div>
+              </div>
+            </div>
+
+            {# Sticky #}
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_sticky }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% for sticky_value in sticky_values %} 
+                    {% if (section_sticky == sticky_value['id']) %} 
+                    <input type="radio" name="section_sticky" value="{{ sticky_value['id'] }}" id="input-edit-section-sticky-{{ sticky_value['id'] }}" checked>
+                    <label for="input-edit-section-sticky-{{ sticky_value['id'] }}" >{{ sticky_value['name'] }}</label>
+                    {% else %} 
+                    <input type="radio" name="section_sticky" value="{{ sticky_value['id'] }}" id="input-edit-section-sticky-{{ sticky_value['id'] }}">
+                    <label for="input-edit-section-sticky-{{ sticky_value['id'] }}" >{{ sticky_value['name'] }}</label>
+                    {% endif %} 
+                  {% endfor %} 
+                </div>
+              </div>
+            </div>
+
+            <!--section custom-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-section-custom-class">{{ entry_custom_class }}</label>
+              <div class="col-xs-9">
+                <input type="text" id="input-section-custom-class" name="section_custom_class" value="{{ section_custom_class }}" placeholder="{{ entry_custom_class }}" class="form-control" />
+              </div>
+            </div>
+
+            <!--section condition-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-section-condition"><span data-toggle="tooltip" title="{{ help_condition }}">{{ entry_condition }}</span></label>
+              <div class="col-xs-9">
+                <input type="text" id="input-section-condition" name="section_condition" value="{{ section_condition }}" placeholder="{{ entry_condition }}" class="form-control" />
+              </div>
+            </div>
+          </div>
+          <div id="tab-edit-section-collapsible" class="tab-pane">
+            <!--Unique id-->
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-edit-section-unique-id"><span data-toggle="tooltip" title="{{ help_unique_id }}">{{ entry_unique_id }}</span></label>
+              <div class="col-xs-9">
+                <input type="text" name="section_unique_id" value="{{ section_unique_id }}" placeholder="{{ entry_unique_id }}" id="input-edit-section-unique-id" class="form-control" />
+              </div>
+            </div>
+
+            <!--section collapsible-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-edit-section-collapsible">{{ entry_collapsible }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (section_collapsible) %} 
+                  <input type="radio" name="section_collapsible" value="1" id="input-section-collapsible-enabled" checked>
+                  <label for="input-section-collapsible-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="section_collapsible" value="0" id="input-section-collapsible-disabled">
+                  <label for="input-section-collapsible-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="section_collapsible" value="1" id="input-section-collapsible-enabled" >
+                  <label for="input-section-collapsible-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="section_collapsible" value="0" id="input-section-collapsible-disabled" checked>
+                  <label for="input-section-collapsible-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+
+            <!--section collapse by default-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-edit-section-collapsible-default">{{ entry_collapsible_default }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (section_collapsible_default) %} 
+                  <input type="radio" name="section_collapsible_default" value="0" id="input-section-collapsible-default-hide">
+                  <label for="input-section-collapsible-default-hide" >{{ text_hide }}</label>
+                  <input type="radio" name="section_collapsible_default" value="1" id="input-section-collapsible-default-show" checked>
+                  <label for="input-section-collapsible-default-show">{{ text_show }}</label>
+                  {% else %} 
+                  <input type="radio" name="section_collapsible_default" value="0" id="input-section-collapsible-default-hide" checked>
+                  <label for="input-section-collapsible-default-hide">{{ text_hide }}</label>
+                  <input type="radio" name="section_collapsible_default" value="1" id="input-section-collapsible-default-show">
+                  <label for="input-section-collapsible-default-show" >{{ text_show }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    
+    <!--style-->
+    <div id="tab-section-edit-style" class="tab-pane">
+      <div class="tab-content">
+        {% for screen_size in screen_sizes %} 
+        {% set screen_data = attribute(_context, screen_size) %}
+        <div id="tab-section-edit-screen-{{ screen_size }}" class="tab-pane{{ screen_size == 'xl'?' active':'' }}">
+          <div class="col-xs-9">
+            <div class="tab-content">
+              <div id="tab-section-layout-{{ screen_size }}" class="tab-pane active">
+                <!--Section margin-->
+                <div class="form-group">
+                  <label class="col-xs-2 control-label" for="input-edit-section-margin-{{ screen_size }}">{{ text_margin }}</label>
+                  <div class="col-xs-10">
+                    <div class="input-group">
+                      <span class="input-group-addon">{{ text_top }}</span>
+                      <input type="number" name="{{ screen_size }}[section_margin_top]" value="{{ screen_data['section_margin_top'] }}" id="input-edit-section-margin-top-{{ screen_size }}" placeholder="0px" class="form-control" />
+    <!--                  <span class="input-group-addon">{# echo $text_right #}</span>
+                      <input type="number" name="{# echo $screen_size #}[section_margin_right]" value="{# echo ${$screen_size}['section_margin_right'] #}" id="input-edit-section-margin-right-{# echo $screen_size #}" placeholder="0px" class="form-control" />-->
+                      <span class="input-group-addon">{{ text_bottom }}</span>
+                      <input type="number" name="{{ screen_size }}[section_margin_bottom]" value="{{ screen_data['section_margin_bottom'] }}" id="input-edit-section-margin-bottom-{{ screen_size }}" placeholder="0px" class="form-control" />
+    <!--                  <span class="input-group-addon">{# echo $text_left #}</span>
+                      <input type="number" name="{# echo $screen_size #}[section_margin_left]" value="{# echo ${$screen_size}['section_margin_left'] #}" id="input-edit-section-margin-left-{# echo $screen_size #}" placeholder="0px" class="form-control" />-->
+                    </div>
+                  </div>
+                </div>
+
+                <!--Section padding-->
+                <div class="form-group">
+                  <label class="col-xs-2 control-label" for="input-edit-section-padding-{{ screen_size }}">{{ text_padding }}</label>
+                  <div class="col-xs-10">
+                    <div class="input-group">
+                      <span class="input-group-addon">{{ text_top }}</span>
+                      <input type="number" min="0" name="{{ screen_size }}[section_padding_top]" value="{{ screen_data['section_padding_top'] }}" id="input-edit-section-padding-top-{{ screen_size }}" placeholder="0px" class="form-control" />
+<!--                      <span class="input-group-addon">{# echo $text_right #}</span>
+                      <input type="number" min="0" name="{# echo $screen_size #}[section_padding_right]" value="{# echo ${$screen_size}['section_padding_right'] #}" id="input-edit-section-padding-right-{# echo $screen_size #}" placeholder="15px" class="form-control" />-->
+                      <span class="input-group-addon">{{ text_bottom }}</span>
+                      <input type="number" min="0" name="{{ screen_size }}[section_padding_bottom]" value="{{ screen_data['section_padding_bottom'] }}" id="input-edit-section-padding-bottom-{{ screen_size }}" placeholder="0px" class="form-control" />
+<!--                      <span class="input-group-addon">{# echo $text_left #}</span>
+                      <input type="number" min="0" name="{# echo $screen_size #}[section_padding_left]" value="{# echo ${$screen_size}['section_padding_left'] #}" id="input-edit-section-padding-left-{# echo $screen_size #}" placeholder="15px" class="form-control" />-->
+                    </div>
+                  </div>
+                </div>
+
+                <!--Section border-->
+                <div class="form-group">
+                  <label class="col-xs-2 control-label" for="input-edit-section-border-{{ screen_size }}">{{ text_border }}</label>
+                  <div class="col-xs-10">
+                    <div class="input-group">
+                      <span class="input-group-addon">{{ text_top }}</span>
+                      <input type="number" min="0" name="{{ screen_size }}[section_border_top]" value="{{ screen_data['section_border_top'] }}" id="input-edit-section-border-top-{{ screen_size }}" placeholder="0px" class="form-control" />
+                      <span class="input-group-addon">{{ text_right }}</span>
+                      <input type="number" min="0" name="{{ screen_size }}[section_border_right]" value="{{ screen_data['section_border_right'] }}" id="input-edit-section-border-right-{{ screen_size }}" placeholder="0px" class="form-control" />
+                      <span class="input-group-addon">{{ text_bottom }}</span>
+                      <input type="number" min="0" name="{{ screen_size }}[section_border_bottom]" value="{{ screen_data['section_border_bottom'] }}" id="input-edit-section-border-bottom-{{ screen_size }}" placeholder="0px" class="form-control" />
+                      <span class="input-group-addon">{{ text_left }}</span>
+                      <input type="number" min="0" name="{{ screen_size }}[section_border_left]" value="{{ screen_data['section_border_left'] }}" id="input-edit-section-border-left-{{ screen_size }}" placeholder="0px" class="form-control" />
+                    </div>
+                  </div>
+                </div>
+                
+                <!--section min_height-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-edit-section-min-height-{{ screen_size }}">{{ entry_min_height }}</label>
+                  <div class="col-xs-9">
+                    <input type="number" name="{{ screen_size }}[section_min_height]" value="{{ screen_data['section_min_height'] }}" id="input-edit-section-min-height-{{ screen_size }}" placeholder="0px" class="form-control" />
+                  </div>
+                </div>
+
+                
+              </div>
+                
+              <!--section flexbox-->
+              <div id="tab-section-flexbox-{{ screen_size }}" class="tab-pane">
+                <!--Section Flex direction-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-edit-section-flex-direction-{{ screen_size }}">{{ entry_flex_direction }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% for items in list_flex_direction %} 
+                        {% if (screen_data['section_flex_direction'] == items['code']) %} 
+                        <input type="radio" name="{{ screen_size }}[section_flex_direction]" value="{{ items['code'] }}" id="input-edit-section-flex-direction-{{ items['code'] }}-{{ screen_size }}" checked>
+                        <label for="input-edit-section-flex-direction-{{ items['code'] }}-{{ screen_size }}" >{{ items['name'] }}</label>
+                        {% else %} 
+                        <input type="radio" name="{{ screen_size }}[section_flex_direction]" value="{{ items['code'] }}" id="input-edit-section-flex-direction-{{ items['code'] }}-{{ screen_size }}">
+                        <label for="input-edit-section-flex-direction-{{ items['code'] }}-{{ screen_size }}" >{{ items['name'] }}</label>
+                        {% endif %} 
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+                
+                <!--Section justify content-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-edit-section-justify-content-{{ screen_size }}">{{ entry_justify_content }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% for items in list_justify_content %} 
+                        {% if (screen_data['section_justify_content'] == items['code']) %} 
+                        <input type="radio" name="{{ screen_size }}[section_justify_content]" value="{{ items['code'] }}" id="input-edit-section-justify-content-{{ items['code'] }}-{{ screen_size }}" checked>
+                        <label for="input-edit-section-justify-content-{{ items['code'] }}-{{ screen_size }}" >{{ items['name'] }}</label>
+                         {% else %} 
+                        <input type="radio" name="{{ screen_size }}[section_justify_content]" value="{{ items['code'] }}" id="input-edit-section-justify-content-{{ items['code'] }}-{{ screen_size }}">
+                        <label for="input-edit-section-justify-content-{{ items['code'] }}-{{ screen_size }}" >{{ items['name'] }}</label>
+                        {% endif %} 
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+                
+                <!--Section align items-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-edit-section-align-items-{{ screen_size }}">{{ entry_align_items }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% for items in list_align_items %} 
+                        {% if (screen_data['section_align_items'] == items['code']) %} 
+                        <input type="radio" name="{{ screen_size }}[section_align_items]" value="{{ items['code'] }}" id="input-edit-section-align-items-{{ items['code'] }}-{{ screen_size }}" checked>
+                        <label for="input-edit-section-align-items-{{ items['code'] }}-{{ screen_size }}" >{{ items['name'] }}</label>
+                         {% else %} 
+                        <input type="radio" name="{{ screen_size }}[section_align_items]" value="{{ items['code'] }}" id="input-edit-section-align-items-{{ items['code'] }}-{{ screen_size }}">
+                        <label for="input-edit-section-align-items-{{ items['code'] }}-{{ screen_size }}" >{{ items['name'] }}</label>
+                        {% endif %} 
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+                
+                <!--Section flex wrap-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-edit-section-flex-wrap-{{ screen_size }}">{{ entry_flex_wrap }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% for items in list_flex_wrap %} 
+                        {% if (screen_data['section_flex_wrap'] == items['code']) %} 
+                        <input type="radio" name="{{ screen_size }}[section_flex_wrap]" value="{{ items['code'] }}" id="input-edit-section-flex-wrap-{{ items['code'] }}-{{ screen_size }}" checked>
+                        <label for="input-edit-section-flex-wrap-{{ items['code'] }}-{{ screen_size }}" >{{ items['name'] }}</label>
+                        {% else %} 
+                        <input type="radio" name="{{ screen_size }}[section_flex_wrap]" value="{{ items['code'] }}" id="input-edit-section-flex-wrap-{{ items['code'] }}-{{ screen_size }}">
+                        <label for="input-edit-section-flex-wrap-{{ items['code'] }}-{{ screen_size }}" >{{ items['name'] }}</label>
+                        {% endif %} 
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              
+              <!--section text-->
+              <div id="tab-section-text-{{ screen_size }}" class="tab-pane">
+                <!--text align-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-edit-section-text-align-{{ screen_size }}">{{ entry_text_align }}</label>
+                  <div class="col-xs-9">
+                    <div class="mz-switch-field">
+                      {% for align in list_text_align %} 
+                        {% if (screen_data['section_text_align'] == align['code']) %} 
+                        <input type="radio" name="{{ screen_size }}[section_text_align]" value="{{ align['code'] }}" id="input-edit-section-text-align-{{ align['code'] }}-{{ screen_size }}" checked>
+                        <label for="input-edit-section-text-align-{{ align['code'] }}-{{ screen_size }}" >{{ align['name'] }}</label>
+                        {% else %} 
+                        <input type="radio" name="{{ screen_size }}[section_text_align]" value="{{ align['code'] }}" id="input-edit-section-text-align-{{ align['code'] }}-{{ screen_size }}">
+                        <label for="input-edit-section-text-align-{{ align['code'] }}-{{ screen_size }}" >{{ align['name'] }}</label>
+                        {% endif %} 
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+                  
+                <!--Section text color-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-edit-section-text-color-{{ screen_size }}">{{ text_text_color }}</label>
+                  <div class="col-xs-7">
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-edit-section-text-color-{{ screen_size }}" type="text" name="{{ screen_size }}[section_text_color]" value="{{ screen_data['section_text_color'] }}" placeholder="{{ help_hexadecimal_color }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                  </div>
+                </div>
+
+                <!--Section text size-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-edit-section-text-size-{{ screen_size }}"><span data-toggle="tooltip" title="{{ help_text_size }}">{{ text_text_size }}</span></label>
+                  <div class="col-xs-7">
+                    <input class="form-control large" id="input-edit-section-text-size-{{ screen_size }}" type="number" min="0" step="0.00001" name="{{ screen_size }}[section_text_size]" value="{{ screen_data['section_text_size'] }}" placeholder="1" /> 
+                  </div>
+                </div>
+              </div>
+
+              <!--section Color-->
+              <div id="tab-section-color-{{ screen_size }}" class="tab-pane">
+                <!--section background color-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-edit-section-background-color-{{ screen_size }}">{{ text_background_color }}</label>
+                  <div class="col-xs-7">
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-edit-section-background-color-{{ screen_size }}" type="text" name="{{ screen_size }}[section_background_color]" value="{{ screen_data['section_background_color'] }}" placeholder="{{ help_hexadecimal_color }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                  </div>
+                </div>
+
+                <!--section border color-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-edit-section-border-color-{{ screen_size }}">{{ text_border_color }}</label>
+                  <div class="col-xs-7">
+                    <div class="mz-colorpicker">
+                      <input class="form-control" id="input-edit-section-border-color-{{ screen_size }}" type="text" name="{{ screen_size }}[section_border_color]" value="{{ screen_data['section_border_color'] }}" placeholder="{{ help_hexadecimal_color }}" /> 
+                      <span class="mz-colorpicker-badge"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!--section background-->
+              <div id="tab-section-background-{{ screen_size }}" class="tab-pane">
+                <div class="row">
+                  <div class="col-xs-2">
+                    <ul class="list-group">
+                      {% for layer_code,background_image_info in screen_data['section_background_image'] %} 
+                        {% if (layer_code == 'layer_1') %} 
+                        <a class="list-group-item active" href="#tab-section-background-{{ layer_code }}-{{ screen_size }}" data-toggle="tab">{{ attribute(_context, 'text_' ~ layer_code) }}</a>
+                        {% else %} 
+                        <a class="list-group-item" href="#tab-section-background-{{ layer_code }}-{{ screen_size }}" data-toggle="tab">{{ attribute(_context, 'text_' ~ layer_code) }}</a>
+                        {% endif %}
+                      {% endfor %}
+                    </ul>
+                  </div>
+                  <div class="col-xs-10 tab-content">
+                    {% set round = 0 %}
+                    {% for layer_code,background_image_info in screen_data['section_background_image'] %} 
+                      <div id="tab-section-background-{{ layer_code }}-{{ screen_size }}" class="tab-pane fade {{ round == 0?'in active':constant('null') }}">
+
+                        <!--Background status-->
+                        <div class="form-group">
+                          <label class="col-xs-4 control-label">{{ entry_status }}</label>
+                          <div class="col-xs-8">
+                            <div class="mz-switch-field">
+                              {% for status in background_status %} 
+                                {% if (status['code'] == background_image_info['status']) %} 
+                                <input type="radio" name="{{ screen_size }}[section_background_image][{{ layer_code }}][status]" value="{{ status['code'] }}" id="input-section-background-image-status-{{ screen_size }}-{{ layer_code ~ '-' ~ status['code'] }}" checked="">
+                                <label class="mz-tab-toggle active" data-target="#tab-section-background-image-status-{{ screen_size }}-{{ layer_code ~ '-' ~ status['code'] }}" for="input-section-background-image-status-{{ screen_size }}-{{ layer_code ~ '-' ~ status['code'] }}" >{{ status['name'] }}</label>
+                                {% else %} 
+                                <input type="radio" name="{{ screen_size }}[section_background_image][{{ layer_code }}][status]" value="{{ status['code'] }}" id="input-section-background-image-status-{{ screen_size }}-{{ layer_code ~ '-' ~ status['code'] }}">
+                                <label class="mz-tab-toggle" data-target="#tab-section-background-image-status-{{ screen_size }}-{{ layer_code ~ '-' ~ status['code'] }}" for="input-section-background-image-status-{{ screen_size }}-{{ layer_code ~ '-' ~ status['code'] }}" >{{ status['name'] }}</label>
+                                {% endif %} 
+                              {% endfor %} 
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="tab-content">
+                          <div id='tab-section-background-image-status-{{ screen_size }}-{{ layer_code }}-none' class="tab-pane {{ background_image_info['status'] == 'none'?'active':constant('null') }}"></div>
+                          <div id='tab-section-background-image-status-{{ screen_size }}-{{ layer_code }}-image' class="tab-pane {{ background_image_info['status'] == 'image'?'active':constant('null') }}">
+                            <!--Background image-->
+                            <div class="form-group">
+                              <label class="col-xs-4 control-label" for="input-section-background-image-image-{{ layer_code }}-{{ screen_size }}">{{ entry_background_image }}</label>
+                              <div class="col-xs-8">
+                                <div class="el-group">
+                                {% for language in languages %}
+                                  <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                                  <div class="el-item">
+                                    <a href="" id="thumb-section-background-image-image-{{ layer_code }}-{{ screen_size }}-{{ language.language_id }}" data-toggle="image" class="img-thumbnail"><img src="{{ background_image_info['thumb'][language.language_id] }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a><input type="hidden" name="{{ screen_size }}[section_background_image][{{ layer_code }}][image][{{ language.language_id }}]" value="{{ background_image_info['image'][language.language_id] }}" id="input-section-background-image-image-{{ layer_code }}-{{ screen_size }}-{{ language.language_id }}" />
+                                  </div>
+                                {% endfor %}
+                                </div>
+                              </div>
+                            </div>
+
+                            <!--Image position-->
+                            <div class="form-group">
+                              <label class="col-xs-4 control-label" for="input-section-background-image-image-position-{{ layer_code }}-{{ screen_size }}">{{ entry_image_position }}</label>
+                              <div class="col-xs-8">
+                                <select class="form-control large" name="{{ screen_size }}[section_background_image][{{ layer_code }}][image_position]" id="input-section-background-image-image-position-{{ layer_code }}-{{ screen_size }}">
+                                  {% for position in background_image_positions %} 
+                                    {% if (position['code'] == background_image_info['image_position']) %} 
+                                    <option value="{{ position['code'] }}" selected="">{{ position['name'] }}</option>
+                                    {% else %} 
+                                    <option value="{{ position['code'] }}">{{ position['name'] }}</option>
+                                    {% endif %} 
+                                  {% endfor %} 
+                                </select>
+                              </div>
+                            </div>
+
+                            <!--Image repeat-->
+                            <div class="form-group">
+                              <label class="col-xs-4 control-label" for="input-section-background-image-image-repeat-{{ layer_code }}-{{ screen_size }}">{{ entry_image_repeat }}</label>
+                              <div class="col-xs-8">
+                                <select class="form-control large" name="{{ screen_size }}[section_background_image][{{ layer_code }}][image_repeat]" id="input-section-background-image-image-repeat-{{ layer_code }}-{{ screen_size }}">
+                                  {% for repeat in background_image_repeats %} 
+                                    {% if (repeat['code'] == background_image_info['image_repeat']) %} 
+                                    <option value="{{ repeat['code'] }}" selected="">{{ repeat['name'] }}</option>
+                                    {% else %} 
+                                    <option value="{{ repeat['code'] }}">{{ repeat['name'] }}</option>
+                                    {% endif %} 
+                                  {% endfor %} 
+                                </select>
+                              </div>
+                            </div>
+
+                            <!--Image attachment-->
+                            <div class="form-group">
+                              <label class="col-xs-4 control-label" for="input-section-background-image-image-attachment-{{ layer_code }}-{{ screen_size }}">{{ entry_image_attachment }}</label>
+                              <div class="col-xs-8">
+                                <select class="form-control large" name="{{ screen_size }}[section_background_image][{{ layer_code }}][image_attachment]" id="input-section-background-image-image-attachment-{{ layer_code }}-{{ screen_size }}">
+                                  {% for attachment in background_image_attachments %} 
+                                    {% if (attachment['code'] == background_image_info['image_attachment']) %} 
+                                    <option value="{{ attachment['code'] }}" selected="">{{ attachment['name'] }}</option>
+                                    {% else %} 
+                                    <option value="{{ attachment['code'] }}">{{ attachment['name'] }}</option>
+                                    {% endif %} 
+                                  {% endfor %} 
+                                </select>
+                              </div>
+                            </div>
+                            
+                            <!--Image size-->
+                            <div class="form-group">
+                              <label class="col-xs-4 control-label" for="input-section-background-image-image-size-{{ layer_code }}-{{ screen_size }}">{{ entry_image_size }}</label>
+                              <div class="col-xs-8">
+                                <select class="form-control large" name="{{ screen_size }}[section_background_image][{{ layer_code }}][image_size]" id="input-section-background-image-image-size-{{ layer_code }}-{{ screen_size }}">
+                                  {% for size in background_image_sizes %} 
+                                    {% if (size['code'] == background_image_info['image_size']) %} 
+                                    <option value="{{ size['code'] }}" selected="">{{ size['name'] }}</option>
+                                    {% else %} 
+                                    <option value="{{ size['code'] }}">{{ size['name'] }}</option>
+                                    {% endif %} 
+                                  {% endfor %} 
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div id='tab-section-background-image-status-{{ screen_size }}-{{ layer_code }}-pattern' class="tab-pane {{ background_image_info['status'] == 'pattern'?'active':constant('null') }}">
+                            <!--overlay pattern-->
+                            <div class="form-group">
+                              <label class="col-xs-3 control-label" for="input-section-background-image-overlay-pattern-{{ layer_code }}-{{ screen_size }}">{{ entry_overlay_pattern }}</label>
+                              <div class="col-xs-9">
+                                <div class="mz-overlay-pattern">
+                                  <div class="col-xs-4">
+                                    <ul class="nav nav-tabs mz-nav-vertical-tube-tab">
+                                      {% for pattern in overlay_patterns %} 
+                                        {% if (pattern['code'] == background_image_info['overlay_pattern']) %} 
+                                        <li class="active"><label href="#tab-section-background-pattern-{{ pattern['code'] }}-{{ layer_code }}-{{ screen_size }}" for="input-section-background-pattern-{{ pattern['code'] }}-{{ layer_code }}-{{ screen_size }}" data-toggle="input-tab"><input id="input-section-background-pattern-{{ pattern['code'] }}-{{ layer_code }}-{{ screen_size }}" type="radio" name="{{ screen_size }}[section_background_image][{{ layer_code }}][overlay_pattern]" value="{{ pattern['code'] }}" class="hide" checked="" /><img src="{{ pattern['image'] }}" /> {{ pattern['name'] }}</label></li>
+                                        {% else %} 
+                                        <li><label href="#tab-section-background-pattern-{{ pattern['code'] }}-{{ layer_code }}-{{ screen_size }}" for="input-section-background-pattern-{{ pattern['code'] }}-{{ layer_code }}-{{ screen_size }}" data-toggle="input-tab"><input id="input-section-background-pattern-{{ pattern['code'] }}-{{ layer_code }}-{{ screen_size }}" type="radio" name="{{ screen_size }}[section_background_image][{{ layer_code }}][overlay_pattern]" value="{{ pattern['code'] }}" class="hide" /><img src="{{ pattern['image'] }}" /> {{ pattern['name'] }}</label></li>
+                                        {% endif %} 
+                                      {% endfor %} 
+                                    </ul>
+                                  </div>
+                                  <div class="col-xs-8">
+                                    <div class="tab-content">
+                                      {% for pattern in overlay_patterns %} 
+                                        {% if (pattern['code'] == background_image_info['overlay_pattern']) %} 
+                                        <div id="tab-section-background-pattern-{{ pattern['code'] }}-{{ layer_code }}-{{ screen_size }}" style="background-image: url({{ pattern['image'] }})" class="tab-pane fade in active"></div>
+                                        {% else %} 
+                                        <div id="tab-section-background-pattern-{{ pattern['code'] }}-{{ layer_code }}-{{ screen_size }}" style="background-image: url({{ pattern['image'] }})" class="tab-pane fade"></div>
+                                        {% endif %} 
+                                      {% endfor %} 
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    {% set round = round + 1 %} 
+                    {% endfor %} 
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-3">
+            <ul class="list-group">
+              <a class="list-group-item active" href="#tab-section-layout-{{ screen_size }}" data-toggle="tab">{{ text_layout }}</a>
+              <a class="list-group-item" href="#tab-section-flexbox-{{ screen_size }}" data-toggle="tab">{{ text_flexbox }}</a>
+              <a class="list-group-item" href="#tab-section-text-{{ screen_size }}" data-toggle="tab">{{ text_text }}</a>
+              <a class="list-group-item" href="#tab-section-color-{{ screen_size }}" data-toggle="tab">{{ text_color }}</a>
+              <a class="list-group-item" href="#tab-section-background-{{ screen_size }}" data-toggle="tab">{{ text_background }}</a>
+            </ul> 
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+<script>
+$('.datetime').datetimepicker({
+    language: '{{ datepicker }}',
+    pickDate: true,
+    pickTime: true
+});
+</script>
+</form>

@@ -1,0 +1,49 @@
+<div id="mz-carousel-{{ mz_suffix }}" class="carousel slide {{ fade?'carousel-fade' }}" data-bs-ride="carousel" data-bs-interval="{{ interval }}" data-bs-keyboard="{{ keyboard?'true':'false' }}" data-bs-pause="{{ not pause?'false':'hover' }}" data-bs-wrap="{{ loop?'true':'false' }}">
+  <!-- Pagination -->
+  {% if pagination and slides|length > 0 %}
+  <ul class="carousel-indicators">
+    {% set i = 0 %}
+    {% for slide in slides %}
+      {% if i == 0 %}
+      <li data-bs-target="#mz-carousel-{{ mz_suffix }}" data-bs-slide-to="{{ i }}" class="active"></li>
+      {% else %}
+      <li data-bs-target="#mz-carousel-{{ mz_suffix }}" data-bs-slide-to="{{ i }}"></li>
+      {% endif %}
+      {% set i = i + 1 %}
+    {% endfor %}
+  </ul>
+  {% endif %}
+  <!-- The slideshow -->
+  <div class="carousel-inner">
+    {% set i = 0 %}
+    {% for slide in slides %}
+    <div class="carousel-item {{ i == 0?'active' }}">
+
+      {% if slide.url %}<a href="{{ slide.url.href }}" {{ slide.url.attr }} class="d-block w-100">{% endif %}
+      {% if slide.svg %}
+      <img alt="{{ slide.alt }}" src="{{ slide.svg }}" class="d-block w-100" width="{{ slide.width?:'auto' }}" height="{{ slide.height?:'auto' }}" />
+      {% elseif slide.image %}
+        {% if lazy_loading %}
+        <img class="lazy-load loader-spinner d-block img-fluid w-100" {% if not slide.image_srcset_sizes %}width="{{ slide.width }}" height="{{ slide.height }}"{% endif %} src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="{{ slide.image }}" {% if slide.image_srcset %}data-srcset="{{ slide.image_srcset }}"{% endif %} {% if slide.image_srcset_sizes %}data-sizes="{{ slide.image_srcset_sizes }}"{% endif %} alt="{{ slide.alt }}" />
+        {% else %}
+        <img class="d-block img-fluid w-100" alt="{{ slide.alt }}" src="{{ slide.image }}" {% if slide.image_srcset %}srcset="{{ slide.image_srcset }}"{% endif %} {% if slide.image_srcset_sizes %}sizes="{{ slide.image_srcset_sizes }}"{% endif %} {% if not slide.image_srcset_sizes %}width="{{ slide.width }}" height="{{ slide.height }}"{% endif %} />
+        {% endif %}
+      {% endif %}
+      {% if slide.url %}</a>{% endif %}
+      {% if slide.caption %}
+      <div class="carousel-caption">{{ slide.caption }}</div>
+      {% endif %}
+    </div>
+    {% set i = i + 1 %}
+    {% endfor %}
+  </div>
+  <!-- Left and right controls -->
+  {% if navigation and slides|length > 0 %}
+  <a class="carousel-control-prev" href="#mz-carousel-{{ mz_suffix }}" role="button" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#mz-carousel-{{ mz_suffix }}" role="button" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>
+  </a>
+  {% endif %}
+</div>

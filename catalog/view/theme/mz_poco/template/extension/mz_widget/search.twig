@@ -1,0 +1,46 @@
+<div class="search-wrapper">
+  <form action="{{ action }}" method="GET">
+    {% if 'route' in action %}<input type="hidden" name="route" value="{{ route }}" />{% endif %}
+    <div id="search" class="d-flex">
+      <div class="search-input-group flex-fill">
+        <div class="search-input d-flex">
+          {% if categories is defined %}
+          <div class="dropdown search-category">
+            <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ category_name?:text_all_category }}</button>
+            <div class="dropdown-menu dropdown-menu-left">
+              <a class="dropdown-item" data-category_id="0" href="#">{{ text_all_category }}</a>
+              {% macro recursiveCategory(categories) %}
+                {% for category_info in categories %}
+                  {% if category_info.category_id == category_id %}
+                  <a class="dropdown-item active" data-category_id="{{ category_info.category_id }}" href="#">{{ category_info.name }}</a>
+                  {% else %}
+                  <a class="dropdown-item" data-category_id="{{ category_info.category_id }}" href="#">{{ category_info.name }}</a>
+                  {% endif %}
+                  {% if category_info.children %}
+                    <div class="ps-2">{{ _self.recursiveCategory(category_info.children) }}</div>
+                  {% endif %}
+                {% endfor %}
+              {% endmacro %}
+              {{ _self.recursiveCategory(categories) }}
+            </div>
+            <input type="hidden" name="category_id" value="{{ category_id }}" {{ not category_id?'disabled' }} />
+          </div>
+          {% endif %}
+          <div class="flex-fill"><input type="text" name="search" value="{{ search }}" {% if autocomplete %}data-autocomplete="{{ autocomplete }}" data-autocomplete_route="{{ autocomplete_route }}"{% endif %} placeholder="{{ placeholder }}" aria-label="{{ placeholder }}" /></div>
+        </div>
+        <div class="dropdown">
+          <ul class="dropdown-menu autocomplete w-100"></ul>
+        </div>
+      </div>
+      <div class="search-button">
+        {% if search_button_type == 'icon' %}
+        <button type="submit" class="type-icon" title="{{ button_search }}"><i class="fa fa-search icon"></i></button>
+        {% elseif search_button_type == 'text' %}
+        <button type="submit" class="type-text">{{ button_search }}</button>
+        {% else %}
+        <button type="submit" class="type-both"><i class="fa fa-search"></i> <span>{{ button_search }}</span></button>
+        {% endif %}
+      </div>
+    </div>
+  </form>
+</div>

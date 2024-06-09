@@ -1,0 +1,69 @@
+.newsletter{
+    &-input{
+        display: flex;
+        overflow: hidden;
+        background: $white;
+        
+        & > .fa-envelope{
+            padding: 0 mz-spacer(18);
+            align-self: center;
+        }
+    }
+    &-email{
+        flex: 1 1 auto;
+        
+        input{
+            @include rtl-prop(padding, 0 $input-padding-x-lg * 0.6 0 0, 0 0 0 $input-padding-x-lg * 0.6);
+            border: none;
+            outline: 0;
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+        }
+    }
+    button{
+        padding: $newsletter-button-padding;
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        font-family: $headings-font-family;
+        font-weight: $headings-font-weight;
+        text-transform: uppercase;
+        
+        .icon{
+            line-height: inherit;
+        }
+        
+        &.both{
+            .icon{
+                @include rtl-prop(margin-right, map-get($spacers, 1));
+            }
+        }
+    }
+    
+    // Helper
+    &-bordered {
+        .newsletter-input{
+            border: $border-width solid $primary;
+            @include border-radius();
+        }
+    }
+}
+
+.footer{
+    .newsletter{
+        &-input{
+            border: none !important;
+            @include border-radius();
+
+            &::before{
+                border: none;
+            }
+        }
+        &-email{
+            input{
+                background-color: transparent;
+            }
+        }
+    }
+}

@@ -1,0 +1,113 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- Form -->
+  <form action="{{ action }}" class="form-horizontal" enctype="multipart/form-data" id="form-mz-value" method="post">
+    <div class="tab-content">
+        
+      <!--General-->
+      <div id="tab-mz-general" class="tab-pane fade in active">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <!--Name-->
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-name">{{ entry_name }}</label>
+              <div class="col-xs-9">
+              {% for language in languages %} 
+                <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                  <input class="form-control" type="text" name="value_description[{{ language['language_id'] }}][name]" value="{{ value_description[language['language_id']]['name'] is defined?value_description[language['language_id']]['name']:'' }}" placeholder="{{ entry_name }}" >
+                  {% if (err_name[language['language_id']] is defined) %} 
+                    <div class="text-danger">{{ err_name[language['language_id']] }}</div>
+                  {% endif %} 
+                </div>
+              {% endfor %} 
+              </div>
+            </div>
+            
+            <!--status-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-status">{{ entry_status }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (status) %} 
+                  <input type="radio" name="status" value="1" id="input-status-enabled" checked>
+                  <label for="input-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="status" value="0" id="input-status-disabled">
+                  <label for="input-status-disabled">{{ text_disabled }}</label>
+                  {% else %} 
+                  <input type="radio" name="status" value="1" id="input-status-enabled" >
+                  <label for="input-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="status" value="0" id="input-status-disabled" checked>
+                  <label for="input-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+            
+            <!--sort order-->
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-sort-order">{{ entry_sort_order }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-sort-order" placeholder="{{ entry_sort_order }}" type="text" name="sort_order" value="{{ sort_order }}" >
+              </div>
+            </div>
+            
+            <!--Image-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_image }}</label>
+              <div class="col-xs-9"><a href="" id="thumb-image" data-toggle="image" class="img-thumbnail"><img src="{{ thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                <input type="hidden" name="image" value="{{ image }}" id="input-image" />
+              </div>
+            </div>
+            
+            <!--Value type-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-regex"><span data-toggle="tooltip" title="{{ help_value_type }}">{{ entry_value_type }}</span></label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (regex) %} 
+                  <input type="radio" name="regex" value="1" id="input-regex-enabled" checked>
+                  <label for="input-regex-enabled" >{{ text_regex }}</label>
+                  <input type="radio" name="regex" value="0" id="input-regex-disabled">
+                  <label for="input-regex-disabled">{{ text_text }}</label>
+                  {% else %} 
+                  <input type="radio" name="regex" value="1" id="input-regex-enabled" >
+                  <label for="input-regex-enabled">{{ text_regex }}</label>
+                  <input type="radio" name="regex" value="0" id="input-regex-disabled" checked>
+                  <label for="input-regex-disabled" >{{ text_text }}</label>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+            
+            <!--Value-->
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-value"><span data-toggle="tooltip" title="{{ help_value }}">{{ entry_value }}</span></label>
+              <div class="col-xs-9">
+                <div class="input-group inline">
+                  <span class="input-group-addon"><img src="language/{{ filter_language['code'] }}/{{ filter_language['code'] }}.png" title="{{ filter_language['name'] }}" /></span>
+                  <input class="form-control" type="text" name="value" value="{{ value }}" id="input-value" placeholder="{{ entry_value }}" >
+                  {% if (err_value is defined) %} 
+                    <div class="text-danger">{{ err_value }}</div>
+                  {% endif %} 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </form>
+</div>
+{{ mz_footer }}

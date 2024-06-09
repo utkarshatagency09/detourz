@@ -1,0 +1,11 @@
+{% if articles %}
+{% for article in articles %}
+  <li class="px-3 py-2 m-0 d-flex align-items-center">
+    <div class="flex-shrink-0"><a href="{{ article.href }}"><img src="{{ article.image }}" alt="{{ article.name }}" /></a></div>
+    <div class="flex-grow-1 ps-3">
+      <div class="text-muted text-truncate"><a href="{{ article.author_href }}">{{ article.author }}</a> - {{ article.timestamp }}</div>
+      <p class="mb-0"><a class="text-truncate d-block" href="{{ article.href }}">{{ article.name }}</a></p>
+    </div>
+  </li>
+{% endfor %}
+{% endif %}

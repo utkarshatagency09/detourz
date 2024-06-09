@@ -1,0 +1,306 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  <div class="panel-group mz-panel-action-bar">
+    <div class="panel panel-default">
+      <div class="panel-heading clearfix" data-toggle="collapse" data-target="#filter-mz-data">
+        <h4 class="panel-title pull-left">{{ text_filter }}</h4>
+        <span class="pull-right"><i class="fa fa-chevron-circle-down"></i></span>
+      </div>
+      <div id="filter-mz-data" class="panel-collapse collapse">
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-name">{{ entry_name }}</label>
+                <input type="text" name="filter_name" value="{{ filter_name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control large" />
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="input-category">{{ entry_category }}</label>
+                <input type="text" name="filter_category" value="{{ filter_category }}" placeholder="{{ entry_category }}" id="input-category" class="form-control large" />
+                <input type="hidden" name="filter_category_id" value="{{ filter_category_id }}" />
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="input-date-end">{{ text_date_end }}</label>
+                <div class="input-group datetime">
+                  <input type="text" name="filter_date_end" value="{{ filter_date_end }}" placeholder="{{ text_date_end }}" data-date-format="YYYY-MM-DD HH:mm" id="input-date-end" class="form-control large" />
+                  <span class="input-group-btn"><button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button></span>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-page">{{ entry_page }}</label>
+                <select name="filter_page" id="input-page" class="form-control large">
+                  <option value=""></option>
+                  {% for page in list_page %}
+                    {% if filter_page == page.id %}
+                    <option value="{{ page.id }}" selected>{{ page.name }}</option>
+                    {% else %}
+                    <option value="{{ page.id }}">{{ page.name }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="input-product">{{ entry_product }}</label>
+                <input type="text" name="filter_product" value="{{ filter_product }}" placeholder="{{ entry_product }}" id="input-product" class="form-control large" />
+                <input type="hidden" name="filter_product_id" value="{{ filter_product_id }}" />
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="input-status">{{ entry_status }}</label>
+                <select name="filter_status" id="input-status" class="form-control large">
+                  <option value=""></option>
+                  {% if filter_status == '1' %}
+                  <option value="1" selected="selected">{{ text_enabled }}</option>
+                  {% else %}
+                  <option value="1">{{ text_enabled }}</option>
+                  {% endif %}
+                  {% if filter_status == '0' %}
+                  <option value="0" selected="selected">{{ text_disabled }}</option>
+                  {% else %}
+                  <option value="0">{{ text_disabled }}</option>
+                  {% endif %}
+                </select>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-hook">{{ entry_hook }}</label>
+                <select name="filter_hook" id="input-hook" class="form-control large">
+                  <option value=""></option>
+                  {% for hook in list_hook %}
+                    {% if filter_hook == hook.id %}
+                    <option value="{{ hook.id }}" selected>{{ hook.name }}</option>
+                    {% else %}
+                    <option value="{{ hook.id }}">{{ hook.name }}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="input-manufacturer">{{ entry_manufacturer }}</label>
+                <input type="text" name="filter_manufacturer" value="{{ filter_manufacturer }}" placeholder="{{ entry_manufacturer }}" id="input-manufacturer" class="form-control large" />
+                <input type="hidden" name="filter_manufacturer_id" value="{{ filter_manufacturer_id }}" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer text-right"><button type="button" id="button-reset" class="btn btn-info"><i class="fa fa-times"></i> {{ button_reset }}</button> <button type="button" id="button-filter" class="btn btn-primary"><i class="fa fa-filter"></i> {{ button_filter }}</button></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <div class="panel mz-panel-default">
+    <div class="panel-body">
+      <form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form-mz-data">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+                <td class="text-left">{% if sort == 'd.name' %} <a href="{{ sort_name }}" class="{{ order|lower }}">{{ column_name }}</a> {% else %} <a href="{{ sort_name }}">{{ column_name }}</a> {% endif %}</td>
+                <td class="text-center">{% if sort == 'd.page' %} <a href="{{ sort_page }}" class="{{ order|lower }}">{{ column_page }}</a> {% else %} <a href="{{ sort_page }}">{{ column_page }}</a> {% endif %}</td>
+                <td class="text-center">{% if sort == 'd.hook' %} <a href="{{ sort_hook }}" class="{{ order|lower }}">{{ column_hook }}</a> {% else %} <a href="{{ sort_hook }}">{{ column_hook }}</a> {% endif %}</td>
+                <td class="text-center">{% if sort == 'd.sort_order' %} <a href="{{ sort_order }}" class="{{ order|lower }}">{{ column_sort_order }}</a> {% else %} <a href="{{ sort_order }}">{{ column_sort_order }}</a> {% endif %}</td>
+                <td class="text-center">{% if sort == 'd.status' %} <a href="{{ sort_status }}" class="{{ order|lower }}">{{ column_status }}</a> {% else %} <a href="{{ sort_status }}">{{ column_status }}</a> {% endif %}</td>
+                <td class="text-right">{% if sort == 'd.date_modified' %} <a href="{{ sort_date_modified }}" class="{{ order|lower }}">{{ column_date_modified }}</a> {% else %} <a href="{{ sort_date_modified }}">{{ column_date_modified }}</a> {% endif %}</td>
+                <td class="text-right">{{ column_action }}</td>
+              </tr>
+            </thead>
+            <tbody>
+              {% if datas %}
+              {% for data in datas %}
+              <tr>
+                <td class="text-center">{% if data.data_id in selected %}
+                  <input type="checkbox" name="selected[]" value="{{ data.data_id }}" checked="checked" />
+                  {% else %}
+                  <input type="checkbox" name="selected[]" value="{{ data.data_id }}" />
+                  {% endif %}</td>
+                <td class="text-left">{{ data.name }}</td>
+                <td class="text-center">{{ data.page }}</td>
+                <td class="text-center">{{ data.hook }}</td>
+                <td class="text-center">{{ data.sort_order }}</td>
+                {% if data.status %}<td class="text-center text-success">{{ text_enabled }}</td>{% else %}<td class="text-center text-danger">{{ text_disabled }}</td>{% endif %}
+                <td class="text-right">{{ data.date_modified }}</td>
+                <td class="text-right">
+                  <a href="{{ data.edit }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a>
+                </td>
+              </tr>
+              {% endfor %}
+              {% else %}
+              <tr>
+                <td class="text-center" colspan="8">{{ text_no_results }}</td>
+              </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </form>
+      <div class="row">
+        <div class="col-sm-6 text-left">{{ pagination }}</div>
+        <div class="col-sm-6 text-right">{{ results }}</div>
+      </div>
+    </div>
+  </div>
+<script>
+$('.datetime').datetimepicker({
+	language: '{{ datepicker }}',
+	pickDate: true,
+	pickTime: true
+});
+</script>
+<script>
+  $('#button-filter').on('click', function() {
+    var url = '';
+
+    var filter_name = $('input[name=\'filter_name\']').val();
+
+    if (filter_name) {
+      url += '&filter_name=' + encodeURIComponent(filter_name);
+    }
+
+    var filter_category_id = $('input[name=\'filter_category_id\']').val();
+
+    if (filter_category_id && $('input[name=\'filter_category\']').val()) {
+      url += '&filter_category_id=' + encodeURIComponent(filter_category_id);
+    }
+
+    var filter_product_id = $('input[name=\'filter_product_id\']').val();
+
+    if (filter_product_id && $('input[name=\'filter_product\']').val()) {
+      url += '&filter_product_id=' + encodeURIComponent(filter_product_id);
+    }
+
+    var filter_manufacturer_id = $('input[name=\'filter_manufacturer_id\']').val();
+
+    if (filter_manufacturer_id && $('input[name=\'filter_manufacturer\']').val()) {
+      url += '&filter_manufacturer_id=' + encodeURIComponent(filter_manufacturer_id);
+    }
+
+    var filter_page = $('select[name=\'filter_page\']').val();
+
+    if (filter_page) {
+      url += '&filter_page=' + encodeURIComponent(filter_page);
+    }
+
+    var filter_hook = $('select[name=\'filter_hook\']').val();
+
+    if (filter_hook) {
+      url += '&filter_hook=' + encodeURIComponent(filter_hook);
+    }
+
+    var filter_date_end = $('input[name=\'filter_date_end\']').val();
+
+    if (filter_date_end) {
+      url += '&filter_date_end=' + encodeURIComponent(filter_date_end);
+    }
+
+    var filter_status = $('select[name=\'filter_status\']').val();
+
+    if (filter_status !== '') {
+      url += '&filter_status=' + encodeURIComponent(filter_status);
+    }
+          
+    location = 'index.php?route=extension/maza/catalog/data{{ default_url }}' + url;
+});
+
+$('#button-reset').on('click', function(){
+  location = 'index.php?route=extension/maza/catalog/data{{ default_url }}';
+});
+</script>
+<script>
+$('input[name=\'filter_name\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=extension/maza/catalog/data/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['data_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'filter_name\']').val(item['label']);
+	}
+});
+
+$('input[name=\'filter_product\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['product_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'filter_product\']').val(item['label']);
+    $('input[name=\'filter_product_id\']').val(item['value']);
+	}
+});
+
+$('input[name=\'filter_category\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/category/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['category_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'filter_category\']').val(item['label']);
+    $('input[name=\'filter_category_id\']').val(item['value']);
+	}
+});
+
+$('input[name=\'filter_manufacturer\']').autocomplete({
+	'source': function(request, response) {
+		$.ajax({
+			url: 'index.php?route=catalog/manufacturer/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+			dataType: 'json',
+			success: function(json) {
+				response($.map(json, function(item) {
+					return {
+						label: item['name'],
+						value: item['manufacturer_id']
+					}
+				}));
+			}
+		});
+	},
+	'select': function(item) {
+		$('input[name=\'filter_manufacturer\']').val(item['label']);
+    $('input[name=\'filter_manufacturer_id\']').val(item['value']);
+	}
+});
+</script>
+</div>
+{{ mz_footer }}

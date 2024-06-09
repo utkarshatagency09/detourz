@@ -1,0 +1,50 @@
+<!-- Form -->
+<form id="setting-content-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <!--content status-->
+  <div class="form-group">
+    <label class="col-sm-3 control-label" for="input-setting-content-status">{{ entry_status }}</label>
+    <div class="col-sm-9">
+      <div class="mz-switch-field">
+        {% if (content_status) %} 
+        <input type="radio" name="content_status" value="1" id="input-setting-content-status-enabled" checked>
+        <label for="input-setting-content-status-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="content_status" value="0" id="input-setting-content-status-disabled">
+        <label for="input-setting-content-status-disabled">{{ text_disabled }}</label>
+        {% else %} 
+        <input type="radio" name="content_status" value="1" id="input-setting-content-status-enabled" >
+        <label for="input-setting-content-status-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="content_status" value="0" id="input-setting-content-status-disabled" checked>
+        <label for="input-setting-content-status-disabled" >{{ text_disabled }}</label>
+        {% endif %} 
+      </div>
+    </div>
+  </div>
+      
+  <!--content description-->
+  <div class="form-group">
+    <label class="col-sm-3 control-label" for="input-setting-content-description">{{ entry_description }}</label>
+    <div class="col-sm-9">
+      <div class="mz-switch-field">
+        {% if (content_description) %} 
+        <input type="radio" name="content_description" value="1" id="input-setting-content-description-enabled" checked>
+        <label for="input-setting-content-description-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="content_description" value="0" id="input-setting-content-description-disabled">
+        <label for="input-setting-content-description-disabled">{{ text_disabled }}</label>
+        {% else %} 
+        <input type="radio" name="content_description" value="1" id="input-setting-content-description-enabled" >
+        <label for="input-setting-content-description-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="content_description" value="0" id="input-setting-content-description-disabled" checked>
+        <label for="input-setting-content-description-disabled" >{{ text_disabled }}</label>
+        {% endif %} 
+      </div>
+    </div>
+  </div>
+      
+  <!--collapsed-->
+  <div class="form-group required">
+    <label class="col-sm-3 control-label" for="input-setting-content-collapsed"><span data-toggle="tooltip" title="{{ help_collapsed }}">{{ entry_collapsed }}</span></label>
+    <div class="col-sm-9">
+      <input type="number" name="content_collapsed" value="{{ content_collapsed }}" min="0" placeholder="{{ entry_collapsed }}" id="input-setting-content-collapsed" class="form-control" />
+    </div>
+  </div>
+</form>

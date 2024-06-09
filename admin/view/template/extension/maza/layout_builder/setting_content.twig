@@ -1,0 +1,19 @@
+<div id="modal-mz-content" class="modal fade mz-model-default">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class="fa fa-cog"></i> {{ heading_title }}</h4>
+            </div>
+            <div class="modal-body">{{ content }}</div>
+            <div class="modal-footer">
+                <button onclick="$('#{{ target_id }}').val($('#modal-mz-content #setting-content-form').serialize());" type="button" class="btn btn-primary" data-dismiss="modal">{{ button_save }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$('#modal-mz-content').modal('show').on('hidden.bs.modal', function(e){
+    e.target.remove();
+});
+</script>

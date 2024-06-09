@@ -1,0 +1,34 @@
+<style>
+.admin-info{
+    font-size: 13px;
+    display: none;
+    position: relative;
+    z-index: 99999;
+}
+@media (min-width: 768px){
+    .admin-info{
+        display: flex;
+    }
+}
+.admin-info__link{
+    padding: 8px 15px;
+    line-height: 1;
+    text-decoration: none;
+}
+.admin-info__link:hover{
+    background-color: black;
+    color: white;
+}
+</style>
+<div id="admin-info" class="collapse show admin-info text-bg-dark">
+    <div class="d-flex me-auto">
+        <a class="admin-info__link text-bg-primary" href="{{ dashboard }}"><i class="fas fa-tachometer-alt me-2"></i> {{ text_dashboard }}</a>
+        {% if developer_mode %}
+        <a class="admin-info__link text-bg-danger" href="{{ developer_mode }}"><i class="fas fa-code me-2"></i> {{ text_developer_mode }}</a>
+        {% endif %}
+    </div>
+    {% for link in links %}
+    <a class="admin-info__link text-reset" href="{{ link.href }}"><i class="{{ link.icon }} me-2"></i> {{ link.name }}</a>
+    {% endfor %}
+    <a class="admin-info__link text-bg-danger px-2" data-bs-toggle="collapse" href="#admin-info" role="button" aria-expanded="false" aria-controls="admin-info"><i class="fas fa-times"></i></a>
+</div>

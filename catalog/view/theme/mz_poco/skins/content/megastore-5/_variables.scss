@@ -1,0 +1,82 @@
+// Navs
+$nav-tab-color: $gray-500;
+$nav-tab-hover-color: $primary;
+$nav-tab-margin-bottom: $spacer;
+
+// Pagination
+$pagination-margin-right: mz-spacer(10);
+
+// Products
+$product-title-font-size: 1em;
+$product-listview-title-font-size: 1.125em;
+$product-deal-font-size: $font-size-sm;
+$product-image-carousel-indicator-top: 15%;
+$product-image-carousel-indicator-bottom: 15%;
+$product-image-carousel-indicator-size: mz-spacer(30);
+$product-image-carousel-indicator-margin: 5px;
+$product-action-btn-padding: mz-spacer(12);
+$product-caption-padding: $spacer 0 0;
+$product-caption-item-margin-bottom: mz-spacer(10);
+$product-manufacturer-color: $gray-600;
+$product-price-line-height: 1.1;
+$product-price-new-color: null;
+$product-price-new-size: 1em;
+$product-price-old-color: $gray-600;
+$product-price-old-size: 1em;
+$product-price-tax-color: $gray-600;
+$product-price-tax-font-size: .857em;
+$product-rating-color: #ffb100;
+$product-rating-font-size: .8125em;
+
+// Product label
+$product-label-font-size: 0.75em;
+$product-label-shape-square-padding: .5em .8em;
+$product-label-shape-circle-padding: 0.584em;
+$product-label-gutter: 16px;
+$product-label-margin-bottom: $product-label-gutter * .5;
+$product-label-color: $secondary;
+
+// Articles
+$article-title-font-size: 1.125em;
+$article-metadata-font-size: $font-size-sm;
+$article-metadata-color: #999a9a;
+$article-caption-padding-top: mz-spacer(22);
+$article-metadata-margin-bottom: $spacer;
+$article-timestamp-color: $primary;
+
+// Testimnonial
+$testimonial-quote-color: $primary;
+$testimonial-description-margin-bottom: mz-spacer(30);
+$testimonial-description-font-size: 1.125em;
+$testimonial-description-font-family: null;
+$testimonial-description-color: null;
+$testimonial-author-font-size: $font-size-lg;
+$testimonial-rating-color: #ffb100;
+$testimonial-rating-font-size: .9em;
+$testimonial-timestamp-color: $gray-600;
+$testimonial-timestamp-font-size: $font-size-sm;
+
+// Page
+$page-gray: $gray-600;
+
+// Module
+$module-title-margin-bottom: mz-spacer(28);
+$module-title-font-size: 1.875em;
+$module-margin-bottom: mz-spacer(30);
+
+// Category wall
+$module-category-wall-hover-color: $primary;
+$module-category-wall-font-size: 1.142857142857143em;
+$module-category-wall-font-color: $body-color;
+$module-category-wall-font-hover-color: $primary;
+
+// Filter
+$module-filter-card-header: mz-spacer(20) mz-spacer(30);
+$module-filter-value-margin-bottom: mz-spacer(8);
+$module-filter-group-header-padding: mz-spacer(30);
+$module-filter-group-content-padding: mz-spacer(30);
+$module-filter-reset-left-margin: mz-spacer(30);
+$module-filter-product-total-font-size: 0.875em;
+
+// Design menu
+$design-nav-link-padding-y: mz-spacer(5);

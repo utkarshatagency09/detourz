@@ -1,0 +1,219 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- Form -->
+  <form action="{{ action }}" class="form-horizontal" enctype="multipart/form-data" id="form-mz-document" method="post">
+    <div class="tab-content">
+
+      <!--General-->
+      <div id="tab-mz-general" class="tab-pane fade in active">
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_general }}</div>
+          <div class="panel-body">
+            <!--status-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-status">{{ entry_status }}</label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (status) %} 
+                  <input type="radio" name="status" value="1" id="input-status-enabled" checked>
+                  <label for="input-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="status" value="0" id="input-status-disabled">
+                  <label for="input-status-disabled">{{ text_disabled }}</label>
+                  {% else %}
+                  <input type="radio" name="status" value="1" id="input-status-enabled" >
+                  <label for="input-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="status" value="0" id="input-status-disabled" checked>
+                  <label for="input-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <!--route-->
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-route">{{ entry_route }}</label>
+              <div class="col-xs-9">
+                <input type="text" name="route" value="{{ route }}" placeholder="Ex. product/special" id="input-route" class="form-control" />
+                {% if err_route %}
+                <div class="text-danger">{{ err_route }}</div>
+                {% endif %}
+              </div>
+            </div>
+
+            <!--store-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-store-id">{{ entry_store }}</label>
+              <div class="col-xs-9">
+                <select name="store_id" id="input-store-id" class="form-control">
+                {% for store in stores %}
+                  {% if (store_id == store.store_id) %} 
+                  <option value="{{ store.store_id }}" selected="">{{ store.name }}</option>
+                  {% else %} 
+                  <option value="{{ store.store_id }}">{{ store.name }}</option>
+                  {% endif %}
+                {% endfor %} 
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+        
+      <!--data-->
+      <div id="tab-mz-data" class="tab-pane fade">
+        <!--general-->
+        <div class="panel mz-panel-default">
+          <div class="panel-heading clearfix">
+            <h4 class="pull-left panel-title">{{ text_general }}</h4>
+            <ul class="nav nav-tabs tab-dynamic pull-right mz-nav-sandwich-tab">
+              {% for language in languages %}
+              <li><a href="#language-general{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="panel-body">
+            <div class="tab-content">
+              {% for language in languages %}
+              <div class="tab-pane" id="language-general{{ language.language_id }}">
+                <!--meta_title-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-meta-title{{ language.language_id }}">{{ entry_meta_title }}</label>
+                  <div class="col-xs-9">
+                    <input type="text" name="document_description[{{ language.language_id }}][meta_title]" value="{{ document_description[language.language_id]['meta_title'] is defined ? document_description[language.language_id]['meta_title'] }}" id="input-meta-title{{ language.language_id }}" placeholder="{{ entry_meta_title }}" class="form-control large" />
+                  </div>
+                </div>
+
+                <!--description-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-meta-description{{ language.language_id }}">{{ entry_meta_description }}</label>
+                  <div class="col-xs-9">
+                    <textarea name="document_description[{{ language.language_id }}][meta_description]" placeholder="{{ entry_meta_description }}" id="input-meta-description{{ language.language_id }}" class="form-control large">{{ document_description[language.language_id]['meta_description'] is defined ? document_description[language.language_id]['meta_description'] : '' }}</textarea>
+                  </div>
+                </div>
+
+                <!--meta_keyword-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-meta-keyword{{ language.language_id }}">{{ entry_meta_keyword }}</label>
+                  <div class="col-xs-9">
+                    <input type="text" name="document_description[{{ language.language_id }}][meta_keyword]" value="{{ document_description[language.language_id]['meta_keyword'] is defined ? document_description[language.language_id]['meta_keyword'] }}" id="input-meta-keyword{{ language.language_id }}" placeholder="{{ entry_meta_keyword }}" class="form-control large" />
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--ogp-->
+      <div id="tab-mz-ogp" class="tab-pane fade">
+        <div class="alert alert-info"><i class="fa fa-info-circle" aria-hidden="true"></i> {{ help_ogp }}</div>
+        <!--general-->
+        <div class="panel mz-panel-default">
+          <div class="panel-heading clearfix">
+            <h4 class="pull-left panel-title">{{ text_general }}</h4>
+            <ul class="nav nav-tabs tab-dynamic pull-right mz-nav-sandwich-tab">
+              {% for language in languages %}
+              <li><a href="#language-ogp-general{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="panel-body">
+            <div class="tab-content">
+              {% for language in languages %}
+              <div class="tab-pane" id="language-ogp-general{{ language.language_id }}">
+                <!--title-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-ogp-title{{ language.language_id }}">{{ entry_title }}</label>
+                  <div class="col-xs-9">
+                    <input type="text" name="document_description[{{ language.language_id }}][og_title]" value="{{ document_description[language.language_id]['og_title'] is defined ? document_description[language.language_id]['og_title'] }}" id="input-ogp-title{{ language.language_id }}" placeholder="{{ entry_title }}" class="form-control large" />
+                  </div>
+                </div>
+
+                <!--description-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label" for="input-ogp-description{{ language.language_id }}">{{ entry_description }}</label>
+                  <div class="col-xs-9">
+                    <textarea name="document_description[{{ language.language_id }}][og_description]" placeholder="{{ entry_description }}" id="input-ogp-description{{ language.language_id }}" class="form-control large">{{ document_description[language.language_id]['og_description'] is defined ? document_description[language.language_id]['og_description'] : '' }}</textarea>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <!--video-->
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_video }}</div>
+          <div class="panel-body">
+            <!--video-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-video">{{ entry_url }}</label>
+              <div class="col-xs-9">
+                <input type="text" name="og_video" value="{{ og_video }}" placeholder="{{ entry_url }}" id="input-video" class="form-control large" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--image-->
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_image }}</div>
+          <div class="panel-body">
+            <div class="form-group">
+              <label class="col-xs-3 control-label" >{{ entry_image }}</label>
+              <div class="col-xs-9">
+                <div class="el-group">
+                  {% for language in languages %}
+                  <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                  <div class="el-item">
+                    <a href="" id="thumb-ogp-image{{ language.language_id }}" data-toggle="image" class="img-thumbnail"><img src="{{ (thumb_og_image[language.language_id] is defined)?thumb_og_image[language.language_id]:placeholder_image }}" alt="" title="" data-placeholder="{{ placeholder_image }}" /></a><input type="hidden" name="document_description[{{ language.language_id }}][og_image]" value="{{ (document_description[language.language_id] is defined)?document_description[language.language_id]['og_image']:'' }}" id="input-ogp-image{{ language.language_id }}" />
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label">{{ entry_alt }}</label>
+              <div class="col-xs-9">
+                {% for language in languages %} 
+                <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                  <input class="form-control" type="text" name="document_description[{{ language['language_id'] }}][og_image_alt]" value="{{ document_description[language['language_id']]['og_image_alt'] is defined?document_description[language['language_id']]['og_image_alt']:'' }}" placeholder="{{ entry_alt }}" >
+                </div>
+                {% endfor %} 
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-og-image-width">{{ entry_width }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-og-image-width" placeholder="{{ entry_width }}" type="number" name="og_image_width" value="{{ og_image_width }}" >
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-og-image-height">{{ entry_height }}</label>
+              <div class="col-xs-9">
+                <input class="form-control" id="input-og-image-height" placeholder="{{ entry_height }}" type="number" name="og_image_height" value="{{ og_image_height }}" >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+{{ mz_footer }}

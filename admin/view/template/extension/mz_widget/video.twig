@@ -1,0 +1,90 @@
+<!-- Form -->
+<form id="setting-widget-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#tab-widget-general" data-toggle="tab">{{ tab_general }}</a></li>
+    <li><a href="#tab-widget-thumbnail" data-toggle="tab">{{ tab_thumbnail }}</a></li>
+    <li><a href="#tab-widget-caption" data-toggle="tab">{{ tab_caption }}</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="tab-widget-general" class="tab-pane active">
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-widget-status">{{ entry_status }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_status) %} 
+            <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" checked>
+            <label for="input-widget-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled">
+            <label for="input-widget-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" >
+            <label for="input-widget-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled" checked>
+            <label for="input-widget-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-widget-title">{{ entry_title }}</label>
+        <div class="col-xs-9">
+        {% for language in languages %} 
+          <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+            <input class="form-control" type="text" name="widget_title[{{ language['language_id'] }}]" value="{{ widget_title[language['language_id']] is defined?widget_title[language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+          </div>
+        {% endfor %} 
+        </div>
+      </div>
+      <div class="form-group required">
+        <label class="col-xs-3 control-label" for="input-setting-widget-url"><span data-toggle="tooltip" title="{{ help_url }}">{{ entry_url }}</span></label>
+        <div class="col-xs-9">
+          <input class="form-control large" id="input-setting-widget-url" placeholder="{{ entry_url }}" type="text" name="widget_url" value="{{ widget_url }}" >
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-widget-thumbnail" class="tab-pane">
+      <div class="form-group">
+        <label class="col-xs-3 control-label" >{{ entry_image }}</label>
+        <div class="col-xs-9">
+          <div class="el-group">
+          {% for language in languages %}
+            <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+            <div class="el-item">
+              <a href="" id="thumb-setting-widget-image{{ language.language_id }}" data-toggle="image" class="img-thumbnail"><img src="{{ (thumb_image[language.language_id] is defined)?thumb_image[language.language_id]:placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a><input type="hidden" name="widget_image[{{ language.language_id }}]" value="{{ (widget_image[language.language_id] is defined)?widget_image[language.language_id]:'' }}" id="input-setting-widget-image{{ language.language_id }}" />
+            </div>
+          {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="form-group required">
+        <label class="col-xs-3 control-label" for="input-setting-widget-image-width">{{ entry_image_width }}</label>
+        <div class="col-xs-9">
+          <input class="form-control" id="input-setting-widget-image-width" placeholder="{{ entry_image_width }}" type="number" name="widget_image_width" value="{{ widget_image_width }}" >
+        </div>
+      </div>
+      <div class="form-group required">
+        <label class="col-xs-3 control-label" for="input-setting-widget-image-height">{{ entry_image_height }}</label>
+        <div class="col-xs-9">
+          <input class="form-control" id="input-setting-widget-image-height" placeholder="{{ entry_image_height }}" type="number" name="widget_image_height" value="{{ widget_image_height }}" >
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-widget-caption" class="tab-pane">
+      <ul class="nav nav-tabs tab-dynamic" id="setting-widget-image-caption">
+        {% for language in languages %}
+        <li><a href="#widget-image-caption-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+        {% endfor %}
+      </ul>
+      <div class="tab-content">
+        {% for language in languages %}
+        <div class="tab-pane" id="widget-image-caption-language-{{ language.language_id }}">
+          <textarea name="widget_image_caption[{{ language.language_id }}]" placeholder="{{ entry_caption }}" id="input-widget-image-caption{{ language.language_id }}" data-ckeditor="{{ code }}" class="form-control">{{ widget_image_caption[language.language_id] ? widget_image_caption[language.language_id] }}</textarea>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</form>
+<script src="view/javascript/maza/ckeditor/ckeditor.js"></script>

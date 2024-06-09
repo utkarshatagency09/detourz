@@ -1,0 +1,68 @@
+{{ header }}
+<div id="extension-maza-account-manufacturer" class="container content pb-5">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      {% for breadcrumb in breadcrumbs|slice(0,-1) %}
+        <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+      {% endfor %}
+      <li class="breadcrumb-item active" aria-current="page">{{ breadcrumbs|last.text }}</li>
+    </ol>
+  </nav>
+  <div class="row">{{ column_left }}
+    {% if column_left and column_right %}
+      {% set class = 'col-md-6' %}
+    {% elseif column_left or column_right %}
+      {% set class = 'col-md-9' %}
+    {% else %}
+      {% set class = 'col-md-12' %}
+    {% endif %}
+    <div id="content" class="{{ class }}">
+      {{ content_top }}
+      <h1 class="page-title h3 mb-3">{{ heading_title }}</h1>
+      {% if success %}
+      <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+      {% endif %}
+      {% if manufacturers %}
+        <div class="table-responsive">
+          <table class="table table-hover border">
+            <thead class="table-light text-uppercase small">
+              <tr>
+                <th class="text-start">{{ column_name }}</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for manufacturer in manufacturers %}
+                <tr>
+                  <td class="text-start"><a href="{{ manufacturer.href }}">{{ manufacturer.name }}</a></td>
+                  <td class="text-end text-nowrap"><a href="{{ manufacturer.remove }}" data-bs-toggle="tooltip" title="{{ button_remove }}" class="btn btn-light btn-sm text-danger"><i class="fa fa-times"></i></a></td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p class="my-4">{{ text_empty }}</p>
+      {% endif %}
+      <div class="buttons clearfix my-4">
+        <ul class="nav nav-pills bg-light float-start">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ channel }}">{{ text_channel }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ product }}">{{ text_product }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{{ manufacturer }}">{{ text_manufacturer }}</a>
+          </li>
+        </ul>
+        <div class="float-end"><a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a></div>
+      </div>
+      {{ content_bottom }}
+    </div>
+    {{ column_right }}
+  </div>
+</div>
+{{ footer }}

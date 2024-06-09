@@ -1,0 +1,159 @@
+<!-- Form -->
+<form id="setting-content-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  {% if (warning is not empty) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#content-button-general" data-toggle="tab">{{ tab_general }}</a></li>
+    <li><a href="#content-button-button" data-toggle="tab">{{ tab_button }}</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="content-button-general" class="active tab-pane">
+      
+      <div class="form-group">
+        <label class="col-sm-3 control-label">{{ entry_status }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_status) %} 
+            <input type="radio" name="content_status" value="1" id="input-content-status-enabled" checked>
+            <label for="input-content-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_status" value="0" id="input-content-status-disabled">
+            <label for="input-content-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_status" value="1" id="input-content-status-enabled" >
+            <label for="input-content-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_status" value="0" id="input-content-status-disabled" checked>
+            <label for="input-content-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_show }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% for show in list_show %} 
+              {% if (show.id == content_show) %} 
+              <input type="radio" name="content_show" value="{{ show.id }}" id="input-content-icon-show-{{ show.id }}" checked>
+              <label for="input-content-icon-show-{{ show.id }}" >{{ show.name }}</label>
+              {% else %} 
+              <input type="radio" name="content_show" value="{{ show.id }}" id="input-content-icon-show-{{ show.id }}" >
+              <label for="input-content-icon-show-{{ show.id }}">{{ show.name }}</label>
+              {% endif %} 
+            {% endfor %} 
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_dropdown }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (content_dropdown_align == 'left') %} 
+            <input type="radio" name="content_dropdown_align" value="left" id="input-content-dropdown-align-left" checked>
+            <label for="input-content-dropdown-align-left" >{{ text_left }}</label>
+            <input type="radio" name="content_dropdown_align" value="right" id="input-content-dropdown-align-right">
+            <label for="input-content-dropdown-align-right">{{ text_right }}</label>
+            {% else %}
+            <input type="radio" name="content_dropdown_align" value="left" id="input-content-dropdown-align-left" >
+            <label for="input-content-dropdown-align-left">{{ text_left }}</label>
+            <input type="radio" name="content_dropdown_align" value="right" id="input-content-dropdown-align-right" checked>
+            <label for="input-content-dropdown-align-right" >{{ text_right }}</label>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="content-button-button" class="tab-pane">
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_icon_position }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% for position in list_icon_position %} 
+              {% if (position.id == content_icon_position) %} 
+              <input type="radio" name="content_icon_position" value="{{ position.id }}" id="input-content-icon-position-{{ position.id }}" checked>
+              <label for="input-content-icon-position-{{ position.id }}" >{{ position.name }}</label>
+              {% else %} 
+              <input type="radio" name="content_icon_position" value="{{ position.id }}" id="input-content-icon-position-{{ position.id }}" >
+              <label for="input-content-icon-position-{{ position.id }}">{{ position.name }}</label>
+              {% endif %} 
+            {% endfor %} 
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-content-color">{{ entry_color }}</label>
+        <div class="col-xs-9">
+          <select name="content_color" id="input-setting-content-color" class="form-control">
+            <option value="default">{{ text_default }}</option>
+            {% for color in colors %} 
+              {% if (content_color == color['code']) %}
+              <option value="{{ color['code'] }}" selected="">{{ color['text'] }}</option>
+              {% else %} 
+              <option value="{{ color['code'] }}">{{ color['text'] }}</option>
+              {% endif %} 
+            {% endfor %} 
+          </select>
+        </div>
+      </div>
+          
+      <div class="form-group">
+        <label class="col-sm-3 control-label">{{ entry_outline }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_outline) %} 
+            <input type="radio" name="content_outline" value="1" id="input-content-outline-enabled" checked>
+            <label for="input-content-outline-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_outline" value="0" id="input-content-outline-disabled">
+            <label for="input-content-outline-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_outline" value="1" id="input-content-outline-enabled" >
+            <label for="input-content-outline-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_outline" value="0" id="input-content-outline-disabled" checked>
+            <label for="input-content-outline-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ entry_size }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% for size in button_sizes %} 
+              {% if (content_size == size['code']) %} 
+              <input type="radio" name="content_size" value="{{ size['code'] }}" id="input-setting-content-size-{{ size['code'] }}" checked>
+              <label for="input-setting-content-size-{{ size['code'] }}" >{{ size['text'] }}</label>
+              {% else %} 
+              <input type="radio" name="content_size" value="{{ size['code'] }}" id="input-setting-content-size-{{ size['code'] }}">
+              <label for="input-setting-content-size-{{ size['code'] }}" >{{ size['text'] }}</label>
+              {% endif %} 
+            {% endfor %} 
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-sm-3 control-label">{{ entry_block }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (content_block) %} 
+            <input type="radio" name="content_block" value="1" id="input-content-block-enabled" checked>
+            <label for="input-content-block-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="content_block" value="0" id="input-content-block-disabled">
+            <label for="input-content-block-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="content_block" value="1" id="input-content-block-enabled" >
+            <label for="input-content-block-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="content_block" value="0" id="input-content-block-disabled" checked>
+            <label for="input-content-block-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

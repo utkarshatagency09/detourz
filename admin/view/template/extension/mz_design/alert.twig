@@ -1,0 +1,116 @@
+<!-- Form -->
+<form id="setting-design-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#tab-design-general" data-toggle="tab">{{ tab_general }}</a></li>
+    <li><a href="#tab-design-layout" data-toggle="tab">{{ tab_layout }}</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="tab-design-general" class="tab-pane active">
+      <!--design status-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-design-status">{{ entry_status }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (design_status) %} 
+            <input type="radio" name="design_status" value="1" id="input-design-status-enabled" checked>
+            <label for="input-design-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="design_status" value="0" id="input-design-status-disabled">
+            <label for="input-design-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="design_status" value="1" id="input-design-status-enabled" >
+            <label for="input-design-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="design_status" value="0" id="input-design-status-disabled" checked>
+            <label for="input-design-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      {#title#}
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-design-title">{{ entry_title }}</label>
+        <div class="col-xs-9">
+        {% for language in languages %} 
+          <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+            <input class="form-control" type="text" name="design_title[{{ language['language_id'] }}]" value="{{ design_title[language['language_id']] is defined?design_title[language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+          </div>
+        {% endfor %} 
+        </div>
+      </div>
+
+      {# HTML #}
+      <div class="form-group">
+        <label class="col-xs-3 control-label">{{ text_html }}</label>
+        <div class="col-xs-9">
+          <ul class="nav nav-tabs tab-dynamic">
+            {% for language in languages %}
+            <li><a href="#design-alert-type-html-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+            {% endfor %}
+          </ul>
+          <div class="tab-content">
+            {% for language in languages %}
+            <div class="tab-pane" id="design-alert-type-html-language-{{ language.language_id }}">
+              <textarea name="design_html[{{ language.language_id }}]" placeholder="{{ entry_html }}" id="input-design-alert-type-html-language-{{ language.language_id }}" data-ckeditor="{{ code }}" class="form-control">{{ design_html[language.language_id] ? design_html[language.language_id] }}</textarea>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="tab-design-layout" class="tab-pane">
+      <!--Closable-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-design-dismissible">{{ entry_closable }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (design_dismissible) %} 
+            <input type="radio" name="design_dismissible" value="1" id="input-design-dismissible-enabled" checked>
+            <label for="input-design-dismissible-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="design_dismissible" value="0" id="input-design-dismissible-disabled">
+            <label for="input-design-dismissible-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="design_dismissible" value="1" id="input-design-dismissible-enabled" >
+            <label for="input-design-dismissible-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="design_dismissible" value="0" id="input-design-dismissible-disabled" checked>
+            <label for="input-design-dismissible-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+
+      {# title size #}
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-design-title-size">{{ entry_title_size }}</label>
+        <div class="col-xs-9">
+          <select name="design_title_size" id="input-setting-design-title-size" class="form-control">
+            <option value="">{{ text_default }}</option>
+          {% for h in range(1, 6) %}
+            {% if 'h'~h == design_title_size %}
+            <option value="h{{ h }}" selected="selected">{{ 'H' ~ h }}</option>
+            {% else %}
+            <option value="h{{ h }}">{{ 'H' ~ h }}</option>
+            {% endif %}
+          {% endfor %}
+          </select>
+        </div>
+      </div>
+        
+      {#Color#}
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-design-color">{{ entry_color }}</label>
+        <div class="col-xs-9">
+          <select name="design_color" id="input-setting-design-color" class="form-control">
+            {% for color in colors %} 
+              {% if (design_color == color['code']) %}
+              <option value="{{ color['code'] }}" selected="">{{ color['text'] }}</option>
+              {% else %} 
+              <option value="{{ color['code'] }}">{{ color['text'] }}</option>
+              {% endif %} 
+            {% endfor %} 
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<script src="view/javascript/maza/ckeditor/ckeditor.js"></script>

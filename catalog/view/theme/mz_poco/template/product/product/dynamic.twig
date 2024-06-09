@@ -1,0 +1,55 @@
+{% verbatim %}{% set condition = true %}{% endverbatim %}
+{% if content %}
+  {% if price_min != '' %}{# Minimum price #}
+    {% verbatim %}{% if condition and {% endverbatim %}{{ price_min }}{% verbatim %} > mz_price_num %}{% set condition = false %}{% endif %}{% endverbatim %}
+  {% endif %}
+  {% if price_max != '' %}{# Maximum price #}
+    {% verbatim %}{% if condition and {% endverbatim %}{{ price_max }}{% verbatim %} < mz_price_num %}{% set condition = false %}{% endif %}{% endverbatim %}
+  {% endif %}
+  {% if quantity_min != '' %}{# Minimum quantity #}
+    {% verbatim %}{% if condition and {% endverbatim %}{{ quantity_min }}{% verbatim %} > quantity %}{% set condition = false %}{% endif %}{% endverbatim %}
+  {% endif %}
+  {% if quantity_max != '' %}{# Maximum quantity #}
+    {% verbatim %}{% if condition and {% endverbatim %}{{ quantity_max }}{% verbatim %} < quantity %}{% set condition = false %}{% endif %}{% endverbatim %}
+  {% endif %}
+  {% if rating_min != '' %}{# Minimum rating #}
+    {% verbatim %}{% if condition and {% endverbatim %}{{ rating_min }}{% verbatim %} > rating %}{% set condition = false %}{% endif %}{% endverbatim %}
+  {% endif %}
+  {% if rating_max != '' %}{# Maximum rating #}
+    {% verbatim %}{% if condition and {% endverbatim %}{{ rating_max }}{% verbatim %} < rating %}{% set condition = false %}{% endif %}{% endverbatim %}
+  {% endif %}
+  {% if stock_status != '' %}{# Stock status #}
+    {% verbatim %}{% if condition and ({% endverbatim %}{{ stock_status }}{% verbatim %} != stock_status_id or quantity > 0) %}{% set condition = false %}{% endif %}{% endverbatim %}
+  {% endif %}
+  {% if tax_class_id != '' %}{# tax class #}
+    {% verbatim %}{% if condition and {% endverbatim %}{{ tax_class_id }}{% verbatim %} != tax_class_id %}{% set condition = false %}{% endif %}{% endverbatim %}
+  {% endif %}
+  {% if special != '' %}{# special #}
+    {% verbatim %}{% if condition and {% endverbatim %}{{ special?'not' }}{% verbatim %} special %}{% set condition = false %}{% endif %}{% endverbatim %}
+  {% endif %}
+  {% if reward != '' %}{# reward #}
+    {% verbatim %}{% if condition and {% endverbatim %}{{ reward?'not' }}{% verbatim %} reward %}{% set condition = false %}{% endif %}{% endverbatim %}
+  {% endif %}
+  {% if points != '' %}{# points #}
+    {% verbatim %}{% if condition and {% endverbatim %}{{ points?'not' }}{% verbatim %} points %}{% set condition = false %}{% endif %}{% endverbatim %}
+  {% endif %}
+  {% if option != '' %}{# option #}
+    {% verbatim %}{% if condition and {% endverbatim %}{{ option?'not' }}{% verbatim %} options %}{% set condition = false %}{% endif %}{% endverbatim %}
+  {% endif %}
+  {% if condition_twig != '' %}
+    {% verbatim %}{% if condition and not ({% endverbatim %}{{ condition_twig }}{% verbatim %}) %}{% set condition = false %}{% endif %}{% endverbatim %}
+  {% endif %}
+  {% if products %}{# products #}
+    {% verbatim %}{% if condition and product_id not in {% endverbatim %}{{ '[' ~ products|join(',') ~ ']' }}{% verbatim %} %}{% set condition = false %}{% endif %}{% endverbatim %}
+  {% endif %}
+  {% if manufacturers %}{# manufacturers #}
+    {% verbatim %}{% if condition and manufacturer_id not in {% endverbatim %}{{ '[' ~ manufacturers|join(',') ~ ']' }}{% verbatim %} %}{% set condition = false %}{% endif %}{% endverbatim %}
+  {% endif %}
+
+  {% if opposite %}
+  {% verbatim %}{% if not condition %}{% endverbatim %}
+  {% else %}
+  {% verbatim %}{% if condition %}{% endverbatim %}
+  {% endif %}
+  {{ content }}{% verbatim %}{% endif %}{% endverbatim %}
+{% endif %}

@@ -1,0 +1,234 @@
+<!-- Form -->
+<form id="setting-design-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#tab-design-general" data-toggle="tab">{{ tab_general }}</a></li>
+    <li><a href="#tab-design-head" data-toggle="tab">{{ tab_head }}</a></li>
+    <li><a href="#tab-design-style" data-toggle="tab">{{ tab_style }}</a></li>
+    <li><a href="#tab-design-data" data-toggle="tab">{{ tab_data }}</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="tab-design-general" class="tab-pane active">
+      <!--design status-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-design-status">{{ entry_status }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (design_status) %} 
+            <input type="radio" name="design_status" value="1" id="input-design-status-enabled" checked>
+            <label for="input-design-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="design_status" value="0" id="input-design-status-disabled">
+            <label for="input-design-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="design_status" value="1" id="input-design-status-enabled" >
+            <label for="input-design-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="design_status" value="0" id="input-design-status-disabled" checked>
+            <label for="input-design-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      {#title#}
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-design-title">{{ entry_title }}</label>
+        <div class="col-xs-9">
+        {% for language in languages %} 
+          <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+            <input class="form-control" type="text" name="design_title[{{ language['language_id'] }}]" value="{{ design_title[language['language_id']] is defined?design_title[language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+          </div>
+        {% endfor %} 
+        </div>
+      </div>
+          
+      {#caption#}
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-design-caption">{{ entry_caption }}</label>
+        <div class="col-xs-9">
+        {% for language in languages %} 
+          <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+            <input class="form-control" type="text" name="design_caption[{{ language['language_id'] }}]" value="{{ design_caption[language['language_id']] is defined?design_caption[language['language_id']]:'' }}" placeholder="{{ entry_caption }}" >
+          </div>
+        {% endfor %} 
+        </div>
+      </div>
+      
+      {#size#}
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-design-size">{{ entry_size }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+          {% for size in sizes %}
+            {% if (design_size == size.code) %} 
+            <input type="radio" name="design_size" value="{{ size['code'] }}" id="input-design-size-{{ size['code'] }}" checked>
+            <label for="input-design-size-{{ size['code'] }}" >{{ size['text'] }}</label>
+            {% else %} 
+            <input type="radio" name="design_size" value="{{ size['code'] }}" id="input-design-size-{{ size['code'] }}">
+            <label for="input-design-size-{{ size['code'] }}" >{{ size['text'] }}</label>
+            {% endif %}
+          {% endfor %} 
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="tab-design-head" class="tab-pane">
+      <!--head status-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-design-head-status">{{ entry_status }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (design_head_status) %} 
+            <input type="radio" name="design_head_status" value="1" id="input-design-head-status-enabled" checked>
+            <label for="input-design-head-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="design_head_status" value="0" id="input-design-head-status-disabled">
+            <label for="input-design-head-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="design_head_status" value="1" id="input-design-head-status-enabled" >
+            <label for="input-design-head-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="design_head_status" value="0" id="input-design-head-status-disabled" checked>
+            <label for="input-design-head-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      {#style#}
+      <div class="form-group">
+        <label class="col-sm-3 control-label">{{ entry_style }}</label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+          {% for style in head_styles %}
+            {% if (design_head_style == style.code) %} 
+            <input type="radio" name="design_head_style" value="{{ style['code'] }}" id="input-design-head-style-{{ style['code'] }}" checked>
+            <label for="input-design-head-style-{{ style['code'] }}" >{{ style['text'] }}</label>
+            {% else %} 
+            <input type="radio" name="design_head_style" value="{{ style['code'] }}" id="input-design-head-style-{{ style['code'] }}">
+            <label for="input-design-head-style-{{ style['code'] }}" >{{ style['text'] }}</label>
+            {% endif %}
+          {% endfor %} 
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="tab-design-style" class="tab-pane">
+      <!--style dark-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-design-style-dark"><span data-toggle="tooltip" title="{{ help_dark }}">{{ entry_dark }}</span></label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (design_style_dark) %} 
+            <input type="radio" name="design_style_dark" value="1" id="input-design-style-dark-enabled" checked>
+            <label for="input-design-style-dark-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="design_style_dark" value="0" id="input-design-style-dark-disabled">
+            <label for="input-design-style-dark-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="design_style_dark" value="1" id="input-design-style-dark-enabled" >
+            <label for="input-design-style-dark-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="design_style_dark" value="0" id="input-design-style-dark-disabled" checked>
+            <label for="input-design-style-dark-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <!--style striped-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-design-style-striped"><span data-toggle="tooltip" title="{{ help_striped }}">{{ entry_striped }}</span></label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (design_style_striped) %} 
+            <input type="radio" name="design_style_striped" value="1" id="input-design-style-striped-enabled" checked>
+            <label for="input-design-style-striped-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="design_style_striped" value="0" id="input-design-style-striped-disabled">
+            <label for="input-design-style-striped-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="design_style_striped" value="1" id="input-design-style-striped-enabled" >
+            <label for="input-design-style-striped-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="design_style_striped" value="0" id="input-design-style-striped-disabled" checked>
+            <label for="input-design-style-striped-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <!--style bordered-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-design-style-bordered"><span data-toggle="tooltip" title="{{ help_bordered }}">{{ entry_bordered }}</span></label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (design_style_bordered) %} 
+            <input type="radio" name="design_style_bordered" value="1" id="input-design-style-bordered-enabled" checked>
+            <label for="input-design-style-bordered-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="design_style_bordered" value="0" id="input-design-style-bordered-disabled">
+            <label for="input-design-style-bordered-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="design_style_bordered" value="1" id="input-design-style-bordered-enabled" >
+            <label for="input-design-style-bordered-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="design_style_bordered" value="0" id="input-design-style-bordered-disabled" checked>
+            <label for="input-design-style-bordered-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <!--style borderless-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-design-style-borderless"><span data-toggle="tooltip" title="{{ help_borderless }}">{{ entry_borderless }}</span></label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (design_style_borderless) %} 
+            <input type="radio" name="design_style_borderless" value="1" id="input-design-style-borderless-enabled" checked>
+            <label for="input-design-style-borderless-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="design_style_borderless" value="0" id="input-design-style-borderless-disabled">
+            <label for="input-design-style-borderless-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="design_style_borderless" value="1" id="input-design-style-borderless-enabled" >
+            <label for="input-design-style-borderless-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="design_style_borderless" value="0" id="input-design-style-borderless-disabled" checked>
+            <label for="input-design-style-borderless-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <!--style hover-->
+      <div class="form-group">
+        <label class="col-sm-3 control-label" for="input-setting-design-style-hover"><span data-toggle="tooltip" title="{{ help_hover }}">{{ entry_hover }}</span></label>
+        <div class="col-sm-9">
+          <div class="mz-switch-field">
+            {% if (design_style_hover) %} 
+            <input type="radio" name="design_style_hover" value="1" id="input-design-style-hover-enabled" checked>
+            <label for="input-design-style-hover-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="design_style_hover" value="0" id="input-design-style-hover-disabled">
+            <label for="input-design-style-hover-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="design_style_hover" value="1" id="input-design-style-hover-enabled" >
+            <label for="input-design-style-hover-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="design_style_hover" value="0" id="input-design-style-hover-disabled" checked>
+            <label for="input-design-style-hover-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="tab-design-data" class="tab-pane">
+      <div class="alert alert-info"><i class="fa fa-info-circle" aria-hidden="true"></i> {{ help_table }}</div>
+      {#data#}
+      <div class="form-group">
+        <div class="col-xs-12">
+          <ul class="nav nav-tabs tab-dynamic">
+            {% for language in languages %}
+            <li><a href="#design-table-data-language-{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+            {% endfor %}
+          </ul>
+          <div class="tab-content">
+            {% for language in languages %}
+            <div class="tab-pane" id="design-table-data-language-{{ language.language_id }}">
+              <textarea rows="10" name="design_data[{{ language.language_id }}]" placeholder='{{ sample_data }}' class="form-control large">{{ design_data[language.language_id] ? design_data[language.language_id] }}</textarea>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

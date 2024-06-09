@@ -1,0 +1,180 @@
+{% if carousel_status and heading_title %}
+<div class="d-flex flex-wrap">
+  {% if heading_title is not empty %}<h3 class="module-title clearfix">{{ heading_title }}</h3>{% endif %}
+  <div id="mz-category-wall-nav{% verbatim %}{{ mz_suffix }}{% endverbatim %}" class="swiper-navigation ms-auto">
+    <span class="button-prev" role="button">
+      {% if carousel_nav_icon_font %}
+      <i class="icon {{ carousel_nav_icon_font }}" {{ carousel_nav_icon_size?'style="font-size: ' ~ carousel_nav_icon_size ~ 'px"':'' }}></i>
+      {% elseif carousel_nav_icon_svg %}
+      <div class="icon svg-icon" style="{{ carousel_nav_icon_width?'width:' ~ carousel_nav_icon_width ~ 'px;' }}{{ carousel_nav_icon_height?'height:' ~ carousel_nav_icon_height ~ 'px;' }}">{{ carousel_nav_icon_svg }}</div>
+      {% elseif carousel_nav_icon_image %}
+      <img class="icon" width="{{ carousel_nav_icon_width }}" height="{{ carousel_nav_icon_height }}" src="{{ carousel_nav_icon_image }}"  />
+      {% endif %} 
+    </span>
+    <span class="button-next" role="button">
+      {% if carousel_nav_icon_font %}
+      <i class="icon fa-flip-horizontal {{ carousel_nav_icon_font }}" {{ carousel_nav_icon_size?'style="font-size: ' ~ carousel_nav_icon_size ~ 'px"':'' }}></i>
+      {% elseif carousel_nav_icon_svg %}
+      <div class="icon fa-flip-horizontal svg-icon" style="{{ carousel_nav_icon_width?'width:' ~ carousel_nav_icon_width ~ 'px;' }}{{ carousel_nav_icon_height?'height:' ~ carousel_nav_icon_height ~ 'px;' }}">{{ carousel_nav_icon_svg }}</div>
+      {% elseif carousel_nav_icon_image %}
+      <img class="icon fa-flip-horizontal" width="{{ carousel_nav_icon_width }}" height="{{ carousel_nav_icon_height }}" src="{{ carousel_nav_icon_image }}"  />
+      {% endif %} 
+    </span>
+  </div>
+</div>
+{% else %}
+{% if heading_title is not empty %}<h3 class="module-title clearfix">{{ heading_title }}</h3>{% endif %}
+{% endif %}
+{#carousel#}
+{% if carousel_status %}
+<div id="mz-category-wall{% verbatim %}{{ mz_suffix }}{% endverbatim %}" class="swiper" dir="{{ direction }}">
+  <div class="swiper-wrapper">
+    {% verbatim %}{% for category in categories %}{% endverbatim %}
+    <div class="swiper-slide">
+      <a href="{% verbatim %}{{ category.href }}{% endverbatim %}">
+        <figure class="figure img-{{ image_position }}">
+          {% if show_content != 'text' %}
+          <div class="figure-img-wrapper">
+            {% if lazy_loading %}
+            <img class="figure-img img-fluid lazy-load loader-spinner" src="{{ transparent?:'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}" width="{{ image_width }}" height="{{ image_height }}" data-src="{% verbatim %}{{ category.image }}{% endverbatim %}" alt="{% verbatim %}{{ category.name }}{% endverbatim %}" >
+            {% else %}
+            <img class="figure-img img-fluid" width="{{ image_width }}" height="{{ image_height }}" src="{% verbatim %}{{ category.image }}{% endverbatim %}" alt="{% verbatim %}{{ category.name }}{% endverbatim %}" >
+            {% endif %}
+          </div>
+          {% endif %}
+          {% if show_content != 'image' %}
+          <div class="figure-caption">
+            <h4>
+              {% if mz_config.get('html_module_category_wall_name_with_total') and product_count %}
+              {% verbatim %}{{ category.name }} ({{ category.product_total }}){% endverbatim %}
+              {% else %}
+              {% verbatim %}{{ category.name }}{% endverbatim %}
+              {% endif %}
+              {% if direction == 'rtl' %}
+              <i class="icon fas fa-arrow-circle-left"></i>
+              {% else %}
+              <i class="icon fas fa-arrow-circle-right"></i>
+              {% endif %}
+            </h4>
+            {% if not mz_config.get('html_module_category_wall_name_with_total') and product_count %}
+            {% verbatim %}<span class="total">{{ category.product_total }} {{ text_products }}</span>{% endverbatim %}
+            {% endif %}
+          </div>
+          {% endif %}
+        </figure>
+      </a>
+    </div>
+    {% verbatim %}{% endfor %}{% endverbatim %}
+  </div>
+  
+  {% if not heading_title %}
+  <div id="mz-category-wall-nav{% verbatim %}{{ mz_suffix }}{% endverbatim %}" class="swiper-pager custom-pager">
+    <div class="swiper-button-prev" role="button">
+      {% if carousel_nav_icon_font %}
+      <i class="icon {{ carousel_nav_icon_font }}" {{ carousel_nav_icon_size?'style="font-size: ' ~ carousel_nav_icon_size ~ 'px"':'' }}></i>
+      {% elseif carousel_nav_icon_svg %}
+      <div class="icon svg-icon" style="{{ carousel_nav_icon_width?'width:' ~ carousel_nav_icon_width ~ 'px;' }}{{ carousel_nav_icon_height?'height:' ~ carousel_nav_icon_height ~ 'px;' }}">{{ carousel_nav_icon_svg }}</div>
+      {% elseif carousel_nav_icon_image %}
+      <img class="icon" width="{{ carousel_nav_icon_width }}" height="{{ carousel_nav_icon_height }}" src="{{ carousel_nav_icon_image }}"  />
+      {% endif %}</div>
+    <div class="swiper-button-next" role="button">
+      {% if carousel_nav_icon_font %}
+      <i class="icon {{ carousel_nav_icon_font }}" {{ carousel_nav_icon_size?'style="font-size: ' ~ carousel_nav_icon_size ~ 'px"':'' }}></i>
+      {% elseif carousel_nav_icon_svg %}
+      <div class="icon svg-icon" style="{{ carousel_nav_icon_width?'width:' ~ carousel_nav_icon_width ~ 'px;' }}{{ carousel_nav_icon_height?'height:' ~ carousel_nav_icon_height ~ 'px;' }}">{{ carousel_nav_icon_svg }}</div>
+      {% elseif carousel_nav_icon_image %}
+      <img class="icon" width="{{ carousel_nav_icon_width }}" height="{{ carousel_nav_icon_height }}" src="{{ carousel_nav_icon_image }}"  />
+      {% endif %}</div>
+  </div>
+  {% endif %}
+</div>
+<script>
+$(function(){
+  var swiper = new Swiper('#mz-category-wall{% verbatim %}{{ mz_suffix }}{% endverbatim %}', {
+    pagination: false,
+    observer: true,
+    observeParents: true,
+    navigation: {
+      nextEl: '#mz-category-wall-nav{% verbatim %}{{ mz_suffix }}{% endverbatim %} .{% if not heading_title %}swiper-{% endif %}button-next',
+      prevEl: '#mz-category-wall-nav{% verbatim %}{{ mz_suffix }}{% endverbatim %} .{% if not heading_title %}swiper-{% endif %}button-prev',
+    },
+    {% if carousel_autoplay > 0 %}
+    autoplay: {delay: {{ carousel_autoplay }}},
+    {% else %}
+    autoplay: false,
+    {% endif %}
+    loop: {{ carousel_loop?'true':'false' }},
+    {% if carousel_row > 1 %}
+    grid: {fill: 'row', rows: {{ carousel_row }}},
+    loop: false, // Multi row does not support with loop
+    {% endif %}
+    slidesPerView: {{ column_xs }},
+    spaceBetween: {{ gutter_width }},
+    breakpoints: {
+      {{ breakpoint_sm }}: {
+        slidesPerView: {{ column_sm }}
+      },
+      {{ breakpoint_md }}: {
+        slidesPerView: {{ column_md }}
+      },
+      {{ breakpoint_lg }}: {
+        slidesPerView: {{ column_lg }}
+      },
+      {{ breakpoint_xl }}: {
+        slidesPerView: {{ column_xl }}
+      },
+    },
+  });
+  {% if lazy_loading %}
+  swiper.on('slideNextTransitionEnd', function(swiper){
+    $(swiper.slides[swiper.activeIndex]).find('img.lazy-load').each(function(){
+      if($(this).data("plugin_lazy")){
+        $(this).data("plugin_lazy").update();
+      }
+    });
+  });
+  {% endif %}
+});
+</script>
+
+{#Grid#}
+{% else %}
+  <div class="row row-cols-xl-{{ column_xl }} row-cols-lg-{{ column_lg }} row-cols-md-{{ column_md }} row-cols-sm-{{ column_sm }} row-cols-{{ column_xs }}">
+  {% verbatim %}{% for category in categories %}{% endverbatim %}
+    <div class="col">
+      <a href="{% verbatim %}{{ category.href }}{% endverbatim %}">
+        <figure class="figure img-{{ image_position }}">
+          {% if show_content != 'text' %}
+          <div class="figure-img-wrapper">
+            {% if lazy_loading %}
+            <img class="figure-img img-fluid lazy-load loader-spinner" src="{{ transparent?:'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}" width="{{ image_width }}" height="{{ image_height }}" data-src="{% verbatim %}{{ category.image }}{% endverbatim %}" alt="{% verbatim %}{{ category.name }}{% endverbatim %}" >
+            {% else %}
+            <img class="figure-img img-fluid" width="{{ image_width }}" height="{{ image_height }}" src="{% verbatim %}{{ category.image }}{% endverbatim %}" alt="{% verbatim %}{{ category.name }}{% endverbatim %}" >
+            {% endif %}
+          </div>
+          {% endif %}
+          {% if show_content != 'image' %}
+          <div class="figure-caption">
+            <h4>
+              {% if not html_module_category_wall_name_with_total and product_count %}
+              {% verbatim %}{{ category.name }} ({{ category.product_total }}){% endverbatim %}
+              {% else %}
+              {% verbatim %}{{ category.name }}{% endverbatim %}
+              {% endif %}
+              {% if direction == 'rtl' %}
+              <i class="icon fas fa-arrow-circle-left"></i>
+              {% else %}
+              <i class="icon fas fa-arrow-circle-right"></i>
+              {% endif %}
+            </h4>
+            {% if html_module_category_wall_name_with_total and product_count %}
+            {% verbatim %}<span class="total">{{ category.product_total }} {{ text_products }}</span>{% endverbatim %}
+            {% endif %}
+          </div>
+          {% endif %}
+        </figure>
+      </a>
+    </div>
+  {% verbatim %}{% endfor %}{% endverbatim %}
+  </div>
+{% endif %}

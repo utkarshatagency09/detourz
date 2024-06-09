@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-sm-6 mb-4">
+    <h4>{{ text_new_customer }}</h4>
+    <p>{{ text_checkout }}</p>
+    <div class="mb-3">
+      <div class="form-check mb-1">
+        {% if account == 'register' %}
+          <input type="radio" id="input-account-register" name="account" value="register" class="form-check-input" checked="checked"/>
+        {% else %}
+          <input type="radio" id="input-account-register" name="account" value="register" class="form-check-input"/>
+        {% endif %}
+        <label class="form-check-label" for="input-account-register">{{ text_register }}</label>
+      </div>
+      {% if checkout_guest %}
+        <div class="form-check">
+          {% if account == 'guest' %}
+            <input type="radio" id="input-account-guest" name="account" value="guest" class="form-check-input" checked="checked"/>
+          {% else %}
+            <input type="radio" id="input-account-guest" name="account" value="guest" class="form-check-input"/>
+          {% endif %}
+          <label class="form-check-label" for="input-account-guest">{{ text_guest }}</label>
+        </div>
+      {% endif %}
+    </div>
+    <p>{{ text_register_account }}</p>
+    <button type="button" id="button-account" data-loading-text="{{ text_loading }}" class="btn btn-primary">{{ button_continue }}</button>
+  </div>
+  <div class="col-sm-6 mb-4">
+    <h4>{{ text_returning_customer }}</h4>
+    <p>{{ text_i_am_returning_customer }}</p>
+    <div class="mb-3">
+      <label class="form-label" for="input-email">{{ entry_email }}</label> <input type="text" name="email" value="" placeholder="{{ entry_email }}" id="input-email" class="form-control"/>
+    </div>
+    <div class="mb-3">
+      <label class="form-label" for="input-password">{{ entry_password }}</label> <input type="password" name="password" value="" placeholder="{{ entry_password }}" id="input-password" class="form-control"/> <a href="{{ forgotten }}">{{ text_forgotten }}</a></div>
+    <button type="button" id="button-login" data-loading-text="{{ text_loading }}" class="btn btn-primary">{{ button_login }}</button>
+  </div>
+</div>

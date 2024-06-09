@@ -1,0 +1,21 @@
+{
+    "name": "templatemaza/mazaengine",
+    "description": "Opencart theme engine",
+    "type": "project",
+    "require": {
+        "padaliyajay/php-autoprefixer": "dev-master",
+        "scssphp/scssphp": "^1.10",
+        "matthiasmullie/minify": "^1.3",
+        "padaliyajay/font-class-extractor": "^1.0",
+        "hybridauth/hybridauth" : "~3.0",
+        "firebase/php-jwt": "^6.4",
+        "phpseclib/phpseclib": "2.0.42",
+        "minishlink/web-push": "^8.0"
+    },
+    "authors": [
+        {
+            "name": "Jay Padaliya",
+            "email": "developer.padaliyajay@gmail.com"
+        }
+    ]
+}

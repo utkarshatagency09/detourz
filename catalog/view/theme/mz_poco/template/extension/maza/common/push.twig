@@ -1,0 +1,53 @@
+<button id="push-notification-bell" class="btn btn-primary floating-action-button m-2 rounded-circle d-none" data-bs-toggle="tooltip" data-bs-title="{{ button_push }}"><i class="fa-solid fa-bell fa-shake"></i></button>
+<script defer>
+if ("serviceWorker" in navigator && "PushManager" in window && 'Notification' in window) {
+	navigator.serviceWorker
+		.register("/catalog/view/javascript/maza/javascript/service-worker.js")
+		.then((registration) => { // Registered service worker
+			registration.pushManager
+				.getSubscription() // Check for subscription
+				.then((subscription) => {
+					if (!subscription) { // Create subscription if not existing
+						$('#push-notification-bell').removeClass('d-none').on('click', (e) => {
+							$('#push-notification-bell').prop('disabled', true);
+							bootstrap.Tooltip.getInstance('#push-notification-bell').hide();
+
+							Notification.requestPermission()
+								.then(async (permission) => {
+									if (permission === 'granted') {
+										// Push notification permission granted
+										subscription = await registration.pushManager.subscribe({
+											userVisibleOnly: true,
+											applicationServerKey: "{{ public_key }}",
+										});
+										$('<div class="toast m-3" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="10000"><div class="toast-header text-bg-dark"><i class="fa-solid fa-bell me-2"></i> {{ text_title }}</div><p class="toast-body"><i class="fas fa-thumbs-up"></i> {{ text_success }}</p>').appendTo('#notification-box-top').toast('show');
+										$('#push-notification-bell').addClass('d-none').prop('disabled', false);
+
+										$.post('{{ subscribe }}', subscription.toJSON(), (json) => {
+											console.log(json);
+										});
+									} else {
+										// Push notification permission denied
+										alert("{{ error_denied }}");
+									}
+								}).catch(function(error) {
+									console.error('Error requesting push notification permission:', error);
+								});
+						});
+					} else {
+						{% if rebuild %}
+						$.post('{{ subscribe }}', subscription.toJSON(), (json) => {
+							console.log(json);
+						});
+						{% endif %}
+					}
+				})
+				.catch((error) => {
+					console.error("Error subscribing to push notifications:", error);
+				});
+		})
+		.catch((error) => {
+			console.error("Service Worker registration failed:", error);
+		});
+}
+</script>

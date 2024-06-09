@@ -1,0 +1,186 @@
+{# Table #}
+{% if design == 'table' %}
+<div class="table-responsive">
+  <table class="table table-{{ size }} {{ table_striped?'table-striped ' }}{{ table_dark?'table-dark ' }}{{ table_bordered?'table-bordered ' }}{{ table_borderless?'table-borderless ' }}{{ table_hover?'table-hover' }}">
+    {% verbatim %}{% for attribute_group in attribute_groups %}{% endverbatim %}
+    <thead class="table-{{ table_head }}">
+      <tr>
+        <th colspan="2"><strong>{% verbatim %}{{ attribute_group.name }}{% endverbatim %}</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% verbatim %}{% for attribute in attribute_group.attribute %}{% endverbatim %}
+      <tr>
+        <td>{% verbatim %}{{ attribute.name }}{% endverbatim %}</td>
+        <td>{% verbatim %}{{ attribute.text }}{% endverbatim %}</td>
+      </tr>
+    {% verbatim %}{% endfor %}{% endverbatim %}
+    </tbody>
+    {% verbatim %}{% endfor %}{% endverbatim %}
+  </table>
+</div>
+{% endif %}
+
+{# accordion #}
+{% if design == 'accordion' %}
+<div class="accordion" id="attribute-accordion-{{ mz_suffix }}">
+  {% verbatim %}{% for key, attribute_group in attribute_groups %}{% endverbatim %}
+    <div class="accordion-item">
+      <h5 id="attribute-accordion-label-{{ mz_suffix }}-{% verbatim %}{{ key }}{% endverbatim %}" class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" aria-expanded="{% verbatim %}{{ not key?'true':'false' }}{% endverbatim %}" aria-controls="attribute-accordion-panel-{{ mz_suffix }}-{% verbatim %}{{ key }}{% endverbatim %}" data-bs-target="#attribute-accordion-panel-{{ mz_suffix }}-{% verbatim %}{{ key }}{% endverbatim %}">
+          {% verbatim %}{{ attribute_group.name }}{% endverbatim %}
+        </button>
+      </h5>
+      <div id="attribute-accordion-panel-{{ mz_suffix }}-{% verbatim %}{{ key }}{% endverbatim %}" aria-labelledby="attribute-accordion-label-{{ mz_suffix }}-{% verbatim %}{{ key }}{% endverbatim %}"  class="accordion-collapse collapse" {{ accordion_auto_close?'data-bs-parent="#attribute-accordion-'~ mz_suffix ~'"' }}>
+        <div class="accordion-body table-responsive pt-0">
+          <table class="mb-0 table table-{{ size }} {{ table_striped?'table-striped ' }}{{ table_dark?'table-dark ' }}{{ table_bordered?'table-bordered ' }}{{ table_borderless?'table-borderless ' }}{{ table_hover?'table-hover' }}">
+            <tbody>
+            {% verbatim %}{% for attribute in attribute_group.attribute %}{% endverbatim %}
+              <tr>
+                <td>{% verbatim %}{{ attribute.name }}{% endverbatim %}</td>
+                <td>{% verbatim %}{{ attribute.text }}{% endverbatim %}</td>
+              </tr>
+            {% verbatim %}{% endfor %}{% endverbatim %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  {% verbatim %}{% endfor %}{% endverbatim %}
+</div>
+{# <div class="accordion" id="attribute-accordion-{{ mz_suffix }}">
+  {% verbatim %}{% for key, attribute_group in attribute_groups %}{% endverbatim %}
+    <div class="card">
+      <h5 id="attribute-accordion-label-{{ mz_suffix }}-{% verbatim %}{{ key }}{% endverbatim %}" class="card-header border-bottom-0 d-flex{% verbatim %}{% if key %} collapsed{% endif %}{% endverbatim %}" data-bs-toggle="collapse" aria-expanded="{% verbatim %}{{ not key?'true':'false' }}{% endverbatim %}" aria-controls="attribute-accordion-panel-{{ mz_suffix }}-{% verbatim %}{{ key }}{% endverbatim %}" data-bs-target="#attribute-accordion-panel-{{ mz_suffix }}-{% verbatim %}{{ key }}{% endverbatim %}">
+        {% verbatim %}{{ attribute_group.name }}{% endverbatim %} <i class="ms-auto fas fa-plus"></i>
+      </h5>
+      <div id="attribute-accordion-panel-{{ mz_suffix }}-{% verbatim %}{{ key }}{% endverbatim %}" aria-labelledby="attribute-accordion-label-{{ mz_suffix }}-{% verbatim %}{{ key }}{% endverbatim %}"  class="collapse{% verbatim %}{% if not key %} show{% endif %}{% endverbatim %}" {{ accordion_auto_close?'data-bs-parent="#attribute-accordion-'~ mz_suffix ~'"' }}>
+        <div class="card-body table-responsive pt-0">
+          <table class="mb-0 table table-{{ size }} {{ table_striped?'table-striped ' }}{{ table_dark?'table-dark ' }}{{ table_bordered?'table-bordered ' }}{{ table_borderless?'table-borderless ' }}{{ table_hover?'table-hover' }}">
+            <tbody>
+            {% verbatim %}{% for attribute in attribute_group.attribute %}{% endverbatim %}
+              <tr>
+                <td>{% verbatim %}{{ attribute.name }}{% endverbatim %}</td>
+                <td>{% verbatim %}{{ attribute.text }}{% endverbatim %}</td>
+              </tr>
+            {% verbatim %}{% endfor %}{% endverbatim %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  {% verbatim %}{% endfor %}{% endverbatim %}
+</div> #}
+{% endif %}
+
+{# card #}
+{% if design == 'card' %}
+  <div class="border-bottom">
+    {% verbatim %}{% for key, attribute_group in attribute_groups %}{% endverbatim %}
+      <div class="card border-bottom-0">
+        <div class="card-body table-responsive">
+          <h5 class="card-title">
+            {% verbatim %}{{ attribute_group.name }}{% endverbatim %}
+          </h5>
+          <table class="mb-0 table table-{{ size }} {{ table_striped?'table-striped ' }}{{ table_dark?'table-dark ' }}{{ table_bordered?'table-bordered ' }}{{ table_borderless?'table-borderless ' }}{{ table_hover?'table-hover' }}">
+            <tbody>
+            {% verbatim %}{% for attribute in attribute_group.attribute %}{% endverbatim %}
+              <tr>
+                <td>{% verbatim %}{{ attribute.name }}{% endverbatim %}</td>
+                <td>{% verbatim %}{{ attribute.text }}{% endverbatim %}</td>
+              </tr>
+            {% verbatim %}{% endfor %}{% endverbatim %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {% verbatim %}{% endfor %}{% endverbatim %}
+  </div>
+{% endif %}
+
+{# tab #}
+{% if design == 'tab' %}
+<ul class="nav nav-tabs" role="tablist">
+  {% verbatim %}{% for key, attribute_group in attribute_groups %}{% endverbatim %}
+  <li class="nav-item">
+    <a class="nav-link{% verbatim %}{% if not key %} active{% endif %}{% endverbatim %}" data-bs-toggle="tab" href="#attribute-tab-pane-{{ mz_suffix }}-{% verbatim %}{{ key }}{% endverbatim %}" role="tab">{% verbatim %}{{ attribute_group.name }}{% endverbatim %}</a>
+  </li>
+  {% verbatim %}{% endfor %}{% endverbatim %}
+</ul>
+<div class="tab-content">
+  {% verbatim %}{% for key, attribute_group in attribute_groups %}{% endverbatim %}
+  <div class="tab-pane {{ tab_fade_effect?'fade' }}{% verbatim %}{% if not key %} show active{% endif %}{% endverbatim %}" id="attribute-tab-pane-{{ mz_suffix }}-{% verbatim %}{{ key }}{% endverbatim %}" role="tabpanel">
+    <table class="mb-0 table table-{{ size }} {{ table_striped?'table-striped ' }}{{ table_dark?'table-dark ' }}{{ table_bordered?'table-bordered ' }}{{ table_borderless?'table-borderless ' }}{{ table_hover?'table-hover' }}">
+      <tbody>
+      {% verbatim %}{% for attribute in attribute_group.attribute %}{% endverbatim %}
+        <tr>
+          <td>{% verbatim %}{{ attribute.name }}{% endverbatim %}</td>
+          <td>{% verbatim %}{{ attribute.text }}{% endverbatim %}</td>
+        </tr>
+      {% verbatim %}{% endfor %}{% endverbatim %}
+      </tbody>
+    </table>
+  </div>
+  {% verbatim %}{% endfor %}{% endverbatim %}
+</div>
+{% endif %}
+
+{# pill horizontal  #}
+{% if design == 'pill' and pill_orientation == 'horizontal' %}
+<ul class="nav nav-pills mb-3" role="tablist">
+  {% verbatim %}{% for key, attribute_group in attribute_groups %}{% endverbatim %}
+  <li class="nav-item">
+    <a class="nav-link{% verbatim %}{% if not key %} active{% endif %}{% endverbatim %}" data-bs-toggle="pill" href="#attribute-tab-pane-{{ mz_suffix }}-{% verbatim %}{{ key }}{% endverbatim %}" role="tab">{% verbatim %}{{ attribute_group.name }}{% endverbatim %}</a>
+  </li>
+  {% verbatim %}{% endfor %}{% endverbatim %}
+</ul>
+<div class="tab-content">
+  {% verbatim %}{% for key, attribute_group in attribute_groups %}{% endverbatim %}
+  <div class="tab-pane {{ tab_fade_effect?'fade' }}{% verbatim %}{% if not key %} show active{% endif %}{% endverbatim %}" id="attribute-tab-pane-{{ mz_suffix }}-{% verbatim %}{{ key }}{% endverbatim %}" role="tabpanel">
+    <table class="mb-0 table table-{{ size }} {{ table_striped?'table-striped ' }}{{ table_dark?'table-dark ' }}{{ table_bordered?'table-bordered ' }}{{ table_borderless?'table-borderless ' }}{{ table_hover?'table-hover' }}">
+      <tbody>
+      {% verbatim %}{% for attribute in attribute_group.attribute %}{% endverbatim %}
+        <tr>
+          <td>{% verbatim %}{{ attribute.name }}{% endverbatim %}</td>
+          <td>{% verbatim %}{{ attribute.text }}{% endverbatim %}</td>
+        </tr>
+      {% verbatim %}{% endfor %}{% endverbatim %}
+      </tbody>
+    </table>
+  </div>
+  {% verbatim %}{% endfor %}{% endverbatim %}
+</div>
+{% endif %}
+
+{# pill vertical  #}
+{% if design == 'pill' and pill_orientation == 'vertical' %}
+<div class="row g-0">
+  <div class="col-sm-3">
+    <ul class="nav nav-pills mb-3 mb-sm-0 me-sm-3 flex-sm-column" role="tablist">
+      {% verbatim %}{% for key, attribute_group in attribute_groups %}{% endverbatim %}
+      <li class="nav-item">
+        <a class="nav-link{% verbatim %}{% if not key %} active{% endif %}{% endverbatim %}" data-bs-toggle="pill" href="#attribute-tab-pane-{{ mz_suffix }}-{% verbatim %}{{ key }}{% endverbatim %}" role="tab">{% verbatim %}{{ attribute_group.name }}{% endverbatim %}</a>
+      </li>
+      {% verbatim %}{% endfor %}{% endverbatim %}
+    </ul>
+  </div>
+  <div class="col-sm-9">
+    <div class="tab-content">
+      {% verbatim %}{% for key, attribute_group in attribute_groups %}{% endverbatim %}
+      <div class="tab-pane {{ tab_fade_effect?'fade' }}{% verbatim %}{% if not key %} show active{% endif %}{% endverbatim %}" id="attribute-tab-pane-{{ mz_suffix }}-{% verbatim %}{{ key }}{% endverbatim %}" role="tabpanel">
+        <table class="mb-0 table table-{{ size }} {{ table_striped?'table-striped ' }}{{ table_dark?'table-dark ' }}{{ table_bordered?'table-bordered ' }}{{ table_borderless?'table-borderless ' }}{{ table_hover?'table-hover' }}">
+          <tbody>
+          {% verbatim %}{% for attribute in attribute_group.attribute %}{% endverbatim %}
+            <tr>
+              <td>{% verbatim %}{{ attribute.name }}{% endverbatim %}</td>
+              <td>{% verbatim %}{{ attribute.text }}{% endverbatim %}</td>
+            </tr>
+          {% verbatim %}{% endfor %}{% endverbatim %}
+          </tbody>
+        </table>
+      </div>
+      {% verbatim %}{% endfor %}{% endverbatim %}
+    </div>
+  </div>
+</div>
+{% endif %}

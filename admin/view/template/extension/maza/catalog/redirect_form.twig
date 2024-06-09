@@ -1,0 +1,66 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- Form -->
+  <form action="{{ action }}" class="form-horizontal" enctype="multipart/form-data" id="form-mz-redirect" method="post">
+    <div class="tab-content">
+
+      <!--General-->
+      <div id="tab-mz-general" class="tab-pane fade in active">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+
+            <!--from-->
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-from">{{ entry_from }}</label>
+              <div class="col-xs-9">
+                <input type="text" name="from" value="{{ from }}" placeholder="{{ entry_from }}" id="input-from" class="form-control large" />
+                {% if err_from %}
+                <div class="text-danger">{{ err_from }}</div>
+                {% endif %}
+              </div>
+            </div>
+
+            <!--to-->
+            <div class="form-group required">
+              <label class="col-xs-3 control-label" for="input-to">{{ entry_to }}</label>
+              <div class="col-xs-9">
+                <input type="text" name="to" value="{{ to }}" placeholder="{{ entry_to }}" id="input-to" class="form-control large" />
+                {% if err_to %}
+                <div class="text-danger">{{ err_to }}</div>
+                {% endif %}
+              </div>
+            </div>
+
+            <!--store-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-store-id">{{ entry_store }}</label>
+              <div class="col-xs-9">
+                <select name="store_id" id="input-store-id" class="form-control">
+                {% for store in stores %}
+                  {% if (store_id == store.store_id) %} 
+                  <option value="{{ store.store_id }}" selected="">{{ store.name }}</option>
+                  {% else %} 
+                  <option value="{{ store.store_id }}">{{ store.name }}</option>
+                  {% endif %}
+                {% endfor %} 
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+{{ mz_footer }}

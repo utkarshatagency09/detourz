@@ -1,0 +1,25 @@
+{% if heading_title is not empty %}
+<h3 class="module-title">{{ heading_title }}</h3>
+{% endif %}
+<div class="list-group">
+  {% for category in categories %}
+    {% if category.category_id == category_id %}
+      {% if child_id %}
+      <a href="{{ category.href }}" class="list-group-item list-group-item-action active">{{ category.name }}</a>
+      {% else %}
+      <div class="list-group-item list-group-item-action active">{{ category.name }}</div>
+      {% endif %}
+      {% if category.children %}
+      {% for child in category.children %}
+      {% if child.category_id == child_id %}
+      <div class="list-group-item list-group-item-action active">&nbsp;&nbsp;&nbsp;- {{ child.name }}</div> 
+      {% else %} 
+      <a href="{{ child.href }}" class="list-group-item list-group-item-action">&nbsp;&nbsp;&nbsp;- {{ child.name }}</a>
+      {% endif %}
+      {% endfor %}
+      {% endif %}
+    {% else %}<a href="{{ category.href }}" class="list-group-item list-group-item-action">{{ category.name }}</a>
+    {% endif %}
+  {% endfor %}
+</div>
+

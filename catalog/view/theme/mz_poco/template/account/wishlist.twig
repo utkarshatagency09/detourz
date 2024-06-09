@@ -1,0 +1,75 @@
+{{ header }}
+<div id="account-wishlist" class="container content">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      {% for breadcrumb in breadcrumbs|slice(0,-1) %}
+        <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+      {% endfor %}
+      <li class="breadcrumb-item active" aria-current="page">{{ breadcrumbs|last.text }}</li>
+    </ol>
+  </nav>
+  {% if success %}
+    <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  {% endif %}
+  <div class="row">{{ column_left }}
+    {% if column_left and column_right %}
+      {% set class = 'col-md-6' %}
+    {% elseif column_left or column_right %}
+      {% set class = 'col-md-9' %}
+    {% else %}
+      {% set class = 'col-md-12' %}
+    {% endif %}
+    <div id="content" class="{{ class }}">
+      {{ content_top }}
+      <h1 class="page-title h3 mb-3">{{ heading_title }}</h1>
+      {% if products %}
+        <div class="table-responsive">
+          <table class="table table-hover border">
+            <thead class="table-light text-uppercase small">
+              <tr>
+                <th class="text-center">{{ column_image }}</th>
+                <th class="text-start">{{ column_name }}</th>
+                <th class="text-start">{{ column_model }}</th>
+                <th class="text-end">{{ column_stock }}</th>
+                <th class="text-end">{{ column_price }}</th>
+                <th class="text-end">{{ column_action }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for product in products %}
+                <tr>
+                  <td class="text-center">{% if product.thumb %}<a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}"/></a>{% endif %}</td>
+                  <td class="text-start"><a href="{{ product.href }}">{{ product.name }}</a></td>
+                  <td class="text-start">{{ product.model }}</td>
+                  <td class="text-end">{{ product.stock }}</td>
+                  <td class="text-end">
+                    {% if product.price %}
+                      <div class="price">
+                        {% if not product.special %}
+                          {{ product.price }}
+                        {% else %}
+                          <b>{{ product.special }}</b> <s>{{ product.price }}</s>
+                        {% endif %}
+                      </div>
+                    {% endif %}</td>
+                  <td class="text-end text-nowrap"><button type="button" onclick="cart.add('{{ product.product_id }}');" data-bs-toggle="tooltip" title="{{ button_cart }}" class="btn btn-light btn-sm"><i class="fas fa-cart-plus"></i></button>
+                    <a href="{{ product.remove }}" data-bs-toggle="tooltip" title="{{ button_remove }}" class="btn btn-light btn-sm text-danger"><i class="fa fa-times"></i></a></td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p>{{ text_no_results }}</p>
+      {% endif %}
+      <div class="buttons clearfix mb-4">
+        <div class="float-end"><a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a></div>
+      </div>
+      {{ content_bottom }}
+    </div>
+    {{ column_right }}
+  </div>
+</div>
+{{ footer }}

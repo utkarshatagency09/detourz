@@ -1,0 +1,107 @@
+<ul class="list-unstyled m-0">
+    
+{% if show_brand %}
+{% verbatim %}{% if manufacturer %}{% endverbatim %}
+<li><span class="ls-label">{% verbatim %}{{ text_brand }}{% endverbatim %}:</span> <a class="text-decoration-none" href="{% verbatim %}{{ manufacturers }}{% endverbatim %}">{% verbatim %}{{ manufacturer }}{% endverbatim %}</a></li>
+{% verbatim %}{% endif %}{% endverbatim %}
+{% endif %}
+
+{% if show_model %}
+<li><span class="ls-label">{% verbatim %}{{ text_model }}{% endverbatim %}</span> <span>{% verbatim %}{{ model }}{% endverbatim %}</span></li>
+{% endif %}
+
+{% if show_sku %}
+{% verbatim %}{% if mz_extra.sku %}{% endverbatim %}
+<li><span class="ls-label">{% verbatim %}{{ text_sku }}{% endverbatim %}</span> <span>{% verbatim %}{{ mz_extra.sku }}{% endverbatim %}</span></li>
+{% verbatim %}{% endif %}{% endverbatim %}
+{% endif %}
+
+{% if show_upc %}
+{% verbatim %}{% if mz_extra.upc %}{% endverbatim %}
+<li><span class="ls-label">{% verbatim %}{{ text_upc }}{% endverbatim %}</span> <span>{% verbatim %}{{ mz_extra.upc }}{% endverbatim %}</span></li>
+{% verbatim %}{% endif %}{% endverbatim %}
+{% endif %}
+
+{% if show_ean %}
+{% verbatim %}{% if mz_extra.ean %}{% endverbatim %}
+<li><span class="ls-label">{% verbatim %}{{ text_ean }}{% endverbatim %}</span> <span>{% verbatim %}{{ mz_extra.ean }}{% endverbatim %}</span></li>
+{% verbatim %}{% endif %}{% endverbatim %}
+{% endif %}
+
+{% if show_jan %}
+{% verbatim %}{% if mz_extra.jan %}{% endverbatim %}
+<li><span class="ls-label">{% verbatim %}{{ text_jan }}{% endverbatim %}</span> <span>{% verbatim %}{{ mz_extra.jan }}{% endverbatim %}</span></li>
+{% verbatim %}{% endif %}{% endverbatim %}
+{% endif %}
+
+{% if show_isbn %}
+{% verbatim %}{% if mz_extra.isbn %}{% endverbatim %}
+<li><span class="ls-label">{% verbatim %}{{ text_isbn }}{% endverbatim %}</span> <span>{% verbatim %}{{ mz_extra.isbn }}{% endverbatim %}</span></li>
+{% verbatim %}{% endif %}{% endverbatim %}
+{% endif %}
+
+{% if show_mpn %}
+{% verbatim %}{% if mz_extra.mpn %}{% endverbatim %}
+<li><span class="ls-label">{% verbatim %}{{ text_mpn }}{% endverbatim %}</span> <span>{% verbatim %}{{ mz_extra.mpn }}{% endverbatim %}</span></li>
+{% verbatim %}{% endif %}{% endverbatim %}
+{% endif %}
+
+{% if show_sold %}
+{% verbatim %}{% if mz_extra.sold > 0 %}{% endverbatim %}
+<li><span class="ls-label">{% verbatim %}{{ text_sold }}{% endverbatim %}</span> <span>{% verbatim %}{{ mz_extra.sold }}{% endverbatim %}</span></li>
+{% verbatim %}{% endif %}{% endverbatim %}
+{% endif %}
+
+{% if show_viewed %}
+{% verbatim %}{% if mz_extra.viewed > 0 %}{% endverbatim %}
+<li><span class="ls-label">{% verbatim %}{{ text_viewed }}{% endverbatim %}</span> <span>{% verbatim %}{{ mz_extra.viewed }}{% endverbatim %}</span></li>
+{% verbatim %}{% endif %}{% endverbatim %}
+{% endif %}
+
+{% if show_date_modified %}
+<li><span class="ls-label">{% verbatim %}{{ text_date_modified }}{% endverbatim %}</span> <span>{% verbatim %}{{ mz_extra.date_modified }}{% endverbatim %}</span></li>
+{% endif %}
+
+{% if show_date_available %}
+<li><span class="ls-label">{% verbatim %}{{ text_date_available }}{% endverbatim %}</span> <span>{% verbatim %}{{ mz_extra.date_available }}{% endverbatim %}</span></li>
+{% endif %}
+
+{% if show_length %}
+{% verbatim %}{% if mz_extra.length %}{% endverbatim %}
+<li><span class="ls-label">{% verbatim %}{{ text_length }}{% endverbatim %}</span> <span>{% verbatim %}{{ mz_extra.length }}{% endverbatim %}</span></li>
+{% verbatim %}{% endif %}{% endverbatim %}
+{% endif %}
+
+{% if show_width %}
+{% verbatim %}{% if mz_extra.width %}{% endverbatim %}
+<li><span class="ls-label">{% verbatim %}{{ text_width }}{% endverbatim %}</span> <span>{% verbatim %}{{ mz_extra.width }}{% endverbatim %}</span></li>
+{% verbatim %}{% endif %}{% endverbatim %}
+{% endif %}
+
+{% if show_height %}
+{% verbatim %}{% if mz_extra.height %}{% endverbatim %}
+<li><span class="ls-label">{% verbatim %}{{ text_height }}{% endverbatim %}</span> <span>{% verbatim %}{{ mz_extra.height }}{% endverbatim %}</span></li>
+{% verbatim %}{% endif %}{% endverbatim %}
+{% endif %}
+
+{% if show_weight %}
+{% verbatim %}{% if mz_extra.weight %}{% endverbatim %}
+<li><span class="ls-label">{% verbatim %}{{ text_weight }}{% endverbatim %}</span> <span>{% verbatim %}{{ mz_extra.weight }}{% endverbatim %}</span></li>
+{% verbatim %}{% endif %}{% endverbatim %}
+{% endif %}
+
+{% if show_reward %}
+{% verbatim %}{% if reward %}{% endverbatim %}
+<li><span class="ls-label">{% verbatim %}{{ text_reward }}{% endverbatim %}</span> <span>{% verbatim %}{{ reward }}{% endverbatim %}</span></li>
+{% verbatim %}{% endif %}{% endverbatim %}
+{% endif %}
+
+{% if show_stock %}{% verbatim %}<li><span class="ls-label">{{ text_stock }}</span>
+  {% if quantity <= 0 %}
+  <span class='badge text-bg-danger'>{{ stock }}</span>
+  {% else %}
+  <span class='badge text-bg-success'>{{ stock }}</span>
+  {% endif %}
+  </li>{% endverbatim %}
+{% endif %}
+</ul>

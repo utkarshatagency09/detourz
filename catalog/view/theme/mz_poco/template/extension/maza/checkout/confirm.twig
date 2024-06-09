@@ -1,0 +1,105 @@
+{{ header }}
+<div id="maza-checkout-confirm" class="container content pb-5">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      {% for breadcrumb in breadcrumbs|slice(0,-1) %}
+        <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+      {% endfor %}
+      <li class="breadcrumb-item active" aria-current="page">{{ breadcrumbs|last.text }}</li>
+    </ol>
+  </nav>
+  <div class="row">{{ column_left }}
+    {% if column_left and column_right %}
+    {% set class = 'col-md-6' %}
+    {% elseif column_left or column_right %}
+    {% set class = 'col-md-9' %}
+    {% else %}
+    {% set class = 'col-md-12' %}
+    {% endif %}
+    <div id="content" class="{{ class }}">{{ content_top }}
+      <h1 class="page-title mb-3">{{ heading_title }}</h1>
+      <div class="table-responsive mb-4">
+        <table class="table table-bordered table-hover mb-0">
+          <thead>
+            <tr>
+              <td class="text-start">{{ column_name }}</td>
+              <td class="text-start">{{ column_model }}</td>
+              <td class="text-end">{{ column_quantity }}</td>
+              <td class="text-end">{{ column_price }}</td>
+              <td class="text-end">{{ column_total }}</td>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in products %}
+              <tr>
+                <td class="text-start">{{ product.name }} {% for option in product.option %}
+                    <br/>
+                    &nbsp;
+                    <small> - {{ option.name }}: {{ option.value }}</small> {% endfor %}
+                  {% if product.recurring %}
+                    <br/>
+                    <span class="label label-info">{{ text_recurring_item }}</span>
+                    <small>{{ product.recurring }}</small> {% endif %}</td>
+                <td class="text-start">{{ product.model }}</td>
+                <td class="text-end">{{ product.quantity }}</td>
+                <td class="text-end">{{ product.price }}</td>
+                <td class="text-end">{{ product.total }}</td>
+              </tr>
+            {% endfor %}
+            {% for voucher in vouchers %}
+              <tr>
+                <td class="text-start">{{ voucher.description }}</td>
+                <td class="text-start"></td>
+                <td class="text-end">1</td>
+                <td class="text-end">{{ voucher.amount }}</td>
+                <td class="text-end">{{ voucher.amount }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            {% for total in totals %}
+              <tr>
+                <td colspan="4" class="text-end"><strong>{{ total.title }}:</strong></td>
+                <td class="text-end">{{ total.text }}</td>
+              </tr>
+            {% endfor %}
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="row">
+        <div class="{% if shipping_address %}col-sm-6{% else %}col-12{% endif %}">
+          <h4>{{ text_payment_address }}</h4>
+          <div class="card mb-4">
+            <div class="card-body">{{ payment_address }}</div>
+          </div>
+        </div>
+        {% if shipping_address %}
+        <div class="col-sm-6">
+          <h4>{{ text_shipping_address }}</h4>
+          <div class="card mb-4">
+            <div class="card-body">{{ shipping_address }}</div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      {% if shipping_method %}
+      <h4>{{ text_shipping_method }}</h4>
+      <div class="card mb-4">
+        <div class="card-body">{{ shipping_method }}</div>
+      </div>
+      {% endif %}
+
+      {% if comment %}
+      <h4>{{ text_comment }}</h4>
+      <div class="card mb-4">
+        <div class="card-body">{{ comment }}</div>
+      </div>
+      {% endif %}
+
+      {{ payment }}
+      {{ content_bottom }}</div>
+    {{ column_right }}</div>
+</div>
+{{ footer }}

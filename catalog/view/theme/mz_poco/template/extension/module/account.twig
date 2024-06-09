@@ -1,0 +1,27 @@
+<div class="list-group mb-3">
+  {% if not logged %}
+  <a href="{{ login }}" class="list-group-item list-group-item-action"><i class="fas fa-sign-in-alt fa-fw me-1"></i> {{ text_login }}</a>
+  <a href="{{ register }}" class="list-group-item list-group-item-action"><i class="fas fa-user-plus fa-fw me-1"></i> {{ text_register }}</a>
+  <a href="{{ forgotten }}" class="list-group-item list-group-item-action"><i class="fas fa-key fa-fw me-1"></i> {{ text_forgotten }}</a>
+  {% endif %}
+  <a href="{{ account }}" class="list-group-item list-group-item-action"><i class="fas fa-user fa-fw me-1"></i> {{ text_account }}</a>
+  {% if logged %}
+  <a href="{{ edit }}" class="list-group-item list-group-item-action"><i class="fas fa-user-edit fa-fw me-1"></i> {{ text_edit }}</a>
+  <a href="{{ password }}" class="list-group-item list-group-item-action"><i class="fas fa-key fa-fw me-1"></i> {{ text_password }}</a>
+  {% endif %}
+  <a href="{{ address }}" class="list-group-item list-group-item-action"><i class="fas fa-address-book fa-fw me-1"></i> {{ text_address }}</a>
+  <a href="{{ wishlist }}" class="list-group-item list-group-item-action"><i class="fas fa-heart fa-fw me-1"></i> {{ text_wishlist }}</a>
+  {% if mz_notification %}
+  <a href="{{ mz_notification }}" class="list-group-item list-group-item-action"><i class="fas fa-bell fa-fw me-1"></i> {{ text_notification }}</a>
+  {% endif %}
+  <a href="{{ order }}" class="list-group-item list-group-item-action"><i class="fas fa-box-open fa-fw me-1"></i> {{ text_order }}</a>
+  {% if mz_config.get('catalog_account_download_status') %}<a href="{{ download }}" class="list-group-item list-group-item-action"><i class="fas fa-download fa-fw me-1"></i> {{ text_download }}</a>{% endif %}
+  {% if mz_config.get('catalog_account_recurring_status') %}<a href="{{ recurring }}" class="list-group-item list-group-item-action"><i class="fas fa-credit-card fa-fw me-1"></i> {{ text_recurring }}</a>{% endif %}
+  {% if mz_config.get('catalog_account_reward_status') %}<a href="{{ reward }}" class="list-group-item list-group-item-action"><i class="fas fa-medal fa-fw me-1"></i> {{ text_reward }}</a>{% endif %}
+  {% if mz_config.get('catalog_account_return_status') %}<a href="{{ return }}" class="list-group-item list-group-item-action"><i class="fas fa-undo fa-fw me-1"></i> {{ text_return }}</a>{% endif %}
+  <a href="{{ transaction }}" class="list-group-item list-group-item-action"><i class="fas fa-exchange-alt fa-fw me-1"></i> {{ text_transaction }}</a>
+  <a href="{{ newsletter }}" class="list-group-item list-group-item-action"><i class="fas fa-envelope fa-fw me-1"></i> {{ text_newsletter }}</a>
+  {% if logged %}
+  <a href="{{ logout }}" class="list-group-item list-group-item-action"><i class="fas fa-sign-out-alt fa-fw me-1"></i> {{ text_logout }}</a>
+  {% endif %}
+</div>

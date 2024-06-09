@@ -1,0 +1,33 @@
+<h4 class="content-title mb-3">{% verbatim %}{{ text_write }}{% endverbatim %}</h4>
+<form class="row g-3" id="form-comment">
+  <div class="col-12 required">
+    <textarea name="text" rows="3" id="input-comment" placeholder="{% verbatim %}{{ entry_comment }}{% endverbatim %}" class="form-control form-control-{{ size }}"></textarea>
+    <div class="invalid-feedback">{% verbatim %}{{ error_text }}{% endverbatim %}</div>
+  </div>
+  {% verbatim %}{% if comment_guest %}{% endverbatim %}
+    {% verbatim %}{% if not is_logged %}{% endverbatim %}
+      <div class="col-sm-7 required">
+        <input type="text" name="name" value="" id="input-name" placeholder="{% verbatim %}{{ entry_name }}{% endverbatim %}" class="form-control form-control-{{ size }}" />
+        <div class="invalid-feedback">{% verbatim %}{{ error_name }}{% endverbatim %}</div>
+      </div>
+      {% if field_email %}
+      <div class="col-sm-7">
+        <input type="email" name="email" value="" id="input-email" placeholder="{% verbatim %}{{ entry_email }}{% endverbatim %}" class="form-control form-control-{{ size }}" />
+        <div class="invalid-feedback">{% verbatim %}{{ error_email }}{% endverbatim %}</div>
+      </div>
+      {% endif %}
+    {% verbatim %}{% endif %}{% endverbatim %}
+    {% if field_website %}
+    <div class="col-sm-7">
+      <input type="text" name="website" value="" id="input-website" placeholder="{% verbatim %}{{ entry_website }}{% endverbatim %}" class="form-control form-control-{{ size }}" />
+    </div>
+    {% endif %}
+    {% verbatim %}{{ comment_form_captcha?captcha }}{% endverbatim %}
+    <div class="col-12">
+      <input type="hidden" name="parent_comment_id" value="0" id="input-parent-comment-id" />
+      <button type="button" id="button-comment" data-loading-text="{% verbatim %}{{ text_loading }}{% endverbatim %}" class="btn btn-{{ size }} btn-{{ color }}">{% verbatim %}{{ button_comment }}{% endverbatim %}</button>
+    </div>
+  {% verbatim %}{% else %}{% endverbatim %}
+  {% verbatim %}{{ text_login }}{% endverbatim %}
+  {% verbatim %}{% endif %}{% endverbatim %}
+</form>

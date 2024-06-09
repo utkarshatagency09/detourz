@@ -1,0 +1,298 @@
+<!-- Form -->
+<form id="setting-widget-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#tab-widget-general" data-toggle="tab">{{ tab_general }}</a></li>
+    <li><a href="#tab-widget-brand" data-toggle="tab">{{ tab_brand }}</a></li>
+    <li><a href="#tab-widget-color" data-toggle="tab">{{ tab_color }}</a></li>
+    <li><a href="#tab-widget-layout" data-toggle="tab">{{ tab_layout }}</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="tab-widget-general" class="tab-pane active">
+      <!--widget status-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-status">{{ entry_status }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_status) %} 
+            <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" checked>
+            <label for="input-widget-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled">
+            <label for="input-widget-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" >
+            <label for="input-widget-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled" checked>
+            <label for="input-widget-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+      
+      <!--Menu-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-menu-name">{{ entry_menu }}</label>
+        <div class="col-xs-9">
+          <input class="form-control" id="input-widget-menu-name" placeholder="{{ entry_menu }}" type="text" name="widget_menu_name" value="{{ widget_menu_name }}" >
+          <input id="input-widget-menu-id" type="hidden" name="widget_menu_id" value="{{ widget_menu_id }}" >
+        </div>
+      </div>
+    </div>
+    <div id="tab-widget-brand" class="tab-pane input-image-widget">
+      {#title#}
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-widget-brand">{{ entry_brand }}</label>
+        <div class="col-xs-9">
+        {% for language in languages %} 
+          <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+            <input class="form-control" type="text" name="widget_brand[{{ language['language_id'] }}]" value="{{ widget_brand[language['language_id']] is defined?widget_brand[language['language_id']]:'' }}" placeholder="{{ entry_brand }}" >
+          </div>
+        {% endfor %} 
+        </div>
+      </div>
+          
+      {# image #}
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-brand-icon-image">{{ entry_brand_icon }}</label>
+        <div class="col-xs-9">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-widget-brand-icon-image" data-meta="image" data-toggle="tab">{{ tab_image }}</a></li>
+            <li><a href="#tab-widget-brand-icon-svg" data-meta="image" data-toggle="tab">{{ tab_svg }}</a></li>
+            <li><a href="#tab-widget-brand-icon-font" data-meta="font" data-toggle="tab">{{ tab_font }}</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-widget-brand-icon-image">
+              <div class="el-group">
+              {% for language in languages %}
+                <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                <div class="el-item">
+                  <a href="" id="thumb-widget-brand-icon-image{{ language.language_id }}" data-toggle="image" class="img-thumbnail"><img src="{{ (thumb_brand_icon_image[language.language_id] is not empty)?thumb_brand_icon_image[language.language_id]:placeholder_image }}" alt="" title="" data-placeholder="{{ placeholder_image }}" /></a><input type="hidden" name="widget_brand_icon_image[{{ language.language_id }}]" value="{{ (widget_brand_icon_image[language.language_id] is defined)?widget_brand_icon_image[language.language_id]:'' }}" id="input-widget-brand-icon-image{{ language.language_id }}" />
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-widget-brand-icon-svg">
+              <div class="el-group">
+              {% for language in languages %}
+                <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                <div class="el-item">
+                  <a href="" id="thumb-widget-brand-icon-svg{{ language.language_id }}" data-toggle="svg" class="img-thumbnail"><img width="100" height="100" src="{{ (thumb_brand_icon_svg[language.language_id] is not empty)?thumb_brand_icon_svg[language.language_id]:placeholder_svg }}" alt="" title="" data-placeholder="{{ placeholder_svg }}" /></a> <input type="hidden" name="widget_brand_icon_svg[{{ language.language_id }}]" value="{{ (widget_brand_icon_svg[language.language_id] is defined)?widget_brand_icon_svg[language.language_id]:'' }}" id="input-widget-brand-icon-svg{{ language.language_id }}" />
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-widget-brand-icon-font">
+              <div class="el-group">
+              {% for language in languages %}
+                <span class="el-item-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                <div class="el-item">
+                  <a href="" id="thumb-widget-brand-icon-font{{ language.language_id }}" data-toggle="font" class="img-thumbnail icon-thumb"><i class="{{ (widget_brand_icon_font[language.language_id] is not empty)?widget_brand_icon_font[language.language_id]:placeholder_font }}" data-placeholder="{{ placeholder_font }}"></i></a> <input type="hidden" name="widget_brand_icon_font[{{ language.language_id }}]" value="{{ (widget_brand_icon_font[language.language_id] is defined)?widget_brand_icon_font[language.language_id]:'' }}" id="input-widget-brand-icon-font{{ language.language_id }}" />
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="image-meta-tab-content tab-content">
+        <div class="tab-image active tab-pane">
+          <!--widget image width-->
+          <div class="form-group">
+            <label class="col-xs-3 control-label" for="input-widget-brand-icon-width">{{ entry_icon_width }}</label>
+            <div class="col-xs-9">
+              <input name="widget_brand_icon_width" value="{{ widget_brand_icon_width }}" placeholder="{{ entry_icon_width }}" class="form-control" id="input-widget-brand-icon-width" />
+            </div>
+          </div>
+
+          <!--widget image height-->
+          <div class="form-group">
+            <label class="col-xs-3 control-label" for="input-widget-brand-icon-height">{{ entry_icon_height }}</label>
+            <div class="col-xs-9">
+              <input name="widget_brand_icon_height" value="{{ widget_brand_icon_height }}" placeholder="{{ entry_icon_height }}" class="form-control" id="input-widget-brand-icon-height" />
+            </div>
+          </div>
+        </div>
+        <div class="tab-font tab-pane">
+          <!--widget image size-->
+          <div class="form-group">
+            <label class="col-xs-3 control-label" for="input-widget-brand-icon-size">{{ entry_icon_size }}</label>
+            <div class="col-xs-9">
+              <input name="widget_brand_icon_size" value="{{ widget_brand_icon_size }}" placeholder="{{ entry_icon_size }}" class="form-control" id="input-widget-brand-icon-size" />
+            </div>
+          </div>
+        </div>
+      </div>
+            
+      <!--URL-->
+      <div class="form-group required">
+        <label class="col-xs-3 control-label">{{ entry_url }}</label>
+        <div class="col-xs-9">
+          <div class="input-group">
+            <span class="input-group-addon">{{ link_info ? link_info.type : '<i class="fa fa-link"></i>' }}</span>	
+            <input type="text" value="{{ link_info ? link_info.title }}" class="form-control" placeholder="{{ text_link_select }}" readonly />
+            <input id="input-setting-widget-brand-url" type="hidden" name="widget_brand_url_link_code" value="{{ widget_brand_url_link_code }}"  />
+            <div class="input-group-btn">
+              <button type="button" data-toggle="linkmanager" class="btn btn-primary"><i class="fa fa-pencil"></i></button>
+              <button type="button" data-toggle="linkmanager-delete" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="tab-widget-color" class="tab-pane">
+      {#Background#}
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-widget-bg-color">{{ entry_bg_color }}</label>
+        <div class="col-xs-9">
+          <select name="widget_bg_color" id="input-setting-widget-bg-color" class="form-control">
+            {% for color in bg_colors %} 
+              {% if (widget_bg_color == color['code']) %}
+              <option value="{{ color['code'] }}" selected="">{{ color['text'] }}</option>
+              {% else %} 
+              <option value="{{ color['code'] }}">{{ color['text'] }}</option>
+              {% endif %} 
+            {% endfor %} 
+          </select>
+        </div>
+      </div>
+          
+      {#text#}
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-widget-text-color">{{ entry_text_color }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% for color in text_colors %} 
+              {% if (widget_text_color == color['code']) %}
+              <input type="radio" name="widget_text_color" value="{{ color['code'] }}" id="input-widget-text-color-{{ color['code'] }}" checked>
+              <label for="input-widget-text-color-{{ color['code'] }}" >{{ color['text'] }}</label>
+              {% else %} 
+              <input type="radio" name="widget_text_color" value="{{ color['code'] }}" id="input-widget-text-color-{{ color['code'] }}">
+              <label for="input-widget-text-color-{{ color['code'] }}" >{{ color['text'] }}</label>
+              {% endif %} 
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="tab-widget-layout" class="tab-pane">
+      <!--Orientation-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-orientation">{{ entry_orientation }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_orientation == 'horizontal') %} 
+            <input type="radio" name="widget_orientation" value="horizontal" id="input-widget-orientation-horizontal" checked>
+            <label for="input-widget-orientation-horizontal" >{{ text_horizontal }}</label>
+            <input type="radio" name="widget_orientation" value="vertical" id="input-widget-orientation-vertical">
+            <label for="input-widget-orientation-vertical">{{ text_vertical }}</label>
+            {% else %} 
+            <input type="radio" name="widget_orientation" value="horizontal" id="input-widget-orientation-horizontal" >
+            <label for="input-widget-orientation-horizontal">{{ text_horizontal }}</label>
+            <input type="radio" name="widget_orientation" value="vertical" id="input-widget-orientation-vertical" checked>
+            <label for="input-widget-orientation-vertical" >{{ text_vertical }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      {# Expand #}
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-expand"><span data-toggle="tooltip" title="{{ help_expand }}">{{ entry_expand }}</span></label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+          {% for expand in list_expand %}
+            {% if (expand.id == widget_expand) %} 
+            <input type="radio" name="widget_expand" value="{{ expand.id }}" id="input-widget-expand-{{ expand.id }}" checked>
+            <label for="input-widget-expand-{{ expand.id }}" >{{ expand.name }}</label>
+            {% else %} 
+            <input type="radio" name="widget_expand" value="{{ expand.id }}" id="input-widget-expand-{{ expand.id }}" >
+            <label for="input-widget-expand-{{ expand.id }}">{{ expand.name }}</label>
+            {% endif %} 
+          {% endfor %}
+          </div>
+        </div>
+      </div>
+          
+      <!--Collapsible-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-collapsible">{{ entry_collapsible }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_collapsible) %} 
+            <input type="radio" name="widget_collapsible" value="1" id="input-widget-collapsible-enabled" checked>
+            <label for="input-widget-collapsible-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_collapsible" value="0" id="input-widget-collapsible-disabled">
+            <label for="input-widget-collapsible-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_collapsible" value="1" id="input-widget-collapsible-enabled" >
+            <label for="input-widget-collapsible-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_collapsible" value="0" id="input-widget-collapsible-disabled" checked>
+            <label for="input-widget-collapsible-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+          
+      <!--collapse-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-collapse">{{ entry_collapse }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% for collapse in list_collapse %}
+              {% if (collapse.code == widget_collapse) %} 
+              <input type="radio" name="widget_collapse" value="{{ collapse.code }}" id="input-widget-collapse-{{ collapse.code }}" checked>
+              <label for="input-widget-collapse-{{ collapse.code }}" >{{ collapse.text }}</label>
+              {% else %} 
+              <input type="radio" name="widget_collapse" value="{{ collapse.code }}" id="input-widget-collapse-{{ collapse.code }}" >
+              <label for="input-widget-collapse-{{ collapse.code }}">{{ collapse.text }}</label>
+              {% endif %} 
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+          
+      <!--Collapsible-->
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-widget-hoverable">{{ entry_open_submenu }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_hoverable) %} 
+            <input type="radio" name="widget_hoverable" value="1" id="input-widget-hoverable-enabled" checked>
+            <label for="input-widget-hoverable-enabled" >{{ text_hover }}</label>
+            <input type="radio" name="widget_hoverable" value="0" id="input-widget-hoverable-disabled">
+            <label for="input-widget-hoverable-disabled">{{ text_by_click }}</label>
+            {% else %} 
+            <input type="radio" name="widget_hoverable" value="1" id="input-widget-hoverable-enabled" >
+            <label for="input-widget-hoverable-enabled">{{ text_hover }}</label>
+            <input type="radio" name="widget_hoverable" value="0" id="input-widget-hoverable-disabled" checked>
+            <label for="input-widget-hoverable-disabled" >{{ text_by_click }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+// Menu
+$('#input-widget-menu-name').autocomplete({
+    'source': function(request, response) {
+        $.ajax({
+            url: 'index.php?route=extension/maza/menu/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+            dataType: 'json',
+            success: function(json) {
+                response($.map(json, function(item) {
+                    return {
+                        label: item['name'],
+                        value: item['menu_id']
+                    };
+                }));
+            }
+        });
+    },
+    'select': function(item) {
+        $(this).val(item['label']);
+        $('#input-widget-menu-id').val(item['value']);
+    }
+});
+</script>
+</form>

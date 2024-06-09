@@ -1,0 +1,22 @@
+<nav id="mz-column-left">
+  <div id="mazatheme-logo">
+    <a href="{{ home }}"><img src="view/image/maza/logo.png" alt="MazaEngine" /></a>
+  </div>
+   <ul id="mz-menu" class="mz-menu-center">
+    {% for menu in menus %} 
+      {% if (menu['active']) %} 
+        <li id="{{ menu['id'] }}" class="active">
+          <a href="{{ menu['href'] }}"><i class="fa {{ menu['icon'] }} fw"></i> <span>{{ menu['name'] }}</span></a>
+        </li>
+      {% else %} 
+        <li id="{{ menu['id'] }}">
+          <a href="{{ menu['href'] }}"><i class="fa {{ menu['icon'] }} fw"></i> <span>{{ menu['name'] }}</span></a>
+        </li>
+      {% endif %} 
+    {% endfor %} 
+  </ul>
+  <div class="buttons">
+    <a class="btn btn-danger btn-block" href="{{ clear }}"><i class="fa fa-history" aria-hidden="true"></i> <span>{{ button_clear }}</span></a>
+    <span class="version">{{ mazatheme_version }}</span>
+  </div>
+</nav>

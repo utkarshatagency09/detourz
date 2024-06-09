@@ -1,0 +1,307 @@
+2024-05-08 8:39:46 - PHP Warning:  mysqli::query(): (42S02/1146): Table 'opencart3.oc_url_alias' doesn't exist in D:\wamp\www\opencart3\system\library\db\mysqli.php on line 25
+2024-05-08 9:06:55 - PHP Warning:  mysqli::query(): (42S22/1054): Unknown column 'pd.language_id' in 'where clause' in D:\wamp\www\opencart3\system\library\db\mysqli.php on line 25
+2024-05-09 12:52:03 - PHP Warning:  Undefined array key "keyword" in D:\wamp\www\opencart3\catalog\controller\common\language.php on line 61
+2024-05-16 12:14:43 - PHP Warning:  Undefined array key "key" in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 43
+2024-05-16 12:22:20 - PHP Warning:  Undefined array key "HTTP_USER_AGENT" in D:\wamp\www\opencart3\catalog\controller\extension\maza\startup\startup.php on line 19
+2024-05-16 12:24:00 - PHP Warning:  Undefined array key "HTTP_USER_AGENT" in D:\wamp\www\opencart3\catalog\controller\extension\maza\startup\startup.php on line 19
+2024-05-16 12:25:40 - PHP Warning:  Undefined array key "key" in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 43
+2024-05-16 12:41:42 - PHP Warning:  Undefined array key "key" in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 43
+2024-05-16 12:50:15 - PHP Warning:  Undefined array key "key" in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 43
+2024-05-16 12:51:19 - PHP Warning:  Undefined array key "key" in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 43
+2024-05-16 12:51:43 - PHP Warning:  Undefined array key "key" in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 43
+2024-05-16 12:51:49 - PHP Warning:  Undefined array key "key" in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 43
+2024-05-16 12:52:09 - PHP Warning:  Undefined array key "key" in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 43
+2024-05-16 12:52:11 - PHP Warning:  Undefined array key "key" in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 43
+2024-05-16 12:52:12 - PHP Warning:  Undefined array key "key" in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 43
+2024-05-16 12:52:12 - PHP Warning:  Undefined array key "key" in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 43
+2024-05-16 12:52:12 - PHP Warning:  Undefined array key "key" in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 43
+2024-05-16 13:58:08 - PHP Warning:  opendir(/home/h63053/data/www/storage_optovik_shop/cache): The system cannot find the path specifi (code: 3) in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 124
+2024-05-16 13:58:08 - PHP Warning:  opendir(/home/h63053/data/www/storage_optovik_shop/cache): Failed to open directory: No such file or directory in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 124
+2024-05-16 14:00:31 - PHP Warning:  opendir(/home/h63053/data/www/storage_optovik_shop/cache): The system cannot find the path specifi (code: 3) in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 124
+2024-05-16 14:00:31 - PHP Warning:  opendir(/home/h63053/data/www/storage_optovik_shop/cache): Failed to open directory: No such file or directory in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 124
+2024-05-16 14:01:02 - PHP Warning:  opendir(/storage/cache): The system cannot find the path specifi (code: 3) in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 124
+2024-05-16 14:01:02 - PHP Warning:  opendir(/storage/cache): Failed to open directory: No such file or directory in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 124
+2024-05-16 14:01:25 - PHP Warning:  opendir(/home/h63053/data/www/storage_optovik_shop/cache): The system cannot find the path specifi (code: 3) in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 124
+2024-05-16 14:01:25 - PHP Warning:  opendir(/home/h63053/data/www/storage_optovik_shop/cache): Failed to open directory: No such file or directory in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 124
+2024-05-16 14:02:06 - PHP Warning:  opendir(/system/storage/cache): The system cannot find the path specifi (code: 3) in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 124
+2024-05-16 14:02:06 - PHP Warning:  opendir(/system/storage/cache): Failed to open directory: No such file or directory in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 124
+2024-05-16 15:04:14 - PHP Warning:  Undefined array key "key" in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 41
+2024-05-16 15:17:43 - PHP Warning:  Undefined array key "keyword" in D:\wamp\www\opencart3\catalog\controller\common\language.php on line 61
+2024-05-16 16:14:37 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 72
+2024-05-16 16:14:37 - PHP Unknown:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 191
+2024-05-16 16:14:37 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 73
+2024-05-16 16:14:37 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 77
+2024-05-16 16:14:37 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 78
+2024-05-16 16:14:37 - PHP Unknown:  addslashes(): Passing null to parameter #1 ($string) of type string is deprecated in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 78
+2024-05-16 16:14:37 - PHP Warning:  Attempt to read property "image" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 79
+2024-05-16 16:14:37 - PHP Warning:  Attempt to read property "category_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 81
+2024-05-16 16:14:37 - PHP Warning:  Attempt to read property "language_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 82
+2024-05-16 16:14:37 - PHP Warning:  Attempt to read property "status" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 83
+2024-05-16 16:14:37 - PHP Warning:  Attempt to read property "length" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 84
+2024-05-16 16:14:37 - PHP Warning:  Attempt to read property "height" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 85
+2024-05-16 16:14:37 - PHP Warning:  Attempt to read property "width" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 86
+2024-05-16 16:14:37 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 91
+2024-05-16 16:14:37 - PHP Warning:  Undefined property: stdClass::$product_id in D:\wamp\www\opencart3\catalog\model\api\exchange\products.php on line 203
+2024-05-16 16:14:37 - PHP Warning:  Undefined property: stdClass::$product_id in D:\wamp\www\opencart3\catalog\model\api\exchange\products.php on line 269
+2024-05-16 16:14:37 - PHP Warning:  Undefined property: stdClass::$store_id in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 140
+2024-05-16 16:14:37 - PHP Warning:  Undefined property: stdClass::$query in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 140
+2024-05-16 16:14:37 - PHP Warning:  Undefined property: stdClass::$keyword in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 140
+2024-05-16 16:14:37 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 101
+2024-05-16 16:14:37 - PHP Warning:  Attempt to read property "codeGroup" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 101
+2024-05-16 16:14:37 - PHP Warning:  mysqli::query(): (42S21/1060): Duplicate column name '' in D:\wamp\www\opencart3\system\library\db\mysqli.php on line 25
+2024-05-16 16:25:43 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 72
+2024-05-16 16:25:43 - PHP Unknown:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 191
+2024-05-16 16:25:43 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 73
+2024-05-16 16:25:43 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 77
+2024-05-16 16:25:43 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 78
+2024-05-16 16:25:43 - PHP Unknown:  addslashes(): Passing null to parameter #1 ($string) of type string is deprecated in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 78
+2024-05-16 16:25:43 - PHP Warning:  Attempt to read property "image" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 79
+2024-05-16 16:25:43 - PHP Warning:  Attempt to read property "category_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 81
+2024-05-16 16:25:43 - PHP Warning:  Attempt to read property "language_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 82
+2024-05-16 16:25:43 - PHP Warning:  Attempt to read property "status" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 83
+2024-05-16 16:25:43 - PHP Warning:  Attempt to read property "length" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 84
+2024-05-16 16:25:43 - PHP Warning:  Attempt to read property "height" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 85
+2024-05-16 16:25:43 - PHP Warning:  Attempt to read property "width" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 86
+2024-05-16 16:25:43 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 91
+2024-05-16 16:25:43 - PHP Warning:  Undefined property: stdClass::$product_id in D:\wamp\www\opencart3\catalog\model\api\exchange\products.php on line 203
+2024-05-16 16:25:43 - PHP Warning:  Undefined property: stdClass::$product_id in D:\wamp\www\opencart3\catalog\model\api\exchange\products.php on line 269
+2024-05-16 16:25:43 - PHP Warning:  mysqli::query(): (23000/1062): Duplicate entry '0-0' for key 'oc_product_description.PRIMARY' in D:\wamp\www\opencart3\system\library\db\mysqli.php on line 25
+2024-05-16 16:27:26 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 74
+2024-05-16 16:27:26 - PHP Unknown:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 191
+2024-05-16 16:27:26 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 75
+2024-05-16 16:27:26 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 79
+2024-05-16 16:27:26 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 80
+2024-05-16 16:27:26 - PHP Unknown:  addslashes(): Passing null to parameter #1 ($string) of type string is deprecated in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 80
+2024-05-16 16:27:26 - PHP Warning:  Attempt to read property "image" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 81
+2024-05-16 16:27:26 - PHP Warning:  Attempt to read property "category_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 83
+2024-05-16 16:27:26 - PHP Warning:  Attempt to read property "language_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 84
+2024-05-16 16:27:26 - PHP Warning:  Attempt to read property "status" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 85
+2024-05-16 16:27:26 - PHP Warning:  Attempt to read property "length" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 86
+2024-05-16 16:27:26 - PHP Warning:  Attempt to read property "height" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 87
+2024-05-16 16:27:26 - PHP Warning:  Attempt to read property "width" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 88
+2024-05-16 16:27:26 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 93
+2024-05-16 16:27:26 - PHP Warning:  Undefined property: stdClass::$product_id in D:\wamp\www\opencart3\catalog\model\api\exchange\products.php on line 203
+2024-05-16 16:27:26 - PHP Warning:  Undefined property: stdClass::$product_id in D:\wamp\www\opencart3\catalog\model\api\exchange\products.php on line 269
+2024-05-16 16:27:26 - PHP Warning:  mysqli::query(): (23000/1062): Duplicate entry '0-0' for key 'oc_product_description.PRIMARY' in D:\wamp\www\opencart3\system\library\db\mysqli.php on line 25
+2024-05-16 16:27:41 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 74
+2024-05-16 16:27:41 - PHP Unknown:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 191
+2024-05-16 16:27:41 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 75
+2024-05-16 16:27:41 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 79
+2024-05-16 16:27:41 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 80
+2024-05-16 16:27:41 - PHP Unknown:  addslashes(): Passing null to parameter #1 ($string) of type string is deprecated in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 80
+2024-05-16 16:27:41 - PHP Warning:  Attempt to read property "image" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 81
+2024-05-16 16:27:41 - PHP Warning:  Attempt to read property "category_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 83
+2024-05-16 16:27:41 - PHP Warning:  Attempt to read property "language_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 84
+2024-05-16 16:27:41 - PHP Warning:  Attempt to read property "status" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 85
+2024-05-16 16:27:41 - PHP Warning:  Attempt to read property "length" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 86
+2024-05-16 16:27:41 - PHP Warning:  Attempt to read property "height" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 87
+2024-05-16 16:27:41 - PHP Warning:  Attempt to read property "width" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 88
+2024-05-16 16:27:41 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 93
+2024-05-16 16:27:41 - PHP Warning:  Undefined property: stdClass::$product_id in D:\wamp\www\opencart3\catalog\model\api\exchange\products.php on line 203
+2024-05-16 16:27:41 - PHP Warning:  Undefined property: stdClass::$product_id in D:\wamp\www\opencart3\catalog\model\api\exchange\products.php on line 269
+2024-05-16 16:27:41 - PHP Warning:  mysqli::query(): (23000/1062): Duplicate entry '0-0' for key 'oc_product_description.PRIMARY' in D:\wamp\www\opencart3\system\library\db\mysqli.php on line 25
+2024-05-16 16:34:46 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 72
+2024-05-16 16:34:46 - PHP Unknown:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 191
+2024-05-16 16:34:46 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 73
+2024-05-16 16:34:46 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 77
+2024-05-16 16:34:46 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 78
+2024-05-16 16:34:46 - PHP Unknown:  addslashes(): Passing null to parameter #1 ($string) of type string is deprecated in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 78
+2024-05-16 16:34:46 - PHP Warning:  Attempt to read property "image" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 79
+2024-05-16 16:34:46 - PHP Warning:  Attempt to read property "category_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 81
+2024-05-16 16:34:46 - PHP Warning:  Attempt to read property "language_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 82
+2024-05-16 16:34:46 - PHP Warning:  Attempt to read property "status" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 83
+2024-05-16 16:34:46 - PHP Warning:  Attempt to read property "length" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 84
+2024-05-16 16:34:46 - PHP Warning:  Attempt to read property "height" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 85
+2024-05-16 16:34:46 - PHP Warning:  Attempt to read property "width" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 86
+2024-05-16 16:34:46 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 91
+2024-05-16 16:34:46 - PHP Warning:  Undefined property: stdClass::$product_id in D:\wamp\www\opencart3\catalog\model\api\exchange\products.php on line 203
+2024-05-16 16:34:46 - PHP Warning:  Undefined property: stdClass::$product_id in D:\wamp\www\opencart3\catalog\model\api\exchange\products.php on line 269
+2024-05-16 16:34:46 - PHP Warning:  mysqli::query(): (23000/1062): Duplicate entry '0-0' for key 'oc_product_description.PRIMARY' in D:\wamp\www\opencart3\system\library\db\mysqli.php on line 25
+2024-05-16 16:36:22 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 72
+2024-05-16 16:36:22 - PHP Unknown:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 191
+2024-05-16 16:36:22 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 73
+2024-05-16 16:36:22 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 77
+2024-05-16 16:36:22 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 78
+2024-05-16 16:36:22 - PHP Unknown:  addslashes(): Passing null to parameter #1 ($string) of type string is deprecated in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 78
+2024-05-16 16:36:22 - PHP Warning:  Attempt to read property "image" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 79
+2024-05-16 16:36:22 - PHP Warning:  Attempt to read property "category_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 81
+2024-05-16 16:36:22 - PHP Warning:  Attempt to read property "language_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 82
+2024-05-16 16:36:22 - PHP Warning:  Attempt to read property "status" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 83
+2024-05-16 16:36:22 - PHP Warning:  Attempt to read property "length" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 84
+2024-05-16 16:36:22 - PHP Warning:  Attempt to read property "height" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 85
+2024-05-16 16:36:22 - PHP Warning:  Attempt to read property "width" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 86
+2024-05-16 16:36:22 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 91
+2024-05-16 16:36:22 - PHP Warning:  Undefined property: stdClass::$product_id in D:\wamp\www\opencart3\catalog\model\api\exchange\products.php on line 203
+2024-05-16 16:36:22 - PHP Warning:  Undefined property: stdClass::$product_id in D:\wamp\www\opencart3\catalog\model\api\exchange\products.php on line 269
+2024-05-16 16:36:22 - PHP Warning:  mysqli::query(): (23000/1062): Duplicate entry '0-0' for key 'oc_product_description.PRIMARY' in D:\wamp\www\opencart3\system\library\db\mysqli.php on line 25
+2024-05-16 16:38:05 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 72
+2024-05-16 16:38:05 - PHP Unknown:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 191
+2024-05-16 16:38:05 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 73
+2024-05-16 16:38:05 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 77
+2024-05-16 16:38:05 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 78
+2024-05-16 16:38:05 - PHP Unknown:  addslashes(): Passing null to parameter #1 ($string) of type string is deprecated in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 78
+2024-05-16 16:38:05 - PHP Warning:  Attempt to read property "image" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 79
+2024-05-16 16:38:05 - PHP Warning:  Attempt to read property "category_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 81
+2024-05-16 16:38:05 - PHP Warning:  Attempt to read property "language_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 82
+2024-05-16 16:38:05 - PHP Warning:  Attempt to read property "status" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 83
+2024-05-16 16:38:05 - PHP Warning:  Attempt to read property "length" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 84
+2024-05-16 16:38:05 - PHP Warning:  Attempt to read property "height" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 85
+2024-05-16 16:38:05 - PHP Warning:  Attempt to read property "width" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 86
+2024-05-16 16:38:05 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 91
+2024-05-16 16:38:05 - PHP Warning:  Undefined property: stdClass::$product_id in D:\wamp\www\opencart3\catalog\model\api\exchange\products.php on line 203
+2024-05-16 16:38:05 - PHP Warning:  Undefined property: stdClass::$product_id in D:\wamp\www\opencart3\catalog\model\api\exchange\products.php on line 269
+2024-05-16 16:38:05 - PHP Warning:  mysqli::query(): (23000/1062): Duplicate entry '0-0' for key 'oc_product_description.PRIMARY' in D:\wamp\www\opencart3\system\library\db\mysqli.php on line 25
+2024-05-16 16:39:41 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 72
+2024-05-16 16:39:41 - PHP Unknown:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 191
+2024-05-16 16:39:41 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 73
+2024-05-16 16:39:41 - PHP Warning:  Attempt to read property "product_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 77
+2024-05-16 16:39:41 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 78
+2024-05-16 16:39:41 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 79
+2024-05-16 16:39:41 - PHP Unknown:  addslashes(): Passing null to parameter #1 ($string) of type string is deprecated in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 79
+2024-05-16 16:39:41 - PHP Warning:  Attempt to read property "image" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 80
+2024-05-16 16:39:41 - PHP Warning:  Attempt to read property "category_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 82
+2024-05-16 16:39:41 - PHP Warning:  Attempt to read property "language_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 83
+2024-05-16 16:39:41 - PHP Warning:  Attempt to read property "status" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 84
+2024-05-16 16:39:41 - PHP Warning:  Attempt to read property "length" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 85
+2024-05-16 16:39:41 - PHP Warning:  Attempt to read property "height" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 86
+2024-05-16 16:39:41 - PHP Warning:  Attempt to read property "width" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 87
+2024-05-16 16:39:41 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 92
+2024-05-16 16:39:41 - PHP Warning:  mysqli::query(): (23000/1062): Duplicate entry '0-0' for key 'oc_product_description.PRIMARY' in D:\wamp\www\opencart3\system\library\db\mysqli.php on line 25
+2024-05-16 16:39:56 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 72
+2024-05-16 16:39:56 - PHP Unknown:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 191
+2024-05-16 16:39:56 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 73
+2024-05-16 16:39:56 - PHP Warning:  Attempt to read property "product_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 77
+2024-05-16 16:39:56 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 78
+2024-05-16 16:39:56 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 79
+2024-05-16 16:39:56 - PHP Unknown:  addslashes(): Passing null to parameter #1 ($string) of type string is deprecated in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 79
+2024-05-16 16:39:56 - PHP Warning:  Attempt to read property "image" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 80
+2024-05-16 16:39:56 - PHP Warning:  Attempt to read property "category_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 82
+2024-05-16 16:39:56 - PHP Warning:  Attempt to read property "language_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 83
+2024-05-16 16:39:56 - PHP Warning:  Attempt to read property "status" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 84
+2024-05-16 16:39:56 - PHP Warning:  Attempt to read property "length" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 85
+2024-05-16 16:39:56 - PHP Warning:  Attempt to read property "height" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 86
+2024-05-16 16:39:56 - PHP Warning:  Attempt to read property "width" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 87
+2024-05-16 16:39:56 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 92
+2024-05-16 16:39:56 - PHP Warning:  mysqli::query(): (23000/1062): Duplicate entry '0-0' for key 'oc_product_description.PRIMARY' in D:\wamp\www\opencart3\system\library\db\mysqli.php on line 25
+2024-05-16 16:41:34 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 72
+2024-05-16 16:41:34 - PHP Unknown:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 191
+2024-05-16 16:41:34 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 73
+2024-05-16 16:41:34 - PHP Warning:  Attempt to read property "product_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 77
+2024-05-16 16:41:34 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 78
+2024-05-16 16:41:34 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 79
+2024-05-16 16:41:34 - PHP Unknown:  addslashes(): Passing null to parameter #1 ($string) of type string is deprecated in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 79
+2024-05-16 16:41:34 - PHP Warning:  Attempt to read property "image" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 80
+2024-05-16 16:41:34 - PHP Warning:  Attempt to read property "category_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 82
+2024-05-16 16:41:34 - PHP Warning:  Attempt to read property "language_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 83
+2024-05-16 16:41:34 - PHP Warning:  Attempt to read property "status" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 84
+2024-05-16 16:41:34 - PHP Warning:  Attempt to read property "length" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 85
+2024-05-16 16:41:34 - PHP Warning:  Attempt to read property "height" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 86
+2024-05-16 16:41:34 - PHP Warning:  Attempt to read property "width" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 87
+2024-05-16 16:41:57 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 74
+2024-05-16 16:41:57 - PHP Unknown:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 191
+2024-05-16 16:41:57 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 75
+2024-05-16 16:41:57 - PHP Warning:  Attempt to read property "product_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 79
+2024-05-16 16:41:57 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 80
+2024-05-16 16:41:57 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 81
+2024-05-16 16:41:57 - PHP Unknown:  addslashes(): Passing null to parameter #1 ($string) of type string is deprecated in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 81
+2024-05-16 16:41:57 - PHP Warning:  Attempt to read property "image" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 82
+2024-05-16 16:41:57 - PHP Warning:  Attempt to read property "category_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 84
+2024-05-16 16:41:57 - PHP Warning:  Attempt to read property "language_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 85
+2024-05-16 16:41:57 - PHP Warning:  Attempt to read property "status" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 86
+2024-05-16 16:41:57 - PHP Warning:  Attempt to read property "length" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 87
+2024-05-16 16:41:57 - PHP Warning:  Attempt to read property "height" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 88
+2024-05-16 16:41:57 - PHP Warning:  Attempt to read property "width" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 89
+2024-05-16 16:42:26 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 75
+2024-05-16 16:42:26 - PHP Unknown:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 191
+2024-05-16 16:42:26 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 76
+2024-05-16 16:42:26 - PHP Warning:  Attempt to read property "product_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 80
+2024-05-16 16:42:26 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 81
+2024-05-16 16:42:26 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 82
+2024-05-16 16:42:26 - PHP Unknown:  addslashes(): Passing null to parameter #1 ($string) of type string is deprecated in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 82
+2024-05-16 16:42:26 - PHP Warning:  Attempt to read property "image" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 83
+2024-05-16 16:42:26 - PHP Warning:  Attempt to read property "category_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 85
+2024-05-16 16:42:26 - PHP Warning:  Attempt to read property "language_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 86
+2024-05-16 16:42:26 - PHP Warning:  Attempt to read property "status" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 87
+2024-05-16 16:42:26 - PHP Warning:  Attempt to read property "length" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 88
+2024-05-16 16:42:26 - PHP Warning:  Attempt to read property "height" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 89
+2024-05-16 16:42:26 - PHP Warning:  Attempt to read property "width" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 90
+2024-05-16 16:42:59 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 75
+2024-05-16 16:42:59 - PHP Unknown:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 191
+2024-05-16 16:42:59 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 76
+2024-05-16 16:42:59 - PHP Warning:  Attempt to read property "product_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 80
+2024-05-16 16:42:59 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 81
+2024-05-16 16:42:59 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 82
+2024-05-16 16:42:59 - PHP Unknown:  addslashes(): Passing null to parameter #1 ($string) of type string is deprecated in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 82
+2024-05-16 16:42:59 - PHP Warning:  Attempt to read property "image" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 83
+2024-05-16 16:42:59 - PHP Warning:  Attempt to read property "category_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 85
+2024-05-16 16:42:59 - PHP Warning:  Attempt to read property "language_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 86
+2024-05-16 16:42:59 - PHP Warning:  Attempt to read property "status" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 87
+2024-05-16 16:42:59 - PHP Warning:  Attempt to read property "length" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 88
+2024-05-16 16:42:59 - PHP Warning:  Attempt to read property "height" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 89
+2024-05-16 16:42:59 - PHP Warning:  Attempt to read property "width" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 90
+2024-05-16 16:44:58 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 75
+2024-05-16 16:44:58 - PHP Unknown:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 191
+2024-05-16 16:44:58 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 76
+2024-05-16 16:44:58 - PHP Warning:  Attempt to read property "product_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 80
+2024-05-16 16:44:58 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 81
+2024-05-16 16:44:58 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 82
+2024-05-16 16:44:58 - PHP Unknown:  addslashes(): Passing null to parameter #1 ($string) of type string is deprecated in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 82
+2024-05-16 16:44:58 - PHP Warning:  Attempt to read property "image" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 83
+2024-05-16 16:44:58 - PHP Warning:  Attempt to read property "category_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 85
+2024-05-16 16:44:58 - PHP Warning:  Attempt to read property "language_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 86
+2024-05-16 16:44:58 - PHP Warning:  Attempt to read property "status" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 87
+2024-05-16 16:44:58 - PHP Warning:  Attempt to read property "length" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 88
+2024-05-16 16:44:58 - PHP Warning:  Attempt to read property "height" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 89
+2024-05-16 16:44:58 - PHP Warning:  Attempt to read property "width" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 90
+2024-05-16 16:46:12 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 75
+2024-05-16 16:46:12 - PHP Unknown:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 191
+2024-05-16 16:46:12 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 76
+2024-05-16 16:46:12 - PHP Warning:  Attempt to read property "product_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 80
+2024-05-16 16:46:12 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 81
+2024-05-16 16:46:12 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 82
+2024-05-16 16:46:12 - PHP Unknown:  addslashes(): Passing null to parameter #1 ($string) of type string is deprecated in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 82
+2024-05-16 16:46:12 - PHP Warning:  Attempt to read property "image" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 83
+2024-05-16 16:46:12 - PHP Warning:  Attempt to read property "category_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 85
+2024-05-16 16:46:12 - PHP Warning:  Attempt to read property "language_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 86
+2024-05-16 16:46:12 - PHP Warning:  Attempt to read property "status" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 87
+2024-05-16 16:46:12 - PHP Warning:  Attempt to read property "length" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 88
+2024-05-16 16:46:12 - PHP Warning:  Attempt to read property "height" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 89
+2024-05-16 16:46:12 - PHP Warning:  Attempt to read property "width" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 90
+2024-05-16 16:46:40 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 77
+2024-05-16 16:46:40 - PHP Unknown:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 191
+2024-05-16 16:46:40 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 78
+2024-05-16 16:46:40 - PHP Warning:  Attempt to read property "product_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 82
+2024-05-16 16:46:40 - PHP Warning:  Attempt to read property "code" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 83
+2024-05-16 16:46:40 - PHP Warning:  Attempt to read property "name" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 84
+2024-05-16 16:46:40 - PHP Unknown:  addslashes(): Passing null to parameter #1 ($string) of type string is deprecated in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 84
+2024-05-16 16:46:40 - PHP Warning:  Attempt to read property "image" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 85
+2024-05-16 16:46:40 - PHP Warning:  Attempt to read property "category_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 87
+2024-05-16 16:46:40 - PHP Warning:  Attempt to read property "language_id" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 88
+2024-05-16 16:46:40 - PHP Warning:  Attempt to read property "status" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 89
+2024-05-16 16:46:40 - PHP Warning:  Attempt to read property "length" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 90
+2024-05-16 16:46:40 - PHP Warning:  Attempt to read property "height" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 91
+2024-05-16 16:46:40 - PHP Warning:  Attempt to read property "width" on array in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 92
+2024-05-16 16:52:03 - PHP Warning:  Undefined property: stdClass::$code in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 76
+2024-05-16 16:52:03 - PHP Warning:  Undefined property: stdClass::$code in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 81
+2024-05-16 16:52:03 - PHP Warning:  Undefined property: stdClass::$code in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 95
+2024-05-16 16:52:03 - PHP Warning:  mysqli::query(): (23000/1062): Duplicate entry '58' for key 'oc_product.PRIMARY' in D:\wamp\www\opencart3\system\library\db\mysqli.php on line 25
+2024-05-16 16:55:25 - PHP Warning:  Undefined property: stdClass::$id in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 76
+2024-05-16 16:55:25 - PHP Warning:  Undefined property: stdClass::$keyword in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 148
+2024-05-16 16:55:25 - PHP Warning:  Undefined property: stdClass::$query in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 148
+2024-05-16 16:55:25 - PHP Warning:  Undefined property: stdClass::$code in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 105
+2024-05-16 16:55:25 - PHP Warning:  Undefined property: stdClass::$code in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 106
+2024-05-16 16:55:25 - PHP Warning:  Undefined property: stdClass::$code in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 107
+2024-05-16 16:55:41 - PHP Warning:  Undefined property: stdClass::$keyword in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 148
+2024-05-16 16:55:41 - PHP Warning:  Undefined property: stdClass::$query in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 148
+2024-05-16 16:55:41 - PHP Warning:  Undefined property: stdClass::$code in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 105
+2024-05-16 16:55:41 - PHP Warning:  Undefined property: stdClass::$code in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 106
+2024-05-16 16:55:41 - PHP Warning:  Undefined property: stdClass::$code in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 107
+2024-05-16 17:13:56 - PHP Warning:  Undefined property: stdClass::$code in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 107
+2024-05-16 17:13:56 - PHP Warning:  Undefined property: stdClass::$code in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 108
+2024-05-16 17:13:56 - PHP Warning:  Undefined property: stdClass::$code in D:\wamp\www\opencart3\catalog\controller\api\exchange\add_products.php on line 109
+2024-05-16 17:21:07 - PHP Warning:  Undefined property: stdClass::$store_id in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 140
+2024-05-16 17:21:07 - PHP Warning:  Undefined property: stdClass::$store_id in D:\wamp\www\opencart3\catalog\model\api\exchange\common.php on line 140
+2024-05-16 18:04:43 - PHP Warning:  Undefined array key "keyword" in D:\wamp\www\opencart3\catalog\controller\common\language.php on line 61
+2024-05-16 19:03:40 - PHP Warning:  fopen(D:/wamp/www/opencart3/system/storage/cache/cache.catalog.language.1715870020): Failed to open stream: No such file or directory in D:\wamp\www\opencart3\system\library\cache\file.php on line 49
+2024-05-17 12:53:12 - PHP Warning:  Undefined array key "keyword" in D:\wamp\www\opencart3\catalog\controller\common\language.php on line 61
+2024-05-17 16:11:18 - PHP Warning:  Undefined array key "keyword" in D:\wamp\www\opencart3\catalog\controller\common\language.php on line 61

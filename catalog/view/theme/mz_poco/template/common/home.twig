@@ -1,0 +1,8 @@
+{{ header }}
+
+{% if mz_component %}
+<script>$('body').prepend('{{ mz_component|e("js") }}');</script>
+{% endif %}
+
+<main class="content" id="common-home">{{ mz_content }}</main>
+{{ footer }}

@@ -1,0 +1,5 @@
+<div style="min-height:{{ (parallax_height > 0) ? parallax_height ~ 'px' : 'auto' }};background-image:url({{ (parallax_svg)?:parallax_image }});" class="parallax">
+{% if parallax_caption %}
+<div class="parallax-caption">{{ parallax_caption }}</div>
+{% endif %}
+</div>

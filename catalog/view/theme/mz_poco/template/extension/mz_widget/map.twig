@@ -1,0 +1,46 @@
+{% if heading_title %}
+<h4 class="map-title">{{ heading_title }}</h4>
+{% endif %}
+{% if api_key %}
+<div class="google-map{{ not height?' flex-fill' }}" data-latitude="{{ latitude }}" 
+     data-longitude="{{ longitude }}" data-zoom="{{ zoom }}" 
+     data-zoomControl="{{ control_zoom }}" data-mapTypeControl="{{ control_maptype }}" 
+     data-scaleControl="{{ control_scale }}" data-streetViewControl="{{ control_streetview }}" 
+     data-rotateControl="{{ control_rotate }}" data-fullscreenControl="{{ control_fullscreen }}" 
+     data-marker="{{ marker }}" data-marker_icon="{{ marker_icon }}" {{ height?('style="height:' ~ height ~ 'px"') }}></div>
+     {% if include_js %}
+     <script>
+     function widgetMap(){
+          $(function(){
+               $('.google-map').each(function(){
+                    var latitude = $(this).data('latitude');
+                    var longitude = $(this).data('longitude');
+                    
+                    var map = new google.maps.Map(this, {
+                         center: {lat: latitude, lng: longitude},
+                         zoom: $(this).data('zoom'),
+                         zoomControl: $(this).data('zoomcontrol'),
+                         mapTypeControl: $(this).data('maptypecontrol'),
+                         scaleControl: $(this).data('scalecontrol'),
+                         streetViewControl: $(this).data('streetviewcontrol'),
+                         rotateControl: $(this).data('rotatecontrol'),
+                         fullscreenControl: $(this).data('fullscreencontrol')
+                    });
+                    
+                    if($(this).data('marker')){
+                         var map_marker = new google.maps.Marker({
+                              position: {lat: latitude, lng: longitude},
+                              map: map,
+                              animation: google.maps.Animation.DROP,
+                              icon: $(this).data('marker_icon')
+                         });
+                    }
+               });
+          });
+     }
+     </script>
+     <script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=widgetMap&language={{ language_code }}"></script>
+     {% endif %}
+{% else %}
+<div class="alert alert-danger" role="alert">{{ error_api_key }}</div>
+{% endif %}

@@ -1,0 +1,38 @@
+@import "skins/footer/megastore-7/variables";
+@import "skins/footer/megastore-7/components/social";
+@import "skins/footer/megastore-7/components/newsletter";
+
+.footer{
+    color: $footer-text-color;
+    background-color: $footer-bg-color;
+    
+    h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6{
+        color: $footer-headings-color;
+    }
+    
+    .design, .module, .widget{
+        &-title{
+            font-size: $h6-font-size;
+            margin-bottom: $footer-headings-margin-bottom;
+            text-transform: uppercase;
+            font-weight: $font-weight-bold;
+        }
+    }
+    .design-menu, .widget-contact_us{
+        margin-bottom: 0;
+    }
+    .design-menu{
+        .design-title{
+            margin-bottom: $footer-headings-margin-bottom - $design-nav-link-padding-y;
+            color: $primary;
+            padding: 0;
+            display: block;
+        }
+    }
+    .widget-contact_us{
+        .widget-title{
+            margin-bottom: $footer-headings-margin-bottom - $design-nav-link-padding-y;
+            color: $primary;
+        }
+    }
+}

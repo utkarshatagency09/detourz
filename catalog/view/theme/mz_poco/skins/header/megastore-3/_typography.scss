@@ -1,0 +1,32 @@
+// Header
+.header {
+    font-family: $header-font-family;
+}
+
+// Top header
+#top-header{
+    font-size: $top-header-font-size;
+    color: $top-header-font-color;
+}
+
+// Main header
+#main-header{
+    .row{
+        align-items: center;
+    }
+    *:not(.dropdown-menu) {
+        .design-menu{
+            margin-bottom: 0;
+
+            .vertical .nav-link{
+                padding: 0;
+                font-size: 0.875em;
+            }
+        }
+    }
+}
+
+#main-navigation{
+    color: $main-navigation-text-color;
+    background-color: $main-navigation-bg-color;
+}

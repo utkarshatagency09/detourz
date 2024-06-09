@@ -1,0 +1,104 @@
+<!-- Form -->
+<form id="setting-widget-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#tab-widget-general" data-toggle="tab">{{ tab_general }}</a></li>
+    <li><a href="#tab-widget-layout" data-toggle="tab">{{ tab_layout }}</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="tab-widget-general" class="tab-pane active">
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-widget-status">{{ entry_status }}</label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_status) %} 
+            <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" checked>
+            <label for="input-widget-status-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled">
+            <label for="input-widget-status-disabled">{{ text_disabled }}</label>
+            {% else %} 
+            <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" >
+            <label for="input-widget-status-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled" checked>
+            <label for="input-widget-status-disabled" >{{ text_disabled }}</label>
+            {% endif %} 
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="col-xs-3 control-label" for="input-setting-widget-title">{{ entry_title }}</label>
+        <div class="col-xs-9">
+        {% for language in languages %} 
+          <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+            <input class="form-control" type="text" name="widget_title[{{ language['language_id'] }}]" value="{{ widget_title[language['language_id']] is defined?widget_title[language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+          </div>
+        {% endfor %} 
+        </div>
+      </div>
+
+      <div class="form-group required">
+        <label class="col-xs-3 control-label" for="input-setting-widget-gallery">{{ entry_gallery }}</label>
+        <div class="col-xs-9">
+          <input type="text" name="widget_gallery" value="{{ widget_gallery }}" placeholder="{{ entry_gallery }}" id="input-setting-widget-gallery" class="form-control" />
+          <input type="hidden" name="widget_gallery_id" value="{{ widget_gallery_id }}" />
+        </div>
+      </div>
+
+    </div>
+    <div id="tab-widget-layout" class="tab-pane">
+      <div class="form-group required">
+        <label class="col-xs-3 control-label" for="input-setting-widget-image-width">{{ entry_image_width }}</label>
+        <div class="col-xs-9">
+          <input class="form-control" id="input-setting-widget-image-width" placeholder="{{ entry_image_width }}" type="number" name="widget_image_width" value="{{ widget_image_width }}" >
+        </div>
+      </div>
+      <div class="form-group required">
+        <label class="col-xs-3 control-label" for="input-setting-widget-image-height">{{ entry_image_height }}</label>
+        <div class="col-xs-9">
+          <input class="form-control" id="input-setting-widget-image-height" placeholder="{{ entry_image_height }}" type="number" name="widget_image_height" value="{{ widget_image_height }}" >
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-xs-3 control-label"><span data-toggle="tooltip" title="{{ help_gutter }}">{{ entry_gutter }}</span></label>
+        <div class="col-xs-9">
+          <div class="mz-switch-field">
+            {% if (widget_gutter) %} 
+            <input type="radio" name="widget_gutter" value="1" id="input-setting-widget-gutter-enabled" checked>
+            <label for="input-setting-widget-gutter-enabled" >{{ text_enabled }}</label>
+            <input type="radio" name="widget_gutter" value="0" id="input-setting-widget-gutter-disabled">
+            <label for="input-setting-widget-gutter-disabled">{{ text_disabled }}</label>
+            {% else %}
+            <input type="radio" name="widget_gutter" value="1" id="input-setting-widget-gutter-enabled" >
+            <label for="input-setting-widget-gutter-enabled">{{ text_enabled }}</label>
+            <input type="radio" name="widget_gutter" value="0" id="input-setting-widget-gutter-disabled" checked>
+            <label for="input-setting-widget-gutter-disabled" >{{ text_disabled }}</label>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript">
+$('#setting-widget-form input[name=\'widget_gallery\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=extension/maza/gallery/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['gallery_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('#setting-widget-form input[name=\'widget_gallery\']').val(item['label']);
+    $('#setting-widget-form input[name=\'widget_gallery_id\']').val(item['value']);
+  }
+});
+</script>
+</form>

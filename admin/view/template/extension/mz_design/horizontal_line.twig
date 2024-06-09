@@ -1,0 +1,34 @@
+<!-- Form -->
+<form id="setting-design-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+    <!--design status-->
+    <div class="form-group">
+      <label class="col-sm-3 control-label" for="input-setting-design-status">{{ entry_status }}</label>
+      <div class="col-sm-9">
+        <div class="mz-switch-field">
+          {% if (design_status) %} 
+          <input type="radio" name="design_status" value="1" id="input-design-status-enabled" checked>
+          <label for="input-design-status-enabled" >{{ text_enabled }}</label>
+          <input type="radio" name="design_status" value="0" id="input-design-status-disabled">
+          <label for="input-design-status-disabled">{{ text_disabled }}</label>
+          {% else %} 
+          <input type="radio" name="design_status" value="1" id="input-design-status-enabled" >
+          <label for="input-design-status-enabled">{{ text_enabled }}</label>
+          <input type="radio" name="design_status" value="0" id="input-design-status-disabled" checked>
+          <label for="input-design-status-disabled" >{{ text_disabled }}</label>
+          {% endif %} 
+        </div>
+      </div>
+    </div>
+        
+    {#title#}
+    <div class="form-group">
+      <label class="col-xs-3 control-label" for="input-setting-design-title">{{ entry_title }}</label>
+      <div class="col-xs-9">
+      {% for language in languages %} 
+        <div class="input-group inline"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+          <input class="form-control" type="text" name="design_title[{{ language['language_id'] }}]" value="{{ design_title[language['language_id']] is defined?design_title[language['language_id']]:'' }}" placeholder="{{ entry_title }}" >
+        </div>
+      {% endfor %} 
+      </div>
+    </div>
+</form>

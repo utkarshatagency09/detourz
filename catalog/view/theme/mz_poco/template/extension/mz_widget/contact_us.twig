@@ -1,0 +1,32 @@
+{% if heading_title %}
+<h5 class="widget-title">{{ heading_title }}</h5>
+{% endif %}
+{% if widget_image_status %}
+  {% if image_font %}
+  <i title="{{ image_alt }}" class="{{ image_font }}" {{ image_size?'style="font-size: ' ~ image_size ~ 'px"':'' }}></i>
+  {% elseif image_svg %}
+  <div class="svg-icon" style="width:{{ image_width?:200 }}px;height:{{ image_height?:200 }}px;">{{ image_svg }}</div>
+  {% elseif image_image %}
+  <img alt="{{ image_alt }}" width="{{ image_width }}" height="{{ image_height }}" src="{{ image_image }}" />
+  {% endif %}
+{% endif %}
+<ul class="list-unstyled mb-0">
+{% for type,data in contact %}
+  {% if (data.icon_font or data.icon_svg or data.icon_image) and data.data  %}
+    {% set show = 'both' %}
+  {% else %}
+    {% set show = 'text' %}
+  {% endif %}
+  <li class="{{ show }}">
+    {% if data.icon_font %}
+    <i class="icon {{ data.icon_font }}" {{ icon_width?'style="font-size: ' ~ icon_width ~ 'px"':'' }}></i>
+    {% elseif data.icon_svg %}
+    <div class="icon svg-icon" style="{{ icon_width?'width:' ~ icon_width ~ 'px;' }}{{ icon_height?'height:' ~ icon_height ~ 'px;' }}">{{ data.icon_svg }}</div>
+    {% elseif data.icon_image %}
+    <img class="icon" width="{{ data.image_width }}" height="{{ data.image_width }}" src="{{ data.icon_image }}" />
+    {% endif %}
+    {% if type == 'geocode' %}<a href="https://maps.google.com/maps?q={{ data.data|url_encode }}&hl={{ geocode_hl }}&t=m&z=15" target="_blank" class="btn btn-info"><i class="fas fa-map-marker"></i> {{ button_map }}</a>
+    {% else %}{{ data.data }}{% endif %}
+  </li>
+{% endfor %}
+</ul>

@@ -1,0 +1,39 @@
+<!-- Form -->
+<form id="setting-content-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <!--content status-->
+  <div class="form-group">
+    <label class="col-sm-3 control-label" for="input-setting-content-status">{{ entry_status }}</label>
+    <div class="col-sm-9">
+      <div class="mz-switch-field">
+        {% if (content_status) %} 
+        <input type="radio" name="content_status" value="1" id="input-setting-content-status-enabled" checked>
+        <label for="input-setting-content-status-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="content_status" value="0" id="input-setting-content-status-disabled">
+        <label for="input-setting-content-status-disabled">{{ text_disabled }}</label>
+        {% else %} 
+        <input type="radio" name="content_status" value="1" id="input-setting-content-status-enabled" >
+        <label for="input-setting-content-status-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="content_status" value="0" id="input-setting-content-status-disabled" checked>
+        <label for="input-setting-content-status-disabled" >{{ text_disabled }}</label>
+        {% endif %} 
+      </div>
+    </div>
+  </div>
+      
+  {#Color#}
+  <div class="form-group">
+    <label class="col-xs-3 control-label" for="input-setting-content-color">{{ entry_color }}</label>
+    <div class="col-xs-9">
+      <select name="content_color" id="input-setting-content-color" class="form-control">
+        <option value="default">{{ text_default }}</option>
+        {% for color in colors %} 
+          {% if (content_color == color['code']) %}
+          <option value="{{ color['code'] }}" selected="">{{ color['text'] }}</option>
+          {% else %} 
+          <option value="{{ color['code'] }}">{{ color['text'] }}</option>
+          {% endif %} 
+        {% endfor %} 
+      </select>
+    </div>
+  </div>
+</form>

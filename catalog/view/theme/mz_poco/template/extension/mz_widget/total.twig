@@ -1,0 +1,57 @@
+{% if heading_title %}
+<h3 class="widget-title">{{ heading_title }}</h3>
+{% endif %}
+{% if products or voucher %}
+<div class="table-responsive overflow-auto">
+  <table class="table">
+    <tbody>
+      {% for product in products %}
+      <tr>
+        <td>{% if product.thumb %} <a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-thumbnail"/></a> {% endif %}</td>
+        <td><a href="{{ product.href }}" data-bs-toggle="tooltip" class="text-decoration-none" title="{{ product.title }}">{{ product.name }}</a>
+        {% if product.model %}
+        <br /><small>{{ column_model }}: {{ product.model }}</small>
+        {% endif %}
+        {% if product.option %}
+          {% for option in product.option %}
+          <br/><small>{{ option.name }}: {{ option.value }}</small>
+          {% endfor %}
+        {% endif %}
+        {% if product.reward %}
+          <br/><small>{{ product.reward }}</small>
+        {% endif %}
+        {% if product.recurring %}
+          <br/>
+          <span class="label label-info">{{ text_recurring_item }}</span>
+          <small>{{ product.recurring }}</small>
+        {% endif %}
+        {# <br/><button class="btn btn-sm text-danger p-0" onclick="cart.remove({{ product.cart_id }})"><i class="fas fa-trash-alt small"></i> {{ button_remove }}</button> #}
+        </td>
+        <td class="text-center">x{{ product.quantity }}</td>
+        <td class="text-end">{{ product.total }}</td>
+      </tr>
+      {% endfor %}
+      {% for voucher in vouchers %}
+      <tr>
+          <td colspan="3">
+           {{ voucher.description }}
+           <br/><button class="btn btn-sm text-danger p-0" onclick="cart.remove({{ product.cart_id }})"><i class="fas fa-trash-alt small"></i> {{ button_remove }}</button>
+          </td>
+          <td class="text-end">{{ voucher.amount }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+{% if is_empty %}
+<p class="m-0 py-5 text-center">{{ text_empty }}</p>
+{% endif %}
+<table class="table mb-0">
+    {% for total in totals %}
+    <tr>
+        <td>{{ total.title }}:</td>
+        <td class="text-end"><strong>{{ total.text }}</strong></td>
+    </tr>
+    {% endfor %}
+</table>

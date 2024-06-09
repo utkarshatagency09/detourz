@@ -1,0 +1,90 @@
+{% verbatim %}{% if articles %}{% endverbatim %}
+{% if list_grid == 'grid' %}
+<div class="grid-view row row-cols-xl-{{ article_column_xl }} row-cols-lg-{{ article_column_lg }} row-cols-md-{{ article_column_md }} row-cols-sm-{{ article_column_sm }} row-cols-{{ article_column_xs }}">
+{% else %}
+<div class="list-view row row-cols-1">
+{% endif %}
+{% verbatim %}{% for article_key, article in articles %}{% endverbatim %}
+  <div class="col">
+    <div class="article-thumb">
+      <div class="image">
+        {% verbatim %}{% if article.images is empty %}{% endverbatim %}
+          <a class="d-block" href="{% verbatim %}{{ article.href }}{% endverbatim %}" {% if url_target %}target="{{ url_target }}"{% endif %}>
+          {% if lazy_loading %}
+          <img class="lazy-load" src="{{ transparent }}" data-src="{% verbatim %}{{ article.thumb }}{% endverbatim %}" {% verbatim %}{% if article.srcset %}data-srcset="{{ article.srcset }}"{% endif %}{% endverbatim %} {% if srcset_sizes %}data-sizes="{{ srcset_sizes }}"{% endif %} alt="{% verbatim %}{{ article.name }}{% endverbatim %}" title="{% verbatim %}{{ article.name }}{% endverbatim %}" />
+          {% else %}
+          <img src="{% verbatim %}{{ article.thumb }}{% endverbatim %}" {% verbatim %}{% if article.srcset %}srcset="{{ article.srcset }}"{% endif %}{% endverbatim %} {% if srcset_sizes %}sizes="{{ srcset_sizes }}"{% endif %} alt="{% verbatim %}{{ article.name }}{% endverbatim %}" title="{% verbatim %}{{ article.name }}{% endverbatim %}" />
+          {% endif %}
+          </a>
+        {% verbatim %}{% else %}{% endverbatim %}
+          <div id="mz-article-listing-image-{{ mz_suffix }}-{% verbatim %}{{ article_key }}{% endverbatim %}" class="carousel slide" data-bs-ride="false">
+            <a class="d-block carousel-inner" href="{% verbatim %}{{ article.href }}{% endverbatim %}" {% if url_target %}target="{{ url_target }}"{% endif %}>
+              <div class="carousel-item active">
+                {% if lazy_loading %}
+                <img class="lazy-load" src="{{ transparent }}" data-src="{% verbatim %}{{ article.thumb }}{% endverbatim %}" {% verbatim %}{% if article.srcset %}data-srcset="{{ article.srcset }}"{% endif %}{% endverbatim %} {% if srcset_sizes %}data-sizes="{{ srcset_sizes }}"{% endif %} alt="{% verbatim %}{{ article.name }}{% endverbatim %}" title="{% verbatim %}{{ article.name }}{% endverbatim %}" />
+                {% else %}
+                <img src="{% verbatim %}{{ article.thumb }}{% endverbatim %}" {% verbatim %}{% if article.srcset %}srcset="{{ article.srcset }}"{% endif %}{% endverbatim %} {% if srcset_sizes %}sizes="{{ srcset_sizes }}"{% endif %} alt="{% verbatim %}{{ article.name }}{% endverbatim %}" title="{% verbatim %}{{ article.name }}{% endverbatim %}" />
+                {% endif %}
+              </div>
+              {% verbatim %}{% for image in article.images %}{% endverbatim %}
+              <div class="carousel-item">
+                {% if lazy_loading %}
+                <img class="lazy-load" src="{{ transparent }}" data-src="{% verbatim %}{{ image.image }}{% endverbatim %}" {% verbatim %}{% if image.srcset %}data-srcset="{{ image.srcset }}"{% endif %}{% endverbatim %} {% if srcset_sizes %}data-sizes="{{ srcset_sizes }}"{% endif %} alt="{% verbatim %}{{ article.name }}{% endverbatim %}" title="{% verbatim %}{{ article.name }}{% endverbatim %}" />
+                {% else %}
+                <img src="{% verbatim %}{{ image.image }}{% endverbatim %}" {% verbatim %}{% if image.srcset %}srcset="{{ image.srcset }}"{% endif %}{% endverbatim %} {% if srcset_sizes %}sizes="{{ srcset_sizes }}"{% endif %} alt="{% verbatim %}{{ article.name }}{% endverbatim %}" title="{% verbatim %}{{ article.name }}{% endverbatim %}" />
+                {% endif %}
+              </div>
+              {% verbatim %}{% endfor %}{% endverbatim %}
+            </a>
+            <a class="carousel-control-prev" href="#mz-article-listing-image-{{ mz_suffix }}-{% verbatim %}{{ article_key }}{% endverbatim %}" role="button" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#mz-article-listing-image-{{ mz_suffix }}-{% verbatim %}{{ article_key }}{% endverbatim %}" role="button" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </a>
+          </div>
+        {% verbatim %}{% endif %}{% endverbatim %}
+      </div>
+      <div class="caption">
+        {% if (not mz_config.get('html_article_timestamp_in_metadata')) and timestamp_status %}
+        {% verbatim %}<div class="timestamp"><i class="icon fas fa-calendar"></i> {{ article.timestamp }}</div>{% endverbatim %}
+        {% endif %}
+        {% if author_status or comment_count_status or viewed_count_status or (timestamp_status and mz_config.get('html_article_timestamp_in_metadata')) %}
+          <div class="metadata">
+          {% if author_status %}
+          {% verbatim %}<span class="author"><i class="icon fas fa-user-alt"></i> <a href="{{ article.author_href }}">{{ article.author }}</a></span>{% endverbatim %}
+          {% endif %}
+          {% if comment_count_status %}
+          {% verbatim %}<span class="comment"><i class="icon fas fa-comments"></i> {{ (article.comments > 1 ? text_comments : text_comment)|format(article.comments) }}</span>{% endverbatim %}
+          {% endif %}
+          {% if viewed_count_status %}
+          {% verbatim %}<span class="viewed"><i class="icon fas fa-eye"></i> {{ article.viewed }}</span>{% endverbatim %}
+          {% endif %}
+          {% if timestamp_status and mz_config.get('html_article_timestamp_in_metadata') %}
+          {% verbatim %}<span class="timestamp"><i class="icon fas fa-calendar"></i> {{ article.timestamp }}</span>{% endverbatim %}
+          {% endif %}
+          </div>
+        {% endif %}
+        {% if category_status %}
+        {% verbatim %}{% if article.category %}<a class="category" href="{{ article.category_href }}">{{ article.category }}</a>{% endif %}{% endverbatim %}
+        {% endif %}
+        {% verbatim %}<h4 class="title"><a class="text-ellipsis-2" href="{{ article.href }}">{{ article.name }}</a></h4>{% endverbatim %}
+        {% if description_status %}
+        {% verbatim %}<p class="description">{{ article.description }}</p>{% endverbatim %}
+        {% endif %}
+        {% if readmore_status %}
+        {% verbatim %}<a href="{{ article.href }}" class="btn btn-primary">{{ button_readmore }} <i class="fas fa-angle-double-right"></i></a>{% endverbatim %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% verbatim %}{% endfor %}{% endverbatim %}
+</div>
+{% verbatim %}{% else %}
+<p>{{ text_empty }}</p>
+<div class="buttons mb-3">
+  <div class="float-end"><a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a></div>
+</div>
+{% endif %}{% endverbatim %}

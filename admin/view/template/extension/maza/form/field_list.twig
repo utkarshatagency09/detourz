@@ -1,0 +1,211 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  <div class="panel-group mz-panel-action-bar">
+    <div class="panel panel-default">
+      <div class="panel-heading clearfix" data-toggle="collapse" data-target="#filter-mz-field">
+        <h4 class="panel-title pull-left">{{ text_filter }}</h4>
+        <span class="pull-right"><i class="fa fa-chevron-circle-down"></i></span>
+      </div>
+      <div id="filter-mz-field" class="panel-collapse collapse">
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-form">{{ entry_form }}</label>
+                <input type="text" name="filter_form" value="{{ filter_form }}" placeholder="{{ entry_form }}" id="input-form" class="form-control large" />
+                <input type="hidden" name="filter_form_id" value="{{ filter_form_id }}" />
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-type">{{ entry_type }}</label>
+                <select name="filter_type" id="input-type" class="form-control large">
+                  <option value=""></option>
+                  {% for group in list_types %}
+                    <optgroup label="{{ group.group }}">
+                      {% for type in group.types %}
+                        {% if (filter_type == type.id) %} 
+                        <option value="{{ type.id }}" selected="">{{ type.name }}</option>
+                        {% else %} 
+                        <option value="{{ type.id }}">{{ type.name }}</option>
+                        {% endif %}
+                      {% endfor %} 
+                    </optgroup>
+                  {% endfor %} 
+                </select>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-status">{{ entry_status }}</label>
+                <select name="filter_status" class="form-control large" id="input-status">
+                  <option value=""></option>
+                  {% if filter_status == '1' %}
+                  <option value="1" selected="selected">{{ text_enabled }}</option>
+                  {% else %}
+                  <option value="1">{{ text_enabled }}</option>
+                  {% endif %}
+                  {% if filter_status == '0' %}
+                  <option value="0" selected="selected">{{ text_disabled }}</option>
+                  {% else %}
+                  <option value="0">{{ text_disabled }}</option>
+                  {% endif %}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer text-right">
+          <button type="button" id="button-reset" class="btn btn-info"><i class="fa fa-times"></i> {{ button_reset }}</button>
+          <button type="button" id="button-filter" class="btn btn-primary"><i class="fa fa-filter"></i> {{ button_filter }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <div class="panel mz-panel-default">
+    <div class="panel-body">
+      <form method="post" enctype="multipart/form-data" id="form-mz-field">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+                <td class="text-left">{% if sort %}
+                  <a href="{{ sort_label }}" class="{{ order|lower }}">{{ column_name }}</a>
+                  {% else %}
+                  <a href="{{ sort_label }}">{{ column_name }}</a>
+                  {% endif %}</td>
+                <td class="text-left">{% if sort == 'form' %}
+                  <a href="{{ sort_form }}" class="{{ order|lower }}">{{ column_form }}</a>
+                  {% else %}
+                  <a href="{{ sort_form }}">{{ column_form }}</a>
+                  {% endif %}</td>
+                <td class="text-center">{% if sort == 'f.type' %}
+                  <a href="{{ sort_type }}" class="{{ order|lower }}">{{ column_type }}</a>
+                  {% else %}
+                  <a href="{{ sort_type }}">{{ column_type }}</a>
+                  {% endif %}</td>
+                <td class="text-center">{% if sort == 'f.is_required' %}
+                  <a href="{{ sort_required }}" class="{{ order|lower }}">{{ column_required }}</a>
+                  {% else %}
+                  <a href="{{ sort_required }}">{{ column_required }}</a>
+                  {% endif %}</td>
+                <td class="text-center">{% if sort == 'f.sort_order' %}
+                  <a href="{{ sort_sort_order }}" class="{{ order|lower }}">{{ column_sort_order }}</a>
+                  {% else %}
+                  <a href="{{ sort_sort_order }}">{{ column_sort_order }}</a>
+                  {% endif %}</td>
+                <td class="text-center">{% if sort == 'f.status' %}
+                  <a href="{{ sort_status }}" class="{{ order|lower }}">{{ column_status }}</a>
+                  {% else %}
+                  <a href="{{ sort_status }}">{{ column_status }}</a>
+                  {% endif %}</td>
+                <td class="text-right">{{ column_action }}</td>
+              </tr>
+            </thead>
+            <tbody>
+              {% if fields %}
+              {% for field in fields %}
+              <tr>
+                <td class="text-center">{% if field.form_field_id in selected %}
+                  <input type="checkbox" name="selected[]" value="{{ field.form_field_id }}" checked="checked" />
+                  {% else %}
+                  <input type="checkbox" name="selected[]" value="{{ field.form_field_id }}" />
+                  {% endif %}</td>
+                <td class="text-left">{{ field.label }}</td>
+                <td class="text-left">{{ field.form }}</td>
+                <td class="text-center">{{ field.type }}</td>
+                <td class="text-center">{{ field.required }}</td>
+                <td class="text-center">{{ field.sort_order }}</td>
+                <td class="text-center">
+                  {% if field.status %}
+                  <span class="text-success">{{ text_enabled }}</span>
+                  {% else %}
+                  <span class="text-danger">{{ text_disabled }}</span>
+                  {% endif %}
+                </td>
+                <td class="text-right">
+                  <a href="{{ field.edit }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-info"><i class="fa fa-pencil"></i></a>
+                </td>
+              </tr>
+              {% endfor %}
+              {% else %}
+              <tr>
+                <td class="text-center" colspan="8">{{ text_no_results }}</td>
+              </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </form>
+      <div class="row">
+        <div class="col-sm-6 text-left">{{ pagination }}</div>
+        <div class="col-sm-6 text-right">{{ results }}</div>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript">
+$('#button-filter').on('click', function() {
+	var url = '';
+
+	var filter_form = $('input[name=\'filter_form\']').val();
+  var filter_form_id = $('input[name=\'filter_form_id\']').val();
+
+	if (filter_form && filter_form_id) {
+		url += '&filter_form_id=' + encodeURIComponent(filter_form_id);
+	}
+
+  var filter_type = $('select[name=\'filter_type\']').val();
+
+	if (filter_type !== '') {
+		url += '&filter_type=' + encodeURIComponent(filter_type);
+	}
+        
+	var filter_status = $('select[name=\'filter_status\']').val();
+
+	if (filter_status !== '') {
+		url += '&filter_status=' + encodeURIComponent(filter_status);
+	}
+        
+	location = 'index.php?route=extension/maza/form/field{{ default_url }}' + url;
+});
+
+$('#button-reset').on('click', function(){
+  location = 'index.php?route=extension/maza/form/field{{ default_url }}';
+});
+</script>
+<script type="text/javascript">
+$('input[name=\'filter_form\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=extension/maza/form/autocomplete{{ default_url }}&filter_name=' +  encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['form_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'filter_form\']').val(item['label']);
+    $('input[name=\'filter_form_id\']').val(item['value']);
+  }
+});
+</script>
+</div>
+{{ mz_footer }}

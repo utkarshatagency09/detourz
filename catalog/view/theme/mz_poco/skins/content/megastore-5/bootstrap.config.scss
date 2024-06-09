@@ -1,0 +1,15 @@
+// $input-btn-border-width:            2px;
+
+$headings-font-weight:              null !default;
+@if $headings-font-weight != null {
+    $btn-font-weight:                   $headings-font-weight;
+} @else {
+    $btn-font-weight: 900;
+}
+
+// $nav-tabs-link-hover-border-color:  $secondary;
+$nav-tabs-link-active-color:        $primary;
+$nav-tabs-link-active-bg:           transparent;
+$nav-tabs-link-active-border-color: $nav-tabs-link-active-color;
+
+$custom-checkbox-indicator-border-radius: .25rem;

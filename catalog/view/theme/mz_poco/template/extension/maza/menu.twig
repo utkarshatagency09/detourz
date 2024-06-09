@@ -1,0 +1,77 @@
+<li class="{{ top?'nav-item' }}{{ has_dropdown?(top?' dropdown dropdown-hoverable':' dropdown-submenu dropdown-hoverable') }}{{ type == 'content' ? ' mega-menu' }}{{ dropdown_100?' position-static' }}">
+  <a class="icon-left both {{ top?'nav-link':'dropdown-item' }}{{ has_dropdown?' dropdown-toggle' }}" {{ has_dropdown?'role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"' }} {{ notification_total is defined?'data-mz-toggle="ajaxpopover" data-bs-placement="bottom" aria-haspopup="true" aria-expanded="false"' }} {{ link_attr }} href="{{ link }}">
+    {% if icon_font %}
+      <i class="icon {{ icon_font }}" {{ icon_size?'style="font-size: ' ~ icon_size ~ 'px"':'' }}></i>
+    {% elseif icon_svg %}
+      <div class="icon svg-icon" style="{{ icon_width?'width:' ~ icon_width ~ 'px;' }}{{ icon_height?'height:' ~ icon_height ~ 'px;' }}">{{ icon_svg }}</div>
+    {% elseif icon_image %}
+      <img class="icon" src="{{ icon_image }}" width="{{ icon_width?:'1em' }}" height="{{ icon_height?:'1em' }}" />
+    {% endif %}
+    
+    <div class="info">
+      <span class="title">
+      {% if tel is defined %}{{ tel }}
+      {% elseif fax is defined %}{{ fax }}
+      {% elseif email is defined %}{{ email }}
+      {% elseif wishlist_total is defined %}{{ title }} ({{ wishlist_total }})
+      {% elseif compare_total is defined %}{{ title }} ({{ compare_total }})
+      {% elseif notification_total is defined %}{{ title }} ({{ notification_total }})
+      {% elseif language_code is not empty %}<img class="icon" src="catalog/language/{{ language_code }}/{{ language_code }}.png" alt="{{ language_name }}" title="{{ language_name }}" /> {{ language_name }}
+      {% elseif currency_code is not empty %}{{ currency_symbol_left ? currency_symbol_left : currency_symbol_right }} {{ currency_title }}
+      {% elseif title is not empty %}{{ title }}
+      {% endif %}
+      </span>
+      {% if description is not empty %}
+      <span class="description">{{ description }}</span>
+      {% endif %}
+    </div>
+    
+    {% if label is not empty %}
+      <span class="badge mx-1 mz-menu-label-{{ item_id }}">{{ label }}</span>
+    {% endif %}
+  </a>
+  
+  {# Dropdown #}
+  {% if has_dropdown %}
+  <ul class="mz-sub-menu-{{ item_id }} dropdown-menu{{ type == 'content' ?' mega-menu-content' }}{{ dropdown_100?' full-width' }}">
+    {% if languages is not empty %} {# language #}
+      {% for language in languages %}
+        <li><button class="language-select dropdown-item btn btn-link" type="button" data-code="{{ language.code }}"><img class="icon" src="catalog/language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" title="{{ language.name }}" /> {{ language.name }}</button></li>
+      {% endfor %}
+      
+    {% elseif currencies is not empty %} {# Currency #}
+      {% for currency in currencies %}
+        <li><button class="currency-select dropdown-item btn btn-link" type="button" data-code="{{ currency.code }}">{{ currency.symbol_left ? currency.symbol_left : currency.symbol_right }} {{ currency.title }}</button></li>
+      {% endfor %}
+    
+    {% elseif categories is not empty %}
+      {% if category_column %}
+       <li class="dropdown-inner d-md-flex align-items-start">
+        {% for children in categories|batch(categories|length / category_column |round(1, 'ceil')) %}
+          <ul class="list-unstyled flex-column">
+            {% for child in children %}
+              <li><a href="{{ child.href }}" class="dropdown-item">{{ child.name }}</a></li>
+            {% endfor %}
+          </ul>
+        {% endfor %}
+       </li>
+      {% else %}
+        {% macro recursiveCategory(categories, text_show_all, item_id) %}
+          {% for category in categories %}
+          <li class="{{ category.children?'dropdown-hoverable dropdown-submenu' }}">
+            <a class="{{ category.children?' dropdown-toggle' }} dropdown-item" {{ category.children?'role="button" aria-haspopup="true" aria-expanded="false"' }} href="{{ category.href }}">{{ category.name }}</a>
+            {% if category.children %}
+              <ul class="mz-sub-menu-{{ item_id }} dropdown-menu">{{ _self.recursiveCategory(category.children, text_show_all, item_id) }}<li><a href="{{ category.href }}" class="dropdown-item showmore">{{ text_show_all }}</a></li></ul>
+            {% endif %}
+          </li>
+          {% endfor %}
+        {% endmacro %}
+        {{ _self.recursiveCategory(categories, text_show_all, item_id) }}
+        <li><a href="{{ link }}" class="dropdown-item showmore">{{ text_show_all }}</a></li>
+      {% endif %}
+    {% elseif child_content is not empty %}<li>{{ child_content }}</li> {# Child content #}
+    {% endif %}
+  </ul>
+  {% endif %}
+</li>
+

@@ -1,0 +1,138 @@
+{% if form_title %}
+<h3 class="widget-title">{{ form_title }}</h3>
+{% endif %}
+{% set isDatefield = false %}
+<form class="ajax-form" action="{{ action }}" method="post" enctype="multipart/form-data" id="input-form-{{ mz_suffix }}">
+  <input type="hidden" name="mz_form_id" value="{{ form_id }}" />
+  <input type="hidden" name="mz_page_url" value="{{ page_url }}" />
+  {% if product_id %}
+  <input type="hidden" name="mz_product_id" value="{{ product_id }}" />
+  {% endif %}
+  {% if manufacturer_id %}
+  <input type="hidden" name="mz_manufacturer_id" value="{{ manufacturer_id }}" />
+  {% endif %}
+  {% if category_id %}
+  <input type="hidden" name="mz_category_id" value="{{ category_id }}" />
+  {% endif %}
+  <input type="email" name="mz_email" placeholder="Email" class="d-none" />
+
+  <div class="row">{% for key, field in fields %}
+    <div class="mb-3 col-12 col-sm-{{ 12/field.column }} {{ field.label_position == 'left'?'row' }}">
+      {% if field.label_position and field.label_position != 'floating' %}
+      <label class="{{ field.is_required?'required' }} {% if field.label_position == 'left' %}col-sm-2 col-form-label col-form-label-{{ size }}{% endif %} {% if field.label_position == 'top' %}form-label{% endif %}" for="input-form-{{ field.type }}-{{ key }}-{{ mz_suffix }}">{{ field.label }}</label>
+      {% endif %}
+      {% if field.label_position == 'left' %}<div class="col-sm-10">{% endif %}
+      {% if field.label_position == 'floating' %}<div class="form-floating">{% endif %}
+
+    {% if field.type == 'text' %}
+      <input type="text" name="{{ field.name }}" value="{{ field.value }}" class="form-control form-control-{{ size }}" id="input-form-{{ field.type }}-{{ key }}-{{ mz_suffix }}" placeholder="{{ field.placeholder?:field.label }}" {{ field.is_required?'required' }}>
+    {% elseif field.type == 'textarea' %}
+      <textarea name="{{ field.name }}" class="form-control form-control-{{ size }}" id="input-form-{{ field.type }}-{{ key }}-{{ mz_suffix }}" placeholder="{{ field.placeholder?:field.label }}" {{ field.is_required?'required' }} rows="5">{{ field.value }}</textarea>
+    {% elseif field.type == 'number' %}
+      <input type="number" name="{{ field.name }}" value="{{ field.value }}" {% if field.min != '' %}min="{{ field.min }}"{% endif %} {% if field.max != '' %}max="{{ field.max }}"{% endif %} step="{{ field.step }}" class="form-control form-control-{{ size }}" id="input-form-{{ field.type }}-{{ key }}-{{ mz_suffix }}" placeholder="{{ field.placeholder?:field.label }}" {{ field.is_required?'required' }} />
+    {% elseif field.type == 'email' %}
+      <input type="email" name="{{ field.name }}" value="{{ field.value }}" class="form-control form-control-{{ size }}" id="input-form-{{ field.type }}-{{ key }}-{{ mz_suffix }}" placeholder="{{ field.placeholder?:field.label }}" {{ field.is_required?'required' }} />
+    {% elseif field.type == 'tel' %}
+      <input type="tel" name="{{ field.name }}" value="{{ field.value }}" class="form-control form-control-{{ size }}" id="input-form-{{ field.type }}-{{ key }}-{{ mz_suffix }}" placeholder="{{ field.placeholder?:field.label }}" {{ field.is_required?'required' }} />
+    {% elseif field.type == 'url' %}
+      <input type="url" name="{{ field.name }}" value="{{ field.value }}" class="form-control form-control-{{ size }}" id="input-form-{{ field.type }}-{{ key }}-{{ mz_suffix }}" placeholder="{{ field.placeholder?:field.label }}" {{ field.is_required?'required' }} />
+    {% elseif field.type == 'file' %}
+      <input type="file" name="{{ field.name }}" class="form-control form-control-{{ size }}" id="input-form-{{ field.type }}-{{ key }}-{{ mz_suffix }}" placeholder="{{ field.placeholder?:field.label }}" {{ field.is_required?'required' }}>
+    {% elseif field.type == 'date' %}
+      <div class="input-group">
+        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+        <input type="text" name="{{ field.name }}" value="{{ field.value }}" class="form-control form-control-{{ size }} date" placeholder="{{ field.placeholder?:field.label }}" id="input-form-{{ field.type }}-{{ key }}-{{ mz_suffix }}" {{ field.is_required?'required' }} />
+      </div>
+      {% set isDatefield = true %}
+    {% elseif field.type == 'time' %}
+      <div class="input-group">
+        <span class="input-group-text"><i class="fas fa-clock"></i></span>
+        <input type="text" name="{{ field.name }}" value="{{ field.value }}" class="form-control form-control-{{ size }} time" placeholder="{{ field.placeholder?:field.label }}" id="input-form-{{ field.type }}-{{ key }}-{{ mz_suffix }}" {{ field.is_required?'required' }} />
+      </div>
+      {% set isDatefield = true %}
+    {% elseif field.type == 'datetime' %}
+      <div class="input-group">
+        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+        <input type="text" name="{{ field.name }}" value="{{ field.value }}" class="form-control form-control-{{ size }} datetime" placeholder="{{ field.placeholder?:field.label }}" id="input-form-{{ field.type }}-{{ key }}-{{ mz_suffix }}" {{ field.is_required?'required' }} />
+      </div>
+      {% set isDatefield = true %}
+    {% elseif field.type == 'select' %}
+      <select name="{{ field.name }}" id="input-form-{{ field.type }}-{{ key }}-{{ mz_suffix }}" {{ field.is_required?'required' }} class="form-select form-select-{{ size }}">
+        {% if not field.is_required %}<option value=""></option>{% endif %}
+        {% for value in field.values %}
+          <option>{{ value }}</option>
+        {% endfor %}
+      </select>
+    {% elseif field.type == 'radio' %}
+      {% for id, value in field.values %}
+        <div class="form-check">
+          <input type="radio" id="input-form-{{ field.type }}-{{ key }}-{{ mz_suffix }}-{{ id }}" name="{{ field.name }}" value="{{ value }}" class="form-check-input">
+          <label class="form-check-label" for="input-form-{{ field.type }}-{{ key }}-{{ mz_suffix }}-{{ id }}">{{ value }}</label>
+        </div>
+      {% endfor %}
+    {% elseif field.type == 'checkbox' %}
+      {% for id, value in field.values %}
+        <div class="form-check">
+          <input type="checkbox" id="input-form-{{ field.type }}-{{ key }}-{{ mz_suffix }}-{{ id }}" name="{{ field.name }}[]" value="{{ value }}" class="form-check-input">
+          <label class="form-check-label" for="input-form-{{ field.type }}-{{ key }}-{{ mz_suffix }}-{{ id }}">{{ value }}</label>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+      {% if field.help %}
+      <small class="form-text text-muted">{{ field.help }}</small>
+      {% endif %}
+
+      {% if field.label_position == 'left' %}</div>{% endif %}
+      {% if field.label_position == 'floating' %}<label for="input-form-{{ field.type }}-{{ key }}-{{ mz_suffix }}">{{ field.label }}</label></div>{% endif %}
+    </div>
+  {% endfor %}</div>
+  {% if policy %}
+  <div class="mb-3">
+    <div class="form-check">
+      <input type="checkbox" id="input-form-policy-{{ mz_suffix }}" name="policy" value="1" class="form-check-input" required>
+      <label class="form-check-label" for="input-form-policy-{{ mz_suffix }}">{{ policy }}</label>
+    </div>
+  </div>
+  {% endif %}
+  {{ captcha }}
+  <div class="text-{{ submit_align }}">
+    <button type="submit" data-loading="{{ text_loading }}" class="btn btn-{{ color }} btn-{{ size }} {% if submit_align == 'full' %}btn-block{% endif %}">{{ button_submit }}</button>
+  </div>
+</form>
+{% if isDatefield %}
+<script>
+$(function(){
+  $('#input-form-{{ mz_suffix }} .datetime').daterangepicker({
+    singleDatePicker: true,
+    autoApply: true,
+    timePicker: true,
+    timePicker24Hour: true,
+    locale: {
+        format: 'YYYY-MM-DD HH:mm'
+    }
+  });
+
+  $('#input-form-{{ mz_suffix }} .time').daterangepicker({
+    singleDatePicker: true,
+    datePicker: false,
+    autoApply: true,
+    timePicker: true,
+    timePicker24Hour: true,
+    locale: {
+        format: 'HH:mm'
+    }
+  }).on('show.daterangepicker', function (ev, picker) {
+    picker.container.find('.calendar-table').hide();
+  });
+
+  $('#input-form-{{ mz_suffix }} .date').daterangepicker({
+    singleDatePicker: true,
+    autoApply: true,
+    locale: {
+        format: 'YYYY-MM-DD'
+    }
+  });
+});
+</script>
+{% endif %}

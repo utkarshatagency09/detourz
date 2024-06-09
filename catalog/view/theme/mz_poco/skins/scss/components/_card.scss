@@ -1,0 +1,9 @@
+// Collapsible card
+.card-header[data-toggle="collapse"]:not(.collapsed) .fa-plus:before{
+    content: '\f068';
+}
+
+// Accordion
+.accordion > .card:only-of-type{
+    border-bottom: $border-width solid $border-color;
+}

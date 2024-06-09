@@ -1,0 +1,107 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <div class="tab-content">
+    <div id="tab-mz-general" class="tab-pane fade in active">
+      <div class="panel mz-panel-default">
+        <div class="panel-body">
+          <table class="table table-bordered table-striped table-responsive">
+            <tbody>
+              <tr>
+                <th>{{ entry_form }}</th><td>{{ form }}</td>
+              </tr>
+              <tr>
+                <th>{{ entry_language }}</th><td>{{ language }}</td>
+              </tr>
+              <tr>
+                <th>{{ entry_currency }}</th><td>{{ currency }}</td>
+              </tr>
+              <tr>
+                <th>{{ entry_store }}</th><td>{{ store }}</td>
+              </tr>
+              <tr>
+                <th>{{ entry_ip_address }}</th><td><a href="https://whatismyipaddress.com/ip/{{ ip_address }}" target="_blank">{{ ip_address }}</a></td>
+              </tr>
+              <tr>
+                <th>{{ entry_date_added }}</th><td>{{ date_added }}</td>
+              </tr>
+              <tr>
+                <th>{{ entry_page }}</th><td><a href="{{ page_url }}" target="_blank">{{ page_url }}</a></td>
+              </tr>
+              {% if product %}
+              <tr><th>{{ entry_product }}</th><td><a href="{{ product.url }}" target="_blank">{{ product.name }}</a></td></tr>
+              {% endif %}
+              {% if category %}
+              <tr><th>{{ entry_category }}</th><td><a href="{{ category.url }}" target="_blank">{{ category.name }}</a></td></tr>
+              {% endif %}
+              {% if manufacturer %}
+              <tr><th>{{ entry_manufacturer }}</th><td><a href="{{ manufacturer.url }}" target="_blank">{{ manufacturer.name }}</a></td></tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!--customer-->
+      {% if customer %}
+      <div class="panel mz-panel-default">
+        <div class="panel-heading">{{ text_customer }}</div>
+        <div class="panel-body">
+          <table class="table table-bordered table-responsive">
+            <tbody>
+              <tr>
+                <td style="width: 1%;"><button data-toggle="tooltip" title="{{ text_customer }}" class="btn btn-info btn-xs"><i class="fa fa-user fa-fw"></i></button></td>
+                <td><a href="{{ customer.url }}" target="_blank">{{ customer.firstname }} {{ customer.lastname }}</a></td>
+              </tr>
+              <tr>
+                <td><button data-toggle="tooltip" title="{{ text_customer_group }}" class="btn btn-info btn-xs"><i class="fa fa-group fa-fw"></i></button></td>
+                <td>{{ customer.customer_group }}</td>
+              </tr>
+              <tr>
+                <td><button data-toggle="tooltip" title="{{ text_email }}" class="btn btn-info btn-xs"><i class="fa fa-envelope-o fa-fw"></i></button></td>
+                <td><a href="mailto:{{ customer.email }}">{{ customer.email }}</a></td>
+              </tr>
+              <tr>
+                <td><button data-toggle="tooltip" title="{{ text_telephone }}" class="btn btn-info btn-xs"><i class="fa fa-phone fa-fw"></i></button></td>
+                <td>{{ customer.telephone }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    <!--data-->
+    <div id="tab-mz-data" class="tab-pane fade">
+      <div class="panel mz-panel-default">
+        <div class="panel-body">
+          <table class="table table-bordered table-striped table-responsive">
+            <tbody>
+              {% for field in field_data %}
+                {% if field.value is iterable %}
+                <tr>
+                  <th>{{ field.label }}</th>
+                  <td><ul>{% for item in field.value %}<li>{{ item }}</li>{% endfor %}</ul></td>
+                </tr>
+                {% else %}
+                <tr>
+                  <th>{{ field.label }}</th>
+                  {% if field.link %}
+                    <td><a href="{{ field.link }}" target="_blank">{{ field.value }}</a></td>
+                  {% else %}
+                    <td>{{ field.value }}</td>
+                  {% endif %}
+                </tr>
+                {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{{ mz_footer }}

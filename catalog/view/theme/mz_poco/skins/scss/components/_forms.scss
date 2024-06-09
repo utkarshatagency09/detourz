@@ -1,0 +1,33 @@
+// .form-inline{
+//     .form-group{
+//         flex: 0 1 auto; // Fix wrap issue in inline form
+//     }
+// }
+
+.form-group {
+    margin-bottom: $spacer; // bs4 dependency, removed in opencart 4
+}
+
+// .form-control {
+//     font-size: 1em;
+// }
+
+/* Hide HTML5 Up and Down arrows. */
+input[type="number"]{
+    &.remove-spin-button::-webkit-outer-spin-button, &.remove-spin-button::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    &.remove-spin-button {
+        -moz-appearance: textfield;
+    }
+}
+
+label.required, .required label{
+    &::after{
+        content: "*";
+        color: $danger;
+        @include rtl-prop(margin-left, 3px);
+    }
+}

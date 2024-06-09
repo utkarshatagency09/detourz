@@ -1,0 +1,52 @@
+@charset "UTF-8";
+
+// Abstracts
+@import "skins/scss/abstracts/functions";
+@import "skins/scss/abstracts/variables";
+@import "skins/scss/abstracts/mixins";
+@import "skins/scss/abstracts/helpers";
+@import "skins/scss/abstracts/animations";
+@import "skins/scss/skins/abstracts";
+
+// Base
+@import "skins/scss/base/reboot";
+@import "skins/scss/base/typography";
+@import "skins/scss/base/utilities";
+
+// Layout
+@import "skins/scss/layout/entry";
+@import "skins/scss/layout/page";
+
+// Components
+@import "skins/scss/components/image";
+@import "skins/scss/components/card";
+@import "skins/scss/components/table";
+@import "skins/scss/components/forms";
+@import "skins/scss/components/dropdown";
+@import "skins/scss/components/input-group";
+@import "skins/scss/components/popover";
+@import "skins/scss/components/nav";
+@import "skins/scss/components/swiper";
+@import "skins/scss/components/banner";
+@import "skins/scss/components/modal";
+@import "skins/scss/components/alert";
+@import "skins/scss/components/carousel";
+@import "skins/scss/components/list";
+@import "skins/scss/components/map";
+@import "skins/scss/components/scrollbar";
+@import "skins/scss/components/breadcrumb";
+@import "skins/scss/components/button";
+@import "skins/scss/components/close";
+@import "skins/scss/components/offcanvas";
+@import "skins/scss/components/audio";
+
+// Widget
+@import "skins/scss/components/widget/notification";
+@import "skins/scss/components/widget/video";
+
+// skins
+@import "skins/scss/skins/header";
+@import "skins/scss/skins/content";
+@import "skins/scss/skins/footer";
+
+

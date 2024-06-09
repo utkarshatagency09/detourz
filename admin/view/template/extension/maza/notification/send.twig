@@ -1,0 +1,253 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-warning"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+
+  <div class="btn-group">
+    {% for item in list_types %} 
+      {% if (type == item.id) %} 
+      <a href="{{ item.href }}" class="btn btn-primary">{{ item.name }}</a>
+      {% else %} 
+      <a href="{{ item.href }}" class="btn btn-default">{{ item.name }}</a>
+      {% endif %} 
+    {% endfor %} 
+  </div>
+  
+  <!-- form -->
+  <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-mz-notification-send" class="form-horizontal">
+    <div class="panel mz-panel-default">
+      {# <div class="panel-heading">{{ heading_title }}</div> #}
+      <div class="panel-body">
+        {% if _context['help_' ~ type] %}
+        <div class="alert alert-info"><i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ _context['help_' ~ type] }}</div>
+        {% endif %}
+
+        {% if type in ['product', 'price', 'availability'] %}
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="input-product">{{ entry_product }}</label>
+          <div class="col-sm-10">
+            <input type="text" name="product" value="{{ product }}" placeholder="{{ entry_product }}" id="input-product" class="form-control"/> <input type="hidden" name="product_id" value="{{ product_id }}"/>
+            {% if err_product %}
+            <div class="text-danger">{{ err_product }}</div>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+        {% if type in ['product', 'coming'] %}
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="input-manufacturer">{{ entry_manufacturer }}</label>
+          <div class="col-sm-10">
+            <input type="text" name="manufacturer" value="{{ manufacturer }}" placeholder="{{ entry_manufacturer }}" id="input-manufacturer" class="form-control"/> <input type="hidden" name="manufacturer_id" value="{{ manufacturer_id }}"/>
+            {% if err_manufacturer %}
+            <div class="text-danger">{{ err_manufacturer }}</div>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+        {% if type in ['coming'] %}
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="input-article">{{ entry_article }}</label>
+          <div class="col-sm-10">
+            <input type="text" name="article" value="{{ article }}" placeholder="{{ entry_article }}" id="input-article" class="form-control"/> <input type="hidden" name="article_id" value="{{ article_id }}"/>
+            {% if err_article %}
+            <div class="text-danger">{{ err_article }}</div>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="input-channel">{{ entry_channel }}</label>
+          <div class="col-sm-10">
+            <select id="input-channel" name="channel_id" class="form-control">
+              <option value=""></option>
+              {% for channel in channels %}
+                {% if channel_id == channel.channel_id %}
+                <option value="{{ channel.channel_id }}" selected>{{ channel.name }}</option>
+                {% else %}
+                <option value="{{ channel.channel_id }}">{{ channel.name }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+            {% if err_channel %}
+            <div class="text-danger">{{ err_channel }}</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if type in ['product', 'channel'] %}
+    <div class="panel mz-panel-default">
+      <div class="panel-heading">{{ text_in_app }}</div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="input-message">{{ entry_message }}</label>
+          <div class="col-sm-10">
+            <textarea name="message" placeholder="{{ entry_message }}" id="input-message" class="form-control large">{{ message }}</textarea>
+            <span class="help-block">{{ help_mail_shortcode }}</span>
+            {% if err_message %}
+            <div class="text-danger">{{ err_message }}</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if push_status %}
+    <div class="panel mz-panel-default">
+      <div class="panel-heading">{{ text_push }}</div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="input-push-title">{{ entry_title }}</label>
+          <div class="col-sm-10">
+            <input type="text" name="push_title" value="{{ push_title }}" placeholder="{{ entry_title }}" id="input-push-title" class="form-control large" />
+            <span class="help-block">{{ help_push_shortcode }}</span>
+            {% if err_push_title %}
+            <div class="text-danger">{{ err_push_title }}</div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="input-push-message">{{ entry_message }}</label>
+          <div class="col-sm-10">
+            <textarea name="push_message" placeholder="{{ entry_message }}" id="input-push-message" class="form-control large">{{ push_message }}</textarea>
+            <span class="help-block">{{ help_push_shortcode }}</span>
+            {% if err_push_message %}
+            <div class="text-danger">{{ err_push_message }}</div>
+            {% endif %}
+          </div>
+        </div>
+        {% if type in ['channel'] %}
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="input-push-url">{{ entry_url }}</label>
+          <div class="col-sm-10">
+            <input type="text" name="push_url" value="{{ push_url }}" placeholder="{{ entry_url }}" id="input-push-url" class="form-control large" />
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="panel mz-panel-default">
+      <div class="panel-heading">{{ text_mail }}</div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="input-mail-subject">{{ entry_subject }}</label>
+          <div class="col-sm-10">
+            <input type="text" name="mail_subject" value="{{ mail_subject }}" placeholder="{{ entry_subject }}" id="input-mail-subject" class="form-control large" />
+            <span class="help-block">{{ help_mail_shortcode }}</span>
+            {% if err_mail_subject %}
+            <div class="text-danger">{{ err_mail_subject }}</div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="input-mail-message">{{ entry_message }}</label>
+          <div class="col-sm-10">
+            <textarea name="mail_message" placeholder="{{ entry_message }}" id="input-mail-message" data-ckeditor="{{ code }}" class="form-control large">{{ mail_message }}</textarea>
+            <span class="help-block">{{ help_mail_shortcode }}</span>
+            {% if err_mail_message %}
+            <div class="text-danger">{{ err_mail_message }}</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% if sms_status %}
+    <div class="panel mz-panel-default">
+      <div class="panel-heading">{{ text_sms }}</div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="input-sms-message">{{ entry_message }}</label>
+          <div class="col-sm-10">
+            <textarea name="sms_message" placeholder="{{ entry_message }}" id="input-sms-message" class="form-control large">{{ sms_message }}</textarea>
+            <span class="help-block">{{ help_sms_shortcode }}</span>
+            {% if err_sms_message %}
+            <div class="text-danger">{{ err_sms_message }}</div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </form>
+</div>
+<script src="view/javascript/maza/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">
+// Product
+$('input[name=\'product\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['product_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'product\']').val(item['label']);
+    $('input[name=\'product_id\']').val(item['value']);
+  }
+});
+
+// Manufacturer
+$('input[name=\'manufacturer\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=catalog/manufacturer/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['manufacturer_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'manufacturer\']').val(item['label']);
+    $('input[name=\'manufacturer_id\']').val(item['value']);
+  }
+});
+
+// Article
+$('input[name=\'article\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=extension/maza/blog/article/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request),
+      dataType: 'json',
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['name'],
+            value: item['article_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'article\']').val(item['label']);
+    $('input[name=\'article_id\']').val(item['value']);
+  }
+});
+</script>
+{{ mz_footer }}

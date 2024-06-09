@@ -1,0 +1,12 @@
+$footer-bg-color: $black;
+$footer-text-color: color-contrast($footer-bg-color, $gray-700, #777777);
+
+$footer-headings-color: color-contrast($footer-bg-color);
+$footer-headings-margin-bottom: mz-spacer(42);
+
+// Social
+$social-link-icon-margin: mz-spacer(3.5);
+$social-link-icon-padding: mz-spacer(9);
+
+// Newsletter
+$newsletter-button-padding: $btn-padding-y-lg mz-spacer(32);

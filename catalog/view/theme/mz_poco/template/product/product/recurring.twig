@@ -1,0 +1,14 @@
+{% verbatim %}
+{% if recurrings %}
+<h5 class="content-title">{{ text_payment_recurring }}</h5>
+<div class="mb-3 required">
+  <select name="recurring_id" class="form-select">
+    <option value="">{{ text_select }}</option>
+    {% for recurring in recurrings %}
+    <option value="{{ recurring.recurring_id }}">{{ recurring.name }}</option>
+    {% endfor %}
+  </select>
+  <div class="form-text" id="recurring-description"></div>
+</div>
+{% endif %}
+{% endverbatim %}

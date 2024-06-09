@@ -1,0 +1,258 @@
+<style>
+#linkmanager .gutter-my{
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+#linkmanager .nav-pills{
+	margin: 0 -15px;
+}
+#linkmanager .tab-content{
+	max-height: 610px;
+	overflow: auto;
+}
+</style>
+<div id="linkmanager" class="modal-dialog modal-md">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h4 class="modal-title">{{ heading_title }}</h4>
+    </div>
+    <div class="modal-body py-0">
+      <div class="row">
+				<ul class="nav nav-tabs mz-panel-nav-vertical-tabs col-xs-3">
+					<li class="active"><a href="#tab-link-system" data-toggle="tab">{{ entry_system }}</a></li>
+					<li><a href="#tab-link-information" data-toggle="tab">{{ entry_information }}</a></li>
+					<li><a href="#tab-link-category" data-toggle="tab">{{ entry_category }}</a></li>
+					<li><a href="#tab-link-product" data-toggle="tab">{{ entry_product }}</a></li>
+					<li><a href="#tab-link-manufacturer" data-toggle="tab">{{ entry_manufacturer }}</a></li>
+					<li><a href="#tab-link-blog_category" data-toggle="tab">{{ entry_blog_category }}</a></li>
+					<li><a href="#tab-link-blog_article" data-toggle="tab">{{ entry_blog_article }}</a></li>
+					<li><a href="#tab-link-page_builder" data-toggle="tab">{{ entry_page_builder }}</a></li>
+					<li><a href="#tab-link-custom" data-toggle="tab">{{ entry_custom }}</a></li>
+					<li><a href="#tab-link-popup" data-toggle="tab">{{ entry_popup }}</a></li>
+					<li><a href="#tab-link-drawer" data-toggle="tab">{{ entry_drawer }}</a></li>
+					<li><a href="#tab-link-collapsible" data-toggle="tab">{{ entry_collapsible }}</a></li>
+				</ul>
+				<div class="tab-content col-xs-9">
+					<div id="tab-link-system" class="tab-pane fade in active">
+						<ul class="nav nav-pills nav-stacked">
+							{% for item in list_system %}
+							<li><a href="system.{{ item.id }}" data-label="{{ entry_system }}" data-link="{{ item.name }}">{{ item.name }}</a></li>
+							{% endfor %}
+						</ul>
+					</div>
+					<div id="tab-link-information" class="tab-pane fade">
+						<ul class="nav nav-pills nav-stacked">
+							{% for information in informations %}
+							<li><a href="information.{{ information.information_id }}" data-label="{{ entry_information }}" data-link="{{ information.title }}">{{ information.title }}</a></li>
+							{% endfor %}
+						</ul>
+					</div>
+					<div id="tab-link-category" class="tab-pane fade">
+						<input type="text" name="category" class="form-control form-control-lg large gutter-my" placeholder="{{ text_search }}" />
+					</div>
+					<div id="tab-link-product" class="tab-pane fade">
+						<input type="text" name="product" class="form-control form-control-lg large gutter-my" placeholder="{{ text_search }}" />
+					</div>
+					<div id="tab-link-manufacturer" class="tab-pane fade">
+						<input type="text" name="manufacturer" class="form-control form-control-lg large gutter-my" placeholder="{{ text_search }}" />
+					</div>
+					<div id="tab-link-blog_category" class="tab-pane fade">
+						<input type="text" name="blog_category" class="form-control form-control-lg large gutter-my" placeholder="{{ text_search }}" />
+					</div>
+					<div id="tab-link-blog_article" class="tab-pane fade">
+						<input type="text" name="blog_article" class="form-control form-control-lg large gutter-my" placeholder="{{ text_search }}" />
+					</div>
+					<div id="tab-link-page_builder" class="tab-pane fade">
+						<input type="text" name="page_builder" class="form-control form-control-lg large gutter-my" placeholder="{{ text_search }}" />
+					</div>
+					<div id="tab-link-custom" class="tab-pane fade">
+						<div class="form-group">
+							<label class="control-label" for="input-route">{{ entry_route }}</label>
+							<div class="input-group">
+								<input type="text" name="route" value="" placeholder="{{ entry_route }}" id="input-route" class="form-control large" />
+								<div class="input-group-btn">
+									<button type="button" onclick="selectLink('route.' + $('[name=\'route\']').val(), $('[name=\'route\']').val(), '{{ entry_route }}')" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="control-label" for="input-custom">{{ entry_url }}</label>
+							<div class="input-group">
+								<input type="text" name="custom" value="" placeholder="{{ entry_url }}" id="input-custom" class="form-control large" />
+								<div class="input-group-btn">
+									<button type="button" onclick="selectLink('custom.' + $('[name=\'custom\']').val(), $('[name=\'custom\']').val(), '{{ entry_url }}')" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab-link-popup" class="tab-pane fade">
+						<div class="form-group">
+							<label class="control-label" for="input-popup">{{ entry_unique_id }}</label>
+							<div class="input-group">
+								<input type="text" name="popup" value="" placeholder="{{ entry_unique_id }}" id="input-popup" class="form-control large" />
+								<div class="input-group-btn">
+									<button type="button" onclick="selectLink('popup.' + $('[name=\'popup\']').val(), $('[name=\'popup\']').val(), '{{ entry_popup }}')" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab-link-drawer" class="tab-pane fade">
+						<div class="form-group">
+							<label class="control-label" for="input-drawer">{{ entry_unique_id }}</label>
+							<div class="input-group">
+								<input type="text" name="drawer" value="" placeholder="{{ entry_unique_id }}" id="input-drawer" class="form-control large" />
+								<div class="input-group-btn">
+									<button type="button" onclick="selectLink('drawer.' + $('[name=\'drawer\']').val(), $('[name=\'drawer\']').val(), '{{ entry_drawer }}')" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="tab-link-collapsible" class="tab-pane fade">
+						<div class="form-group">
+							<label class="control-label" for="input-collapsible">{{ entry_unique_id }}</label>
+							<div class="input-group">
+								<input type="text" name="collapsible" value="" placeholder="{{ entry_unique_id }}" id="input-collapsible" class="form-control large" />
+								<div class="input-group-btn">
+									<button type="button" onclick="selectLink('collapsible.' + $('[name=\'collapsible\']').val(), $('[name=\'collapsible\']').val(), '{{ entry_collapsible }}')" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+var $exploded = $('#{{ target }}').val().split('.');
+var $type = $exploded.shift();
+
+// Active tab
+if($type == 'custom' || $type == 'route'){
+	$('a[href="#tab-link-custom"]').tab('show');
+} else if($type) {
+	$('a[href="#tab-link-' + $type + '"]').tab('show');
+}
+
+// Add title to search field
+var $title = $('#{{ target }}').parent().children('input[type="text"]').val();
+if($type){
+	$('input[name="' + $type + '"]').val($title);
+}
+
+// Create active link
+$('a[href="' + $('#{{ target }}').val() + '"]').parent().addClass('active');
+</script>
+<script type="text/javascript">
+$(document).on('click', 'a[data-link]', function(e) {
+	e.preventDefault();
+
+	selectLink($(this).attr('href'), $(this).data('link'), $(this).data('label'));
+});
+function selectLink(code, title, type){
+	$('#{{ target }}').val(code);
+	var group = $('#{{ target }}').parent();
+	group.children('.input-group-addon').text(type);
+	group.children('input[type="text"]').val(title);
+
+	$('#modal-link').modal('hide');
+}
+</script>
+<script>
+// Category
+$('input[name="category"]').on('focus input', function(e){
+	$('#tab-link-category .nav-pills').remove();
+	var list = $('<ul class="nav nav-pills nav-stacked"></ul>').appendTo('#tab-link-category');
+
+	$.ajax({
+		url: 'index.php?route=catalog/category/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(e.target.value),
+		dataType: 'json',
+		success: function(json) {
+			$.map(json, function(item) {
+				list.append('<li><a href="category.' + item['category_id'] + '" data-label="{{ entry_category }}" data-link="' + item['name'] + '">' + item['name'] + '</a></li>');
+			});
+		}
+	});
+});
+
+// Product
+$('input[name="product"]').on('focus input', function(e){
+	$('#tab-link-product .nav-pills').remove();
+	var list = $('<ul class="nav nav-pills nav-stacked"></ul>').appendTo('#tab-link-product');
+
+	$.ajax({
+		url: 'index.php?route=catalog/product/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(e.target.value),
+		dataType: 'json',
+		success: function(json) {
+			$.map(json, function(item) {
+				list.append('<li><a href="product.' + item['product_id'] + '" data-label="{{ entry_product }}" data-link="' + item['name'] + '">' + item['name'] + '</a></li>');
+			});
+		}
+	});
+});
+
+// manufacturer
+$('input[name="manufacturer"]').on('focus input', function(e){
+	$('#tab-link-manufacturer .nav-pills').remove();
+	var list = $('<ul class="nav nav-pills nav-stacked"></ul>').appendTo('#tab-link-manufacturer');
+
+	$.ajax({
+		url: 'index.php?route=catalog/manufacturer/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(e.target.value),
+		dataType: 'json',
+		success: function(json) {
+			$.map(json, function(item) {
+				list.append('<li><a href="manufacturer.' + item['manufacturer_id'] + '" data-label="{{ entry_manufacturer }}" data-link="' + item['name'] + '">' + item['name'] + '</a></li>');
+			});
+		}
+	});
+});
+
+// blog_category
+$('input[name="blog_category"]').on('focus input', function(e){
+	$('#tab-link-blog_category .nav-pills').remove();
+	var list = $('<ul class="nav nav-pills nav-stacked"></ul>').appendTo('#tab-link-blog_category');
+
+	$.ajax({
+		url: 'index.php?route=extension/maza/blog/category/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(e.target.value),
+		dataType: 'json',
+		success: function(json) {
+			$.map(json, function(item) {
+				list.append('<li><a href="blog_category.' + item['category_id'] + '" data-label="{{ entry_blog_category }}" data-link="' + item['name'] + '">' + item['name'] + '</a></li>');
+			});
+		}
+	});
+});
+
+// blog_article
+$('input[name="blog_article"]').on('focus input', function(e){
+	$('#tab-link-blog_article .nav-pills').remove();
+	var list = $('<ul class="nav nav-pills nav-stacked"></ul>').appendTo('#tab-link-blog_article');
+
+	$.ajax({
+		url: 'index.php?route=extension/maza/blog/article/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(e.target.value),
+		dataType: 'json',
+		success: function(json) {
+			$.map(json, function(item) {
+				list.append('<li><a href="blog_article.' + item['article_id'] + '" data-label="{{ entry_blog_article }}" data-link="' + item['name'] + '">' + item['name'] + '</a></li>');
+			});
+		}
+	});
+});
+
+// page_builder
+$('input[name="page_builder"]').on('focus input', function(e){
+	$('#tab-link-page_builder .nav-pills').remove();
+	var list = $('<ul class="nav nav-pills nav-stacked"></ul>').appendTo('#tab-link-page_builder');
+
+	$.ajax({
+		url: 'index.php?route=extension/maza/page_builder/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(e.target.value),
+		dataType: 'json',
+		success: function(json) {
+			$.map(json, function(item) {
+				list.append('<li><a href="page_builder.' + item['page_id'] + '" data-label="{{ entry_page_builder }}" data-link="' + item['name'] + '">' + item['name'] + '</a></li>');
+			});
+		}
+	});
+});
+</script>

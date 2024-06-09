@@ -1,0 +1,48 @@
+<div class="accordion-item">
+  <h5 class="accordion-header border-bottom-0" id="collapse-voucher-heading"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-voucher" aria-expanded="true" aria-controls="collapse-voucher">{{ heading_title }}</button></h5>
+  <div id="collapse-voucher" class="accordion-collapse collapse" aria-labelledby="collapse-voucher-heading" data-bs-parent="#accordion">
+    <div class="accordion-body">
+      	<div class="input-group">
+			<input type="text" name="voucher" value="{{ voucher }}" placeholder="{{ entry_voucher }}" id="input-voucher" class="form-control"/>
+			<input type="button" value="{{ button_voucher }}" id="button-voucher" data-loading-text="{{ text_loading }}" class="btn btn-primary"/>
+		</div>
+    </div>
+  </div>
+  <script><!--
+  $('#button-voucher').on('click', function() {
+	  $.ajax({
+		  url: 'index.php?route=extension/total/voucher/voucher',
+		  type: 'post',
+		  data: 'voucher=' + encodeURIComponent($('input[name=\'voucher\']').val()),
+		  dataType: 'json',
+		  beforeSend: function() {
+			  $('#button-voucher').val('{{ text_loading }}');
+		  },
+		  complete: function() {
+			  $('#button-voucher').val('{{ button_voucher }}');
+		  },
+		  success: function(json) {
+				$('.alert-dismissible').remove();
+
+				if (json['error']) {
+					$('#collapse-voucher .accordion-body').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+				}
+
+				if (json['redirect'] && !$('#maza-checkout').length) {
+					location = json['redirect'];
+				}
+				if($('#maza-checkout').length){
+					$.getJSON("index.php?route=extension/maza/checkout/total/update", function(json) {
+						if (json['redirect']) location = json['redirect'];
+						$("#checkout-total").replaceWith(json.total);
+						$("#payment-method").replaceWith(json.payment_method);
+					});
+				}
+		  },
+		  error: function(xhr, ajaxOptions, thrownError) {
+			  alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		  }
+	  });
+  });
+  //--></script>
+</div>

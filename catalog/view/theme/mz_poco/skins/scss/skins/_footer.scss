@@ -1,0 +1,24 @@
+@if($active_footer_code == 'megastore-1'){
+    @import "skins/footer/megastore-1/style";
+}
+@elseif($active_footer_code == 'megastore-2'){
+    @import "skins/footer/megastore-2/style";
+}
+@elseif($active_footer_code == 'megastore-3'){
+    @import "skins/footer/megastore-3/style";
+}
+@elseif($active_footer_code == 'megastore-4'){
+    @import "skins/footer/megastore-4/style";
+}
+@elseif($active_footer_code == 'megastore-5'){
+    @import "skins/footer/megastore-5/style";
+}
+@elseif($active_footer_code == 'megastore-6'){
+    @import "skins/footer/megastore-6/style";
+}
+@elseif($active_footer_code == 'megastore-7'){
+    @import "skins/footer/megastore-7/style";
+}
+@elseif($active_footer_code == 'minimal-1'){
+    @import "skins/footer/minimal-1/style";
+}

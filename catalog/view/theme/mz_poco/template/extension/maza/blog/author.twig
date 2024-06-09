@@ -1,0 +1,16 @@
+{# 
+Here is a file location of author page component
+
+## author page specific component
+- extension/maza/blog/author/*
+
+## common component across the page including author page
+- extension/maza/blog/common/*
+
+#}
+{{ header }}
+{% if mz_component %}
+<script>$('body').prepend('{{ mz_component|e("js") }}');</script>
+{% endif %}
+<div id="article-author" class="content">{{ mz_content }}</div>
+{{ footer }}

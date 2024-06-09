@@ -1,0 +1,8 @@
+.btn{
+    // Center text when button is flex
+    justify-content: center;
+    
+    &:hover {
+        border-color: transparent;
+    }
+}

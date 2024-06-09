@@ -1,0 +1,296 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  
+  <!-- Alert message -->
+  {% if (success is defined) %} 
+    <div class="alert alert-success"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{ success }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  {% if (warning is defined) %} 
+    <div class="alert alert-danger"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ warning }} <a href="#" class="close" data-dismiss="alert" aria-label="close"><i class="fa fa-times-circle" aria-hidden="true"></i></a></div>
+  {% endif %} 
+  
+  <!-- Form -->
+  <form action="{{ action }}" class="form-horizontal" enctype="multipart/form-data" id="form-mz-form" method="post">
+    <div class="tab-content">
+        
+      <!--General-->
+      <div id="tab-mz-general" class="tab-pane fade in active">
+        <!--general-->
+        <div class="panel mz-panel-default">
+          <div class="panel-heading clearfix">
+            <h4 class="pull-left panel-title">{{ text_general }}</h4>
+            <ul class="nav nav-tabs tab-dynamic pull-right mz-nav-sandwich-tab">
+              {% for language in languages %}
+              <li><a href="#language-general{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="panel-body">
+            <div class="tab-content">
+              {% for language in languages %}
+              <div class="tab-pane" id="language-general{{ language.language_id }}">
+                <!--name-->
+                <div class="form-group required">
+                  <label class="col-xs-3 control-label" for="input-name{{ language.language_id }}">{{ entry_name }}</label>
+                  <div class="col-xs-9">
+                    <input type="text" name="form_description[{{ language.language_id }}][name]" value="{{ form_description[language.language_id]['name'] is defined ? form_description[language.language_id]['name'] }}" id="input-name{{ language.language_id }}" placeholder="{{ entry_name }}" class="form-control" />
+                    {% if err_name[language.language_id] %}
+                    <div class="text-danger">{{ err_name[language.language_id] }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+
+                <!--submit text-->
+                <div class="form-group">
+                  <label class="col-xs-3 control-label"><span data-toggle="tooltip" title="{{ help_submit_text }}">{{ entry_submit_text }}</span></label>
+                  <div class="col-xs-9">
+                    <input class="form-control" type="text" name="form_description[{{ language['language_id'] }}][submit_text]" value="{{ form_description[language['language_id']]['submit_text'] is defined?form_description[language['language_id']]['submit_text']:'' }}" placeholder="{{ entry_submit_text }}" >
+                  </div>
+                </div>
+
+                <!--success-->
+                <div class="form-group required">
+                  <label class="col-xs-3 control-label" for="input-success{{ language.language_id }}"><span data-toggle="tooltip" title="{{ help_success }}">{{ entry_success }}</span></label>
+                  <div class="col-xs-9">
+                    <textarea name="form_description[{{ language.language_id }}][success]" placeholder="{{ entry_success }}" id="input-success{{ language.language_id }}" class="form-control large">{{ form_description[language.language_id]['success'] is defined ? form_description[language.language_id]['success'] : '' }}</textarea>
+                    {% if err_success[language.language_id] %}
+                    <div class="text-danger">{{ err_success[language.language_id] }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--data-->
+      <div id="tab-mz-data" class="tab-pane fade">
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_general }}</div>
+          <div class="panel-body">
+            <!--policy-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-information-id">{{ entry_policy }}</label>
+              <div class="col-xs-9">
+                <select name="information_id" id="input-information-id" class="form-control">
+                  <option value=""></option>
+                {% for information in informations %}
+                  {% if (information_id == information.information_id) %} 
+                  <option value="{{ information.information_id }}" selected="">{{ information.title }}</option>
+                  {% else %} 
+                  <option value="{{ information.information_id }}">{{ information.title }}</option>
+                  {% endif %}
+                {% endfor %} 
+                </select>
+              </div>
+            </div>
+
+            <!--record-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-record"><span data-toggle="tooltip" title="{{ help_record }}">{{ entry_record }}</span></label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (record) %} 
+                  <input type="radio" name="record" value="1" id="input-record-enabled" checked>
+                  <label for="input-record-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="record" value="0" id="input-record-disabled">
+                  <label for="input-record-disabled">{{ text_disabled }}</label>
+                  {% else %}
+                  <input type="radio" name="record" value="1" id="input-record-enabled" >
+                  <label for="input-record-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="record" value="0" id="input-record-disabled" checked>
+                  <label for="input-record-disabled" >{{ text_disabled }}</label>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--field-->
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_field }}</div>
+          <div class="panel-body">
+            <!--email-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-email-field-id"><span data-toggle="tooltip" title="{{ help_field_email }}">{{ entry_email }}</span></label>
+              <div class="col-xs-9">
+                <select name="email_field_id" id="input-email-field-id" class="form-control">
+                <option value="0"></option>
+                {% for field in fields %}
+                  {% if field.type == 'email' %}
+                    {% if (email_field_id == field.form_field_id) %} 
+                    <option value="{{ field.form_field_id }}" selected="">{{ field.name }}</option>
+                    {% else %} 
+                    <option value="{{ field.form_field_id }}">{{ field.name }}</option>
+                    {% endif %}
+                  {% endif %}
+                {% endfor %} 
+                </select>
+              </div>
+            </div>
+
+            <!--subject-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-subject-field-id"><span data-toggle="tooltip" title="{{ help_field_subject }}">{{ entry_subject }}</span></label>
+              <div class="col-xs-9">
+                <select name="subject_field_id" id="input-subject-field-id" class="form-control">
+                  <option value="0"></option>
+                  {% for field in fields %}
+                    {% if field.type == 'text' %}
+                      {% if (subject_field_id == field.form_field_id) %} 
+                      <option value="{{ field.form_field_id }}" selected="">{{ field.name }}</option>
+                      {% else %} 
+                      <option value="{{ field.form_field_id }}">{{ field.name }}</option>
+                      {% endif %}
+                    {% endif %}
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_spam_filter }}</div>
+          <div class="panel-body">
+            <!--captcha-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-captcha">{{ entry_captcha }}</label>
+              <div class="col-xs-9">
+                <select name="captcha" id="input-captcha" class="form-control">
+                  <option value=""></option>
+                  {% for _captcha in captchas %}
+                    {% if (captcha == _captcha.value) %} 
+                    <option value="{{ _captcha.value }}" selected="">{{ _captcha.text }}</option>
+                    {% else %} 
+                    <option value="{{ _captcha.value }}">{{ _captcha.text }}</option>
+                    {% endif %}
+                  {% endfor %} 
+                </select>
+              </div>
+            </div>
+
+            <!--spam keywords-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-spam-keywords"><span data-toggle="tooltip" title="{{ help_spam_keywords }}">{{ entry_spam_keywords }}</span></label>
+              <div class="col-xs-9">
+                <textarea name="spam_keywords" placeholder="{{ entry_spam_keywords }}" id="input-spam-keywords" class="form-control large">{{ spam_keywords }}</textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--mail-->
+      <div id="tab-mz-mail" class="tab-pane fade">
+        <div class="panel mz-panel-default">
+          <div class="panel-body">
+            <!--mail_admin_status-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-mail-admin-status"><span data-toggle="tooltip" title="{{ help_mail_admin }}">{{ entry_admin }}</span></label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (mail_admin_status) %} 
+                  <input type="radio" name="mail_admin_status" value="1" id="input-mail-admin-status-enabled" checked>
+                  <label for="input-mail-admin-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="mail_admin_status" value="0" id="input-mail-admin-status-disabled">
+                  <label for="input-mail-admin-status-disabled">{{ text_disabled }}</label>
+                  {% else %}
+                  <input type="radio" name="mail_admin_status" value="1" id="input-mail-admin-status-enabled" >
+                  <label for="input-mail-admin-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="mail_admin_status" value="0" id="input-mail-admin-status-disabled" checked>
+                  <label for="input-mail-admin-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <!--mail_customer_status-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-mail-customer-status"><span data-toggle="tooltip" title="{{ help_mail_customer }}">{{ entry_customer }}</span></label>
+              <div class="col-xs-9">
+                <div class="mz-switch-field">
+                  {% if (mail_customer_status) %} 
+                  <input type="radio" name="mail_customer_status" value="1" id="input-mail-customer-status-enabled" checked>
+                  <label for="input-mail-customer-status-enabled" >{{ text_enabled }}</label>
+                  <input type="radio" name="mail_customer_status" value="0" id="input-mail-customer-status-disabled">
+                  <label for="input-mail-customer-status-disabled">{{ text_disabled }}</label>
+                  {% else %}
+                  <input type="radio" name="mail_customer_status" value="1" id="input-mail-customer-status-enabled" >
+                  <label for="input-mail-customer-status-enabled">{{ text_enabled }}</label>
+                  <input type="radio" name="mail_customer_status" value="0" id="input-mail-customer-status-disabled" checked>
+                  <label for="input-mail-customer-status-disabled" >{{ text_disabled }}</label>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--admin-->
+        <div class="panel mz-panel-default">
+          <div class="panel-heading">{{ text_admin }}</div>
+          <div class="panel-body">
+
+            <!--mail_admin_to-->
+            <div class="form-group">
+              <label class="col-xs-3 control-label" for="input-mail-admin-to"><span data-toggle="tooltip" title="{{ help_admin_mailto }}">{{ entry_email }}</span></label>
+              <div class="col-xs-9">
+                <input type="text" name="mail_admin_to" value="{{ mail_admin_to }}" placeholder="{{ entry_email }}" id="input-mail-admin-to" class="form-control" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!--customer-->
+        <div class="panel mz-panel-default">
+          <div class="panel-heading clearfix">
+            <h4 class="pull-left panel-title">{{ text_customer }}</h4>
+            <ul class="nav nav-tabs tab-dynamic pull-right mz-nav-sandwich-tab">
+              {% for language in languages %}
+              <li><a href="#language-customer-mail{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="panel-body">
+            <div class="tab-content">
+              {% for language in languages %}
+              <div class="tab-pane" id="language-customer-mail{{ language.language_id }}">
+                <!--subject-->
+                <div class="form-group required">
+                  <label class="col-xs-3 control-label" for="input-mail-customer-subject{{ language.language_id }}">{{ entry_subject }}</label>
+                  <div class="col-xs-9">
+                    <input type="text" name="form_description[{{ language.language_id }}][mail_customer_subject]" value="{{ form_description[language.language_id]['mail_customer_subject'] is defined ? form_description[language.language_id]['mail_customer_subject'] }}" id="input-mail-customer-subject{{ language.language_id }}" placeholder="{{ entry_subject }}" class="form-control large" />
+                    {% if err_mail_customer_subject[language.language_id] %} 
+                      <div class="text-danger">{{ err_mail_customer_subject[language.language_id] }}</div>
+                    {% endif %} 
+                  </div>
+                </div>
+
+                <!--message-->
+                <div class="form-group required">
+                  <label class="col-xs-3 control-label" for="input-mail-customer-message{{ language.language_id }}">{{ entry_message }}</label>
+                  <div class="col-xs-9">
+                    <textarea name="form_description[{{ language.language_id }}][mail_customer_message]" placeholder="{{ entry_message }}" id="input-mail-customer-message{{ language.language_id }}" data-ckeditor="{{ code }}" class="form-control">{{ form_description[language.language_id]['mail_customer_message'] is defined ? form_description[language.language_id]['mail_customer_message'] : '' }}</textarea>
+                    {% if err_mail_customer_message[language.language_id] %} 
+                      <div class="text-danger">{{ err_mail_customer_message[language.language_id] }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div> <!--/ customer-->
+      </div> <!--/ mail-->
+    </div>
+  </form>
+<script src="view/javascript/maza/ckeditor/ckeditor.js"></script>
+</div>
+{{ mz_footer }}

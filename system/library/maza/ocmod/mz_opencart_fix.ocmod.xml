@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<modification>
+    <name>Maza OpenCart Fix</name>
+    <code>maza_opencart_fix</code>
+    <version>1.0</version>
+    <author>TemplateMaza.com</author>
+    <link>https://pocotheme.com/</link>
+    <!-- Fix captcha undefined route index error -->
+    <file path="catalog/controller/extension/captcha/*.php">
+        <operation error="skip">
+            <search><![CDATA[$this->request->get['route']]]></search>
+            <add position="replace"><![CDATA[$this->request->get['route']??$this->config->get('action_default')]]></add>
+        </operation>
+    </file>
+
+    <!--Fix rating from round to float-->
+    <file path="catalog/controller/product/*.php">
+        <operation error="skip">
+            <search><![CDATA[(int)$result['rating']]]></search>
+            <add position="replace"><![CDATA[(float)$result['rating']]]></add>
+        </operation>
+        <operation error="skip">
+            <search><![CDATA[(int)$product_info['rating']]]></search>
+            <add position="replace"><![CDATA[(float)$product_info['rating']]]></add>
+        </operation>
+    </file>
+    <file path="catalog/model/catalog/product.php">
+        <operation>
+            <search><![CDATA[round($query->row['rating'])]]></search>
+            <add position="replace"><![CDATA[round($query->row['rating'],1)]]></add>
+        </operation>
+    </file>
+    
+    <file path="system/engine/loader.php">
+        <operation>
+            <search><![CDATA[($result && !$result instanceof Exception)]]></search>
+            <add position="replace"><![CDATA[(!is_null($result) && !$result instanceof Exception)]]></add>
+        </operation>
+    </file>
+
+    <file path="system/library/image.php">
+        <operation>
+            <search><![CDATA[(int)(]]></search>
+            <add position="replace"><![CDATA[round(]]></add>
+        </operation>
+    </file>
+
+    <file path="system/library/document.php">
+        <operation>
+            <search><![CDATA[$media = 'screen']]></search>
+            <add position="replace"><![CDATA[$media = 'all']]></add>
+        </operation>
+    </file>
+</modification>

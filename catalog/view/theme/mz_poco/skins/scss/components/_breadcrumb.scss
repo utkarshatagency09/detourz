@@ -1,0 +1,14 @@
+.breadcrumb {
+    display: block;
+    
+    &-item {
+        &, & a{
+            display: inline;
+            text-decoration: none;
+        }
+
+        &::before {
+            float: none !important;
+        }
+    }
+}

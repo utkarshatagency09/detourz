@@ -1,0 +1,95 @@
+<!-- Form -->
+<form id="setting-widget-form" class="form-horizontal" enctype="multipart/form-data" method="post">
+  <!--widget status-->
+  <div class="form-group">
+    <label class="col-sm-3 control-label" for="input-setting-widget-status">{{ entry_status }}</label>
+    <div class="col-sm-9">
+      <div class="mz-switch-field">
+        {% if (widget_status) %} 
+        <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" checked>
+        <label for="input-widget-status-enabled" >{{ text_enabled }}</label>
+        <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled">
+        <label for="input-widget-status-disabled">{{ text_disabled }}</label>
+        {% else %} 
+        <input type="radio" name="widget_status" value="1" id="input-widget-status-enabled" >
+        <label for="input-widget-status-enabled">{{ text_enabled }}</label>
+        <input type="radio" name="widget_status" value="0" id="input-widget-status-disabled" checked>
+        <label for="input-widget-status-disabled" >{{ text_disabled }}</label>
+        {% endif %} 
+      </div>
+    </div>
+  </div>
+
+  <!--widget data type-->
+  <div class="form-group">
+    <label class="col-xs-3 control-label">{{ entry_type }}</label>
+    <div class="col-xs-9">
+      <div class="mz-switch-field">
+        {% for type in list_type %} 
+          {% if (widget_type == type['id']) %} 
+          <input type="radio" name="widget_type" value="{{ type['id'] }}" id="input-widget-type-{{ type['id'] }}" checked>
+          <label for="input-widget-type-{{ type['id'] }}" >{{ type['text'] }}</label>
+          {% else %} 
+          <input type="radio" name="widget_type" value="{{ type['id'] }}" id="input-widget-type-{{ type['id'] }}">
+          <label for="input-widget-type-{{ type['id'] }}" >{{ type['text'] }}</label>
+          {% endif %} 
+        {% endfor %} 
+      </div>
+    </div>
+  </div>
+
+  {# HTML#}
+  <div class="data-type html">
+    <ul class="nav nav-tabs" id="widget-html">
+      {% for language in languages %}
+      <li><a href="#language{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+      {% endfor %}
+    </ul>
+    <div class="tab-content">
+      {% for language in languages %}
+      <div class="tab-pane" id="language{{ language.language_id }}">
+        <div class="form-group">
+          <div class="col-xm-12">
+            <input type="hidden" name="widget_html[{{ language.language_id }}]" value="{{ widget_html[language.language_id] }}" id="input-widget-html{{ language.language_id }}" />
+            <pre id="input-widget-html-code-editor{{ language.language_id }}" class="form-control large" style="min-height: 300px">{{ widget_html[language.language_id] }}</pre>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="form-group required data-type path">
+    <label class="col-sm-3 control-label" for="input-widget-path"><span data-toggle="tooltip" title="{{ help_path }}">{{ entry_path }}</span></label>
+    <div class="col-sm-9">
+      <input type="text" name="widget_path" value="{{ widget_path }}" placeholder="bla/foo" id="input-widget-path" class="form-control" />
+    </div>
+  </div>
+
+</form>
+<script src="view/javascript/maza/ace/src-min/ace.js" ></script>
+<script>
+$('input[name="widget_type"]').on('change', function(){
+    var widget_type = $(this).val();
+    
+    $('.data-type').addClass('hide');
+
+    $('.data-type.' + widget_type).removeClass('hide');
+});
+
+$('input[name="widget_type"]:checked').trigger('change');
+
+$(function(){
+  $('#widget-html a:first').tab('show');
+  
+  // Ace editor ini
+  {% for language in languages %}
+  var editor{{ language.language_id }} = ace.edit("input-widget-html-code-editor{{ language.language_id }}");
+  editor{{ language.language_id }}.setTheme("ace/theme/monokai");
+  editor{{ language.language_id }}.session.setMode("ace/mode/html");
+  editor{{ language.language_id }}.on('change', function(){
+    $('#input-widget-html{{ language.language_id }}').val(editor{{ language.language_id }}.getValue());
+  });
+  {% endfor %}
+});
+</script>

@@ -1,0 +1,70 @@
+{% if style.margin_top != '' and style.margin_right == style.margin_top and style.margin_bottom == style.margin_top and style.margin_left == style.margin_top %}
+margin: {{ style.margin_top/16 }}rem;
+{% elseif style.margin_top != '' and style.margin_right != '' and style.margin_bottom != '' and style.margin_left != '' %}
+@include rtl-prop(margin, {{ style.margin_top/16 }}rem {{ style.margin_right/16 }}rem {{ style.margin_bottom/16 }}rem {{ style.margin_left/16 }}rem, {{ style.margin_top/16 }}rem {{ style.margin_left/16 }}rem {{ style.margin_bottom/16 }}rem {{ style.margin_right/16 }}rem);
+{% else %}
+  {% if style.margin_top != '' %}
+  margin-top: {{ style.margin_top/16 }}rem;
+  {% endif %}
+  {% if style.margin_right != '' %}
+  @include rtl-prop(margin-right, {{ style.margin_right/16 }}rem);
+  {% endif %}
+  {% if style.margin_bottom != '' %}
+  margin-bottom: {{ style.margin_bottom/16 }}rem;
+  {% endif %}
+  {% if style.margin_left != '' %}
+  @include rtl-prop(margin-left, {{ style.margin_left/16 }}rem);
+  {% endif %}
+{% endif %}
+
+{% if style.border_top != '' and style.border_right == style.border_top and style.border_bottom == style.border_top and style.border_left == style.border_top %}
+border: {{ style.border_top }}px solid {{ style.border_color?:'$border-color' }};
+{% else %}
+  {% if style.border_top != '' %}
+  border-top: {{ style.border_top }}px solid {{ style.border_color?:'$border-color' }};
+  {% endif %}
+  {% if style.border_right != '' %}
+  @include rtl-prop(border-right, {{ style.border_right }}px solid {{ style.border_color?:'$border-color' }});
+  {% endif %}
+  {% if style.border_bottom != '' %}
+  border-bottom: {{ style.border_bottom }}px solid {{ style.border_color?:'$border-color' }};
+  {% endif %}
+  {% if style.border_left != '' %}
+  @include rtl-prop(border-left, {{ style.border_left }}px solid {{ style.border_color?:'$border-color' }});
+  {% endif %}
+{% endif %}
+
+{% if style.padding_top != '' and style.padding_right == style.padding_top and style.padding_bottom == style.padding_top and style.padding_left == style.padding_top %}
+padding: {{ style.padding_top/16 }}rem;
+{% elseif style.padding_top != '' and style.padding_right != '' and style.padding_bottom != '' and style.padding_left != '' %}
+@include rtl-prop(padding, {{ style.padding_top/16 }}rem {{ style.padding_right/16 }}rem {{ style.padding_bottom/16 }}rem {{ style.padding_left/16 }}rem, {{ style.padding_top/16 }}rem {{ style.padding_left/16 }}rem {{ style.padding_bottom/16 }}rem {{ style.padding_right/16 }}rem);
+{% else %}
+  {% if style.padding_top != '' %}
+  padding-top: {{ style.padding_top/16 }}rem;
+  {% endif %}
+  {% if style.padding_right != '' %}
+  @include rtl-prop(padding-right, {{ style.padding_right/16 }}rem);
+  {% endif %}
+  {% if style.padding_bottom != '' %}
+  padding-bottom: {{ style.padding_bottom/16 }}rem;
+  {% endif %}
+  {% if style.padding_left != '' %}
+  @include rtl-prop(padding-left, {{ style.padding_left/16 }}rem);
+  {% endif %}
+{% endif %}
+
+{% if style.min_height != '' %}
+min-height: {{ style.min_height/16 }}rem;
+{% endif %}
+{% if style.text_color %}
+color: {{ style.text_color }};
+{% endif %}
+{% if style.text_size > 0 %}
+font-size: {{ style.text_size }}em;
+{% endif %}
+{% if style.background_color %}
+background-color: {{ style.background_color }};
+{% endif %}
+{% if style.background %}
+background: {{ style.background }};
+{% endif %}

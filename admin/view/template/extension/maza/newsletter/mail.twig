@@ -1,0 +1,87 @@
+{{ header }}{{ column_left }} 
+{{ mz_column_left }}
+{{ mz_header }}
+<div id="content" class="mz-content">
+  <form class="form-horizontal">
+    <div class="panel mz-panel-default">
+      <div class="panel-heading">{{ text_send_mail }}</div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="input-store">{{ entry_from }}</label>
+          <div class="col-sm-10">
+            <select name="store_id" id="input-store" class="form-control large">
+              {% for store in stores %}
+              <option value="{{ store.store_id }}">{{ store.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="input-to">{{ entry_to }}</label>
+          <div class="col-sm-10">
+            <select name="to" id="input-to" class="form-control large">
+              <option value="all">{{ text_all }}</option>
+              <option value="approved">{{ text_all_approved }}</option>
+              <option value="confirmed">{{ text_all_confirmed }}</option>
+              <option value="confirmed_and_approved" selected="selected">{{ text_all_confirmed_and_approved }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-sm-2 control-label" for="input-subject">{{ entry_subject }}</label>
+          <div class="col-sm-10">
+            <input type="text" name="subject" value="" placeholder="{{ entry_subject }}" id="input-subject" class="form-control large" />
+          </div>
+        </div>
+        <div class="form-group required">
+          <label class="col-sm-2 control-label" for="input-message">{{ entry_message }}</label>
+          <div class="col-sm-10">
+            <textarea name="message" placeholder="{{ entry_message }}" id="input-message" data-ckeditor="{{ code }}" class="form-control"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <script src="view/javascript/maza/ckeditor/ckeditor.js"></script>
+  <script>
+    $("#button-send").data('loading-text', '<i class="fa fa-circle-o-notch fa-spin"></i>');
+    $("#button-send").click(function(){
+      $.ajax({
+        url: 'index.php?route=extension/maza/newsletter/send&user_token={{ user_token }}',
+        type: 'post',
+        data: $('#content select, #content input, #content textarea'),
+        dataType: 'json',
+        beforeSend: function() {
+          $('#button-send').button('loading');
+        },
+        complete: function() {
+          $('#button-send').button('reset');
+        },
+        success: function(json) {
+          $('.alert-dismissible, .text-danger').remove();
+
+          if (json['error']) {
+            if (json['error']['warning']) {
+              $('#content').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error']['warning'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+            }
+
+            if (json['error']['subject']) {
+              $('input[name=\'subject\']').after('<div class="text-danger">' + json['error']['subject'] + '</div>');
+            }
+
+            if (json['error']['message']) {
+              $('textarea[name=\'message\']').parent().append('<div class="text-danger">' + json['error']['message'] + '</div>');
+            }
+          }
+
+          if (json['success']) {
+            $('#content').prepend('<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i>  ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+          }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+      });
+    });
+  </script>
+</div>
