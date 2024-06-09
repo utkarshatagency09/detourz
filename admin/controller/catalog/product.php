@@ -58,7 +58,15 @@ class ControllerCatalogProduct extends Controller {
 				$url .= '&page=' . $this->request->get['page'];
 			}
 
-			$this->response->redirect($this->url->link('catalog/product', 'user_token=' . $this->session->data['user_token'] . $url, true));
+			// $this->response->redirect($this->url->link('catalog/product', 'user_token=' . $this->session->data['user_token'] . $url, true));
+			if (!isset($this->request->get['product_id'])) {
+				$product_id = $this->model_catalog_product->getLastInsertId();
+			} else {
+				$product_id = $this->request->get['product_id'];
+			}
+			$url .= '&product_id=' . $product_id;
+			$this->response->redirect($this->url->link('catalog/product/edit', 'user_token=' . $this->session->data['user_token'] . $url, true));
+			
 		}
 
 		$this->getForm();
@@ -110,7 +118,15 @@ class ControllerCatalogProduct extends Controller {
 				$url .= '&page=' . $this->request->get['page'];
 			}
 
-			$this->response->redirect($this->url->link('catalog/product', 'user_token=' . $this->session->data['user_token'] . $url, true));
+			// $this->response->redirect($this->url->link('catalog/product', 'user_token=' . $this->session->data['user_token'] . $url, true));
+			if (!isset($this->request->get['product_id'])) {
+				$product_id = $this->model_catalog_product->getLastInsertId();
+			} else {
+				$product_id = $this->request->get['product_id'];
+			}
+			$url .= '&product_id=' . $product_id;
+			$this->response->redirect($this->url->link('catalog/product/edit', 'user_token=' . $this->session->data['user_token'] . $url, true));
+			
 		}
 
 		$this->getForm();

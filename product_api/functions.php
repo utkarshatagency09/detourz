@@ -33,4 +33,18 @@ function saveImage($imageUrl, $localPath) {
 
     return 1;
 }
+
+function setAttribute($attribute,$attribute_id,$product_id){
+    global $conn, $languages;
+    
+    $deleteStmt = $conn->prepare("DELETE FROM `oc_product_attribute` WHERE `product_id` = ? AND `attribute_id` = ?");
+    $deleteStmt->bind_param("ss", $product_id,$attribute_id);
+    $deleteStmt->execute();
+    foreach($languages as $language){
+        $stmt = $conn->prepare("INSERT INTO `oc_product_attribute`(`product_id`, `attribute_id`, `language_id`,`text`) VALUES (?,?,?,?)");
+        $stmt->bind_param("ssss", $product_id, $attribute_id, $language, $attribute);
+        $stmt->execute();
+    }
+    $stmt->close();
+}
 ?>
