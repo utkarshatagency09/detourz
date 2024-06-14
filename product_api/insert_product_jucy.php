@@ -3,9 +3,9 @@ include '../config.php';//opencart config for using constants(DIR_IMAGE)
 include 'config.php';//custom config variables
 include 'functions.php';
 include 'get_products_jucy.php';
-echo '<pre>';
+/* echo '<pre>';
 print_r($product_list);
-echo '</pre>';exit;
+echo '</pre>';exit; */
 //Fetch Last product id
 $sql = 'SELECT product_id FROM `oc_product` ORDER BY `oc_product`.`product_id` DESC LIMIT 0,1';
 $stmt = $conn->prepare($sql);
